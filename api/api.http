@@ -102,6 +102,101 @@ DELETE  http://localhost:3000/api/v1/item_lines/1
 API_KEY: a1b2c3d4e5
 ###
 
+
+// this starts the item_types requests
+
+GET http://localhost:3000/api/v1/item_types
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/item_types/1
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/item_types/1/items
+API_KEY: a1b2c3d4e5
+###
+
+PUT  http://localhost:3000/api/v1/item_types/0
+API_KEY: a1b2c3d4e5
+
+{"id": 0, "name": "Laptop", "description": "miep"}
+###
+
+DELETE  http://localhost:3000/api/v1/item_types/1
+API_KEY: a1b2c3d4e5
+###
+
+
+//this starts the items requests
+
+GET http://localhost:3000/api/v1/items
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/items/P000001
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/items/P000001/inventory
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/items/P000001/inventory/totals
+API_KEY: a1b2c3d4e5
+###
+
+POST http://localhost:3000/api/v1/items
+API_KEY: a1b2c3d4e5
+
+{
+    "uid": "P000004",
+    "code": "sjQ23408K",
+    "description": "Face-to-face clear-thinking complexity",
+    "short_description": "must",
+    "upc_code": "6523540947122",
+    "model_number": "63-OFFTq0T",
+    "commodity_code": "oTo304",
+    "item_line": 11,
+    "item_group": 73,
+    "item_type": 14,
+    "unit_purchase_quantity": 47,
+    "unit_order_quantity": 13,
+    "pack_order_quantity": 11,
+    "supplier_id": 34,
+    "supplier_code": "SUP423",
+    "supplier_part_number": "E-86805-uTM"
+  }
+###
+
+PUT  http://localhost:3000/api/v1/items/P000001
+API_KEY: a1b2c3d4e5
+
+{
+    "uid": "P000001",
+    "code": "sjQ23408K",
+    "description": "miep",
+    "short_description": "must",
+    "upc_code": "6523540947122",
+    "model_number": "63-OFFTq0T",
+    "commodity_code": "oTo304",
+    "item_line": 11,
+    "item_group": 73,
+    "item_type": 14,
+    "unit_purchase_quantity": 47,
+    "unit_order_quantity": 13,
+    "pack_order_quantity": 11,
+    "supplier_id": 34,
+    "supplier_code": "SUP423",
+    "supplier_part_number": "E-86805-uTM"
+}
+###
+
+DELETE  http://localhost:3000/api/v1/items/P000001
+API_KEY: a1b2c3d4e5
+###
+
+
 //this starts the shipment requests
 GET   http://localhost:3000/api/v1/shipments
 API_KEY: a1b2c3d4e5
@@ -344,6 +439,8 @@ API_KEY: a1b2c3d4e5
 
 ###
 
+
+// this is everything for the transfers
 GET http://localhost:3000/api/v1/transfers
 API_KEY: a1b2c3d4e5
 
@@ -404,6 +501,8 @@ API_KEY: a1b2c3d4e5
 ###
 
 
+
+// this is everything for the warehouses
 GET http://localhost:3000/api/v1/warehouses
 API_KEY: a1b2c3d4e5
 
