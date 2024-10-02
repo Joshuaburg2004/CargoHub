@@ -564,6 +564,12 @@ class TestOrders(unittest.TestCase):
         self.assertEqual(self.Order.get_order(2)["order_status"], "Packed")
         self.assertEqual(self.Order.get_order(3)["order_status"], "Scheduled")
     
+    def test_get_orders_in_shipment(self):
+        pass
+
+    def test_get_orders_for_client(self):
+        pass
+    
     def test_remove_order(self):
         self.Order.remove_order(1)
         self.assertEqual(self.Order.get_order(1), None)
