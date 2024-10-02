@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "dgSpecHash": "fzwNMj8aDsyQA0BuKSr6G9hSydUN8JJZeiJNa5ibEwayvT61a48IPUXcKa+ZCWmKpwweDU1+/cocSPQ0lexx/Q==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\CargoHubTesting.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
+    "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",
+    "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\microsoft.net.test.sdk\\17.8.0\\microsoft.net.test.sdk.17.8.0.nupkg.sha512",
+    "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\microsoft.testplatform.objectmodel\\17.8.0\\microsoft.testplatform.objectmodel.17.8.0.nupkg.sha512",
+    "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\microsoft.testplatform.testhost\\17.8.0\\microsoft.testplatform.testhost.17.8.0.nupkg.sha512",
+    "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\mstest.testadapter\\3.1.1\\mstest.testadapter.3.1.1.nupkg.sha512",
+    "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\mstest.testframework\\3.1.1\\mstest.testframework.3.1.1.nupkg.sha512",
+    "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\nuget.frameworks\\6.5.0\\nuget.frameworks.6.5.0.nupkg.sha512",
+    "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512"
+  ],
+  "logs": []
+}
