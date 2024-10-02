@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\CargoHubTesting.csproj": {}
+    "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\CargoHubTesting.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\CargoHubTesting.csproj": {
+    "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\CargoHubTesting.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\CargoHubTesting.csproj",
+        "projectUniqueName": "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\CargoHubTesting.csproj",
         "projectName": "CargoHubTesting",
-        "projectPath": "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\CargoHubTesting.csproj",
+        "projectPath": "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\CargoHubTesting.csproj",
         "packagesPath": "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\obj\\",
+        "outputPath": "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Joshua van der Burg\\AppData\\Roaming\\NuGet\\NuGet.Config",
