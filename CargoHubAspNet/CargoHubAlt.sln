@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargoHubAlt", "CargoHubAlt\CargoHubAlt.csproj", "{3863CAD8-E0B9-4C67-A222-8465B759FC8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargoHubTesting", "CargoHubTesting\CargoHubTesting.csproj", "{1E24D038-45E9-46D0-BCCB-F751262A3F6E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3863CAD8-E0B9-4C67-A222-8465B759FC8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3863CAD8-E0B9-4C67-A222-8465B759FC8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3863CAD8-E0B9-4C67-A222-8465B759FC8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3863CAD8-E0B9-4C67-A222-8465B759FC8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E24D038-45E9-46D0-BCCB-F751262A3F6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E24D038-45E9-46D0-BCCB-F751262A3F6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E24D038-45E9-46D0-BCCB-F751262A3F6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E24D038-45E9-46D0-BCCB-F751262A3F6E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
