@@ -1,9 +1,119 @@
 import unittest
-from models.orders import Orders, ORDERS
+from providers.data_provider import Orders
+from providers import data_provider
 null = None
 
+ORDERS = []
 class TestOrders(unittest.TestCase):
     def setUp(self):
+        data_provider.DEBUG = True
+        data_provider._clients = [{"id": 1, "name": "Raymond Inc", "address": "1296 Daniel Road Apt. 349", "city": "Pierceview", "zip_code": "28301", "province": "Colorado", "country": "United States", "contact_name": "Bryan Clark", "contact_phone": "242.732.3483x2573", "contact_email": "robertcharles@example.net", "created_at": "2010-04-28 02:22:53", "updated_at": "2022-02-09 20:22:35"}]
+        data_provider._shipments = [{
+            "id": 1,
+            "order_id": 1,
+            "source_id": 33,
+            "order_date": "2000-03-09",
+            "request_date": "2000-03-11",
+            "shipment_date": "2000-03-13",
+            "shipment_type": "I",
+            "shipment_status": "Pending",
+            "notes": "Zee vertrouwen klas rots heet lachen oneven begrijpen.",
+            "carrier_code": "DPD",
+            "carrier_description": "Dynamic Parcel Distribution",
+            "service_code": "Fastest",
+            "payment_type": "Manual",
+            "transfer_mode": "Ground",
+            "total_package_count": 31,
+            "total_package_weight": 594.42,
+            "created_at": "2000-03-10T11:11:14Z",
+            "updated_at": "2000-03-11T13:11:14Z",
+            "items": [
+                {
+                    "item_id": "P007435",
+                    "amount": 23
+                },
+                {
+                    "item_id": "P009557",
+                    "amount": 1
+                },
+                {
+                    "item_id": "P009553",
+                    "amount": 50
+                },
+                {
+                    "item_id": "P010015",
+                    "amount": 16
+                },
+                {
+                    "item_id": "P002084",
+                    "amount": 33
+                },
+                {
+                    "item_id": "P009663",
+                    "amount": 18
+                },
+                {
+                    "item_id": "P010125",
+                    "amount": 18
+                },
+                {
+                    "item_id": "P005768",
+                    "amount": 26
+                },
+                {
+                    "item_id": "P004051",
+                    "amount": 1
+                },
+                {
+                    "item_id": "P005026",
+                    "amount": 29
+                },
+                {
+                    "item_id": "P000726",
+                    "amount": 22
+                },
+                {
+                    "item_id": "P008107",
+                    "amount": 47
+                },
+                {
+                    "item_id": "P001598",
+                    "amount": 32
+                },
+                {
+                    "item_id": "P002855",
+                    "amount": 20
+                },
+                {
+                    "item_id": "P010404",
+                    "amount": 30
+                },
+                {
+                    "item_id": "P010446",
+                    "amount": 6
+                },
+                {
+                    "item_id": "P001517",
+                    "amount": 9
+                },
+                {
+                    "item_id": "P009265",
+                    "amount": 2
+                },
+                {
+                    "item_id": "P001108",
+                    "amount": 20
+                },
+                {
+                    "item_id": "P009110",
+                    "amount": 18
+                },
+                {
+                    "item_id": "P009686",
+                    "amount": 13
+                }
+            ]
+        }]
         self.Order = Orders("/", True)
         ORDERS.append({
             "id": 1,
@@ -234,121 +344,121 @@ class TestOrders(unittest.TestCase):
     
     def test_add_order(self):
         order = {
-        "id": 4,
-        "source_id": 12,
-        "order_date": "1988-01-31T22:12:24Z",
-        "request_date": "1988-02-04T22:12:24Z",
-        "reference": "ORD00004",
-        "reference_extra": "Zelfde moment markeren stad markeren vreemde.",
-        "order_status": "Delivered",
-        "notes": "Studie vlees voelen altijd kom.",
-        "shipping_notes": "Overleden munt kok.",
-        "picking_notes": "Achter uitzoeken ver samen object maan.",
-        "warehouse_id": 34,
-        "ship_to": null,
-        "bill_to": null,
-        "shipment_id": 4,
-        "total_amount": 4030.92,
-        "total_discount": 305.23,
-        "total_tax": 752.36,
-        "total_surcharge": 99.41,
-        "created_at": "1988-01-31T22:12:24Z",
-        "updated_at": "1988-02-02T18:12:24Z",
-        "items": [
-            {
-                "item_id": "P007004",
-                "amount": 14
-            },
-            {
-                "item_id": "P005769",
-                "amount": 28
-            },
-            {
-                "item_id": "P004263",
-                "amount": 33
-            },
-            {
-                "item_id": "P006228",
-                "amount": 33
-            },
-            {
-                "item_id": "P008542",
-                "amount": 11
-            },
-            {
-                "item_id": "P002056",
-                "amount": 6
-            },
-            {
-                "item_id": "P008694",
-                "amount": 16
-            },
-            {
-                "item_id": "P008241",
-                "amount": 19
-            },
-            {
-                "item_id": "P004464",
-                "amount": 11
-            },
-            {
-                "item_id": "P008635",
-                "amount": 1
-            },
-            {
-                "item_id": "P000667",
-                "amount": 32
-            },
-            {
-                "item_id": "P006615",
-                "amount": 49
-            },
-            {
-                "item_id": "P007815",
-                "amount": 16
-            },
-            {
-                "item_id": "P011493",
-                "amount": 23
-            },
-            {
-                "item_id": "P004458",
-                "amount": 3
-            },
-            {
-                "item_id": "P002974",
-                "amount": 6
-            },
-            {
-                "item_id": "P003655",
-                "amount": 35
-            },
-            {
-                "item_id": "P009953",
-                "amount": 35
-            },
-            {
-                "item_id": "P000917",
-                "amount": 23
-            },
-            {
-                "item_id": "P003711",
-                "amount": 4
-            },
-            {
-                "item_id": "P011448",
-                "amount": 46
-            },
-            {
-                "item_id": "P001562",
-                "amount": 21
-            },
-            {
-                "item_id": "P002435",
-                "amount": 31
-            }
-        ]
-    }
+            "id": 4,
+            "source_id": 12,
+            "order_date": "1988-01-31T22:12:24Z",
+            "request_date": "1988-02-04T22:12:24Z",
+            "reference": "ORD00004",
+            "reference_extra": "Zelfde moment markeren stad markeren vreemde.",
+            "order_status": "Delivered",
+            "notes": "Studie vlees voelen altijd kom.",
+            "shipping_notes": "Overleden munt kok.",
+            "picking_notes": "Achter uitzoeken ver samen object maan.",
+            "warehouse_id": 34,
+            "ship_to": null,
+            "bill_to": null,
+            "shipment_id": 4,
+            "total_amount": 4030.92,
+            "total_discount": 305.23,
+            "total_tax": 752.36,
+            "total_surcharge": 99.41,
+            "created_at": "1988-01-31T22:12:24Z",
+            "updated_at": "1988-02-02T18:12:24Z",
+            "items": [
+                {
+                    "item_id": "P007004",
+                    "amount": 14
+                },
+                {
+                    "item_id": "P005769",
+                    "amount": 28
+                },
+                {
+                    "item_id": "P004263",
+                    "amount": 33
+                },
+                {
+                    "item_id": "P006228",
+                    "amount": 33
+                },
+                {
+                    "item_id": "P008542",
+                    "amount": 11
+                },
+                {
+                    "item_id": "P002056",
+                    "amount": 6
+                },
+                {
+                    "item_id": "P008694",
+                    "amount": 16
+                },
+                {
+                    "item_id": "P008241",
+                    "amount": 19
+                },
+                {
+                    "item_id": "P004464",
+                    "amount": 11
+                },
+                {
+                    "item_id": "P008635",
+                    "amount": 1
+                },
+                {
+                    "item_id": "P000667",
+                    "amount": 32
+                },
+                {
+                    "item_id": "P006615",
+                    "amount": 49
+                },
+                {
+                    "item_id": "P007815",
+                    "amount": 16
+                },
+                {
+                    "item_id": "P011493",
+                    "amount": 23
+                },
+                {
+                    "item_id": "P004458",
+                    "amount": 3
+                },
+                {
+                    "item_id": "P002974",
+                    "amount": 6
+                },
+                {
+                    "item_id": "P003655",
+                    "amount": 35
+                },
+                {
+                    "item_id": "P009953",
+                    "amount": 35
+                },
+                {
+                    "item_id": "P000917",
+                    "amount": 23
+                },
+                {
+                    "item_id": "P003711",
+                    "amount": 4
+                },
+                {
+                    "item_id": "P011448",
+                    "amount": 46
+                },
+                {
+                    "item_id": "P001562",
+                    "amount": 21
+                },
+                {
+                    "item_id": "P002435",
+                    "amount": 31
+                }
+            ]
+        }
         self.Order.add_order(order)
         self.assertEqual(self.Order.get_order(4), order)
 
@@ -564,6 +674,7 @@ class TestOrders(unittest.TestCase):
         self.assertEqual(self.Order.get_order(2)["order_status"], "Packed")
         self.assertEqual(self.Order.get_order(3)["order_status"], "Scheduled")
     
+    # circular import
     def test_get_orders_in_shipment(self):
         pass
 
