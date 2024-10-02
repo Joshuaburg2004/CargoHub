@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fzwNMj8aDsyQA0BuKSr6G9hSydUN8JJZeiJNa5ibEwayvT61a48IPUXcKa+ZCWmKpwweDU1+/cocSPQ0lexx/Q==",
+  "dgSpecHash": "tBH64u0pABlxEqZ8q/WvBa6y6bkcFCgQy6yQ6d2zpAqVoCMYMZzzvv53F1R3NUQvIi6Hyy0PHY/lpr4vV3raag==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\CargoHubTesting.csproj",
+  "projectFilePath": "C:\\Users\\Joshua van der Burg\\Documents\\HR MAP\\3.x\\OP1-2\\Software construction\\CargoHub\\CargoHub\\CargoHubAspNet\\CargoHubTesting\\CargoHubTesting.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\Joshua van der Burg\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",
