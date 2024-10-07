@@ -26,7 +26,4 @@ public class Client : Base{
         ContactPhone = contactPhone;
         ContactEmail = contactEmail;
     }
-    public void Update(){
-        UpdatedAt = GetTimeStamp();
-    }
 }

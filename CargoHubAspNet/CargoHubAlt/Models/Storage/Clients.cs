@@ -1,4 +1,4 @@
-public class Clients{
+public class Clients : IClients{
     private readonly CargoHubContext cargoHubContext;
     public Clients(CargoHubContext context){
         cargoHubContext = context;
@@ -11,6 +11,15 @@ public class Clients{
     }
     public void AddClient(Client client){
         cargoHubContext.Clients.Add(client);
+        cargoHubContext.SaveChanges();
+    }
+    public void UpdateClient(Client client){
+        client.UpdatedAt = Base.GetTimeStamp();
+        cargoHubContext.Clients.Update(client);
+        cargoHubContext.SaveChanges();
+    }
+    public void RemoveClient(Client client){
+        cargoHubContext.Clients.Remove(client);
         cargoHubContext.SaveChanges();
     }
 }
