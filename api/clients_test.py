@@ -8,11 +8,10 @@ class TestClients(unittest.TestCase):
     def setUp(self):
         DEBUG = True
         self.client = Clients("NAN", is_debug=DEBUG)
-        CLIENTS = [
-            {"id": 1, "name": "test1", "address": "1296 Daniel Road Apt. 349", "city": "Pierceview", "zip_code": "28301", "province": "Colorado", "country": "United States", "contact_name": "Bryan Clark", "contact_phone": "242.732.3483x2573", "contact_email": "robertcharles@example.net"},
-            {"id": 2, "name": "test2", "address": "1296 Daniel Road Apt. 349", "city": "Pierceview", "zip_code": "28301", "province": "Colorado", "country": "United States", "contact_name": "Bryan Clark", "contact_phone": "242.732.3483x2573", "contact_email": "robertcharles@example.net"},
-            {"id": 3, "name": "test3", "address": "1296 Daniel Road Apt. 349", "city": "Pierceview", "zip_code": "28301", "province": "Colorado", "country": "United States", "contact_name": "Bryan Clark", "contact_phone": "242.732.3483x2573", "contact_email": "robertcharles@example.net"},
-        ]
+        CLIENTS.clear()
+        CLIENTS.append({"id": 1, "name": "test1", "address": "1296 Daniel Road Apt. 349", "city": "Pierceview", "zip_code": "28301", "province": "Colorado", "country": "United States", "contact_name": "Bryan Clark", "contact_phone": "242.732.3483x2573", "contact_email": "robertcharles@example.net"})
+        CLIENTS.append({"id": 2, "name": "test2", "address": "1296 Daniel Road Apt. 349", "city": "Pierceview", "zip_code": "28301", "province": "Colorado", "country": "United States", "contact_name": "Bryan Clark", "contact_phone": "242.732.3483x2573", "contact_email": "robertcharles@example.net"})
+        CLIENTS.append({"id": 3, "name": "test3", "address": "1296 Daniel Road Apt. 349", "city": "Pierceview", "zip_code": "28301", "province": "Colorado", "country": "United States", "contact_name": "Bryan Clark", "contact_phone": "242.732.3483x2573", "contact_email": "robertcharles@example.net"})
 
     
     def testAdd(self):
@@ -21,7 +20,6 @@ class TestClients(unittest.TestCase):
         toAdd = {"id": 1, "name": "Raymond Corp", "address": "1296 Daniel Road Apt. 349", "city": "Pierceview", "zip_code": "28301", "province": "Colorado", "country": "United States", "contact_name": "Bryan Clark", "contact_phone": "242.732.3483x2573", "contact_email": "robertcharles@example.net"}
         self.client.add_client(toAdd)
         self.assertEqual(CLIENTS.__len__(), 1)
-        self.assertEqual(1, 2)
     
     def TestGetOne(self):
         self.assertEqual(self.client.get_client(1), CLIENTS[0])
