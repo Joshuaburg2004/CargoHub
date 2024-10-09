@@ -34,7 +34,8 @@ class TestClients(unittest.TestCase):
     def test_delete(self):
         self.client.remove_client(1)
         self.assertEqual(2, CLIENTS.__len__())
-        
+
+
         
 
 

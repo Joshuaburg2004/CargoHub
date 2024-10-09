@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = CargoHubTesting
-build_property.ProjectDir = C:\Users\Joshua van der Burg\Documents\HR MAP\3.x\OP1-2\Software construction\CargoHub\CargoHub\CargoHubAspNet\CargoHubTesting\
+build_property.ProjectDir = c:\Users\rowan\OneDrive\Documents\school_2024-2025\OP1\werkstuk_cargohub\werkstuk_git\CargoHubAspNet\CargoHubTesting\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
