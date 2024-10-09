@@ -1,8 +1,8 @@
 public class Shipment
 {
-    public int id { get; set; }
-    public int order_id { get; set; } // maybe this should be a list of order ids
-    public int source_id { get; set; }
+    public Guid id { get; set; }
+    public Guid order_id { get; set; } // maybe this should be a list of order ids
+    public Guid source_id { get; set; }
     public string order_date { get; set; }
     public string request_date { get; set; }
     public string shipment_date { get; set; }

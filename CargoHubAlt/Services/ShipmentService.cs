@@ -8,7 +8,7 @@ public class ShipmentService : IShipmentService
     {
         throw new NotImplementedException();
     }
-    public async Task<Shipment> GetShipment(int id)
+    public async Task<Shipment> GetShipment(Guid id)
     {
         throw new NotImplementedException();
     }
@@ -20,11 +20,11 @@ public class ShipmentService : IShipmentService
     {
         throw new NotImplementedException();
     }
-    public async Task<bool> Update_items_in_Shipment(int id, int shipmentid, List<Item> items)
+    public async Task<bool> Update_items_in_Shipment(Guid id, Guid shipmentid, List<Item> items)
     {
         throw new NotImplementedException();
     }
-    public async Task<bool> DeleteShipment(int id)
+    public async Task<bool> DeleteShipment(Guid id)
     {
         throw new NotImplementedException();
     }

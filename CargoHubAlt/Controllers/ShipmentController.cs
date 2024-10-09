@@ -13,36 +13,47 @@ public class ShipmentController : Controller
     [HttpGet("get")]
     public async Task<IActionResult> GetShipments()
     {
-        throw new NotImplementedException();
+        var shipments = await _shipmentService.GetShipments();
+        return Ok(shipments);
     }
 
     [HttpGet("getbyid")]
-    public async Task<IActionResult> GetShipmentById(int id)
+    public async Task<IActionResult> GetShipmentById(Guid id)
     {
-        throw new NotImplementedException();
+        if (id == Guid.Empty) return BadRequest();
+        var shipment = await _shipmentService.GetShipment(id);
+        return Ok(shipment);
     }
 
     [HttpPost("add")]
     public async Task<IActionResult> AddShipment([FromBody] Shipment shipment)
     {
-        throw new NotImplementedException();
+        if (shipment == null) return BadRequest();
+        await _shipmentService.AddShipment(shipment);
+        return Ok();
     }
 
     [HttpPut("update")]
     public async Task<IActionResult> UpdateShipment([FromBody] Shipment shipment)
     {
-        throw new NotImplementedException();
+        if (shipment == null) return BadRequest();
+        await _shipmentService.UpdateShipment(shipment);
+        return Ok();
     }
 
     [HttpPut("updateitems")]
-    public async Task<IActionResult> UpdateItemsInShipment(int id, int shipmentid, [FromBody] List<Item> items)
+    public async Task<IActionResult> UpdateItemsInShipment(Guid id, Guid shipmentid, [FromBody] List<Item> items)
     {
-        throw new NotImplementedException();
+        if (items == null || id == Guid.Empty || shipmentid == Guid.Empty || items == null) return BadRequest();
+        await _shipmentService.Update_items_in_Shipment(id, shipmentid, items);
+        return Ok();
     }
 
     [HttpDelete("delete")]
-    public async Task<IActionResult> DeleteShipment(int id)
+    public async Task<IActionResult> DeleteShipment(Guid id)
     {
-        throw new NotImplementedException();
+        if (id == Guid.Empty) return BadRequest();
+        await _shipmentService.DeleteShipment(id);
+        return Ok();
     }
 }
