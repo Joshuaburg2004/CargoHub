@@ -15,7 +15,7 @@ public class Shipment
     public string payment_type { get; set; }
     public string transfer_mode { get; set; }
     public int total_package_count { get; set; }
-    public double total_package_weight { get; set; }
+    public int total_package_weight { get; set; }
     public string created_at { get; set; }
     public string updated_at { get; set; }
     public List<Item> items { get; set; }
