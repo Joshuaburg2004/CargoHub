@@ -25,8 +25,8 @@ public class Clients : IClients{
         await cargoHubContext.SaveChangesAsync();
         return client.Id;
     }
-    public async Task<Client?> UpdateClient(Client client){
-        Client? origClient = await cargoHubContext.Clients.FindAsync(client.Id);
+    public async Task<Client?> UpdateClient(Guid guid, Client client){
+        Client? origClient = await cargoHubContext.Clients.FindAsync(guid);
         client.UpdatedAt = Base.GetTimeStamp();
         cargoHubContext.Clients.Update(client);
         await cargoHubContext.SaveChangesAsync();

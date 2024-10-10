@@ -12,5 +12,7 @@ public class ClientV1Controller : Controller{
     public async Task<IActionResult> GetOneClient([FromQuery] Guid clientId) => Ok(await Clients.GetClient(clientId));
     [HttpPost()]
     public async Task<IActionResult> AddClient([FromBody] Client client) => Ok(await Clients.AddClient(client));
+    [HttpPut()]
+    public async Task<IActionResult> UpdateClient([FromQuery] Guid guid, [FromBody] Client client) => Ok(await Clients.UpdateClient(guid, client));
     
 }
