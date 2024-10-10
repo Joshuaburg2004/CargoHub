@@ -11,7 +11,7 @@ public class ClientV1Controller : Controller{
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOneClient(Guid id) => Ok(await Clients.GetClient(id));
     [HttpPost()]
-    public async Task<IActionResult> AddClient([FromBody] Client client) => Ok(await Clients.AddClient(client));
+    public async Task<IActionResult> AddClient([FromBody] Client client) => Created("Client created!", await Clients.AddClient(client));
     [HttpPut()]
     public async Task<IActionResult> UpdateClient([FromQuery] Guid guid, [FromBody] Client client) => Ok(await Clients.UpdateClient(guid, client));
     [HttpDelete()]
