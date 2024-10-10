@@ -1,26 +1,36 @@
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 public class Clients : IClients{
     private readonly CargoHubContext cargoHubContext;
     public Clients(CargoHubContext context){
         cargoHubContext = context;
     }
     public async Task<IEnumerable<Client>> GetAllClients(){
-        return cargoHubContext.Clients;
+        return await cargoHubContext.Clients.ToListAsync();
     }
     public async Task<IEnumerable<Client>> GetBatchClients(Guid[] guids){
-        return cargoHubContext.Clients.Where(client => guids.Contains(client.Id));
+        List<Client> clients = new List<Client>();
+        foreach(var guid in guids){
+            Client? client = await GetClient(guid);
+            if(client == null){continue;}
+            clients.Add(client);
+        }
+        return clients;
     }
     public async Task<Client?> GetClient(Guid guid){
-        return cargoHubContext.Clients.FindAsync(guid).Result;
+        return await cargoHubContext.Clients.FindAsync(guid);
     }
-    public async Task AddClient(Client client){
+    public async Task<Guid?> AddClient(Client client){
         await cargoHubContext.Clients.AddAsync(client);
-        cargoHubContext.SaveChanges();
+        await cargoHubContext.SaveChangesAsync();
+        return client.Id;
     }
-    public async Task UpdateClient(Client client){
+    public async Task<Client?> UpdateClient(Client client){
+        Client? origClient = await cargoHubContext.Clients.FindAsync(client.Id);
         client.UpdatedAt = Base.GetTimeStamp();
         cargoHubContext.Clients.Update(client);
         await cargoHubContext.SaveChangesAsync();
+        return origClient;
     }
     public async Task<Client?> RemoveClient(Guid guid){
         Client? client = cargoHubContext.Clients.Find(guid);
@@ -31,7 +41,7 @@ public class Clients : IClients{
         await cargoHubContext.SaveChangesAsync();
         return client;
     }
-    public void LoadFromJson(string path){
+    public async Task LoadFromJson(string path){
         if(File.Exists(path)){
             string json = File.ReadAllText(path);
             List<Client>? clients = JsonSerializer.Deserialize<List<Client>>(json);
@@ -39,9 +49,9 @@ public class Clients : IClients{
                 return;
             }
             foreach(Client client in clients){
-                SaveToDatabase(client);
+                await SaveToDatabase(client);
             }
         }
     }
-    public void SaveToDatabase(Client client) => AddClient(client);
+    public async Task SaveToDatabase(Client client) => await AddClient(client);
 }
