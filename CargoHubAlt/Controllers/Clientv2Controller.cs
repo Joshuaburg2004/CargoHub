@@ -13,4 +13,11 @@ public class ClientV2Controller : Controller{
     
     [HttpGet()]
     public async Task<IActionResult> GetOneClient([FromQuery] Guid clientId) => Ok(await Clients.GetClient(clientId));
+    public async Task<IActionResult> AddClient([FromBody] Client client) => Ok(await Clients.AddClient(client));
+    [HttpPut()]
+    public async Task<IActionResult> UpdateClient([FromQuery] Guid guid, [FromBody] Client client) => Ok(await Clients.UpdateClient(guid, client));
+    [HttpDelete()]
+    public async Task<IActionResult> DeleteClient([FromQuery] Guid guid) => Ok(await Clients.RemoveClient(guid));
+    [HttpGet("{id}/orders")]
+    public async Task<IActionResult> GetOrders(Guid ordersId) => throw new NotImplementedException();
 }
