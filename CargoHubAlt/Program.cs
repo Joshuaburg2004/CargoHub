@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-
 public class Program
 {
     public static void Main(string[] args)
@@ -13,6 +12,8 @@ public class Program
 
 
         builder.Services.AddControllers();
+        builder.Services.AddTransient<IClients, Clients>();
+        builder.Services.AddDbContext<CargoHubContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         var app = builder.Build();
 
@@ -24,10 +25,3 @@ public class Program
         app.Run();
     }
 }
-
-
-
-
-
-
-
