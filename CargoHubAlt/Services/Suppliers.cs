@@ -8,6 +8,16 @@ public class Suppliers : ISuppliers{
     public async Task<IEnumerable<Supplier>> GetAllSuppliers(){
         return await cargoHubContext.Suppliers.ToListAsync();
     }
+    public async Task<IEnumerable<Supplier>> GetBatchSuppliers(Guid[] ids){
+        List<Supplier> suppliers = new();
+        foreach(Guid id in ids){
+            Supplier? supplier = await GetOneSupplier(id);
+            if(supplier != null){
+                suppliers.Add(supplier);
+            }
+        }
+        return suppliers;
+    }
     public async Task<Supplier?> GetOneSupplier(Guid id){
         return await cargoHubContext.Suppliers.FindAsync(id);
     }
