@@ -9,6 +9,9 @@ public class Program
 
         builder.Services.AddTransient<IWarehouseService, WarehouseService>();
 
+        builder.Services.AddTransient<IShipmentService, ShipmentService>();
+
+
         builder.Services.AddControllers();
 
         var app = builder.Build();
