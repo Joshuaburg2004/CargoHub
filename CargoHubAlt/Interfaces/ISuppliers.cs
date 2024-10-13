@@ -1,5 +1,6 @@
 public interface ISuppliers{
     public Task<IEnumerable<Supplier>> GetAllSuppliers();
+    public Task<IEnumerable<Supplier>> GetBatchSuppliers(Guid[] ids);
     public Task<Supplier?> GetOneSupplier(Guid id);
     public Task<Guid?> CreateSupplier(Supplier supplier);
     public Task<Supplier?> DeleteSupplier(Guid id);
