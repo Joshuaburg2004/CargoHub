@@ -38,7 +38,7 @@ public class Suppliers : ISuppliers{
     public async Task LoadFromJson(string path){
         if(File.Exists(path)){
             string json = File.ReadAllText(path);
-            List<Supplier>? suppliers = JsonSerializer.Deserialize<List<Supplier>>(json);
+            List<Supplier>? suppliers = JsonSerializer.Deserialize<List<Supplier>>(json); // This wont work because the json is not correct with C# currently
             if(suppliers == null){
                 return;
             }
