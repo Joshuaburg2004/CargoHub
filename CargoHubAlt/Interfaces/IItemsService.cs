@@ -2,8 +2,8 @@ public interface IItemsService
 {
     // TODO:    add types return types Task<bool, int> oid
     //          add parameters
-    Task GetItems(Guid id);
-    Task GetItem();
+    Task<Item[]> GetItems(string[] ids);
+    Task GetItem(string id);
     Task GetItemsForItemLine();
     Task GetItemsForItemGroup();
     Task GetItemsForItemType();

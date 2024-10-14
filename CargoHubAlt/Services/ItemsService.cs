@@ -3,18 +3,18 @@ using Microsoft.EntityFrameworkCore;
 
 public class ItemsService : IItemsService
 {
-    public DbContext _context;
+    readonly DbContext _context;
     public ItemsService(DbContext context)
     {
         _context = context;
     }
 
-    public async Task GetItems(Guid id)
+    public async Task<Item[]> GetItems(string[] ids)
     {
         throw new NotImplementedException();
     }
 
-    public async Task GetItem()
+    public async Task GetItem(string id)
     {
         throw new NotImplementedException();
     }
