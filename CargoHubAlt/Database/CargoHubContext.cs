@@ -9,4 +9,5 @@ public class CargoHubContext : DbContext
     public DbSet<Warehouse> Warehouses { get; set; }
     public DbSet<Shipment> Shipments { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
+    public DbSet<Item> Items { get; set; }
 }
