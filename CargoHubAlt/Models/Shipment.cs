@@ -1,22 +1,22 @@
 public class Shipment
 {
-    public Guid id { get; set; }
-    public Guid order_id { get; set; } // maybe this should be a list of order ids
-    public Guid source_id { get; set; }
-    public string order_date { get; set; }
-    public string request_date { get; set; }
-    public string shipment_date { get; set; }
-    public string shipment_type { get; set; }
-    public string shipment_status { get; set; }
-    public string notes { get; set; }
-    public string carrier_code { get; set; }
-    public string carrier_description { get; set; }
-    public string service_code { get; set; }
-    public string payment_type { get; set; }
-    public string transfer_mode { get; set; }
-    public int total_package_count { get; set; }
-    public int total_package_weight { get; set; }
-    public string created_at { get; set; }
-    public string updated_at { get; set; }
-    public List<Item> items { get; set; }
+    public Guid Id { get; set; }
+    public Guid Order_id { get; set; } // maybe this should be a list of order ids
+    public Guid Source_id { get; set; }
+    public string Order_date { get; set; }
+    public string Request_date { get; set; }
+    public string Shipment_date { get; set; }
+    public string Shipment_type { get; set; }
+    public string Shipment_status { get; set; }
+    public string Notes { get; set; }
+    public string Carrier_code { get; set; }
+    public string Carrier_description { get; set; }
+    public string Service_code { get; set; }
+    public string Payment_type { get; set; }
+    public string Transfer_mode { get; set; }
+    public int Total_package_count { get; set; }
+    public int Total_package_weight { get; set; }
+    public string Created_at { get; set; }
+    public string Updated_at { get; set; }
+    public List<Item> Items { get; set; }
 }
