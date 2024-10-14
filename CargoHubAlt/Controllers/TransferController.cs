@@ -28,14 +28,14 @@ public class TransferController : Controller
     }
 
     [HttpPost("add")]
-    public async Task<IActionResult> AddTransfer(Transfer transfer)
+    public async Task<IActionResult> AddTransfer([FromBody] Transfer transfer)
     {
         if (transfer == null) return BadRequest();
         return Ok(await _transferservice.AddTransfer(transfer));
     }
 
     [HttpDelete("delete")]
-    public async Task<IActionResult> RemoveTransfer(Guid id)
+    public async Task<IActionResult> RemoveTransfer([FromQuery] Guid id)
     {
         if (id == Guid.Empty) return BadRequest();
         return Ok(await _transferservice.RemoveTransfer(id));

@@ -1,3 +1,4 @@
+using CargoHubAlt.Models;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/warehouse")]
@@ -25,7 +26,7 @@ public class WarehouseController : Controller
     }
 
     [HttpPost("add")]
-    public async Task<ActionResult> AddWarehouse(Warehouse warehouse)
+    public async Task<ActionResult> AddWarehouse([FromBody] Warehouse warehouse)
     {
         if (warehouse == null) return BadRequest();
         await _warehouseservice.AddWarehouse(warehouse);
@@ -33,7 +34,7 @@ public class WarehouseController : Controller
     }
 
     [HttpPut("update")]
-    public async Task<ActionResult> UpdateWarehouse(Warehouse warehouse)
+    public async Task<ActionResult> UpdateWarehouse([FromBody] Warehouse warehouse)
     {
         if (warehouse == null) return BadRequest();
         await _warehouseservice.UpdateWarehouse(warehouse);
