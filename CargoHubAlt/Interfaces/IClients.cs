@@ -1,7 +1,8 @@
-interface IClients{
-    public IEnumerable<Client> GetClients();
-    public Client? GetClient(int id);
-    public void AddClient(Client client);
-    public void RemoveClient(Client client);
-    public void UpdateClient(Client client);
+public interface IClients{
+    public Task<IEnumerable<Client>> GetAllClients();
+    public Task<IEnumerable<Client>> GetBatchClients(Guid[] guids);
+    public Task<Client?> GetClient(Guid guid);
+    public Task<Guid?> AddClient(Client client);
+    public Task<Client?> RemoveClient(Guid guid);
+    public Task<Client?> UpdateClient(Guid guid, Client client);
 }
