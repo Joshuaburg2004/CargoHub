@@ -14,10 +14,10 @@ public class TransferService : ITransfer
 
     public async Task<Transfer> GetTransferById(Guid id) => await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
 
-    public async Task<List<Items>> GetItemsInTransfer(Guid id)
+    public async Task<List<Item>> GetItemsInTransfer(Guid id)
     {
         Transfer? transfer = await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
-        return transfer?.Items ?? new List<Items>();
+        return transfer?.Items ?? new List<Item>();
     }
 
     public async Task<bool> AddTransfer(Transfer transfer)
