@@ -1,25 +1,57 @@
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 public class Clients : IClients{
     private readonly CargoHubContext cargoHubContext;
     public Clients(CargoHubContext context){
         cargoHubContext = context;
     }
-    public IEnumerable<Client> GetClients(){
-        return cargoHubContext.Clients;
+    public async Task<IEnumerable<Client>> GetAllClients(){
+        return await cargoHubContext.Clients.ToListAsync();
     }
-    public Client? GetClient(int id){
-        return cargoHubContext.Clients.Find(id);
+    public async Task<IEnumerable<Client>> GetBatchClients(Guid[] guids){
+        List<Client> clients = new List<Client>();
+        foreach(var guid in guids){
+            Client? client = await GetClient(guid);
+            if(client == null){continue;}
+            clients.Add(client);
+        }
+        return clients;
     }
-    public void AddClient(Client client){
-        cargoHubContext.Clients.Add(client);
-        cargoHubContext.SaveChanges();
+    public async Task<Client?> GetClient(Guid guid){
+        return await cargoHubContext.Clients.FindAsync(guid);
     }
-    public void UpdateClient(Client client){
+    public async Task<Guid?> AddClient(Client client){
+        await cargoHubContext.Clients.AddAsync(client);
+        await cargoHubContext.SaveChangesAsync();
+        return client.Id;
+    }
+    public async Task<Client?> UpdateClient(Guid guid, Client client){
+        Client? origClient = await cargoHubContext.Clients.FindAsync(guid);
         client.UpdatedAt = Base.GetTimeStamp();
         cargoHubContext.Clients.Update(client);
-        cargoHubContext.SaveChanges();
+        await cargoHubContext.SaveChangesAsync();
+        return origClient;
     }
-    public void RemoveClient(Client client){
+    public async Task<Client?> RemoveClient(Guid guid){
+        Client? client = cargoHubContext.Clients.Find(guid);
+        if(client == null){
+            return client;
+        }
         cargoHubContext.Clients.Remove(client);
-        cargoHubContext.SaveChanges();
+        await cargoHubContext.SaveChangesAsync();
+        return client;
     }
+    public async Task LoadFromJson(string path){
+        if(File.Exists(path)){
+            string json = File.ReadAllText(path);
+            List<Client>? clients = JsonSerializer.Deserialize<List<Client>>(json);
+            if(clients == null){
+                return;
+            }
+            foreach(Client client in clients){
+                await SaveToDatabase(client);
+            }
+        }
+    }
+    public async Task SaveToDatabase(Client client) => await AddClient(client);
 }
