@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/warehouse")]
 public class WarehouseController : Controller
 {
-    private readonly IWarehouseService _warehouseservice;
+    private readonly IWarehouse _warehouseservice;
 
-    public WarehouseController(IWarehouseService warehouseservice)
+    public WarehouseController(IWarehouse warehouseservice)
     {
         _warehouseservice = warehouseservice;
     }

@@ -1,6 +1,7 @@
+using CargoHubAlt.Models;
 using Microsoft.EntityFrameworkCore;
 
-public class WarehouseService : IWarehouseService
+public class WarehouseService : IWarehouse
 {
     private readonly CargoHubContext _context;
 

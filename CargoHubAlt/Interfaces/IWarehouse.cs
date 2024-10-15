@@ -1,6 +1,6 @@
 using CargoHubAlt.Models;
 
-public interface IWarehouseService
+public interface IWarehouse
 {
     public Task<List<Warehouse>> GetWarehouses();
     public Task<Warehouse> GetWarehousesById(Guid id);

@@ -9,5 +9,5 @@ public class Transfer
     public string Transfer_status { get; set; }
     public string Created_at { get; set; }
     public string Updated_at { get; set; }
-    public List<Items> Items { get; set; }
+    public List<Item> Items { get; set; }
 }
