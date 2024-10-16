@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 
 [PrimaryKey("Id")]
-public class Client : Base{
+public class Client : Base
+{
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
@@ -14,7 +15,8 @@ public class Client : Base{
     public string ContactEmail { get; set; }
     public string CreatedAt { get; set; } = GetTimeStamp();
     public string UpdatedAt { get; set; } = GetTimeStamp();
-    public Client(string name, string address, string city, string zipCode, string province, string country, string contactName, string contactPhone, string contactEmail){
+    public Client(string name, string address, string city, string zipCode, string province, string country, string contactName, string contactPhone, string contactEmail)
+    {
         Id = Guid.NewGuid();
         Name = name;
         Address = address;
