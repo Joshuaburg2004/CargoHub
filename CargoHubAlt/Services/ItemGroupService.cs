@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +33,11 @@ public class ItemGroupService: IItemGroupService
     }
     public async Task<bool> AddItemGroup(Item_group toAdd)
     {
+        if (await this._cargoHubContext.Item_Groups.FirstOrDefaultAsync(x => x.Id ==toAdd.Id) is not null)
+        {
+            return false;
+        }
+        
         await this._cargoHubContext.Item_Groups.AddAsync(toAdd);
         if (await this._cargoHubContext.SaveChangesAsync() >= 1) return true;
         else return false;
@@ -53,7 +59,7 @@ public class ItemGroupService: IItemGroupService
         if (found is null) return null;
 
         this._cargoHubContext.Item_Groups.Remove(found);
-        await this._cargoHubContext.SaveChangesAsync();
-        return found;
+        if (await this._cargoHubContext.SaveChangesAsync() >= 1) return found;
+        else return null;
     }
 }
