@@ -1,41 +1,55 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-public class Suppliers : ISuppliers{
+public class Suppliers : ISuppliers
+{
     private readonly CargoHubContext cargoHubContext;
-    public Suppliers(CargoHubContext context){
+    public Suppliers(CargoHubContext context)
+    {
         cargoHubContext = context;
     }
-    public async Task<IEnumerable<Supplier>> GetAllSuppliers(){
+    public async Task<IEnumerable<Supplier>> GetAllSuppliers()
+    {
         return await cargoHubContext.Suppliers.ToListAsync();
     }
-    public async Task<IEnumerable<Supplier>> GetBatchSuppliers(Guid[] ids){
+    public async Task<IEnumerable<Supplier>> GetBatchSuppliers(Guid[] ids)
+    {
         List<Supplier> suppliers = new();
-        foreach(Guid id in ids){
+        foreach (Guid id in ids)
+        {
             Supplier? supplier = await GetOneSupplier(id);
-            if(supplier != null){
+            if (supplier != null)
+            {
                 suppliers.Add(supplier);
             }
         }
         return suppliers;
     }
-    public async Task<Supplier?> GetOneSupplier(Guid id){
+    public async Task<Supplier?> GetOneSupplier(Guid id)
+    {
         return await cargoHubContext.Suppliers.FindAsync(id);
     }
-    public async Task<Guid?> CreateSupplier(Supplier supplier){
+    public async Task<Guid?> CreateSupplier(Supplier supplier)
+    {
+        supplier.Id = Guid.NewGuid();
+        supplier.CreatedAt = Base.GetTimeStamp();
+        supplier.UpdatedAt = Base.GetTimeStamp();
         cargoHubContext.Suppliers.Add(supplier);
         await cargoHubContext.SaveChangesAsync();
         return supplier.Id;
     }
-    public async Task<Supplier?> DeleteSupplier(Guid id){
+    public async Task<Supplier?> DeleteSupplier(Guid id)
+    {
         var supplier = await cargoHubContext.Suppliers.FindAsync(id);
-        if(supplier == null){
+        if (supplier == null)
+        {
             return null;
         }
         cargoHubContext.Suppliers.Remove(supplier);
         await cargoHubContext.SaveChangesAsync();
         return supplier;
     }
-    public async Task<Supplier?> UpdateSupplier(Guid id, Supplier supplier){
+    public async Task<Supplier?> UpdateSupplier(Guid id, Supplier supplier)
+    {
         var origSupplier = await cargoHubContext.Suppliers.FindAsync(id);
         supplier.UpdatedAt = Base.GetTimeStamp();
         cargoHubContext.Update(supplier);
@@ -45,14 +59,18 @@ public class Suppliers : ISuppliers{
     }
     // commented out because Item is not done yet
     // public async Task<IEnumerable<Item>?> GetItemsForSupplier(Guid id){}
-    public async Task LoadFromJson(string path){
-        if(File.Exists(path)){
+    public async Task LoadFromJson(string path)
+    {
+        if (File.Exists(path))
+        {
             string json = File.ReadAllText(path);
             List<Supplier>? suppliers = JsonSerializer.Deserialize<List<Supplier>>(json); // This wont work because the json is not correct with C# currently
-            if(suppliers == null){
+            if (suppliers == null)
+            {
                 return;
             }
-            foreach(Supplier supplier in suppliers){
+            foreach (Supplier supplier in suppliers)
+            {
                 await SaveToDatabase(supplier);
             }
         }

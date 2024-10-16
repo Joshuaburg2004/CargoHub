@@ -1,0 +1,23 @@
+POST https://localhost:5000/api/v1/suppliers
+Content-Type: application/json
+
+{
+    "Id": "123e4567-e89b-12d3-a456-426614174000",
+    "Code": "SUP123",
+    "Name": "Supplier Name",
+    "Address": "123 Main St",
+    "AddressExtra": "Suite 100",
+    "City": "Rotterdam",
+    "ZipCode": "3011AA",
+    "Province": "South Holland",
+    "Country": "Netherlands",
+    "ContactName": "John Doe",
+    "PhoneNumber": "+31 10 123 4567",
+    "Reference": "REF123",
+    "CreatedAt": "2023-10-01T12:00:00Z",
+    "UpdatedAt": "2023-10-01T12:00:00Z"
+}
+###
+
+GET https://localhost:5000/api/v1/suppliers/getall
+###
