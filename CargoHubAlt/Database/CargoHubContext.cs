@@ -10,4 +10,5 @@ public class CargoHubContext : DbContext
     public DbSet<Shipment> Shipments { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
     public DbSet<Item> Items { get; set; }
+    public DbSet<Location> Locations {get; set;}
 }

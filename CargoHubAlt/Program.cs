@@ -10,6 +10,8 @@ public class Program
         builder.Services.AddTransient<IWarehouse, WarehouseService>();
         builder.Services.AddTransient<IShipmentService, ShipmentService>();
         builder.Services.AddTransient<ITransfer, TransferService>();
+        builder.Services.AddTransient<ILocationService, LocationService>();
+
 
         builder.Services.AddControllers();
         builder.Services.AddDbContext<CargoHubContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
