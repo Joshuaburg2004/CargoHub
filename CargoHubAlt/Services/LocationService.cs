@@ -14,7 +14,7 @@ public class LocationService: ILocationService
         return await this._context.Locations.ToListAsync();
     }
 
-    public async Task<Location?> GetLocation(Guid id)
+    public async Task<Location?> GetOneLocation(Guid id)
     {
         return await this._context.Locations.FirstOrDefaultAsync(x => x.Id == id);
     }
@@ -28,13 +28,13 @@ public class LocationService: ILocationService
         }
         return found;
     }
-    public async Task<Guid> AddLocation(Location Location)
+    public async Task<Guid?> AddLocation(Location Location)
     {
         Guid toreturn = new Guid();
         Location.Id = toreturn;
         await this._context.Locations.AddAsync(Location);
-        await this._context.SaveChangesAsync();
-        return toreturn;
+        if (await this._context.SaveChangesAsync() >= 0) return toreturn;
+        else return null;
     }
     public async Task<Location?> UpdateLocation(Guid id, Location Location)
     {
