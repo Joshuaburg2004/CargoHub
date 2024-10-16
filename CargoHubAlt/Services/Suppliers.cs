@@ -51,11 +51,24 @@ public class Suppliers : ISuppliers
     public async Task<Supplier?> UpdateSupplier(Guid id, Supplier supplier)
     {
         var origSupplier = await cargoHubContext.Suppliers.FindAsync(id);
-        supplier.UpdatedAt = Base.GetTimeStamp();
-        cargoHubContext.Update(supplier);
+        if (origSupplier == null) return default(Supplier);
+
+        origSupplier.Code = supplier.Code;
+        origSupplier.Name = supplier.Name;
+        origSupplier.Address = supplier.Address;
+        origSupplier.AddressExtra = supplier.AddressExtra;
+        origSupplier.City = supplier.City;
+        origSupplier.ZipCode = supplier.ZipCode;
+        origSupplier.Province = supplier.Province;
+        origSupplier.Country = supplier.Country;
+        origSupplier.ContactName = supplier.ContactName;
+        origSupplier.PhoneNumber = supplier.PhoneNumber;
+        origSupplier.Reference = supplier.Reference;
+        origSupplier.UpdatedAt = Base.GetTimeStamp();
+
+        cargoHubContext.Suppliers.Update(origSupplier);
         await cargoHubContext.SaveChangesAsync();
         return origSupplier;
-
     }
     // commented out because Item is not done yet
     // public async Task<IEnumerable<Item>?> GetItemsForSupplier(Guid id){}
