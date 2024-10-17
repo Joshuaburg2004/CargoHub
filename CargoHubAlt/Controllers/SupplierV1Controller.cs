@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 [Route("api/v1/suppliers")]
-public class SupplierV1Controller : Controller{
+public class SupplierV1Controller : Controller
+{
     private ISuppliers Suppliers { get; set; }
-    public SupplierV1Controller(ISuppliers suppliers){
+    public SupplierV1Controller(ISuppliers suppliers)
+    {
         Suppliers = suppliers;
     }
-    [HttpGet()]
+    [HttpGet("getall")]
     public async Task<IActionResult> GetAllSuppliers() => Ok(await Suppliers.GetAllSuppliers());
     [HttpGet()]
     public async Task<IActionResult> GetOneSupplier([FromQuery] Guid id) => Ok(await Suppliers.GetOneSupplier(id));

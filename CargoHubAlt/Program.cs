@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+
 public class Program
 {
     public static void Main(string[] args)
     {
-
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddTransient<IClients, Clients>();
@@ -12,28 +12,30 @@ public class Program
         builder.Services.AddTransient<ITransfer, TransferService>();
         builder.Services.AddTransient<ILocationService, LocationService>();
         builder.Services.AddTransient<IItemGroupService, ItemGroupService>();
-
+        builder.Services.AddTransient<ISuppliers, Suppliers>();
 
         builder.Services.AddControllers();
         builder.Services.AddDbContext<CargoHubContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-
-
         var app = builder.Build();
-
-        app.MapControllers();
 
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseDeveloperExceptionPage();
         }
+        else
+        {
+            app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseRouting();
+        app.UseAuthorization();
+        app.MapControllers();
 
         app.Urls.Add("https://localhost:5000");
         app.MapGet("/", () => "Hello World!");
-
         app.Run();
     }
 }
