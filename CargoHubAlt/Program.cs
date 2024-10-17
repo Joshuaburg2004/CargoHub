@@ -10,12 +10,12 @@ public class Program
         builder.Services.AddTransient<IWarehouse, WarehouseService>();
         builder.Services.AddTransient<IShipmentService, ShipmentService>();
         builder.Services.AddTransient<ITransfer, TransferService>();
+        builder.Services.AddTransient<ILocationService, LocationService>();
+        builder.Services.AddTransient<IItemGroupService, ItemGroupService>();
         builder.Services.AddTransient<ISuppliers, Suppliers>();
 
-        builder.Services.AddDbContext<CargoHubContext>(options =>
-            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
         builder.Services.AddControllers();
+        builder.Services.AddDbContext<CargoHubContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         var app = builder.Build();
 
@@ -33,6 +33,7 @@ public class Program
         app.UseRouting();
         app.UseAuthorization();
         app.MapControllers();
+
         app.Urls.Add("https://localhost:5000");
         app.MapGet("/", () => "Hello World!");
         app.Run();
