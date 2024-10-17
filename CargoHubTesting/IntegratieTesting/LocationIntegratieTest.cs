@@ -38,7 +38,6 @@ namespace MyTests
         public async Task CreateLocation()
         {
             var response = await _client.PostAsync("/api/v1/locations", new StringContent("{\"Code\":\"LOC123\",\"Name\":\"Location Name\",\"CreatedAt\":\"2023-10-01T12:00:00Z\",\"UpdatedAt\":\"2023-10-01T12:00:00Z\"}", Encoding.UTF8, "application/json"));
-            Console.Error.WriteLine(response.Content.ReadAsStringAsync().Result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var responseContent = await response.Content.ReadAsStringAsync();
@@ -57,61 +56,64 @@ namespace MyTests
             Xunit.Assert.NotEqual("[]", responseContent);
         }
 
-        // [Fact, TestPriority(3)]
-        // public async Task GetLocationById()
-        // {
-        //     HttpResponseMessage response = await _client.GetAsync($"/api/v1/locations?id={location1Id}");
-        //     Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        //     var responseContent = await response.Content.ReadAsStringAsync();
-        //     var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-        //     var location = JsonSerializer.Deserialize<Location>(responseContent, options);
+        [Fact, TestPriority(3)]
+        public async Task GetLocationById()
+        {
+            HttpResponseMessage response = await _client.GetAsync($"/api/v1/locations?id={location1Id}");
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var location = JsonSerializer.Deserialize<Location>(responseContent, options);
 
-        //     Xunit.Assert.NotNull(location);
-        //     Xunit.Assert.Equal(location1Id, location.Id);
-        // }
+            Xunit.Assert.NotNull(location);
+            Xunit.Assert.Equal(location1Id, location.Id);
+        }
 
-        // [Fact, TestPriority(4)]
-        // public async Task UpdateLocation()
-        // {
-        //     HttpResponseMessage response = await _client.PutAsync($"/api/v1/locations?id={location1Id}", new StringContent("{\"Code\":\"LOC123\",\"Name\":\"Location Name Updated\",\"Address\":\"123 Main St\",\"AddressExtra\":\"Suite 100\",\"City\":\"Rotterdam\",\"ZipCode\":\"3011AA\",\"Province\":\"South Holland\",\"Country\":\"Netherlands\",\"ContactName\":\"John Doe\",\"PhoneNumber\":\"+31 10 123 4567\",\"Reference\":\"REF123\",\"CreatedAt\":\"2023-10-01T12:00:00Z\",\"UpdatedAt\":\"2023-10-01T12:00:00Z\"}", System.Text.Encoding.UTF8, "application/json"));
-        //     Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        [Fact, TestPriority(4)]
+        public async Task UpdateLocation()
+        {
+            HttpResponseMessage response = await _client.PutAsync($"/api/v1/locations?id={location1Id}", new StringContent("{\"Code\":\"LOC123\",\"Name\":\"Location Name Updated\",\"Address\":\"123 Main St\",\"AddressExtra\":\"Suite 100\",\"City\":\"Rotterdam\",\"ZipCode\":\"3011AA\",\"Province\":\"South Holland\",\"Country\":\"Netherlands\",\"ContactName\":\"John Doe\",\"PhoneNumber\":\"+31 10 123 4567\",\"Reference\":\"REF123\",\"CreatedAt\":\"2023-10-01T12:00:00Z\",\"UpdatedAt\":\"2023-10-01T12:00:00Z\"}", System.Text.Encoding.UTF8, "application/json"));
+            HttpResponseMessage reponseget = await _client.GetAsync($"/api/v1/locations?id={location1Id}");
 
-        //     var responseContent = await response.Content.ReadAsStringAsync();
-        //     var location = JsonSerializer.Deserialize<Location>(responseContent);
+            var responseContent = await reponseget.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            locationafterupdate = JsonSerializer.Deserialize<Location>(responseContent, options);
 
-        //     Xunit.Assert.NotNull(location);
-        //     Xunit.Assert.Equal(location1Id, location.Id);
-        //     Xunit.Assert.Equal("Location Name Updated", location.Name);
-        //     locationafterupdate = location;
-        // }
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.NotNull(locationafterupdate);
+            Xunit.Assert.Equal(location1Id, locationafterupdate.Id);
+            Xunit.Assert.Equal("Location Name Updated", locationafterupdate.Name);
 
-        // [Fact, TestPriority(5)]
-        // public async Task GetLoactionByIdAfterUpdate()
-        // {
-        //     HttpResponseMessage response = await _client.GetAsync($"/api/v1/locations?id={location1Id}");
-        //     Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        //     var responseContent = await response.Content.ReadAsStringAsync();
-        //     var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-        //     var location = JsonSerializer.Deserialize<Location>(responseContent, options);
+        }
 
-        //     Xunit.Assert.NotNull(location);
-        //     Xunit.Assert.Equal(location1Id, location.Id);
-        //     Xunit.Assert.Equal(locationafterupdate.Name, location.Name);
-        // }
+        [Fact, TestPriority(5)]
+        public async Task GetLoactionByIdAfterUpdate()
+        {
+            HttpResponseMessage response = await _client.GetAsync($"/api/v1/locations?id={location1Id}");
 
-        // [Fact, TestPriority(6)]
-        // public async Task DeleteLocation()
-        // {
-        //     HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/locations?id={location1Id}");
-        //     Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        // }
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var location = JsonSerializer.Deserialize<Location>(responseContent, options);
 
-        // [Fact, TestPriority(7)]
-        // public async Task GetAllLoactionssAfterDelete()
-        // {
-        //     HttpResponseMessage response = await _client.GetAsync("/api/v1/locations/getall");
-        //     Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        //     Xunit.Assert.Equal("[]", await response.Content.ReadAsStringAsync());
-        // }
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.NotNull(location);
+            Xunit.Assert.Equal(location1Id, location.Id);
+            Xunit.Assert.Equal(locationafterupdate.Name, location.Name);
+        }
+
+        [Fact, TestPriority(6)]
+        public async Task DeleteLocation()
+        {
+            HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/locations?id={location1Id}");
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact, TestPriority(7)]
+        public async Task GetAllLoactionssAfterDelete()
+        {
+            HttpResponseMessage response = await _client.GetAsync("/api/v1/locations/getall");
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.Equal("[]", await response.Content.ReadAsStringAsync());
+        }
     }
 }

@@ -32,7 +32,7 @@ public class LocationController : Controller
     }
 
     [HttpPost()]
-    public async Task<IActionResult> PostLocation(Location toAdd)
+    public async Task<IActionResult> PostLocation([FromBody] Location toAdd)
     {
         Guid? success = await this._locationservice.AddLocation(toAdd);
         if (success is null) return BadRequest("something went wrong");
@@ -40,7 +40,7 @@ public class LocationController : Controller
     }
 
     [HttpPut()]
-    public async Task<IActionResult> UpdateLocation(Guid id, Location toUpdate)
+    public async Task<IActionResult> UpdateLocation([FromQuery] Guid id, [FromBody] Location toUpdate)
     {
         Location? success = await this._locationservice.UpdateLocation(id, toUpdate);
         if (success is null) return BadRequest();

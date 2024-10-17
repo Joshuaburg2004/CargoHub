@@ -42,7 +42,11 @@ public class LocationService : ILocationService
             return null;
         }
 
-        this._context.Locations.Update(Location);
+        found.Code = Location.Code;
+        found.Name = Location.Name;
+        found.UpdatedAt = Location.UpdatedAt;
+
+        this._context.Locations.Update(found);
         await this._context.SaveChangesAsync();
         return found;
     }
