@@ -1,29 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/v1/locations")]
-public class LocationController: Controller
+public class LocationController : Controller
 {
     private readonly ILocationService _locationservice;
-    
+
     public LocationController(ILocationService locationService)
     {
         this._locationservice = locationService;
     }
 
-    [HttpGet()]
+    [HttpGet("getall")]
     public async Task<IActionResult> GetAllLocations()
     {
         return Ok(await this._locationservice.GetAllLocations());
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetOneLocation(Guid id)
+    [HttpGet()]
+    public async Task<IActionResult> GetOneLocation([FromQuery] Guid id)
     {
         Location? found = await this._locationservice.GetOneLocation(id);
         if (found is null) return NotFound($"id not found {id}");
         return Ok(found);
     }
-    
+
     [HttpGet("batch")]
     public async Task<IActionResult> GetManyLocations(IEnumerable<Guid> ids)
     {
