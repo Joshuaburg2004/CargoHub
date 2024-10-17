@@ -43,7 +43,6 @@ namespace MyTests
             var responseContent = await response.Content.ReadAsStringAsync();
             var supplierid = JsonSerializer.Deserialize<Guid>(responseContent);
 
-            Xunit.Assert.NotNull(supplierid);
             Xunit.Assert.NotEqual(Guid.Empty, supplierid);
             supplier1Id = supplierid;
         }
@@ -51,7 +50,6 @@ namespace MyTests
         [Fact, TestPriority(2)]
         public async Task GetAllSuppliers()
         {
-            Console.Error.WriteLine("supplier1Id: " + supplier1Id);
             HttpResponseMessage response = await _client.GetAsync("/api/v1/suppliers/getall");
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             var responseContent = await response.Content.ReadAsStringAsync();
@@ -64,7 +62,11 @@ namespace MyTests
             HttpResponseMessage response = await _client.GetAsync($"/api/v1/suppliers?id={supplier1Id}");
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             var responseContent = await response.Content.ReadAsStringAsync();
-            var supplier = JsonSerializer.Deserialize<Supplier>(responseContent);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            var supplier = JsonSerializer.Deserialize<Supplier>(responseContent, options);
             Xunit.Assert.NotNull(supplier);
             Xunit.Assert.Equal(supplier1Id, supplier.Id);
         }
@@ -72,14 +74,16 @@ namespace MyTests
         [Fact, TestPriority(4)]
         public async Task UpdateSupplier()
         {
-            HttpResponseMessage response = await _client.PutAsync($"/api/v1/suppliers?id={supplier1Id}", new StringContent("{\"Code\":\"SUP12345\",\"Name\":\"Supplier Name Updated\",\"Address\":\"123 Main St\",\"AddressExtra\":\"Suite 100\",\"City\":\"Rotterdam\",\"ZipCode\":\"3011AA\",\"Province\":\"South Holland\",\"Country\":\"Netherlands\",\"ContactName\":\"John Doe\",\"PhoneNumber\":\"+31 10 123 4567\",\"Reference\":\"REF123\",\"CreatedAt\":\"2023-10-01T12:00:00Z\",\"UpdatedAt\":\"2023-10-01T12:00:00Z\"}", System.Text.Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = await _client.PutAsync($"/api/v1/suppliers?id={supplier1Id}", new StringContent("{\"Code\":\"SUP123\",\"Name\":\"Supplier Name Updated\",\"Address\":\"123 Main St\",\"AddressExtra\":\"Suite 100\",\"City\":\"Rotterdam\",\"ZipCode\":\"3011AA\",\"Province\":\"South Holland\",\"Country\":\"Netherlands\",\"ContactName\":\"John Doe\",\"PhoneNumber\":\"+31 10 123 4567\",\"Reference\":\"REF123\",\"CreatedAt\":\"2023-10-01T12:00:00Z\",\"UpdatedAt\":\"2023-10-01T12:00:00Z\"}", Encoding.UTF8, "application/json"));
+            HttpResponseMessage responseGet = await _client.GetAsync($"/api/v1/suppliers?id={supplier1Id}");
+
+            var responseContent = await responseGet.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            supplierafterupdate = JsonSerializer.Deserialize<Supplier>(responseContent, options);
+
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-            supplierafterupdate = JsonSerializer.Deserialize<Supplier>(responseContent);
-
             Xunit.Assert.NotNull(supplierafterupdate);
-            Xunit.Assert.NotEqual(Guid.Empty, supplierafterupdate.Id);
+            Xunit.Assert.Equal(supplier1Id, supplierafterupdate.Id);
             Xunit.Assert.Equal("Supplier Name Updated", supplierafterupdate.Name);
         }
 
@@ -87,9 +91,12 @@ namespace MyTests
         public async Task GetSupplierByIdAfterUpdate()
         {
             HttpResponseMessage response = await _client.GetAsync($"/api/v1/suppliers?id={supplierafterupdate.Id}");
-            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
             var responseContent = await response.Content.ReadAsStringAsync();
-            var supplier = JsonSerializer.Deserialize<Supplier>(responseContent);
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var supplier = JsonSerializer.Deserialize<Supplier>(responseContent, options);
+
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Xunit.Assert.NotNull(supplier);
             Xunit.Assert.Equal(supplierafterupdate.Id, supplier.Id);
             Xunit.Assert.Equal("Supplier Name Updated", supplier.Name);
