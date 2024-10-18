@@ -1,29 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/v1/locations")]
-public class LocationController: Controller
+public class LocationController : Controller
 {
     private readonly ILocationService _locationservice;
-    
+
     public LocationController(ILocationService locationService)
     {
         this._locationservice = locationService;
     }
 
-    [HttpGet()]
+    [HttpGet("getall")]
     public async Task<IActionResult> GetAllLocations()
     {
         return Ok(await this._locationservice.GetAllLocations());
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetOneLocation(Guid id)
+    [HttpGet()]
+    public async Task<IActionResult> GetOneLocation([FromQuery] Guid id)
     {
         Location? found = await this._locationservice.GetOneLocation(id);
         if (found is null) return NotFound($"id not found {id}");
         return Ok(found);
     }
-    
+
     [HttpGet("batch")]
     public async Task<IActionResult> GetManyLocations(IEnumerable<Guid> ids)
     {
@@ -32,7 +32,7 @@ public class LocationController: Controller
     }
 
     [HttpPost()]
-    public async Task<IActionResult> PostLocation(Location toAdd)
+    public async Task<IActionResult> PostLocation([FromBody] Location toAdd)
     {
         Guid? success = await this._locationservice.AddLocation(toAdd);
         if (success is null) return BadRequest("something went wrong");
@@ -40,7 +40,7 @@ public class LocationController: Controller
     }
 
     [HttpPut()]
-    public async Task<IActionResult> UpdateLocation(Guid id, Location toUpdate)
+    public async Task<IActionResult> UpdateLocation([FromQuery] Guid id, [FromBody] Location toUpdate)
     {
         Location? success = await this._locationservice.UpdateLocation(id, toUpdate);
         if (success is null) return BadRequest();
