@@ -12,6 +12,8 @@ public class Program
         builder.Services.AddTransient<ITransfer, TransferService>();
         builder.Services.AddTransient<ILocationService, LocationService>();
         builder.Services.AddTransient<IItemGroupService, ItemGroupService>();
+        builder.Services.AddTransient<IItemLineService, IItemLineService>();
+
         builder.Services.AddTransient<ISuppliers, Suppliers>();
 
         builder.Services.AddControllers();
