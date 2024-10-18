@@ -16,4 +16,12 @@ public class OrderController : Controller
             return Ok($"Item with id: {order.Id} added.");
         return BadRequest($"Something went wrong.");
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveOrder([FromRoute] Guid id)
+    {
+        if (await _orderservice.RemoveOrder(id))
+            return Ok($"Item with id: {id} deleted.");
+        return BadRequest($"Something went wrong.");
+    }
 }
