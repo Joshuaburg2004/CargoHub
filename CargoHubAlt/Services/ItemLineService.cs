@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 
 public class ItemLineService: IItemLineService
@@ -46,6 +48,10 @@ public class ItemLineService: IItemLineService
     {
         Item_line? found = await this.FindItemLine(Id);
         if (found is null) return null;
+
+        found.Name = toUpdate.Name;
+        found.Description = toUpdate.Description;
+        found.UpdatedAt = toUpdate.UpdatedAt;
         
         this._cargoHubContext.Item_Lines.Update(toUpdate);
         await this._cargoHubContext.SaveChangesAsync();
