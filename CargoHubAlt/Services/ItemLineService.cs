@@ -53,7 +53,7 @@ public class ItemLineService: IItemLineService
         found.Description = toUpdate.Description;
         found.UpdatedAt = toUpdate.UpdatedAt;
         
-        this._cargoHubContext.Item_Lines.Update(toUpdate);
+        this._cargoHubContext.Item_Lines.Update(found);
         await this._cargoHubContext.SaveChangesAsync();
         return found;
     }
