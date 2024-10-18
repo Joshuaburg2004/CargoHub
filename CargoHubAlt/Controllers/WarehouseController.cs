@@ -1,7 +1,7 @@
 using CargoHubAlt.Models;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/warehouse")]
+[Route("/api/v1/warehouses")]
 public class WarehouseController : Controller
 {
     private readonly IWarehouse _warehouseservice;
@@ -11,38 +11,38 @@ public class WarehouseController : Controller
         _warehouseservice = warehouseservice;
     }
 
-    [HttpGet("get")]
-    public async Task<ActionResult> GetWarehouses()
+    [HttpGet]
+    public async Task<IActionResult> GetWarehouses()
     {
         var warhouses = await _warehouseservice.GetWarehouses();
         return Ok(warhouses);
     }
 
-    [HttpGet("getbyid")]
-    public async Task<ActionResult> GetWarehousesById(Guid id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetWarehousesById([FromRoute] Guid id)
     {
         var warehouse = await _warehouseservice.GetWarehousesById(id);
         return Ok(warehouse);
     }
 
-    [HttpPost("add")]
-    public async Task<ActionResult> AddWarehouse([FromBody] Warehouse warehouse)
+    [HttpPost]
+    public async Task<IActionResult> AddWarehouse([FromBody] Warehouse warehouse)
     {
         if (warehouse == null) return BadRequest();
         await _warehouseservice.AddWarehouse(warehouse);
         return Ok();
     }
 
-    [HttpPut("update")]
-    public async Task<ActionResult> UpdateWarehouse([FromBody] Warehouse warehouse)
+    [HttpPut]
+    public async Task<IActionResult> UpdateWarehouse([FromBody] Warehouse warehouse)
     {
         if (warehouse == null) return BadRequest();
         await _warehouseservice.UpdateWarehouse(warehouse);
         return Ok();
     }
 
-    [HttpDelete("delete")]
-    public async Task<ActionResult> DeleteWarehouse(Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteWarehouse([FromRoute] Guid id)
     {
         if (id == Guid.Empty) return BadRequest();
         await _warehouseservice.DeleteWarehouse(id);
