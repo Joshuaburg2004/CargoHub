@@ -17,7 +17,7 @@ public class ItemLineController: Controller
     }
 
     [HttpGet()]
-    public async Task<IActionResult> GetOneItemLine(Guid id)
+    public async Task<IActionResult> GetOneItemLine([FromQuery] Guid id)
     {
         Item_line? toReturn = await this._itemsService.FindItemLine(id);
         if (toReturn is null) return NotFound($"ID {id} not found");
@@ -26,14 +26,14 @@ public class ItemLineController: Controller
     }
 
     [HttpGet()]
-    public async Task<IActionResult> getBatchItemLine(IEnumerable<Guid> ids)
+    public async Task<IActionResult> getBatchItemLine([FromQuery] IEnumerable<Guid> ids)
     {
         IEnumerable<Item_line?> found = await this._itemsService.FindManyItemLine(ids);
         return Ok(found);
     }
 
     [HttpPost()]
-    public async Task<IActionResult> AddItemLine(Item_line? toAdd)
+    public async Task<IActionResult> AddItemLine([FromBody] Item_line? toAdd)
     {
         if (toAdd is null) return BadRequest("this is not an item Line");
         Guid? success = await this._itemsService.AddItemLine(toAdd);
@@ -42,7 +42,7 @@ public class ItemLineController: Controller
     }
 
     [HttpPut()]
-    public async Task<IActionResult> putItemLine(Guid id, Item_line toupdateto)
+    public async Task<IActionResult> putItemLine([FromQuery] Guid id, [FromBody] Item_line toupdateto)
     {
         Item_line? success = await this._itemsService.UpdateItemLine(id, toupdateto);
 
@@ -51,7 +51,7 @@ public class ItemLineController: Controller
     }
 
     [HttpDelete()]
-    public async Task<IActionResult> deleteItemLine(Guid id)
+    public async Task<IActionResult> deleteItemLine([FromQuery] Guid id)
     {
         Item_line? success = await this._itemsService.DeleteItemLine(id);
 
