@@ -26,7 +26,7 @@ public class ItemGroupController: Controller
     }
 
     [HttpGet()]
-    public async Task<IActionResult> getBatchItemGroup([FromQuery] IEnumerable<Guid> ids)
+    public async Task<IActionResult> getBatchItemGroup([FromQuery] Guid[] ids)
     {
         IEnumerable<Item_group?> found = await this._itemsService.FindManyItemGroup(ids);
         return Ok(found);
