@@ -19,4 +19,19 @@ public class Order : Base
     public string CreatedAt { get; set; } = GetTimeStamp();
     public string UpdatedAt { get; set; } = GetTimeStamp();
     public List<OrderedItem> Items { get; set; } = new List<OrderedItem>();
+
+    public Order(int sourceId, string reference, string referenceExtra, string orderStatus, string noted, string shippingNoted, string pickingNotes, double totalAmount, double totalDiscount, double totalTax, double totalSurcharge)
+    {
+        SourceId = sourceId;
+        Reference = reference;
+        ReferenceExtra = referenceExtra;
+        OrderStatus = orderStatus;
+        Notes = noted;
+        ShippingNotes = shippingNoted;
+        PickingNotes = pickingNotes;
+        TotalAmount = totalAmount;
+        TotalDiscount = totalDiscount;
+        TotalTax = totalTax;
+        TotalSurcharge = totalSurcharge;
+    }
 }
