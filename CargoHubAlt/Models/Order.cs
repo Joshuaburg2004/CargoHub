@@ -20,6 +20,8 @@ public class Order : Base
     public string UpdatedAt { get; set; } = GetTimeStamp();
     public List<OrderedItem> Items { get; set; } = new List<OrderedItem>();
 
+    public Order() { }
+
     public Order(int sourceId, string reference, string referenceExtra, string orderStatus, string noted, string shippingNoted, string pickingNotes, double totalAmount, double totalDiscount, double totalTax, double totalSurcharge)
     {
         SourceId = sourceId;
