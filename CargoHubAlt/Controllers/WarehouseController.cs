@@ -36,9 +36,11 @@ public class WarehouseController : Controller
     [HttpPut]
     public async Task<IActionResult> UpdateWarehouse([FromBody] Warehouse warehouse)
     {
-        if (warehouse == null) return BadRequest();
-        await _warehouseservice.UpdateWarehouse(warehouse);
-        return Ok();
+        if (warehouse == null)
+            return BadRequest();
+        if (await _warehouseservice.UpdateWarehouse(warehouse))
+            return Ok();
+        return NotFound();
     }
 
     [HttpDelete("{id}")]

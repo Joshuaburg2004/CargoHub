@@ -14,6 +14,7 @@ public class WarehouseIntratieTest : IClassFixture<CustomWebApplicationFactory>
     private readonly HttpClient _client;
     private readonly CustomWebApplicationFactory _factory;
     public static Guid WarehouseId;
+    public static Guid ContactId;
     public WarehouseIntratieTest(CustomWebApplicationFactory factory)
     {
         _factory = factory;
@@ -58,6 +59,7 @@ public class WarehouseIntratieTest : IClassFixture<CustomWebApplicationFactory>
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         WarehouseId = warehouse.Id;
+        ContactId = warehouse.Contact.Id;
     }
 
     [Fact, TestPriority(2)]
@@ -80,5 +82,50 @@ public class WarehouseIntratieTest : IClassFixture<CustomWebApplicationFactory>
 
         Xunit.Assert.NotNull(warehouse);
         Xunit.Assert.Equal(WarehouseId, warehouse.Id);
+    }
+
+    [Fact, TestPriority(4)]
+    public async Task TestUpdateWarehouse()
+    {
+        var warehouse = new Warehouse
+        {
+            Id = WarehouseId,
+            Code = "NEWCODE123",
+            Name = "New Cargo Hub updated",
+            Address = "123 New Street",
+            Zip = "12345",
+            City = "New City",
+            Province = "New Province",
+            Country = "NC",
+            Contact = new Contact
+            {
+                Id = ContactId,
+                Name = "John Doe",
+                Phone = "(123) 456-7890",
+                Email = "johndoe@example.com",
+                CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+                UpdatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+            }
+        };
+        var jsonContent = JsonConvert.SerializeObject(warehouse);
+        var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+        var response = await _client.PutAsync($"/api/v1/warehouses", content);
+
+        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact, TestPriority(5)]
+    public async Task TestGetWarehousesByIdAfterUpdate()
+    {
+        HttpResponseMessage response = await _client.GetAsync($"/api/v1/warehouses/{WarehouseId}");
+        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var warehouse = System.Text.Json.JsonSerializer.Deserialize<Warehouse>(content, options);
+
+        Xunit.Assert.NotNull(warehouse);
+        Xunit.Assert.Equal(WarehouseId, warehouse.Id);
+        Xunit.Assert.Equal("New Cargo Hub updated", warehouse.Name);
     }
 }
