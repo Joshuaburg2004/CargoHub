@@ -8,21 +8,21 @@ public class InventoryService : IInventoryService{
         return await this._cargoHubContext.Inventories.FirstOrDefaultAsync(inventory => inventory.Id == id);
     }
 
-    public async Task<List<Inventory>> FindManyInventories(Guid[] ids){
+    public async Task<IEnumerable<Inventory>> FindManyInventories(Guid[] ids){
         return await this._cargoHubContext.Inventories.Where(inventory => ids.Contains(inventory.Id)).ToListAsync();
     }
 
-    public async Task<List<Inventory>> GetAllInventories(){
+    public async Task<IEnumerable<Inventory>> GetAllInventories(){
         return await this._cargoHubContext.Inventories.ToListAsync();
     }
 
-    public async Task<Inventory?> CreateInventory(Inventory inventory){
+    public async Task<Guid?> CreateInventory(Inventory inventory){
         Inventory? found = await this._cargoHubContext.Inventories.FirstOrDefaultAsync(x => x.Id == inventory.Id);
         if (found is not null) inventory.Id = Guid.NewGuid();
         inventory.Created_at = Inventory.GetTimeStamp();
         inventory.Updated_at = Inventory.GetTimeStamp();
         await this._cargoHubContext.Inventories.AddAsync(inventory);
-        if (await this._cargoHubContext.SaveChangesAsync() >= 1) return inventory;
+        if (await this._cargoHubContext.SaveChangesAsync() >= 1) return inventory.Id;
         else return null;
     }
 
