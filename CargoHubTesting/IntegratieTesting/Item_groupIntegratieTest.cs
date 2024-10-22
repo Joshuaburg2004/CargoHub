@@ -72,6 +72,20 @@ namespace MyTests
         }
 
         [Fact, TestPriority(4)]
+        public async Task UpdateItemgroup()
+        {
+            HttpResponseMessage response = await _client.PutAsync($"/api/v1/itemGroups?id={itemgroup1Id}", new StringContent("{\"id\":\"" + itemgroup1Id + "\",\"Name\":\"Item Group Name\",\"Description\":\"Item Group Description\",\"items\":[{\"amount\": 5,\"itemGroupId\": 0}],\"created_at\":\"2021-06-01T00:00:00\",\"UpdatedAt\":\"2021-06-01T00:00:00\"}", System.Text.Encoding.UTF8, "application/json"));
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            itemgroupafterupdate = string.IsNullOrEmpty(responseContent) ? null : JsonSerializer.Deserialize<Item_group>(responseContent, options);
+
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.NotNull(itemgroupafterupdate);
+            Xunit.Assert.Equal(itemgroup1Id, itemgroupafterupdate.Id);
+            Xunit.Assert.Equal("Item Group Name", itemgroupafterupdate.Name);
+        }
+
+        [Fact, TestPriority(4)]
         public async Task GetWrongItemgroup()
         {
             HttpResponseMessage response = await _client.GetAsync($"/api/v1/itemGroups/getbyid?id=00000000-0000-0000-0000-000000000000");
