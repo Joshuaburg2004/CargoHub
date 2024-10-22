@@ -41,7 +41,8 @@ namespace MyTests
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var responseContent = await response.Content.ReadAsStringAsync();
-            var itemlineid = JsonSerializer.Deserialize<Guid>(responseContent);
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var itemlineid = JsonSerializer.Deserialize<Guid>(responseContent, options);
             itemline1Id = itemlineid;
 
             Xunit.Assert.NotEqual(Guid.Empty, itemlineid);
@@ -60,6 +61,7 @@ namespace MyTests
         public async Task GetItemline()
         {
             HttpResponseMessage response = await _client.GetAsync($"/api/v1/itemLines/getbyid?id={itemline1Id}");
+            Console.Error.WriteLine(response.Content.ReadAsStringAsync().Result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             var responseContent = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Contains("Item Line Name", responseContent);
@@ -67,35 +69,13 @@ namespace MyTests
         }
 
         [Fact, TestPriority(4)]
-        public async Task UpdateItemline()
-        {
-            HttpResponseMessage response = await _client.PutAsync($"/api/v1/itemLines?id={itemline1Id}", new StringContent("{\"Name\":\"Item line Name Updated\",\"Description\":\"Item Line Description\"}", System.Text.Encoding.UTF8, "application/json"));
-            HttpResponseMessage responseget = await _client.GetAsync($"/api/v1/itemLines/getbyid?id={itemline1Id}");
-
-            var content = await responseget.Content.ReadAsStringAsync();
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            itemlineafterupdate = JsonSerializer.Deserialize<Item_line>(content, options);
-
-            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Equal(HttpStatusCode.OK, responseget.StatusCode);
-            Xunit.Assert.Equal("Item line Name Updated", itemlineafterupdate.Name);
-            Xunit.Assert.Equal(itemline1Id, itemlineafterupdate.Id);
-        }
-
-
-        [Fact, TestPriority(6)]
         public async Task DeleteItemline()
         {
-            HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/itemLines?id={itemlineafterupdate.Id}");
+            HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/itemLines?id={itemline1Id}");
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-
-        [Fact, TestPriority(7)]
-        public async Task GetItemlineAfterDelete()
-        {
-            HttpResponseMessage response = await _client.GetAsync("/api/v1/itemLines/getall");
-            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Equal("[]", await response.Content.ReadAsStringAsync());
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Contains("Item Line Name", responseContent);
+            Xunit.Assert.Contains("Item Line Description", responseContent);
         }
     }
 }

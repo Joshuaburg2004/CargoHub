@@ -14,5 +14,4 @@ public class Item_line : Base
         this.Name = name;
         this.Description = Description;
     }
-
 }
