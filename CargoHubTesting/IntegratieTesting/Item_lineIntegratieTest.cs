@@ -18,7 +18,7 @@ namespace MyTests
         private readonly HttpClient _client;
         private readonly CustomWebApplicationFactory _factory;
         public static Guid itemline1Id;
-        public static Client itemlineafterupdate;
+        public static Item_line itemlineafterupdate;
 
         public Item_lineIntegratieTest(CustomWebApplicationFactory factory)
         {

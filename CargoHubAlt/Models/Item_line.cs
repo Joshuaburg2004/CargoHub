@@ -10,7 +10,7 @@ public class Item_line : Base
 
     public Item_line(string name, string Description)
     {
-        this.Id = new Guid();
+        Id = Guid.NewGuid();
         this.Name = name;
         this.Description = Description;
     }

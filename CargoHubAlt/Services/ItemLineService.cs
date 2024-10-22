@@ -31,20 +31,20 @@ public class ItemLineService : IItemLineService
     {
         return await _cargoHubContext.Item_Lines.ToListAsync();
     }
-    public async Task<Guid?> AddItemLine(Item_line itemline)
+    public async Task<Guid?> AddItemLine(Item_line linetype)
     {
-        await _cargoHubContext.Item_Lines.AddAsync(itemline);
+        await _cargoHubContext.Item_Lines.AddAsync(linetype);
         await _cargoHubContext.SaveChangesAsync();
-        return itemline.Id;
+        return linetype.Id;
     }
     public async Task<Item_line?> UpdateItemLine(Guid Id, Item_line toUpdate)
     {
-        Item_line? found = await this.FindItemLine(Id);
-        if (found is null) return null;
+        Item_line found = await _cargoHubContext.Item_Lines.FirstOrDefaultAsync(item_Line => item_Line.Id == Id);
+        if (found == null) return found;
 
         found.Name = toUpdate.Name;
         found.Description = toUpdate.Description;
-        found.UpdatedAt = toUpdate.UpdatedAt;
+        found.UpdatedAt = Base.GetTimeStamp();
 
         this._cargoHubContext.Item_Lines.Update(found);
         await this._cargoHubContext.SaveChangesAsync();

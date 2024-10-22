@@ -44,10 +44,7 @@ public class ItemLineController : Controller
     [HttpPut()]
     public async Task<IActionResult> putItemLine([FromQuery] Guid id, [FromBody] Item_line toupdateto)
     {
-        Item_line? success = await this._itemsService.UpdateItemLine(id, toupdateto);
-
-        if (success is null) return NotFound($"Id not Found: {id}");
-        return Ok(success);
+        return Ok(await _itemsService.UpdateItemLine(id, toupdateto));
     }
 
     [HttpDelete()]
