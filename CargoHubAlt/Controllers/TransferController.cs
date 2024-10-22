@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/transfer")]
+[Route("api/v1/transfers")]
 public class TransferController : Controller
 {
     private readonly ITransfer _transferservice;

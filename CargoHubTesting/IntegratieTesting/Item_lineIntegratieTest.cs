@@ -17,8 +17,9 @@ namespace MyTests
     {
         private readonly HttpClient _client;
         private readonly CustomWebApplicationFactory _factory;
-        public static Guid item_line1Id;
-        public static Client item_lineafterupdate;
+
+        public static Guid itemline1Id;
+        public static Client itemlineafterupdate;
 
         public Item_lineIntegratieTest(CustomWebApplicationFactory factory)
         {
@@ -27,7 +28,7 @@ namespace MyTests
         }
 
         [Fact, TestPriority(0)]
-        public async Task GetAllItem_linesEmpty()
+        public async Task GetAllClientsEmpty()
         {
             HttpResponseMessage response = await _client.GetAsync("/api/v1/itemLines/getall");
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
