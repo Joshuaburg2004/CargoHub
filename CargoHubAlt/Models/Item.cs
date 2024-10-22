@@ -1,4 +1,4 @@
-public class Item
+public class Item : Base
 {
     public Guid Id { get; set; }
     public string Uid { get; set; }
@@ -17,6 +17,27 @@ public class Item
     public int SupplierId { get; set; }
     public string SupplierCode { get; set; }
     public string SupplierPartNumber { get; set; }
-    public string CreatedAt { get; set; }
-    public string UpdatedAt { get; set; }
+    public string CreatedAt { get; set; } = GetTimeStamp();
+    public string UpdatedAt { get; set; } = GetTimeStamp();
+
+    public Item(string uid, string code, string description, string shortDescription, string upcCode, string modelNumber, string commodityCode, int itemLine, int itemGroup, int itemType, int unitPurchaseQuantity, int unitOrderQuantity, int packOrderQuantity, int supplierId, string supplierCode, string supplierPartNumber)
+    {
+        Id = Guid.NewGuid();
+        Uid = uid;
+        Code = code;
+        Description = description;
+        ShortDescription = shortDescription;
+        UpcCode = upcCode;
+        ModelNumber = modelNumber;
+        CommodityCode = commodityCode;
+        ItemLine = itemLine;
+        ItemGroup = itemGroup;
+        ItemType = itemType;
+        UnitPurchaseQuantity = unitPurchaseQuantity;
+        UnitOrderQuantity = unitOrderQuantity;
+        PackOrderQuantity = packOrderQuantity;
+        SupplierId = supplierId;
+        SupplierCode = supplierCode;
+        SupplierPartNumber = supplierPartNumber;
+    }
 }

@@ -56,5 +56,26 @@ namespace MyTests
             var responseContent = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotEqual("[]", responseContent);
         }
+
+        [Fact, TestPriority(3)]
+        public async Task GetItemline()
+        {
+            HttpResponseMessage response = await _client.GetAsync($"/api/v1/itemLines/getbyid?id={itemline1Id}");
+            Console.Error.WriteLine(response.Content.ReadAsStringAsync().Result);
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Contains("Item Line Name", responseContent);
+            Xunit.Assert.Contains("Item Line Description", responseContent);
+        }
+
+        [Fact, TestPriority(4)]
+        public async Task DeleteItemline()
+        {
+            HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/itemLines?id={itemline1Id}");
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Contains("Item Line Name", responseContent);
+            Xunit.Assert.Contains("Item Line Description", responseContent);
+        }
     }
 }

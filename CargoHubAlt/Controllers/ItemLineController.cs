@@ -16,7 +16,7 @@ public class ItemLineController : Controller
         return Ok(await this._itemsService.GetAllItemLine());
     }
 
-    [HttpGet()]
+    [HttpGet("getbyid")]
     public async Task<IActionResult> GetOneItemLine([FromQuery] Guid id)
     {
         Item_line? toReturn = await this._itemsService.FindItemLine(id);
