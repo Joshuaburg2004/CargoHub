@@ -28,18 +28,11 @@ public class ItemGroupService: IItemGroupService
     {
         return await this._cargoHubContext.Item_Groups.ToListAsync();
     }
-    public async Task<Guid?> AddItemGroup(Item_group toAdd)
+    public async Task<Guid?> AddItemGroup(Item_group linetype)
     {
-        Item_group? found = await this._cargoHubContext.Item_Groups.FirstOrDefaultAsync(x => x.Id ==toAdd.Id);
-
-        if (found is null)
-        {
-            return null;
-        }
-        
-        await this._cargoHubContext.Item_Groups.AddAsync(toAdd);
-        if (await this._cargoHubContext.SaveChangesAsync() >= 1) return toAdd.Id;
-        else return null;
+        await _cargoHubContext.Item_Groups.AddAsync(linetype);
+        await _cargoHubContext.SaveChangesAsync();
+        return linetype.Id;
     }
 
     public async Task<Item_group?> UpdateItemGroup(Guid Id, Item_group toUpdate)

@@ -10,7 +10,7 @@ public class ItemGroupController: Controller
         this._itemsService = itemsservice;
     }
 
-    [HttpGet()]
+    [HttpGet("getall")]
     public async Task<IActionResult> GetAllItemGroups()
     {
         return Ok(await this._itemsService.GetAllItemGroup());
@@ -37,7 +37,7 @@ public class ItemGroupController: Controller
     {
         if (toAdd is null) return BadRequest("this is not an item group");
         Guid? success = await this._itemsService.AddItemGroup(toAdd);
-        if (success is not null) return Ok();
+        if (success is not null) return Ok(toAdd.Id);
         else return BadRequest();
     }
 
