@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 
 [Route("api/v1/itemLines")]
-public class ItemLineController: Controller
+public class ItemLineController : Controller
 {
     readonly IItemLineService _itemsService;
     public ItemLineController(IItemLineService itemsservice)
@@ -10,7 +10,7 @@ public class ItemLineController: Controller
         this._itemsService = itemsservice;
     }
 
-    [HttpGet()]
+    [HttpGet("getall")]
     public async Task<IActionResult> GetAllItemLines()
     {
         return Ok(await this._itemsService.GetAllItemLine());
