@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 
 [Route("api/v1/itemLines")]
-public class ItemLineController: Controller
+public class ItemLineController : Controller
 {
     readonly IItemLineService _itemsService;
     public ItemLineController(IItemLineService itemsservice)
@@ -10,13 +10,13 @@ public class ItemLineController: Controller
         this._itemsService = itemsservice;
     }
 
-    [HttpGet()]
+    [HttpGet("getall")]
     public async Task<IActionResult> GetAllItemLines()
     {
         return Ok(await this._itemsService.GetAllItemLine());
     }
 
-    [HttpGet()]
+    [HttpGet("getbyid")]
     public async Task<IActionResult> GetOneItemLine([FromQuery] Guid id)
     {
         Item_line? toReturn = await this._itemsService.FindItemLine(id);
@@ -44,10 +44,7 @@ public class ItemLineController: Controller
     [HttpPut()]
     public async Task<IActionResult> putItemLine([FromQuery] Guid id, [FromBody] Item_line toupdateto)
     {
-        Item_line? success = await this._itemsService.UpdateItemLine(id, toupdateto);
-
-        if (success is null) return NotFound($"Id not Found: {id}");
-        return Ok(success);
+        return Ok(await _itemsService.UpdateItemLine(id, toupdateto));
     }
 
     [HttpDelete()]

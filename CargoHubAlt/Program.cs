@@ -7,14 +7,17 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddTransient<IClients, Clients>();
+        builder.Services.AddTransient<IInventoryService, InventoryService>();
+        builder.Services.AddTransient<IItemTypeService, ItemTypeService>();
+        builder.Services.AddTransient<IItemGroupService, ItemGroupService>();
+        builder.Services.AddTransient<IItemLineService, ItemLineService>();
+        builder.Services.AddTransient<IItemsService, ItemsService>();
         builder.Services.AddTransient<IWarehouse, WarehouseService>();
         builder.Services.AddTransient<IShipmentService, ShipmentService>();
         builder.Services.AddTransient<ITransfer, TransferService>();
         builder.Services.AddTransient<ILocationService, LocationService>();
-        builder.Services.AddTransient<IItemGroupService, ItemGroupService>();
-        builder.Services.AddTransient<IItemLineService, ItemLineService>();
-
         builder.Services.AddTransient<ISuppliers, Suppliers>();
+        builder.Services.AddTransient<IOrderService, IOrderService>();
 
         builder.Services.AddControllers();
         builder.Services.AddDbContext<CargoHubContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
