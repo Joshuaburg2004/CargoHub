@@ -85,7 +85,7 @@ namespace MyTests
             Xunit.Assert.Equal("Item Group Name", itemgroupafterupdate.Name);
         }
 
-        [Fact, TestPriority(4)]
+        [Fact, TestPriority(5)]
         public async Task GetWrongItemgroup()
         {
             HttpResponseMessage response = await _client.GetAsync($"/api/v1/itemGroups/getbyid?id=00000000-0000-0000-0000-000000000000");
@@ -96,7 +96,7 @@ namespace MyTests
             Xunit.Assert.Contains("not found", responseContent);
         }
 
-        [Fact, TestPriority(5)]
+        [Fact, TestPriority(6)]
         public async Task DeleteItemgroup()
         {
             HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/itemGroups?id={itemgroup1Id}");
