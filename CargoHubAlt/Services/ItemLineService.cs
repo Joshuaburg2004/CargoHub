@@ -29,7 +29,7 @@ public class ItemLineService : IItemLineService
     }
     public async Task<IEnumerable<Item_line>> GetAllItemLine()
     {
-        return await this._cargoHubContext.Item_Lines.ToListAsync();
+        return await _cargoHubContext.Item_Lines.ToListAsync();
     }
     public async Task<Guid?> AddItemLine(Item_line itemline)
     {

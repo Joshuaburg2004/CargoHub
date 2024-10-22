@@ -10,8 +10,8 @@ public class Item_line : Base
 
     public Item_line(string name, string Description)
     {
+        this.Id = new Guid();
         this.Name = name;
         this.Description = Description;
     }
-
 }
