@@ -22,6 +22,14 @@ namespace MyTests
             _client = _factory.CreateClient();
         }
 
+        [Fact, TestPriority(0)]
+        public async Task TestGetAllTransfersEmpty()
+        {
+            HttpResponseMessage response = await _client.GetAsync("/api/v1/transfers/get");
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.Equal("[]", await response.Content.ReadAsStringAsync());
+        }
+
         [Fact, TestPriority(1)]
         public async Task CreateTrasfer()
         {
@@ -67,7 +75,45 @@ namespace MyTests
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             TransferId = transfer.Id;
-            ItemId = transfer.Items[0].Id;
+            ItemId = transfer.Items.First().Id;
+        }
+
+        [Fact, TestPriority(2)]
+        public async Task TestGetAllTransfers()
+        {
+            HttpResponseMessage response = await _client.GetAsync("/api/v1/transfers/get");
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.NotEqual("[]", await response.Content.ReadAsStringAsync());
+        }
+
+        [Fact, TestPriority(3)]
+        public async Task TestGetTransferById()
+        {
+            HttpResponseMessage response = await _client.GetAsync($"/api/v1/transfers/get/{TransferId}");
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var content = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            Transfer? transfer = System.Text.Json.JsonSerializer.Deserialize<Transfer>(content, options);
+
+            Xunit.Assert.NotNull(transfer);
+            Xunit.Assert.Equal(TransferId, transfer.Id);
+        }
+
+        [Fact, TestPriority(4)]
+        public async Task TestGetItemsInTransfer()
+        {
+            HttpResponseMessage response = await _client.GetAsync($"/api/v1/transfers/getitems/{TransferId}");
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var content = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("Response Content: " + content);
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            List<Item>? items = System.Text.Json.JsonSerializer.Deserialize<List<Item>>(content, options);
+
+            Xunit.Assert.NotNull(items);
+            Xunit.Assert.NotEmpty(items);
+            Xunit.Assert.Equal(ItemId, items[0].Id);
         }
     }
 }

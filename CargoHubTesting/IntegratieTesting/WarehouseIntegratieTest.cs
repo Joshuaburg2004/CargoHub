@@ -78,7 +78,7 @@ public class WarehouseIntratieTest : IClassFixture<CustomWebApplicationFactory>
 
         var content = await response.Content.ReadAsStringAsync();
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-        var warehouse = System.Text.Json.JsonSerializer.Deserialize<Warehouse>(content, options);
+        Warehouse? warehouse = System.Text.Json.JsonSerializer.Deserialize<Warehouse>(content, options);
 
         Xunit.Assert.NotNull(warehouse);
         Xunit.Assert.Equal(WarehouseId, warehouse.Id);
