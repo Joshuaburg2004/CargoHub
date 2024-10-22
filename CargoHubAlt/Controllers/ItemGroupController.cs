@@ -10,13 +10,13 @@ public class ItemGroupController: Controller
         this._itemsService = itemsservice;
     }
 
-    [HttpGet()]
+    [HttpGet("getall")]
     public async Task<IActionResult> GetAllItemGroups()
     {
         return Ok(await this._itemsService.GetAllItemGroup());
     }
 
-    [HttpGet()]
+    [HttpGet("getbyid")]
     public async Task<IActionResult> GetOneItemGroup([FromQuery] Guid id)
     {
         Item_group? toReturn = await this._itemsService.FindItemGroup(id);
@@ -25,7 +25,7 @@ public class ItemGroupController: Controller
 
     }
 
-    [HttpGet()]
+    [HttpGet("getbatch")]
     public async Task<IActionResult> getBatchItemGroup([FromQuery] Guid[] ids)
     {
         IEnumerable<Item_group?> found = await this._itemsService.FindManyItemGroup(ids);
@@ -37,7 +37,7 @@ public class ItemGroupController: Controller
     {
         if (toAdd is null) return BadRequest("this is not an item group");
         Guid? success = await this._itemsService.AddItemGroup(toAdd);
-        if (success is not null) return Ok();
+        if (success is not null) return Ok(toAdd.Id);
         else return BadRequest();
     }
 
