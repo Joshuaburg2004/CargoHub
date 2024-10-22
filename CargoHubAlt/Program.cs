@@ -17,7 +17,7 @@ public class Program
         builder.Services.AddTransient<ITransfer, TransferService>();
         builder.Services.AddTransient<ILocationService, LocationService>();
         builder.Services.AddTransient<ISuppliers, Suppliers>();
-        builder.Services.AddTransient<IOrderService, IOrderService>();
+        builder.Services.AddTransient<IOrderService, OrderService>();
 
         builder.Services.AddControllers();
         builder.Services.AddDbContext<CargoHubContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CargoHubAlt.Migrations
 {
     [DbContext(typeof(CargoHubContext))]
-    partial class CargoHubContextModelSnapshot : ModelSnapshot
+    [Migration("20241022173935_Item_groups")]
+    partial class Item_groups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -218,14 +221,14 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ItemGroup")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ItemGroup")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("ItemLine")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ItemLine")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("ItemType")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ItemType")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ModelNumber")
                         .IsRequired()
@@ -245,8 +248,8 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("SupplierId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("SupplierPartNumber")
                         .IsRequired()
