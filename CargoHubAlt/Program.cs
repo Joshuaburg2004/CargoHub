@@ -13,7 +13,7 @@ public class Program
         builder.Services.AddTransient<ILocationService, LocationService>();
         builder.Services.AddTransient<IItemGroupService, ItemGroupService>();
         builder.Services.AddTransient<IItemLineService, ItemLineService>();
-
+        builder.Services.AddTransient<IInventoryService, InventoryService>();
         builder.Services.AddTransient<ISuppliers, Suppliers>();
 
         builder.Services.AddControllers();

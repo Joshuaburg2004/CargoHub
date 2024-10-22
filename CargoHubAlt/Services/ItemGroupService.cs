@@ -36,11 +36,9 @@ public class ItemGroupService: IItemGroupService
         {
             return null;
         }
-        Guid toReturn = new Guid();
-        toAdd.Id = toReturn;
         
         await this._cargoHubContext.Item_Groups.AddAsync(toAdd);
-        if (await this._cargoHubContext.SaveChangesAsync() >= 1) return toReturn;
+        if (await this._cargoHubContext.SaveChangesAsync() >= 1) return toAdd.Id;
         else return null;
     }
 
