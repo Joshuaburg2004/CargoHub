@@ -20,6 +20,7 @@ public class Item : Base
     public string CreatedAt { get; set; } = GetTimeStamp();
     public string UpdatedAt { get; set; } = GetTimeStamp();
 
+    public Item() { }
     public Item(string uid, string code, string description, string shortDescription, string upcCode, string modelNumber, string commodityCode, Guid itemLine, Guid itemGroup, Guid itemType, int unitPurchaseQuantity, int unitOrderQuantity, int packOrderQuantity, Guid supplierId, string supplierCode, string supplierPartNumber)
     {
         Id = Guid.NewGuid();
