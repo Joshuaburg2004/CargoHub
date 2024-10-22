@@ -38,7 +38,15 @@ public class TransferService : ITransfer
 
     public async Task<bool> UpdateTransfer(Guid id, Transfer transfer)
     {
-        _context.Transfers.Update(transfer);
+        Transfer? oldTransfer = await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
+        if (oldTransfer == null) return false;
+
+        oldTransfer.Reference = transfer.Reference;
+        oldTransfer.Transfer_from = transfer.Transfer_from;
+        oldTransfer.Transfer_to = transfer.Transfer_to;
+        oldTransfer.Transfer_status = transfer.Transfer_status;
+        oldTransfer.Updated_at = transfer.Updated_at;
+
         await _context.SaveChangesAsync();
         return true;
     }
