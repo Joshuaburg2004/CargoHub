@@ -2,11 +2,12 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 
-public class ItemLineService: IItemLineService
+public class ItemLineService : IItemLineService
 {
     private readonly CargoHubContext _cargoHubContext;
 
-    public ItemLineService(CargoHubContext context){
+    public ItemLineService(CargoHubContext context)
+    {
         _cargoHubContext = context;
     }
 
@@ -18,7 +19,7 @@ public class ItemLineService: IItemLineService
     public async Task<IEnumerable<Item_line?>> FindManyItemLine(IEnumerable<Guid> Ids)
     {
         List<Item_line?> toReturn = new List<Item_line?>();
-        
+
         foreach (Guid id in Ids)
         {
             toReturn.Append(await this._cargoHubContext.Item_Lines.FirstOrDefaultAsync(item_Line => item_Line.Id == id));
@@ -28,21 +29,13 @@ public class ItemLineService: IItemLineService
     }
     public async Task<IEnumerable<Item_line>> GetAllItemLine()
     {
-        return await this._cargoHubContext.Item_Lines.ToListAsync();
+        return await _cargoHubContext.Item_Lines.ToListAsync();
     }
-    public async Task<Guid?> AddItemLine(Item_line toAdd)
+    public async Task<Guid?> AddItemLine(Item_line itemline)
     {
-        if (await this._cargoHubContext.Item_Lines.FirstOrDefaultAsync(x => x.Id ==toAdd.Id) is null)
-        {
-            Guid toReturn = new Guid();
-            toAdd.Id = toReturn;
-            await this._cargoHubContext.Item_Lines.AddAsync(toAdd);
-            if (await this._cargoHubContext.SaveChangesAsync() >= 1) return toReturn;
-            else return null;
-        }
-        return null;
-        
-
+        await _cargoHubContext.Item_Lines.AddAsync(itemline);
+        await _cargoHubContext.SaveChangesAsync();
+        return itemline.Id;
     }
     public async Task<Item_line?> UpdateItemLine(Guid Id, Item_line toUpdate)
     {
@@ -52,7 +45,7 @@ public class ItemLineService: IItemLineService
         found.Name = toUpdate.Name;
         found.Description = toUpdate.Description;
         found.UpdatedAt = toUpdate.UpdatedAt;
-        
+
         this._cargoHubContext.Item_Lines.Update(found);
         await this._cargoHubContext.SaveChangesAsync();
         return found;
