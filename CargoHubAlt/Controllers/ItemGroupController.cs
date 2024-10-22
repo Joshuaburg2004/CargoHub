@@ -16,7 +16,7 @@ public class ItemGroupController: Controller
         return Ok(await this._itemsService.GetAllItemGroup());
     }
 
-    [HttpGet()]
+    [HttpGet("getbyid")]
     public async Task<IActionResult> GetOneItemGroup([FromQuery] Guid id)
     {
         Item_group? toReturn = await this._itemsService.FindItemGroup(id);
@@ -25,7 +25,7 @@ public class ItemGroupController: Controller
 
     }
 
-    [HttpGet()]
+    [HttpGet("getbatch")]
     public async Task<IActionResult> getBatchItemGroup([FromQuery] Guid[] ids)
     {
         IEnumerable<Item_group?> found = await this._itemsService.FindManyItemGroup(ids);

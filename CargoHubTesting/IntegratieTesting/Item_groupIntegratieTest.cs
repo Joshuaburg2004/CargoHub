@@ -72,6 +72,17 @@ namespace MyTests
         }
 
         [Fact, TestPriority(4)]
+        public async Task GetWrongItemgroup()
+        {
+            HttpResponseMessage response = await _client.GetAsync($"/api/v1/itemGroups/getbyid?id=00000000-0000-0000-0000-000000000000");
+            Console.Error.WriteLine(await response.Content.ReadAsStringAsync());
+            Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Contains("ID", responseContent);
+            Xunit.Assert.Contains("not found", responseContent);
+        }
+
+        [Fact, TestPriority(5)]
         public async Task DeleteItemgroup()
         {
             HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/itemGroups?id={itemgroup1Id}");
