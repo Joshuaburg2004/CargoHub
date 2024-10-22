@@ -128,4 +128,19 @@ public class WarehouseIntratieTest : IClassFixture<CustomWebApplicationFactory>
         Xunit.Assert.Equal(WarehouseId, warehouse.Id);
         Xunit.Assert.Equal("New Cargo Hub updated", warehouse.Name);
     }
+
+    [Fact, TestPriority(6)]
+    public async Task TestDeleteWarehouse()
+    {
+        HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/warehouses/{WarehouseId}");
+        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact, TestPriority(7)]
+    public async Task TestGetAllWarehousesAfterDelete()
+    {
+        HttpResponseMessage response = await _client.GetAsync("/api/v1/warehouses");
+        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Xunit.Assert.Equal("[]", await response.Content.ReadAsStringAsync());
+    }
 }
