@@ -26,7 +26,7 @@ public class InventoryController : Controller
     }
 
     [HttpGet()]
-    public async Task<IActionResult> getBatchInventory([FromQuery] IEnumerable<Guid> ids)
+    public async Task<IActionResult> getBatchInventory([FromQuery] Guid[] ids)
     {
         IEnumerable<Inventory?> found = await this._inventoryService.FindManyInventories(ids);
         return Ok(found);
