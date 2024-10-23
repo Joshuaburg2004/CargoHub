@@ -13,15 +13,15 @@ public class TransferController : Controller
     [HttpGet("get")]
     public async Task<IActionResult> GetTransfers() => Ok(await _transferservice.GetTransfers());
 
-    [HttpGet("getbyid")]
-    public async Task<IActionResult> GetTranfersById(Guid id)
+    [HttpGet("get/{id}")]
+    public async Task<IActionResult> GetTranfersById([FromRoute] Guid id)
     {
         if (id == Guid.Empty) return BadRequest();
         return Ok(await _transferservice.GetTransferById(id));
     }
 
-    [HttpGet("getitems")]
-    public async Task<IActionResult> GetItemsInTransfer(Guid id)
+    [HttpGet("getitems/{id}")]
+    public async Task<IActionResult> GetItemsInTransfer([FromRoute] Guid id)
     {
         if (id == Guid.Empty) return BadRequest();
         return Ok(await _transferservice.GetItemsInTransfer(id));
@@ -30,7 +30,7 @@ public class TransferController : Controller
     [HttpPost("add")]
     public async Task<IActionResult> AddTransfer([FromBody] Transfer transfer)
     {
-        if (transfer == null) return BadRequest();
+        if (transfer == null || transfer.Items == null) return BadRequest();
         return Ok(await _transferservice.AddTransfer(transfer));
     }
 
