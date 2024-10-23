@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestWithC", "TestWithC", "{45408757-049B-4F58-B033-F1C610F97F38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PythonTesting", "TestWithC\PythonTesting\PythonTesting.csproj", "{14E1687C-F4DD-49A0-9261-9FD1DAB6A6F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14E1687C-F4DD-49A0-9261-9FD1DAB6A6F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14E1687C-F4DD-49A0-9261-9FD1DAB6A6F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14E1687C-F4DD-49A0-9261-9FD1DAB6A6F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14E1687C-F4DD-49A0-9261-9FD1DAB6A6F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{14E1687C-F4DD-49A0-9261-9FD1DAB6A6F3} = {45408757-049B-4F58-B033-F1C610F97F38}
+	EndGlobalSection
+EndGlobal
