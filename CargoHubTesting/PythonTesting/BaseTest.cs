@@ -3,11 +3,11 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Xunit;
 
-public class TemplateTest
+public class BaseTest
 {
     private readonly HttpClient _client;
 
-    public TemplateTest()
+    public BaseTest()
     {
         _client = new HttpClient();
         _client.BaseAddress = new Uri("http://localhost:3000");
