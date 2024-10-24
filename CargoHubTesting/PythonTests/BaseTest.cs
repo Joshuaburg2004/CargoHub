@@ -1,4 +1,6 @@
 using Xunit;
+[TestCaseOrderer("MyTests.PriorityOrderer", "CargoHubTesting")]
+
 public class BaseTest
 {
     protected readonly HttpClient _client;

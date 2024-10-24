@@ -5,11 +5,10 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Xunit;
 namespace PythonTests{
-    [TestCaseOrderer("MyTests.PriorityOrderer", "PythonTesting")]
+    [TestCaseOrderer("PythonTests.PriorityOrderer", "PythonTests")]
     public class LocationTest : BaseTest {
         public LocationTest() : base(){}
-        [Fact]
-        [TestPriority(0)]
+        [Fact, TestPriority(1)]
         public async Task GetAllLocations()
         {
             var requestUri = "/api/v1/locations";
@@ -19,8 +18,7 @@ namespace PythonTests{
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Xunit.Assert.Equal("[]", result);
         }
-        [Fact]
-        [TestPriority(1)]
+        [Fact, TestPriority(2)]
         public async Task CreateLocation()
         {
             var requestUri = "/api/v1/locations";

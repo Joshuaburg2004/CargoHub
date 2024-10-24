@@ -1,12 +1,13 @@
 using Xunit.Abstractions;
 using Xunit;
 using Xunit.Sdk;
+using System.Diagnostics.CodeAnalysis;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 namespace PythonTests
 {
-
+    [ExcludeFromCodeCoverage]
     public class PriorityOrderer : ITestCaseOrderer
     {
         public IEnumerable<TTestCase> OrderTestCases<TTestCase>(IEnumerable<TTestCase> testCases) where TTestCase : ITestCase
