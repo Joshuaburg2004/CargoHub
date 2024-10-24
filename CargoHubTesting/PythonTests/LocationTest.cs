@@ -46,5 +46,12 @@ namespace PythonTests{
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Xunit.Assert.Contains("{\"id\": 1, \"warehouse_id\": 1, \"code\": \"A.1.0\", \"name\": \"Row: A, Rack: 1, Shelf: 0\"",  result);
         }
+        [Fact, TestPriority(5)]
+        public async Task PutLocation(){
+            var requestUri = "/api/v1/locations/1";
+            var response = await _client.PutAsync(requestUri, new StringContent("{\"id\": 1, \"warehouse_id\": 1, \"code\": \"A.1.0\", \"name\": \"Row: A, Rack: 1, Shelf: 1\", \"created_at\": \"1992-05-15 03:21:32\", \"updated_at\": \"1992-05-15 03:21:32\"}"));
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
     }
 }
