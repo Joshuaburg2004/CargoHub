@@ -24,10 +24,10 @@ namespace PythonTests{
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
-            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
             Xunit.Assert.Equal("null", result);
             // It should absolutely be either 400 bad request or 404 not found, but it is 200 OK.
-            // This is idiotic.
+            // This is not intended behavior.
         }
         [Fact, TestPriority(3)]
         public async Task CreateLocation()
@@ -75,10 +75,10 @@ namespace PythonTests{
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
-            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
             Xunit.Assert.Equal("null", result);
             // It should absolutely be either 400 bad request or 404 not found, but it is 200 OK.
-            // This is idiotic.
+            // This is not intended behavior.
         }
         [Fact, TestPriority(9)]
         public async Task GetAllLocationsAfterDelete()
