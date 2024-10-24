@@ -1,6 +1,4 @@
-
 using Xunit;
-
 public class BaseTest
 {
     protected readonly HttpClient _client;
