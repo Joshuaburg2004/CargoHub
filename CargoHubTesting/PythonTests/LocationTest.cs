@@ -53,5 +53,42 @@ namespace PythonTests{
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+        [Fact, TestPriority(6)]
+        public async Task GetOneLocationAfterPutting(){
+            var requestUri = "/api/v1/locations/1";
+            var response = await _client.GetAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.NotNull(result);
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.Contains("{\"id\": 1, \"warehouse_id\": 1, \"code\": \"A.1.0\", \"name\": \"Row: A, Rack: 1, Shelf: 1\"",  result);
+        }
+        [Fact, TestPriority(7)]
+        public async Task DeleteLocation(){
+            var requestUri = "/api/v1/locations/1";
+            var response = await _client.DeleteAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+        [Fact, TestPriority(8)]
+        public async Task GetOneLocationAfterDelete(){
+            var requestUri = "/api/v1/locations/1";
+            var response = await _client.GetAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.NotNull(result);
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.Equal("null", result);
+            // It should absolutely be either 400 bad request or 404 not found, but it is 200 OK.
+            // This is idiotic.
+        }
+        [Fact, TestPriority(9)]
+        public async Task GetAllLocationsAfterDelete()
+        {
+            var requestUri = "/api/v1/locations";
+            var response = await _client.GetAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.NotNull(result);
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.Equal("[]", result);
+        }
     }
 }
