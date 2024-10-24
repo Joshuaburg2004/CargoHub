@@ -1,11 +1,9 @@
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+
 using Xunit;
 
 public class BaseTest
 {
-    private readonly HttpClient _client;
+    protected readonly HttpClient _client;
 
     public BaseTest()
     {
@@ -26,7 +24,7 @@ public class BaseTest
         // Assert
         response.EnsureSuccessStatusCode();
         var responseContent = await response.Content.ReadAsStringAsync();
-        Assert.NotNull(responseContent);
+        Xunit.Assert.NotNull(responseContent);
         // Additional assertions based on expected response content
     }
 }
