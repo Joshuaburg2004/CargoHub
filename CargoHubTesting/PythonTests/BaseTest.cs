@@ -1,6 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
-[TestCaseOrderer("MyTests.PriorityOrderer", "CargoHubTesting")]
 
+[ExcludeFromCodeCoverage]
 public class BaseTest
 {
     protected readonly HttpClient _client;
