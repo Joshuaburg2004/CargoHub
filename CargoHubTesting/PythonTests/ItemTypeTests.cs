@@ -29,6 +29,8 @@ public class Item_typeIntegratieTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         List<item_type>? returnedlist = JsonSerializer.Deserialize<List<item_type>>(await response.Content.ReadAsStringAsync());
         Xunit.Assert.IsType<List<item_type>>(returnedlist);
+        Xunit.Assert.Single(returnedlist);
+        
         item_type returned = returnedlist[0];
         Xunit.Assert.Equal(returned.id, testType.id);
         Xunit.Assert.Equal(returned.name, testType.name);
