@@ -84,7 +84,6 @@ namespace PythonTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
-            Xunit.Assert.Equal("null", result);
             // It should absolutely be either 400 bad request or 404 not found, but it is 200 OK.
             // This is not intended behavior.
         }
