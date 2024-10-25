@@ -32,9 +32,9 @@ public class Item_typeIntegratieTest : BaseTest
         Xunit.Assert.Single(returnedlist);
         
         item_type returned = returnedlist[0];
-        Xunit.Assert.Equal(returned.id, testType.id);
-        Xunit.Assert.Equal(returned.name, testType.name);
-        Xunit.Assert.Equal(returned.description, testType.description);
+        Xunit.Assert.Equal(testType.id, returned.id);
+        Xunit.Assert.Equal(testType.name, returned.name);
+        Xunit.Assert.Equal(testType.description, returned.description);
     }
 
     [Fact, TestPriority(1)]
@@ -45,9 +45,9 @@ public class Item_typeIntegratieTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         item_type? returned = JsonSerializer.Deserialize<item_type>(await response.Content.ReadAsStringAsync());
         Xunit.Assert.IsType<item_type>(returned);
-        Xunit.Assert.Equal(returned.id, testType.id);
-        Xunit.Assert.Equal(returned.name, testType.name);
-        Xunit.Assert.Equal(returned.description, testType.description);
+        Xunit.Assert.Equal(testType.id, returned.id);
+        Xunit.Assert.Equal(testType.name, returned.name);
+        Xunit.Assert.Equal(testType.description, returned.description);
     }
 
     [Fact, TestPriority(2)]
@@ -90,8 +90,8 @@ public class Item_typeIntegratieTest : BaseTest
         Xunit.Assert.IsType<List<Item>>(itemtypeafterupdate);
         
         Item ToReturn = itemtypeafterupdate[0];
-        Xunit.Assert.Equal(ToReturn.uid, TestItem.uid);
-        Xunit.Assert.Equal(ToReturn.code, TestItem.code);
+        Xunit.Assert.Equal(TestItem.uid, ToReturn.uid);
+        Xunit.Assert.Equal(TestItem.code, ToReturn.code);
     }
 
     [Fact, TestPriority(5)]
