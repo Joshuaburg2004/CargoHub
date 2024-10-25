@@ -37,7 +37,7 @@ public class Item_typeIntegratieTest : BaseTest
         Xunit.Assert.Equal(returned.description, testType.description);
     }
 
-    [Fact, TestPriority(0)]
+    [Fact, TestPriority(1)]
     public async Task GetItemtype()
     {
         HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_types/0");
@@ -50,7 +50,7 @@ public class Item_typeIntegratieTest : BaseTest
         Xunit.Assert.Equal(returned.description, testType.description);
     }
 
-    [Fact, TestPriority(1)]
+    [Fact, TestPriority(2)]
     public async Task UpdateItemtype()
     {
         string toSend = JsonSerializer.Serialize(PutType);
@@ -60,8 +60,8 @@ public class Item_typeIntegratieTest : BaseTest
         
     }
 
-    [Fact, TestPriority(2)]
-    public async Task GetUpdatedItem()
+    [Fact, TestPriority(3)]
+    public async Task GetUpdatedItemType()
     {
         HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_types/0");
         var responseContent = await response.Content.ReadAsStringAsync();
@@ -74,7 +74,7 @@ public class Item_typeIntegratieTest : BaseTest
         Xunit.Assert.Equal(PutType.description, itemtypeafterupdate.description);
     }
 
-    [Fact, TestPriority(2)]
+    [Fact, TestPriority(4)]
     public async Task GetItemTypeItems()
     {
         string toSend = JsonSerializer.Serialize(TestItem);
@@ -94,7 +94,7 @@ public class Item_typeIntegratieTest : BaseTest
         Xunit.Assert.Equal(ToReturn.code, TestItem.code);
     }
 
-    [Fact, TestPriority(3)]
+    [Fact, TestPriority(5)]
     public async Task GetWrongItemtype()
     {
         HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_types/2");
@@ -104,7 +104,7 @@ public class Item_typeIntegratieTest : BaseTest
         Xunit.Assert.Equal("null", responseContent);
     }
 
-    [Fact, TestPriority(4)]
+    [Fact, TestPriority(6)]
     public async Task DeleteItemtype()
     {
         HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/item_types/0");
@@ -113,7 +113,7 @@ public class Item_typeIntegratieTest : BaseTest
         Xunit.Assert.Equal("", responseContent);
     }
 
-    [Fact, TestPriority(5)]
+    [Fact, TestPriority(7)]
     public async Task GetItemTypeEmpty()
     {
         HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_types");
