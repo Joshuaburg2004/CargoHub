@@ -16,7 +16,7 @@ public class Item_typeIntegratieTest : BaseTest
     public static item_type testType = new(0, "Laptop", "");
     public static item_type PutType = new(0, "smart name", "smart description");
     public static string testTypeJson {get => JsonSerializer.Serialize(testType);}
-    public static Item TestItem = new("P000001", "sjQ23408K", "Face-to-face clear-thinking complexity",
+    public static Item TestItem = new("P000004", "sjQ23408K", "Face-to-face clear-thinking complexity",
      "must", "6523540947122", "63-OFFTq0T", "oTo304", 0, 0,0,0,0,0,0,"SUP423", "E-86805-uTM");
     public Item_typeIntegratieTest(): base()
     {}
@@ -92,6 +92,10 @@ public class Item_typeIntegratieTest : BaseTest
         Item ToReturn = itemtypeafterupdate[0];
         Xunit.Assert.Equal(TestItem.uid, ToReturn.uid);
         Xunit.Assert.Equal(TestItem.code, ToReturn.code);
+
+        HttpResponseMessage responsedelete = await _client.DeleteAsync("/api/v1/items/P000004");
+
+        Xunit.Assert.Equal(HttpStatusCode.OK, responsedelete.StatusCode);
     }
 
     [Fact, TestPriority(5)]
