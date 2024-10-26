@@ -1,5 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
 using Xunit;
+using System.Net;
+using System.Net.Http;
+using PythonTests;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Xunit;
+namespace PythonTests;
 
 [ExcludeFromCodeCoverage]
 public class BaseTest
