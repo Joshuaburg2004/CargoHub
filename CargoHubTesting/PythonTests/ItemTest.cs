@@ -183,7 +183,7 @@ public class ItemIntegratieTest : BaseTest
         Xunit.Assert.Equal(TestInventory.total_allocated, inventoryCompared.total_allocated);
         Xunit.Assert.Equal(TestInventory.total_available, inventoryCompared.total_available);
 
-        HttpResponseMessage responsedelete = await _client.DeleteAsync("/api/v1/items/P000004");
+        HttpResponseMessage responsedelete = await _client.DeleteAsync("/api/v1/inventories/5");
 
         Xunit.Assert.Equal(HttpStatusCode.OK, responsedelete.StatusCode);
     }
@@ -222,24 +222,24 @@ public class ItemIntegratieTest : BaseTest
         Xunit.Assert.Equal(TestInventory.total_allocated, inventoryresponse.total_allocated);
         Xunit.Assert.Equal(TestInventory.total_available, inventoryresponse.total_available);
 
-        HttpResponseMessage responsedelete = await _client.DeleteAsync("/api/v1/items/P000004");
+        HttpResponseMessage responsedelete = await _client.DeleteAsync("/api/v1/inventories/5");
 
         Xunit.Assert.Equal(HttpStatusCode.OK, responsedelete.StatusCode);
     }
 
     [Fact, TestPriority(6)]
-    public async Task DeleteItemtype()
+    public async Task DeleteItem()
     {
-        HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/Items/0");
+        HttpResponseMessage response = await _client.DeleteAsync($"{requestUri}/P000001");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var responseContent = await response.Content.ReadAsStringAsync();
         Xunit.Assert.Equal("", responseContent);
     }
 
     [Fact, TestPriority(7)]
-    public async Task GetItemTypeEmpty()
+    public async Task GetItemEmpty()
     {
-        HttpResponseMessage response = await _client.GetAsync($"/api/v1/Items");
+        HttpResponseMessage response = await _client.GetAsync($"{requestUri}");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var responseContent = await response.Content.ReadAsStringAsync();
         Xunit.Assert.Equal("[]", responseContent);
