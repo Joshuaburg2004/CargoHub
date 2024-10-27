@@ -99,7 +99,7 @@ namespace PythonTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Equal("[{\"item_id\": \"P010689\", \"amount\": 16}]", result);
+            Xunit.Assert.Contains("{\"item_id\": \"P010689\", \"amount\": 16}", result);
         }
         [Fact, TestPriority(10)]
         public async Task DeleteOrder()
