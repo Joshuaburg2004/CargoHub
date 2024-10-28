@@ -8,7 +8,7 @@ using PythonTests.models;
 
 namespace PythonTests;
 
-[TestCaseOrderer("MyTests.PriorityOrderer", "PythonTests")]
+[TestCaseOrderer("PythonTests.PriorityOrderer", "PythonTests")]
 
 public class ItemIntegratieTest : BaseTest
 {
