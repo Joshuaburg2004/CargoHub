@@ -8,7 +8,7 @@ using PythonTests.models;
 
 namespace PythonTests;
 
-[TestCaseOrderer("MyTests.PriorityOrderer", "CargoHubTesting")]
+[TestCaseOrderer("MyTests.PriorityOrderer", "PythonTests")]
 
 public class ItemIntegratieTest : BaseTest
 {
