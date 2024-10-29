@@ -12,9 +12,9 @@ public class TransferService : ITransfer
 
     public async Task<List<Transfer>> GetTransfers() => await _context.Transfers.ToListAsync();
 
-    public async Task<Transfer> GetTransferById(Guid id) => await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
+    public async Task<Transfer> GetTransferById(int id) => await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
 
-    public async Task<List<Item>> GetItemsInTransfer(Guid id)
+    public async Task<List<Item>> GetItemsInTransfer(int id)
     {
         Transfer? transfer = await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
         return transfer?.Items ?? new List<Item>();
@@ -27,7 +27,7 @@ public class TransferService : ITransfer
         return true;
     }
 
-    public async Task<bool> RemoveTransfer(Guid id)
+    public async Task<bool> RemoveTransfer(int id)
     {
         Transfer? transfer = await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
         if (transfer == null) return false;
@@ -36,7 +36,7 @@ public class TransferService : ITransfer
         return true;
     }
 
-    public async Task<bool> UpdateTransfer(Guid id, Transfer transfer)
+    public async Task<bool> UpdateTransfer(int id, Transfer transfer)
     {
         Transfer? oldTransfer = await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
         if (oldTransfer == null) return false;
