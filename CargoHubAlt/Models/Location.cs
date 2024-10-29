@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
 [PrimaryKey("Id")]
-
 public class Location : Base
 {
     public int Id { get; set; }

@@ -7,51 +7,43 @@ public class LocationController : Controller
 
     public LocationController(ILocationService locationService)
     {
-        this._locationservice = locationService;
-    }
-
-    [HttpGet("getall")]
-    public async Task<IActionResult> GetAllLocations()
-    {
-        return Ok(await this._locationservice.GetAllLocations());
+        _locationservice = locationService;
     }
 
     [HttpGet()]
-    public async Task<IActionResult> GetOneLocation([FromQuery] Guid id)
+    public async Task<IActionResult> GetAllLocations()
     {
-        Location? found = await this._locationservice.GetOneLocation(id);
-        if (found is null) return NotFound($"id not found {id}");
-        return Ok(found);
+        return Ok(await _locationservice.GetAllLocations());
     }
 
-    [HttpGet("batch")]
-    public async Task<IActionResult> GetManyLocations(IEnumerable<Guid> ids)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetOneLocation([FromRoute] int id)
     {
-        IEnumerable<Location?> found = await this._locationservice.GetBatchLocation(ids);
-        return Ok(found);
+        if (id <= 0) return BadRequest();
+        return Ok(await _locationservice.GetOneLocation(id));
     }
 
     [HttpPost()]
     public async Task<IActionResult> PostLocation([FromBody] Location toAdd)
     {
-        Guid? success = await this._locationservice.AddLocation(toAdd);
-        if (success is null) return BadRequest("something went wrong");
-        else return Ok(success);
+        if (toAdd is null) return BadRequest();
+        await _locationservice.AddLocation(toAdd);
+        return Ok();
     }
 
-    [HttpPut()]
-    public async Task<IActionResult> UpdateLocation([FromQuery] Guid id, [FromBody] Location toUpdate)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateLocation([FromRoute] int id, [FromBody] Location toUpdate)
     {
-        Location? success = await this._locationservice.UpdateLocation(id, toUpdate);
-        if (success is null) return BadRequest();
-        else return Ok(success);
+        if (id <= 0 || toUpdate is null) return BadRequest();
+        await _locationservice.UpdateLocation(id, toUpdate);
+        return Ok();
     }
 
-    [HttpDelete()]
-    public async Task<IActionResult> DeleteLocation(Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteLocation([FromRoute] int id)
     {
-        Location? success = await this._locationservice.DeleteLocation(id);
-        if (success is null) return BadRequest();
-        else return Ok(success);
+        if (id <= 0) return BadRequest();
+        await _locationservice.DeleteLocation(id);
+        return Ok();
     }
 }
