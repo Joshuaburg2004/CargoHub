@@ -10,38 +10,38 @@ public class TransferController : Controller
         _transferservice = transferservice;
     }
 
-    [HttpGet("get")]
+    [HttpGet()]
     public async Task<IActionResult> GetTransfers() => Ok(await _transferservice.GetTransfers());
 
-    [HttpGet("get/{id}")]
-    public async Task<IActionResult> GetTranfersById([FromRoute] Guid id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetTranfersById(Guid id)
     {
         if (id == Guid.Empty) return BadRequest();
         return Ok(await _transferservice.GetTransferById(id));
     }
 
-    [HttpGet("getitems/{id}")]
-    public async Task<IActionResult> GetItemsInTransfer([FromRoute] Guid id)
+    [HttpGet("{id}/items")]
+    public async Task<IActionResult> GetItemsInTransfer(Guid id)
     {
         if (id == Guid.Empty) return BadRequest();
         return Ok(await _transferservice.GetItemsInTransfer(id));
     }
 
-    [HttpPost("add")]
-    public async Task<IActionResult> AddTransfer([FromBody] Transfer transfer)
+    [HttpPost()]
+    public async Task<IActionResult> AddTransfer(Transfer transfer)
     {
         if (transfer == null || transfer.Items == null) return BadRequest();
         return Ok(await _transferservice.AddTransfer(transfer));
     }
 
-    [HttpDelete("delete")]
-    public async Task<IActionResult> RemoveTransfer([FromQuery] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveTransfer(Guid id)
     {
         if (id == Guid.Empty) return BadRequest();
         return Ok(await _transferservice.RemoveTransfer(id));
     }
 
-    [HttpPut("update")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTransfer(Guid id, Transfer transfer)
     {
         if (id == Guid.Empty && transfer == null) return BadRequest(); // && moet of zijn maar staat niet op dit toetsenbord zal dit later aanpassen
