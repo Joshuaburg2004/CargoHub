@@ -1,6 +1,6 @@
 namespace CargoHubAlt.Models
 {
-    public class Warehouse
+    public class Warehouse : Base
     {
         public Guid Id { get; set; }
         public string Code { get; set; }
@@ -41,8 +41,8 @@ namespace CargoHubAlt.Models
             Name = name;
             Phone = phone;
             Email = email;
-            CreatedAt = GetTimeStamp();
-            UpdatedAt = GetTimeStamp();
+            CreatedAt = Base.GetTimeStamp();
+            UpdatedAt = Base.GetTimeStamp();
         }
     }
 }
