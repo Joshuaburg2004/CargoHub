@@ -18,7 +18,7 @@ public class OrderController : Controller
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> RemoveOrder([FromRoute] Guid id)
+    public async Task<IActionResult> RemoveOrder([FromRoute] int id)
     {
         if (await _orderservice.RemoveOrder(id))
             return Ok($"Item with id: {id} deleted.");

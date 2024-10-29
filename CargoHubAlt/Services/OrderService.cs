@@ -8,6 +8,21 @@ public class OrderService : IOrderService
         _context = context;
     }
 
+    public Task<List<Order>> GetOrders()
+    {
+
+    }
+
+    public Task<Order> GetOrder(int orderId)
+    {
+
+    }
+
+    public Task<List<OrderedItem>> GetOrderedItems(int orderId)
+    {
+
+    }
+
     public async Task<bool> AddOrder(Order order)
     {
         await _context.Orders.AddAsync(order);
@@ -16,7 +31,17 @@ public class OrderService : IOrderService
         return false;
     }
 
-    public async Task<bool> RemoveOrder(Guid id)
+    public Task<bool> UpdateOrder(Order order)
+    {
+
+    }
+
+    public Task<bool> UpdateOrderedItems(int orderId, List<OrderedItem> items)
+    {
+
+    }
+
+    public async Task<bool> RemoveOrder(int id)
     {
         var order = await _context.Orders.FindAsync(id);
         if (order == null)
