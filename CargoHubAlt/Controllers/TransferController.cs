@@ -31,7 +31,8 @@ public class TransferController : Controller
     public async Task<IActionResult> AddTransfer([FromBody] Transfer transfer)
     {
         if (transfer == null || transfer.Items == null) return BadRequest();
-        return Ok(await _transferservice.AddTransfer(transfer));
+        await _transferservice.AddTransfer(transfer);
+        return Created();
     }
 
     [HttpDelete("{id}")]
