@@ -30,7 +30,7 @@ public class WarehouseController : Controller
     {
         if (warehouse == null) return BadRequest();
         await _warehouseservice.AddWarehouse(warehouse);
-        return Ok();
+        return Created();
     }
 
     [HttpPut]
