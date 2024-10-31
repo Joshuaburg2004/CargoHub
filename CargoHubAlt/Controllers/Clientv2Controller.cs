@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 [Route("api/v2/client")]
 public class ClientV2Controller : Controller{
-    public IClients Clients{ get; set; }
-    public ClientV2Controller(IClients clients){
+    public IClientService Clients{ get; set; }
+    public ClientV2Controller(IClientService clients){
         Clients = clients;
     }
     [HttpGet()]

@@ -1,9 +1,9 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-public class Clients : IClients
+public class ClientService : IClientService
 {
     private readonly CargoHubContext cargoHubContext;
-    public Clients(CargoHubContext context)
+    public ClientService(CargoHubContext context)
     {
         cargoHubContext = context;
     }
@@ -11,30 +11,30 @@ public class Clients : IClients
     {
         return await cargoHubContext.Clients.ToListAsync();
     }
-    public async Task<IEnumerable<Client>> GetBatchClients(Guid[] guids)
+    public async Task<IEnumerable<Client>> GetBatchClients(int[] ids)
     {
         List<Client> clients = new List<Client>();
-        foreach (var guid in guids)
+        foreach (var id in ids)
         {
-            Client? client = await GetClient(guid);
+            Client? client = await GetClient(id);
             if (client == null) { continue; }
             clients.Add(client);
         }
         return clients;
     }
-    public async Task<Client?> GetClient(Guid guid)
+    public async Task<Client?> GetClient(int id)
     {
-        return await cargoHubContext.Clients.FindAsync(guid);
+        return await cargoHubContext.Clients.FindAsync(id);
     }
-    public async Task<Guid?> AddClient(Client client)
+    public async Task<int?> AddClient(Client client)
     {
         await cargoHubContext.Clients.AddAsync(client);
         await cargoHubContext.SaveChangesAsync();
         return client.Id;
     }
-    public async Task<Client?> UpdateClient(Guid guid, Client client)
+    public async Task<Client?> UpdateClient(int id, Client client)
     {
-        Client? origClient = await GetClient(guid);
+        Client? origClient = await GetClient(id);
         if (origClient == null)
         {
             return origClient;
@@ -52,9 +52,9 @@ public class Clients : IClients
         await cargoHubContext.SaveChangesAsync();
         return origClient;
     }
-    public async Task<Client?> RemoveClient(Guid guid)
+    public async Task<Client?> RemoveClient(int id)
     {
-        Client? client = cargoHubContext.Clients.Find(guid);
+        Client? client = cargoHubContext.Clients.Find(id);
         if (client == null)
         {
             return client;
