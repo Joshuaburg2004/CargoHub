@@ -11,17 +11,6 @@ public class ClientService : IClientService
     {
         return await cargoHubContext.Clients.ToListAsync();
     }
-    public async Task<IEnumerable<Client>> GetBatchClients(int[] ids)
-    {
-        List<Client> clients = new List<Client>();
-        foreach (var id in ids)
-        {
-            Client? client = await GetClient(id);
-            if (client == null) { continue; }
-            clients.Add(client);
-        }
-        return clients;
-    }
     public async Task<Client?> GetClient(int id)
     {
         return await cargoHubContext.Clients.FindAsync(id);

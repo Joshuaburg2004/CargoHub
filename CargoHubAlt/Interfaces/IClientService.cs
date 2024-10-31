@@ -1,6 +1,5 @@
 public interface IClientService{
     public Task<IEnumerable<Client>> GetAllClients();
-    public Task<IEnumerable<Client>> GetBatchClients(int[] ids);
     public Task<Client?> GetClient(int id);
     public Task<int?> AddClient(Client client);
     public Task<Client?> RemoveClient(int id);
