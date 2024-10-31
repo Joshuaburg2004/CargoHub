@@ -4,4 +4,5 @@ public interface IClientService{
     public Task<int?> AddClient(Client client);
     public Task<Client?> RemoveClient(int id);
     public Task<Client?> UpdateClient(int id, Client client);
+    public Task<List<Order>> GetOrdersByClient(int id);
 }

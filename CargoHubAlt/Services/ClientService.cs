@@ -52,6 +52,10 @@ public class ClientService : IClientService
         await cargoHubContext.SaveChangesAsync();
         return client;
     }
+    public async Task<List<Order>> GetOrdersByClient(int id)
+    {
+        return await cargoHubContext.Orders.Where(o => o.BillTo == id || o.ShipTo == id).ToListAsync();
+    }
     public async Task LoadFromJson(string path)
     {
         if (File.Exists(path))
