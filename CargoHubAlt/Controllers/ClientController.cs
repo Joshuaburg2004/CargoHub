@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/v1/client")]
-public class ClientV1Controller : Controller
+[Route("api/v1")]
+public class ClientController : Controller
 {
     public IClientService Clients { get; set; }
-    public ClientV1Controller(IClientService clients)
+    public ClientController(IClientService clients)
     {
         Clients = clients;
     }
