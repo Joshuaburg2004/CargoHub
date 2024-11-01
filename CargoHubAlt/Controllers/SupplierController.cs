@@ -19,7 +19,7 @@ public class SupplierController : Controller
         var supplier = await Suppliers.GetSupplier(id);
         if (supplier == null)
         {
-            return BadRequest($"supplier with ID {id} not found");
+            return NotFound($"supplier with ID {id} not found");
         }
         return Ok(supplier);
     }
@@ -29,7 +29,7 @@ public class SupplierController : Controller
         var items = await Suppliers.GetItemsForSupplier(id);
         if (items == null)
         {
-            return BadRequest($"no items found for supplier with ID {id}");
+            return NotFound($"no items found for supplier with ID {id}");
         }
         return Ok(items);
     }
@@ -49,7 +49,7 @@ public class SupplierController : Controller
         var supplier = await Suppliers.DeleteSupplier(id);
         if (supplier == null)
         {
-            return BadRequest($"supplier with ID {id} not found");
+            return NotFound($"supplier with ID {id} not found");
         }
         return Ok(supplier);
     }
@@ -59,7 +59,7 @@ public class SupplierController : Controller
         var oldSupplier = await Suppliers.UpdateSupplier(id, supplier);
         if (oldSupplier == null)
         {
-            return BadRequest($"supplier with ID {id} not found");
+            return NotFound($"supplier with ID {id} not found");
         }
         return Ok(oldSupplier);
     }
