@@ -12,6 +12,7 @@ public class ItemTypeService : IItemTypeService
 
     public async Task<Item_type?> GetItemTypeById(int Id)
     {
+        
         return await _cargoHubContext.Item_Types.FirstOrDefaultAsync(item_type => item_type.Id == Id);
     }
 
@@ -19,6 +20,15 @@ public class ItemTypeService : IItemTypeService
     {
         return await _cargoHubContext.Item_Types.ToListAsync();
     }
+
+
+    public async Task<IEnumerable<Item>?> GetItemsfromItemTypeById(int Id)
+    {
+        if (Id < 0) return null;
+        List<Item> toReturn = await _cargoHubContext.Items.Where(_ => _.ItemType == Id).ToListAsync();
+        return toReturn;
+    }
+
     public async Task<int?> AddItemType(Item_type itemtype)
     {
         Item_type? found = await _cargoHubContext.Item_Types.FirstOrDefaultAsync(x => x.Id == itemtype.Id);
@@ -53,4 +63,5 @@ public class ItemTypeService : IItemTypeService
         await _cargoHubContext.SaveChangesAsync();
         return found;
     }
+
 }

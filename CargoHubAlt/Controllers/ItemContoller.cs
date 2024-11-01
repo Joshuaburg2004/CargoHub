@@ -60,29 +60,6 @@ public class ItemController : Controller
         return BadRequest();
     }
 
-    [HttpGet("ItemType/{id}")]
-    public async Task<IActionResult> GetItemsForItemType([FromRoute] string id)
-    {
-        if (Guid.TryParse(id, out Guid result))
-        {
-            IEnumerable<Item> found = await this.itemsService.GetItemsForItemType(result);
-            if (found.Count() >= 1) return Ok(found);
-            else return NotFound();
-        }
-        return BadRequest();
-    }
-
-    [HttpGet("Supplier/{id}")]
-    public async Task<IActionResult> GetItemsForSupplier([FromRoute] string id)
-    {
-        if (Guid.TryParse(id, out Guid result))
-        {
-            IEnumerable<Item> found = await this.itemsService.GetItemsForSupplier(result);
-            if (found.Count() >= 1) return Ok(found);
-            else return NotFound();
-        }
-        return BadRequest();
-    }
 
     [HttpPost()]
     public async Task<IActionResult> AddItem([FromBody] Item? item)

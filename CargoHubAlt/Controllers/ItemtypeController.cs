@@ -21,8 +21,20 @@ public class ItemTypeController : Controller
     {
         if ( id < 0) return BadRequest("invalid ID");
         var item_type = await _itemsService.GetItemTypeById(id);
+        if (item_type is null) return Ok("null");
+        return Ok(item_type);
         if (item_type is null) return NotFound("Item Type not found");
         else return Ok(item_type);
+    }
+
+
+    [HttpGet("{id}/items")]
+    public async Task<IActionResult> GetItemsfromItemTypeById([FromRoute] int id)
+    {
+        if ( id < 0) return BadRequest("invalid ID");
+        IEnumerable<Item>? items = await _itemsService.GetItemsfromItemTypeById(id);
+        if (items is null) return NotFound("Item Type not found");
+        else return Ok(items);
     }
 
     [HttpPost()]
