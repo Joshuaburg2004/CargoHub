@@ -16,4 +16,11 @@ public class CargoHubContext : DbContext
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Item_type> Item_Types { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Order>().OwnsMany(e => e.Items);
+        modelBuilder.Entity<Order>().HasKey(e => e.Id);
+        modelBuilder.Entity<Shipment>().OwnsMany(e => e.Items);
+        modelBuilder.Entity<Shipment>().HasKey(e => e.Id);
+    }
 }

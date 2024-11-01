@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 public class Order : Base
 {
     public int Id { get; set; }
@@ -47,7 +49,7 @@ public class Order : Base
         }
     }
 }
-
+[Owned]
 public class OrderedItem
 {
     public string? ItemId { get; set; }

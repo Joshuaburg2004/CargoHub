@@ -25,7 +25,7 @@ public class LocationService : ILocationService
         if (location is null) { return null; }
 
         location.Id = Location.Id;
-        location.warehouse_Id = Location.warehouse_Id;
+        location.warehouse = Location.warehouse;
         location.Code = Location.Code;
         location.Name = Location.Name;
         location.UpdatedAt = Location.UpdatedAt;
