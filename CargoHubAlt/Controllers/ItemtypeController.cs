@@ -31,21 +31,27 @@ public class ItemTypeController : Controller
         if (itemtype is null) return BadRequest("this is not an item Type");
         int? success = await _itemsService.AddItemType(itemtype);
         if (success is null) return BadRequest("Item Type not added");
-        else return Ok(success);
+        else return Ok();
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> putItemType([FromRoute] int id, [FromBody] Item_type itemtype)
     {
         if ( id < 0) return BadRequest("invalid ID");
-        return Ok(await _itemsService.UpdateItemType(id, itemtype));
+        
+        var success = await _itemsService.UpdateItemType(id, itemtype); 
+        if (success is not null) return Ok();
+        return BadRequest();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> deleteItemType([FromRoute] int id)
     {
         if ( id < 0) return BadRequest("invalid ID");
-        return Ok(await _itemsService.DeleteItemType(id));
+        var success = await _itemsService.DeleteItemType(id);
+        
+        if (success is not null) return Ok();
+        else return BadRequest("id not found");
     }
 
 }
