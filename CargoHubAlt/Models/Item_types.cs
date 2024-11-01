@@ -1,16 +1,16 @@
 public class Item_type : Base
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
 
     public string Description { get; set; }
     public string CreatedAt { get; set; } = GetTimeStamp();
     public string UpdatedAt { get; set; } = GetTimeStamp();
 
-    public Item_type(string name, string Description)
+    public Item_type(int id, string name, string description)
     {
-        Id = Guid.NewGuid();
+        Id = id;
         this.Name = name;
-        this.Description = Description;
+        this.Description = description;
     }
 }

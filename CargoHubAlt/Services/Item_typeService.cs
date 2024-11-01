@@ -10,7 +10,7 @@ public class ItemTypeService : IItemTypeService
         _cargoHubContext = context;
     }
 
-    public async Task<Item_type?> GetItemTypeById(Guid Id)
+    public async Task<Item_type?> GetItemTypeById(int Id)
     {
         return await _cargoHubContext.Item_Types.FirstOrDefaultAsync(item_type => item_type.Id == Id);
     }
@@ -19,7 +19,7 @@ public class ItemTypeService : IItemTypeService
     {
         return await _cargoHubContext.Item_Types.ToListAsync();
     }
-    public async Task<Guid?> AddItemType(Item_type itemtype)
+    public async Task<int?> AddItemType(Item_type itemtype)
     {
         Item_type? found = await _cargoHubContext.Item_Types.FirstOrDefaultAsync(x => x.Id == itemtype.Id);
         if (found is not null) { return null; }
@@ -29,7 +29,7 @@ public class ItemTypeService : IItemTypeService
         return itemtype.Id;
     }
 
-    public async Task<Item_type?> UpdateItemType(Guid Id, Item_type itemtype)
+    public async Task<Item_type?> UpdateItemType(int Id, Item_type itemtype)
     {
         Item_type? found = await GetItemTypeById(Id);
         if (found is null) return null;
@@ -44,7 +44,7 @@ public class ItemTypeService : IItemTypeService
     }
 
 
-    public async Task<Item_type?> DeleteItemType(Guid Id)
+    public async Task<Item_type?> DeleteItemType(int Id)
     {
         Item_type? found = await GetItemTypeById(Id);
         if (found is null) return null;
