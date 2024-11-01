@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/v1")]
+[Route("api/v1/clients")]
 public class ClientController : Controller
 {
     public IClientService Clients { get; set; }
@@ -8,11 +8,11 @@ public class ClientController : Controller
     {
         Clients = clients;
     }
-    [HttpGet("clients")]
+    [HttpGet()]
     public async Task<IActionResult> GetAllClients(){
         return Ok(await Clients.GetAllClients());
     }
-    [HttpGet("clients/{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetOneClient([FromRoute] int id){
         if(id < 0){
             return BadRequest("ID cannot be smaller than 0.");
@@ -23,7 +23,7 @@ public class ClientController : Controller
         }
         return Ok(client);
     }
-    [HttpGet("clients/{id}/orders")]
+    [HttpGet("{id}/orders")]
     public async Task<IActionResult> GetOrdersByClient([FromRoute] int id){
         if(id < 0){
             return BadRequest("ID cannot be smaller than 0.");
@@ -34,7 +34,7 @@ public class ClientController : Controller
         }
         return Ok(orders);
     }
-    [HttpPost("clients")]
+    [HttpPost()]
     public async Task<IActionResult> AddClient([FromBody] Client client){
         if(client == null){
             return BadRequest("Client cannot be null.");
@@ -42,7 +42,7 @@ public class ClientController : Controller
         await Clients.AddClient(client);
         return Created();
     }
-    [HttpPut("clients/{id}")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> UpdateClient([FromRoute] int id, [FromBody] Client client){
         if(id < 0){
             return BadRequest("ID cannot be smaller than 0.");
@@ -53,7 +53,7 @@ public class ClientController : Controller
         await Clients.UpdateClient(id, client);
         return Ok();
     }
-    [HttpDelete("clients/{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteClient([FromRoute] int id){
         if(id < 0){
             return BadRequest("ID cannot be smaller than 0.");
