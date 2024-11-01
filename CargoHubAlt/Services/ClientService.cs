@@ -17,6 +17,8 @@ public class ClientService : IClientService
     }
     public async Task<int?> AddClient(Client client)
     {
+        client.CreatedAt = Base.GetTimeStamp();
+        client.UpdatedAt = Base.GetTimeStamp();
         await cargoHubContext.Clients.AddAsync(client);
         await cargoHubContext.SaveChangesAsync();
         return client.Id;
