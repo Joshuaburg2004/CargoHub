@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace CargoHubAlt.Models
 {
     public class Warehouse : Base
@@ -11,6 +13,7 @@ namespace CargoHubAlt.Models
         public string Province { get; set; }
         public string Country { get; set; }
         public Contact Contact { get; set; }
+        public Warehouse() { }
 
         public Warehouse(int id, string code, string name, string address, string zip, string city, string province, string country, Contact contact)
         {
@@ -25,7 +28,7 @@ namespace CargoHubAlt.Models
             Contact = contact;
         }
     }
-
+    [Owned]
     public class Contact
     {
         public string Name { get; set; }

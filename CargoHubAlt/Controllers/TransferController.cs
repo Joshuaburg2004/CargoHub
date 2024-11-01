@@ -10,41 +10,42 @@ public class TransferController : Controller
         _transferservice = transferservice;
     }
 
-    [HttpGet("get")]
+    [HttpGet()]
     public async Task<IActionResult> GetTransfers() => Ok(await _transferservice.GetTransfers());
 
-    [HttpGet("get/{id}")]
-    public async Task<IActionResult> GetTranfersById([FromRoute] Guid id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetTranfersById([FromRoute] int id)
     {
-        if (id == Guid.Empty) return BadRequest();
+        if (id <= 0) return BadRequest();
         return Ok(await _transferservice.GetTransferById(id));
     }
 
-    [HttpGet("getitems/{id}")]
-    public async Task<IActionResult> GetItemsInTransfer([FromRoute] Guid id)
+    [HttpGet("{id}/items")]
+    public async Task<IActionResult> GetItemsInTransfer([FromRoute] int id)
     {
-        if (id == Guid.Empty) return BadRequest();
+        if (id <= 0) return BadRequest();
         return Ok(await _transferservice.GetItemsInTransfer(id));
     }
 
-    [HttpPost("add")]
+    [HttpPost()]
     public async Task<IActionResult> AddTransfer([FromBody] Transfer transfer)
     {
         if (transfer == null || transfer.Items == null) return BadRequest();
-        return Ok(await _transferservice.AddTransfer(transfer));
+        await _transferservice.AddTransfer(transfer);
+        return Created();
     }
 
-    [HttpDelete("delete")]
-    public async Task<IActionResult> RemoveTransfer([FromQuery] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveTransfer([FromRoute] int id)
     {
-        if (id == Guid.Empty) return BadRequest();
+        if (id <= 0) return BadRequest();
         return Ok(await _transferservice.RemoveTransfer(id));
     }
 
-    [HttpPut("update")]
-    public async Task<IActionResult> UpdateTransfer(Guid id, Transfer transfer)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateTransfer([FromRoute] int id, [FromBody] Transfer transfer)
     {
-        if (id == Guid.Empty && transfer == null) return BadRequest(); // && moet of zijn maar staat niet op dit toetsenbord zal dit later aanpassen
+        if (id <= 0 && transfer == null) return BadRequest(); // && moet of zijn maar staat niet op dit toetsenbord zal dit later aanpassen
         return Ok(await _transferservice.UpdateTransfer(id, transfer));
     }
 }

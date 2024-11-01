@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 public class Shipment
 {
     public int Id { get; set; }
@@ -44,7 +46,7 @@ public class Shipment
         Items = items;
     }
 }
-
+[Owned]
 public class ShipmentItem
 {
     public string? ItemId { get; set; }

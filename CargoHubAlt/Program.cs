@@ -40,14 +40,6 @@ public class Program
         app.MapControllers();
 
         app.Urls.Add("http://localhost:3000");
-
-        app.Use(async (context, next) => 
-        {
-            Console.WriteLine(context.Request.Path);
-            await next.Invoke();
-        });
-
-
         app.MapGet("/", () => "Hello World!");
         app.Run();
     }
