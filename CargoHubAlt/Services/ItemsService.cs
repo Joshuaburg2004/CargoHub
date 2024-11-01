@@ -34,10 +34,6 @@ public class ItemsService : IItemsService
         return await this._context.Items.FirstOrDefaultAsync(_ => _.Id == id);
     }
 
-    public async Task<IEnumerable<Item>> GetItemsForItemLine(Guid id)
-    {
-        return await this._context.Items.Where(_ => _.ItemLine == id).ToListAsync();
-    }
 
     public async Task<IEnumerable<Item>> GetItemsForItemGroup(Guid id)
     {
