@@ -8,7 +8,7 @@ public class Item : Base
     public string UpcCode { get; set; }
     public string ModelNumber { get; set; }
     public string CommodityCode { get; set; }
-    public Guid ItemLine { get; set; }
+    public int ItemLine { get; set; }
     public Guid ItemGroup { get; set; }
     public Guid ItemType { get; set; }
     public int UnitPurchaseQuantity { get; set; }
@@ -21,7 +21,7 @@ public class Item : Base
     public string UpdatedAt { get; set; } = GetTimeStamp();
 
     public Item() { }
-    public Item(string uid, string code, string description, string shortDescription, string upcCode, string modelNumber, string commodityCode, Guid itemLine, Guid itemGroup, Guid itemType, int unitPurchaseQuantity, int unitOrderQuantity, int packOrderQuantity, Guid supplierId, string supplierCode, string supplierPartNumber)
+    public Item(string uid, string code, string description, string shortDescription, string upcCode, string modelNumber, string commodityCode, int itemLine, Guid itemGroup, Guid itemType, int unitPurchaseQuantity, int unitOrderQuantity, int packOrderQuantity, Guid supplierId, string supplierCode, string supplierPartNumber)
     {
         Id = Guid.NewGuid();
         Uid = uid;
