@@ -39,7 +39,7 @@ public class Program
         app.UseAuthorization();
         app.MapControllers();
 
-        app.Urls.Add("https://localhost:5000");
+        app.Urls.Add("http://localhost:3000");
         app.MapGet("/", () => "Hello World!");
         app.Run();
     }
