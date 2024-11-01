@@ -25,12 +25,23 @@ public class ItemLineController : Controller
 
     }
 
-    [HttpGet()]
+    [HttpGet("batch")]
     public async Task<IActionResult> getBatchItemLine([FromQuery] IEnumerable<int> ids)
     {
         IEnumerable<Item_line?> found = await this._itemsService.FindManyItemLine(ids);
         return Ok(found);
     }
+
+    [HttpGet("{id}/items")]
+    public async Task<IActionResult> GetItemsfromItemLineById([FromRoute] int id)
+    {
+        if (id < 0) return BadRequest("invalid id");
+        var success = await this._itemsService.GetItemsfromItemLineById(id);
+        if (success is null) return Ok("null");
+        else return Ok(success); 
+        
+    }
+
 
     [HttpPost()]
     public async Task<IActionResult> AddItemLine([FromBody] Item_line? toAdd)
