@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 
-[Route("api/v1/itemtypes")]
+[Route("api/v1/item_types")]
 public class ItemTypeController : Controller
 {
     readonly IItemTypeService _itemsService;
@@ -10,42 +10,60 @@ public class ItemTypeController : Controller
         _itemsService = itemsservice;
     }
 
-    [HttpGet("getall")]
+    [HttpGet()]
     public async Task<IActionResult> GetAllItemTypes()
     {
         return Ok(await _itemsService.GetAllItemType());
     }
 
-    [HttpGet("getbyid")]
-    public async Task<IActionResult> GetItemTypeById([FromQuery] Guid id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetItemTypeById([FromRoute] int id)
     {
-        if (id == Guid.Empty) return BadRequest("ID is empty");
+        if ( id < 0) return BadRequest("invalid ID");
         var item_type = await _itemsService.GetItemTypeById(id);
+        if (item_type is null) return Ok("null");
+        return Ok(item_type);
         if (item_type is null) return NotFound("Item Type not found");
         else return Ok(item_type);
+    }
+
+
+    [HttpGet("{id}/items")]
+    public async Task<IActionResult> GetItemsfromItemTypeById([FromRoute] int id)
+    {
+        if ( id < 0) return BadRequest("invalid ID");
+        IEnumerable<Item>? items = await _itemsService.GetItemsfromItemTypeById(id);
+        if (items is null) return NotFound("Item Type not found");
+        else return Ok(items);
     }
 
     [HttpPost()]
     public async Task<IActionResult> AddItemType([FromBody] Item_type? itemtype)
     {
         if (itemtype is null) return BadRequest("this is not an item Type");
-        Guid? success = await _itemsService.AddItemType(itemtype);
+        int? success = await _itemsService.AddItemType(itemtype);
         if (success is null) return BadRequest("Item Type not added");
-        else return Ok(success);
+        else return Ok();
     }
 
-    [HttpPut()]
-    public async Task<IActionResult> putItemType([FromQuery] Guid id, [FromBody] Item_type itemtype)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> putItemType([FromRoute] int id, [FromBody] Item_type itemtype)
     {
-        if (id == Guid.Empty) return BadRequest("ID is empty");
-        return Ok(await _itemsService.UpdateItemType(id, itemtype));
+        if ( id < 0) return BadRequest("invalid ID");
+        
+        var success = await _itemsService.UpdateItemType(id, itemtype); 
+        if (success is not null) return Ok();
+        return BadRequest();
     }
 
-    [HttpDelete()]
-    public async Task<IActionResult> deleteItemType([FromQuery] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> deleteItemType([FromRoute] int id)
     {
-        if (id == Guid.Empty) return BadRequest("ID is empty");
-        return Ok(await _itemsService.DeleteItemType(id));
+        if ( id < 0) return BadRequest("invalid ID");
+        var success = await _itemsService.DeleteItemType(id);
+        
+        if (success is not null) return Ok();
+        else return BadRequest("id not found");
     }
 
 }

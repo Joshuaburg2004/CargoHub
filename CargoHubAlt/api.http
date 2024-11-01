@@ -101,17 +101,6 @@ API_KEY: a1b2c3d4e5
 DELETE  http://localhost:3000/api/v1/item_lines/1
 API_KEY: a1b2c3d4e5
 ###
-
-
-// this post is exclusive to the testing of dotnet version
-POST http://localhost:3000/api/v1/item_lines
-Content-Type: application/json
-
-{"id": 1, "name": "gadget", "description": "gadget description"}
-
-###
-
-
 // this starts the item_types requests
 
 GET http://localhost:3000/api/v1/item_types

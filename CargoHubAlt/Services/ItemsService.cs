@@ -40,15 +40,6 @@ public class ItemsService : IItemsService
         return await this._context.Items.Where(_ => _.ItemGroup == id).ToListAsync();
     }
 
-    public async Task<IEnumerable<Item>> GetItemsForItemType(Guid id)
-    {
-        return await this._context.Items.Where(_ => _.ItemType == id).ToListAsync();
-    }
-
-    public async Task<IEnumerable<Item>> GetItemsForSupplier(Guid id)
-    {
-        return await this._context.Items.Where(_ => _.SupplierId == id).ToListAsync();
-    }
 
     public async Task<Guid?> AddItem(Item toAdd)
     {

@@ -7,8 +7,7 @@ public interface IItemsService
     Task<IEnumerable<Item?>> GetItemsBatch(string[] ids);
     Task<Item?> GetItem(Guid id);
     Task<IEnumerable<Item>> GetItemsForItemGroup(Guid id);
-    Task<IEnumerable<Item>> GetItemsForItemType(Guid id);
-    Task<IEnumerable<Item>> GetItemsForSupplier(Guid id);
+
     Task<Guid?> AddItem(Item item);
     Task<Item?> UpdateItem(Guid toUpdate, Item UpdateTo);
     Task<Item?> RemoveItem(Guid toRemove);
