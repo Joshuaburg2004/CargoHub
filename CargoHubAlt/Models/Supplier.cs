@@ -1,6 +1,6 @@
 public class Supplier : Base
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public string Code { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
@@ -14,9 +14,9 @@ public class Supplier : Base
     public string Reference { get; set; }
     public string CreatedAt { get; set; } = GetTimeStamp();
     public string UpdatedAt { get; set; } = GetTimeStamp();
-    public Supplier(string code, string name, string address, string addressExtra, string city, string zipCode, string province, string country, string contactName, string phoneNumber, string reference)
+    public Supplier(int id, string code, string name, string address, string addressExtra, string city, string zipCode, string province, string country, string contactName, string phoneNumber, string reference)
     {
-        Id = Guid.NewGuid();
+        Id = id;
         Code = code;
         Name = name;
         Address = address;
