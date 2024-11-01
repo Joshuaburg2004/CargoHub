@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 
-[Route("api/v1/itemLines")]
+[Route("/api/v1/item_lines")]
 public class ItemLineController : Controller
 {
     readonly IItemLineService _itemsService;
@@ -10,14 +10,14 @@ public class ItemLineController : Controller
         this._itemsService = itemsservice;
     }
 
-    [HttpGet("getall")]
+    [HttpGet()]
     public async Task<IActionResult> GetAllItemLines()
     {
         return Ok(await this._itemsService.GetAllItemLine());
     }
 
-    [HttpGet("getbyid")]
-    public async Task<IActionResult> GetOneItemLine([FromQuery] Guid id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetOneItemLine([FromRoute] int id)
     {
         Item_line? toReturn = await this._itemsService.FindItemLine(id);
         if (toReturn is null) return NotFound($"ID {id} not found");
@@ -26,7 +26,7 @@ public class ItemLineController : Controller
     }
 
     [HttpGet()]
-    public async Task<IActionResult> getBatchItemLine([FromQuery] IEnumerable<Guid> ids)
+    public async Task<IActionResult> getBatchItemLine([FromQuery] IEnumerable<int> ids)
     {
         IEnumerable<Item_line?> found = await this._itemsService.FindManyItemLine(ids);
         return Ok(found);
@@ -36,24 +36,24 @@ public class ItemLineController : Controller
     public async Task<IActionResult> AddItemLine([FromBody] Item_line? toAdd)
     {
         if (toAdd is null) return BadRequest("this is not an item Line");
-        Guid? success = await this._itemsService.AddItemLine(toAdd);
-        if (success is not null) return Ok(success);
+        int? success = await this._itemsService.AddItemLine(toAdd);
+        if (success is not null) return Ok();
         else return BadRequest("something went wrong adding the item");
     }
 
-    [HttpPut()]
-    public async Task<IActionResult> putItemLine([FromQuery] Guid id, [FromBody] Item_line toupdateto)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> putItemLine([FromRoute] int id, [FromBody] Item_line toupdateto)
     {
         return Ok(await _itemsService.UpdateItemLine(id, toupdateto));
     }
 
-    [HttpDelete()]
-    public async Task<IActionResult> deleteItemLine([FromQuery] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> deleteItemLine([FromRoute] int id)
     {
         Item_line? success = await this._itemsService.DeleteItemLine(id);
 
         if (success is null) return NotFound($"ID not found: {id}");
-        else return Ok(success);
+        else return Ok();
     }
 
 }
