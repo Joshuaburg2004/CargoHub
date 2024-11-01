@@ -6,7 +6,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddTransient<IClients, Clients>();
+        builder.Services.AddTransient<IClientService, ClientService>();
         builder.Services.AddTransient<IInventoryService, InventoryService>();
         builder.Services.AddTransient<IItemTypeService, ItemTypeService>();
         builder.Services.AddTransient<IItemGroupService, ItemGroupService>();
