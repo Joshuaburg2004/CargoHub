@@ -16,7 +16,7 @@ public class Item_typeIntegratieTest : BaseTest
     public static item_type testType = new(1, "Laptop", "");
     public static item_type PutType = new(1, "smart name", "smart description");
     public static string testTypeJson {get => JsonSerializer.Serialize(testType);}
-    public static Item TestItem = new("P000004", "sjQ23408K", "Face-to-face clear-thinking complexity",
+    public static PythonTests.models.Item TestItem = new("P000004", "sjQ23408K", "Face-to-face clear-thinking complexity",
      "must", "6523540947122", "63-OFFTq0T", "oTo304", 1, 1,1,1,1,1,1,"SUP423", "E-86805-uTM");
     public Item_typeIntegratieTest(): base()
     {}
@@ -84,12 +84,12 @@ public class Item_typeIntegratieTest : BaseTest
 
         HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_types/1/items");
         var responseContent = await response.Content.ReadAsStringAsync();
-        List<Item>? itemtypeafterupdate = JsonSerializer.Deserialize<List<Item>>(responseContent);
+        List<PythonTests.models.Item>? itemtypeafterupdate = JsonSerializer.Deserialize<List<PythonTests.models.Item>>(responseContent);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        Xunit.Assert.IsType<List<Item>>(itemtypeafterupdate);
+        Xunit.Assert.IsType<List<PythonTests.models.Item>>(itemtypeafterupdate);
         
-        Item ToReturn = itemtypeafterupdate[0];
+        PythonTests.models.Item ToReturn = itemtypeafterupdate[0];
         Xunit.Assert.Equal(TestItem.uid, ToReturn.uid);
         Xunit.Assert.Equal(TestItem.code, ToReturn.code);
 

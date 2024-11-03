@@ -36,18 +36,6 @@ public class ItemController : Controller
         return BadRequest();
     }
 
-    [HttpGet("ItemGroup/{id}")]
-    public async Task<IActionResult> GetItemsForItemGroup([FromRoute] string id)
-    {
-        if (Guid.TryParse(id, out Guid result))
-        {
-            IEnumerable<Item> found = await this.itemsService.GetItemsForItemGroup(result);
-            if (found.Count() >= 1) return Ok(found);
-            else return NotFound();
-        }
-        return BadRequest();
-    }
-
 
     [HttpPost()]
     public async Task<IActionResult> AddItem([FromBody] Item? item)

@@ -9,15 +9,15 @@ public class ItemGroupService: IItemGroupService
         _cargoHubContext = context;
     }
 
-    public async Task<Item_group?> FindItemGroup(Guid Id)
+    public async Task<Item_group?> FindItemGroup(int Id)
     {
         return await this._cargoHubContext.Item_Groups.FirstOrDefaultAsync(item_group => item_group.Id == Id);
     }
-    public async Task<IEnumerable<Item_group?>> FindManyItemGroup(IEnumerable<Guid> Ids)
+    public async Task<IEnumerable<Item_group?>> FindManyItemGroup(IEnumerable<int> Ids)
     {
         List<Item_group?> toReturn = new List<Item_group?>();
         
-        foreach (Guid id in Ids)
+        foreach (int id in Ids)
         {
             toReturn.Append(await this._cargoHubContext.Item_Groups.FirstOrDefaultAsync(item_group => item_group.Id == id));
         }
@@ -28,14 +28,22 @@ public class ItemGroupService: IItemGroupService
     {
         return await this._cargoHubContext.Item_Groups.ToListAsync();
     }
-    public async Task<Guid?> AddItemGroup(Item_group linetype)
+
+    public async Task<IEnumerable<Item>?> GetItemsfromItemGroupById(int id)
+    {
+        if (id < 0) return null;
+        return await this._cargoHubContext.Items.Where(_ => _.ItemGroup == id).ToListAsync();
+    }
+
+
+    public async Task<int?> AddItemGroup(Item_group linetype)
     {
         await _cargoHubContext.Item_Groups.AddAsync(linetype);
         await _cargoHubContext.SaveChangesAsync();
         return linetype.Id;
     }
 
-    public async Task<Item_group?> UpdateItemGroup(Guid Id, Item_group toUpdate)
+    public async Task<Item_group?> UpdateItemGroup(int Id, Item_group toUpdate)
     {
         Item_group? found = await this.FindItemGroup(Id);
         if (found is null) return null;
@@ -50,7 +58,7 @@ public class ItemGroupService: IItemGroupService
     }
 
 
-    public async Task<Item_group?> DeleteItemGroup(Guid Id)
+    public async Task<Item_group?> DeleteItemGroup(int Id)
     {
         Item_group? found = await this.FindItemGroup(Id);
         if (found is null) return null;
