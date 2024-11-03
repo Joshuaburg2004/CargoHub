@@ -13,11 +13,11 @@ namespace PythonTests;
 public class Item_typeIntegratieTest : BaseTest
 {
 
-    public static item_type testType = new(0, "Laptop", "");
-    public static item_type PutType = new(0, "smart name", "smart description");
+    public static item_type testType = new(1, "Laptop", "");
+    public static item_type PutType = new(1, "smart name", "smart description");
     public static string testTypeJson {get => JsonSerializer.Serialize(testType);}
     public static Item TestItem = new("P000004", "sjQ23408K", "Face-to-face clear-thinking complexity",
-     "must", "6523540947122", "63-OFFTq0T", "oTo304", 0, 0,0,0,0,0,0,"SUP423", "E-86805-uTM");
+     "must", "6523540947122", "63-OFFTq0T", "oTo304", 1, 1,1,1,1,1,1,"SUP423", "E-86805-uTM");
     public Item_typeIntegratieTest(): base()
     {}
 
@@ -40,7 +40,7 @@ public class Item_typeIntegratieTest : BaseTest
     [Fact, TestPriority(1)]
     public async Task GetItemtype()
     {
-        HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_types/0");
+        HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_types/1");
         Console.Error.WriteLine(await response.Content.ReadAsStringAsync());
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         item_type? returned = JsonSerializer.Deserialize<item_type>(await response.Content.ReadAsStringAsync());
@@ -54,7 +54,7 @@ public class Item_typeIntegratieTest : BaseTest
     public async Task UpdateItemtype()
     {
         string toSend = JsonSerializer.Serialize(PutType);
-        HttpResponseMessage response = await _client.PutAsync($"/api/v1/item_types/0", new StringContent(toSend, System.Text.Encoding.UTF8, "application/json"));
+        HttpResponseMessage response = await _client.PutAsync($"/api/v1/item_types/1", new StringContent(toSend, System.Text.Encoding.UTF8, "application/json"));
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Xunit.Assert.Equal("", await response.Content.ReadAsStringAsync());
         
@@ -63,7 +63,7 @@ public class Item_typeIntegratieTest : BaseTest
     [Fact, TestPriority(3)]
     public async Task GetUpdatedItemType()
     {
-        HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_types/0");
+        HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_types/1");
         var responseContent = await response.Content.ReadAsStringAsync();
         item_type? itemtypeafterupdate = JsonSerializer.Deserialize<item_type>(responseContent);
 
@@ -82,7 +82,7 @@ public class Item_typeIntegratieTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.Created, postresponse.StatusCode);
         
 
-        HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_types/0/items");
+        HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_types/1/items");
         var responseContent = await response.Content.ReadAsStringAsync();
         List<Item>? itemtypeafterupdate = JsonSerializer.Deserialize<List<Item>>(responseContent);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -111,7 +111,7 @@ public class Item_typeIntegratieTest : BaseTest
     [Fact, TestPriority(6)]
     public async Task DeleteItemtype()
     {
-        HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/item_types/0");
+        HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/item_types/1");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var responseContent = await response.Content.ReadAsStringAsync();
         Xunit.Assert.Equal("", responseContent);

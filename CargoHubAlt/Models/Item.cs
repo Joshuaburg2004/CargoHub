@@ -12,6 +12,7 @@ public class Item : Base
     public string CommodityCode { get; set; }
     public int ItemLine { get; set; }
     public int ItemGroup { get; set; }
+
     public int ItemType { get; set; }
     public int UnitPurchaseQuantity { get; set; }
     public int UnitOrderQuantity { get; set; }
@@ -24,6 +25,7 @@ public class Item : Base
 
     public Item() { }
     public Item(string uid, string code, string description, string shortDescription, string upcCode, string modelNumber, string commodityCode, int itemLine, int itemGroup, int itemType, int unitPurchaseQuantity, int unitOrderQuantity, int packOrderQuantity, int supplierId, string supplierCode, string supplierPartNumber)
+
     {
         Uid = uid;
         Code = code;

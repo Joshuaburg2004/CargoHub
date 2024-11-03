@@ -19,7 +19,6 @@ public class ItemsService : IItemsService
     {
         return await this._context.Items.FirstOrDefaultAsync(_ => _.Uid == id);
     }
-
     public async Task<Inventory?> GetInventoryByItem(string id)
     {
         return await this._context.Inventories.FirstOrDefaultAsync(_ => _.Item_id == id);
@@ -41,7 +40,6 @@ public class ItemsService : IItemsService
         toReturn.Add("total_available", found.Total_available);
         return toReturn;
     }
-
     public async Task<string?> AddItem(Item toAdd)
     {
         await this._context.Items.AddAsync(toAdd);
