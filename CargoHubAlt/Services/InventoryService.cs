@@ -4,21 +4,15 @@ public class InventoryService : IInventoryService{
     public InventoryService(CargoHubContext context){
         _cargoHubContext = context;
     }
-    public async Task<Inventory?> FindInventory(Guid id){
+    public async Task<Inventory?> GetOneInventory(int id){
         return await this._cargoHubContext.Inventories.FirstOrDefaultAsync(inventory => inventory.Id == id);
-    }
-
-    public async Task<IEnumerable<Inventory>> FindManyInventories(Guid[] ids){
-        return await this._cargoHubContext.Inventories.Where(inventory => ids.Contains(inventory.Id)).ToListAsync();
     }
 
     public async Task<IEnumerable<Inventory>> GetAllInventories(){
         return await this._cargoHubContext.Inventories.ToListAsync();
     }
 
-    public async Task<Guid?> CreateInventory(Inventory inventory){
-        Inventory? found = await this._cargoHubContext.Inventories.FirstOrDefaultAsync(x => x.Id == inventory.Id);
-        if (found is not null) inventory.Id = Guid.NewGuid();
+    public async Task<int?> CreateInventory(Inventory inventory){
         inventory.Created_at = Inventory.GetTimeStamp();
         inventory.Updated_at = Inventory.GetTimeStamp();
         await this._cargoHubContext.Inventories.AddAsync(inventory);
@@ -26,7 +20,7 @@ public class InventoryService : IInventoryService{
         else return null;
     }
 
-    public async Task<Inventory?> UpdateInventory(Guid id, Inventory inventory){
+    public async Task<Inventory?> UpdateInventory(int id, Inventory inventory){
         Inventory? found = await this._cargoHubContext.Inventories.FirstOrDefaultAsync(x => x.Id == id);
         if (found is null) return null;
         var orig_found = found;
@@ -45,7 +39,7 @@ public class InventoryService : IInventoryService{
         return orig_found;
     }
 
-    public async Task<Inventory?> DeleteInventory(Guid id){
+    public async Task<Inventory?> DeleteInventory(int id){
         Inventory? found = await this._cargoHubContext.Inventories.FirstOrDefaultAsync(x => x.Id == id);
         if (found is null) return null;
         this._cargoHubContext.Inventories.Remove(found);
