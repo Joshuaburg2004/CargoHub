@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 
-[Route("api/v1/Inventory")]
+[Route("api/v1/Inventories")]
 public class InventoryController : Controller
 {
     readonly IInventoryService _inventoryService;
