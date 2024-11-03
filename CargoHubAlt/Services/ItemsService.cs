@@ -26,18 +26,16 @@ public class ItemsService : IItemsService
 
     public async Task<Dictionary<string, int>> GetInventoryTotalsByItem(string id){
         Dictionary<string, int> toReturn = new Dictionary<string, int>();
-        Inventory? found = await this._context.Inventories.FirstOrDefaultAsync(_ => _.Item_id == id);
-        if (found is null) {
-            toReturn.Add("total_expected", 0);
-            toReturn.Add("total_ordered", 0);
-            toReturn.Add("total_allocated", 0);
-            toReturn.Add("total_available", 0);
-            return toReturn;
+        toReturn.Add("total_expected", 0);
+        toReturn.Add("total_ordered", 0);
+        toReturn.Add("total_allocated", 0);
+        toReturn.Add("total_available", 0);
+        foreach(Inventory inv in await this._context.Inventories.Where(_ => _.Item_id == id).ToListAsync()){
+            toReturn["total_expected"] += inv.Total_expected;
+            toReturn["total_ordered"] += inv.Total_ordered;
+            toReturn["total_allocated"] += inv.Total_allocated;
+            toReturn["total_available"] += inv.Total_available;
         }
-        toReturn.Add("total_expected", found.Total_expected);
-        toReturn.Add("total_ordered", found.Total_ordered);
-        toReturn.Add("total_allocated", found.Total_allocated);
-        toReturn.Add("total_available", found.Total_available);
         return toReturn;
     }
     public async Task<string?> AddItem(Item toAdd)
