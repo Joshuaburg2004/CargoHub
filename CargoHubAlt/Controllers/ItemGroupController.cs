@@ -21,6 +21,7 @@ public class ItemGroupController: Controller
     {
         Item_group? toReturn = await this._itemsService.FindItemGroup(id);
         
+        if (toReturn is null) return Ok("null"); 
         return Ok(toReturn); 
 
         // if (toReturn is null) return NotFound($"ID {id} not found");
@@ -61,8 +62,10 @@ public class ItemGroupController: Controller
 
         Item_group? success = await this._itemsService.UpdateItemGroup(id, toupdateto);
 
-        if (success is null) return NotFound($"Id not Found: {id}");
-        return Ok(success);
+        return Ok();
+
+        // if (success is null) return NotFound($"Id not Found: {id}");
+        // return Ok(success);
     }
 
     [HttpDelete("{id}")]
@@ -71,8 +74,10 @@ public class ItemGroupController: Controller
 
         Item_group? success = await this._itemsService.DeleteItemGroup(id);
 
-        if (success is null) return NotFound($"ID not found: {id}");
-        else return Ok(success);
+        return Ok();
+
+        // if (success is null) return NotFound($"ID not found: {id}");
+        // else return Ok(success);
     }
 
 }
