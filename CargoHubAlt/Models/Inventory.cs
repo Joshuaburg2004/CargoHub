@@ -1,6 +1,6 @@
 public class Inventory : Base
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public string Item_id { get; set; }
     public string Description { get; set; }
     public string Item_reference { get; set; }
@@ -13,9 +13,9 @@ public class Inventory : Base
     public string Created_at { get; set; } = GetTimeStamp();
     public string Updated_at { get; set; } = GetTimeStamp();
 
-    public Inventory(string item_id, string description, string item_reference, List<int> locations, int total_on_hand, int total_expected, int total_ordered, int total_allocated, int total_available)
+    public Inventory(int id, string item_id, string description, string item_reference, List<int> locations, int total_on_hand, int total_expected, int total_ordered, int total_allocated, int total_available)
     {
-        Id = Guid.NewGuid();
+        Id = id;
         Item_id = item_id;
         Description = description;
         Item_reference = item_reference;
