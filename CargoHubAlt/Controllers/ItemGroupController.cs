@@ -20,8 +20,11 @@ public class ItemGroupController: Controller
     public async Task<IActionResult> GetOneItemGroup([FromRoute] int id)
     {
         Item_group? toReturn = await this._itemsService.FindItemGroup(id);
-        if (toReturn is null) return NotFound($"ID {id} not found");
-        else return Ok(toReturn);
+        
+        return Ok(toReturn); 
+
+        // if (toReturn is null) return NotFound($"ID {id} not found");
+        // else return Ok(toReturn);
 
     }
 
