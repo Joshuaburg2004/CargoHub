@@ -20,8 +20,12 @@ public class ItemLineController : Controller
     public async Task<IActionResult> GetOneItemLine([FromRoute] int id)
     {
         Item_line? toReturn = await this._itemsService.FindItemLine(id);
-        if (toReturn is null) return NotFound($"ID {id} not found");
+
+        if (toReturn is null) return Ok("null");
         else return Ok(toReturn);
+
+        // if (toReturn is null) return NotFound($"ID {id} not found");
+        // else return Ok(toReturn);
 
     }
 
@@ -55,7 +59,11 @@ public class ItemLineController : Controller
     [HttpPut("{id}")]
     public async Task<IActionResult> putItemLine([FromRoute] int id, [FromBody] Item_line toupdateto)
     {
-        return Ok(await _itemsService.UpdateItemLine(id, toupdateto));
+        
+        await _itemsService.UpdateItemLine(id, toupdateto);
+
+        
+        return Ok("");
     }
 
     [HttpDelete("{id}")]
