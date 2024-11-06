@@ -57,9 +57,9 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("Client", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -112,9 +112,9 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("Inventory", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Created_at")
                         .IsRequired()
@@ -162,19 +162,10 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("Item", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Uid")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CommodityCode")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -182,59 +173,63 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ItemGroup")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ItemLine")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ItemType")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ModelNumber")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("PackOrderQuantity")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ShortDescription")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SupplierCode")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("SupplierId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SupplierPartNumber")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<int?>("TransferId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Uid")
+                    b.Property<string>("commodity_code")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UnitOrderQuantity")
+                    b.Property<string>("created_at")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("item_group")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UnitPurchaseQuantity")
+                    b.Property<int>("item_line")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UpcCode")
+                    b.Property<int>("item_type")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("model_number")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UpdatedAt")
+                    b.Property<int>("pack_order_quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("short_description")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.Property<string>("supplier_code")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("supplier_id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("supplier_part_number")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("unit_order_quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("unit_purchase_quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("upc_code")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("updated_at")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Uid");
 
                     b.HasIndex("TransferId");
 
@@ -243,9 +238,9 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("Item_group", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("CreatedAt")
                         .IsRequired()
@@ -270,9 +265,9 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("Item_line", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("CreatedAt")
                         .IsRequired()
@@ -297,9 +292,9 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("Item_type", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("CreatedAt")
                         .IsRequired()
@@ -480,9 +475,9 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("Supplier", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Address")
                         .IsRequired()

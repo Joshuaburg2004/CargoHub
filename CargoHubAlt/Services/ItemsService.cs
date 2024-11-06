@@ -52,20 +52,20 @@ public class ItemsService : IItemsService
         found.Uid = UpdateTo.Uid;
         found.Code = UpdateTo.Code;
         found.Description = UpdateTo.Description;
-        found.ShortDescription = UpdateTo.ShortDescription;
-        found.UpcCode = UpdateTo.UpcCode;
-        found.ModelNumber = UpdateTo.ModelNumber;
-        found.CommodityCode = UpdateTo.CommodityCode;
-        found.ItemLine = UpdateTo.ItemLine;
-        found.ItemGroup = UpdateTo.ItemGroup;
-        found.ItemType = UpdateTo.ItemType;
-        found.UnitPurchaseQuantity = UpdateTo.UnitPurchaseQuantity;
-        found.UnitOrderQuantity = UpdateTo.UnitOrderQuantity;
-        found.PackOrderQuantity = UpdateTo.PackOrderQuantity;
-        found.SupplierId = UpdateTo.SupplierId;
-        found.SupplierCode = UpdateTo.SupplierCode;
-        found.SupplierPartNumber = UpdateTo.SupplierPartNumber;
-        found.UpdatedAt = UpdateTo.UpdatedAt;
+        found.short_description = UpdateTo.short_description;
+        found.upc_code = UpdateTo.upc_code;
+        found.model_number = UpdateTo.model_number;
+        found.commodity_code = UpdateTo.commodity_code;
+        found.item_line = UpdateTo.item_line;
+        found.item_group = UpdateTo.item_group;
+        found.item_type = UpdateTo.item_type;
+        found.unit_purchase_quantity = UpdateTo.unit_purchase_quantity;
+        found.unit_order_quantity = UpdateTo.unit_order_quantity;
+        found.pack_order_quantity = UpdateTo.pack_order_quantity;
+        found.supplier_id = UpdateTo.supplier_id;
+        found.supplier_code = UpdateTo.supplier_code;
+        found.supplier_part_number = UpdateTo.supplier_part_number;
+        found.updated_at = UpdateTo.updated_at;
 
 
         if (await this._context.SaveChangesAsync() >= 1) return found;
