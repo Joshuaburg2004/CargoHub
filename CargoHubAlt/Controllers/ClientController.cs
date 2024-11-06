@@ -40,7 +40,7 @@ public class ClientController : Controller
             return BadRequest("Client cannot be null.");
         }
         await Clients.AddClient(client);
-        return Created();
+        return Created("Created client:", client);
     }
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateClient([FromRoute] int id, [FromBody] Client client){

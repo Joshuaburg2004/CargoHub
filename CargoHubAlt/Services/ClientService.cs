@@ -17,8 +17,8 @@ public class ClientService : IClientService
     }
     public async Task<int?> AddClient(Client client)
     {
-        client.CreatedAt = Base.GetTimeStamp();
-        client.UpdatedAt = Base.GetTimeStamp();
+        client.Created_At = Base.GetTimeStamp();
+        client.Updated_At = Base.GetTimeStamp();
         await cargoHubContext.Clients.AddAsync(client);
         await cargoHubContext.SaveChangesAsync();
         return client.Id;
@@ -33,13 +33,13 @@ public class ClientService : IClientService
         origClient.Name = client.Name;
         origClient.Address = client.Address;
         origClient.City = client.City;
-        origClient.ZipCode = client.ZipCode;
+        origClient.Zip_Code = client.Zip_Code;
         origClient.Province = client.Province;
         origClient.Country = client.Country;
-        origClient.ContactName = client.ContactName;
-        origClient.ContactPhone = client.ContactPhone;
-        origClient.ContactEmail = client.ContactEmail;
-        origClient.UpdatedAt = Base.GetTimeStamp();
+        origClient.Contact_Name = client.Contact_Name;
+        origClient.Contact_Phone = client.Contact_Phone;
+        origClient.Contact_Email = client.Contact_Email;
+        origClient.Updated_At = Base.GetTimeStamp();
         await cargoHubContext.SaveChangesAsync();
         return origClient;
     }
