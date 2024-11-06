@@ -11,7 +11,7 @@ public class Suppliers : ISuppliers
     {
         return await cargoHubContext.Suppliers.ToListAsync();
     }
-    public async Task<Supplier?> GetOneSupplier(int id)
+    public async Task<Supplier?> GetSupplier(int id)
     {
         return await cargoHubContext.Suppliers.FindAsync(id);
     }
