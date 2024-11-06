@@ -14,14 +14,16 @@ public class TransferService : ITransferService
 
     public async Task<Transfer> GetTransferById(int id) => await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
 
-    public async Task<List<TransferItem>> GetItemsInTransfer(int id)
+    public async Task<List<TransferItem>?> GetItemsInTransfer(int id)
     {
         Transfer? transfer = await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
-        return transfer?.Items ?? new List<TransferItem>();
+        return transfer?.Items ?? null;
     }
 
     public async Task<int?> AddTransfer(Transfer transfer)
     {
+        transfer.Created_At = Base.GetTimeStamp();
+        transfer.Updated_At = Base.GetTimeStamp();
         await _context.Transfers.AddAsync(transfer);
         if (await this._context.SaveChangesAsync() >= 1) return transfer.Id;
         else return null;
@@ -45,7 +47,8 @@ public class TransferService : ITransferService
         oldTransfer.Transfer_From = transfer.Transfer_From;
         oldTransfer.Transfer_To = transfer.Transfer_To;
         oldTransfer.Transfer_Status = transfer.Transfer_Status;
-        oldTransfer.Updated_At = transfer.Updated_At;
+        transfer.Created_At = transfer.Created_At;
+        transfer.Updated_At = Base.GetTimeStamp();
 
         await _context.SaveChangesAsync();
         return oldTransfer;

@@ -28,6 +28,6 @@ public class Transfer
 [Owned]
 public class TransferItem{
     [Key]
-    public int Item_Id { get; set; }
+    public string Item_Id { get; set; }
     public int Amount {get; set;}
 }
