@@ -19,9 +19,9 @@ public class ItemsService : IItemsService
     {
         return await this._context.Items.FirstOrDefaultAsync(_ => _.Uid == id);
     }
-    public async Task<Inventory?> GetInventoryByItem(string id)
+    public async Task<IEnumerable<Inventory>> GetInventoryByItem(string id)
     {
-        return await this._context.Inventories.FirstOrDefaultAsync(_ => _.Item_id == id);
+        return await this._context.Inventories.Where(_ => _.Item_id == id).ToListAsync();
     }
 
     public async Task<Dictionary<string, int>> GetInventoryTotalsByItem(string id){
