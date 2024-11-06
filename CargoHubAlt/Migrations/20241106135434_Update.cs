@@ -5,7 +5,7 @@
 namespace CargoHubAlt.Migrations
 {
     /// <inheritdoc />
-    public partial class lifeiswhack : Migration
+    public partial class Update : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,14 +19,14 @@ namespace CargoHubAlt.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Address = table.Column<string>(type: "TEXT", nullable: false),
                     City = table.Column<string>(type: "TEXT", nullable: false),
-                    ZipCode = table.Column<string>(type: "TEXT", nullable: false),
+                    Zip_Code = table.Column<string>(type: "TEXT", nullable: false),
                     Province = table.Column<string>(type: "TEXT", nullable: false),
                     Country = table.Column<string>(type: "TEXT", nullable: false),
-                    ContactName = table.Column<string>(type: "TEXT", nullable: false),
-                    ContactPhone = table.Column<string>(type: "TEXT", nullable: false),
-                    ContactEmail = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<string>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<string>(type: "TEXT", nullable: false)
+                    Contact_Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Contact_Phone = table.Column<string>(type: "TEXT", nullable: false),
+                    Contact_Email = table.Column<string>(type: "TEXT", nullable: false),
+                    Created_At = table.Column<string>(type: "TEXT", nullable: false),
+                    Updated_At = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,23 +127,25 @@ namespace CargoHubAlt.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    SourceId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Source_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Order_Date = table.Column<string>(type: "TEXT", nullable: true),
+                    Request_Date = table.Column<string>(type: "TEXT", nullable: true),
                     Reference = table.Column<string>(type: "TEXT", nullable: true),
-                    ReferenceExtra = table.Column<string>(type: "TEXT", nullable: true),
-                    OrderStatus = table.Column<string>(type: "TEXT", nullable: true),
+                    Reference_Extra = table.Column<string>(type: "TEXT", nullable: true),
+                    Order_Status = table.Column<string>(type: "TEXT", nullable: true),
                     Notes = table.Column<string>(type: "TEXT", nullable: true),
-                    ShippingNotes = table.Column<string>(type: "TEXT", nullable: true),
-                    PickingNotes = table.Column<string>(type: "TEXT", nullable: true),
-                    WarehouseId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ShipTo = table.Column<int>(type: "INTEGER", nullable: false),
-                    BillTo = table.Column<int>(type: "INTEGER", nullable: false),
-                    ShipmentId = table.Column<int>(type: "INTEGER", nullable: false),
-                    TotalAmount = table.Column<double>(type: "REAL", nullable: false),
-                    TotalDiscount = table.Column<double>(type: "REAL", nullable: false),
-                    TotalTax = table.Column<double>(type: "REAL", nullable: false),
-                    TotalSurcharge = table.Column<double>(type: "REAL", nullable: false),
-                    CreatedAt = table.Column<string>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<string>(type: "TEXT", nullable: false)
+                    Shipping_Notes = table.Column<string>(type: "TEXT", nullable: true),
+                    Picking_Notes = table.Column<string>(type: "TEXT", nullable: true),
+                    Warehouse_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Ship_To = table.Column<int>(type: "INTEGER", nullable: false),
+                    Bill_To = table.Column<int>(type: "INTEGER", nullable: false),
+                    Shipment_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Total_Amount = table.Column<double>(type: "REAL", nullable: false),
+                    Total_Discount = table.Column<double>(type: "REAL", nullable: false),
+                    Total_Tax = table.Column<double>(type: "REAL", nullable: false),
+                    Total_Surcharge = table.Column<double>(type: "REAL", nullable: false),
+                    Created_At = table.Column<string>(type: "TEXT", nullable: false),
+                    Updated_At = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -249,14 +251,13 @@ namespace CargoHubAlt.Migrations
                 name: "OrderedItem",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
-                    ItemId = table.Column<string>(type: "TEXT", nullable: true),
-                    Amount = table.Column<int>(type: "INTEGER", nullable: false)
+                    Item_Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Amount = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderedItem", x => new { x.OrderId, x.Id });
+                    table.PrimaryKey("PK_OrderedItem", x => x.Item_Id);
                     table.ForeignKey(
                         name: "FK_OrderedItem_Orders_OrderId",
                         column: x => x.OrderId,
@@ -323,6 +324,11 @@ namespace CargoHubAlt.Migrations
                 name: "IX_Items_TransferId",
                 table: "Items",
                 column: "TransferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderedItem_OrderId",
+                table: "OrderedItem",
+                column: "OrderId");
         }
 
         /// <inheritdoc />
