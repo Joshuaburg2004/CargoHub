@@ -41,8 +41,11 @@ public class InventoryController : Controller
     {
         Inventory? success = await this._inventoryService.UpdateInventory(id, toupdateto);
 
-        if (success is null) return NotFound($"Id not Found: {id}");
-        return Ok(success);
+        return Ok("");
+        
+        
+        // if (success is null) return NotFound($"Id not Found: {id}");
+        // return Ok(success);
     }
 
     [HttpDelete("{id}")]
@@ -50,8 +53,10 @@ public class InventoryController : Controller
     {
         Inventory? success = await this._inventoryService.DeleteInventory(id);
 
-        if (success is null) return NotFound($"ID not found: {id}");
-        else return Ok(success);
+        return Ok("");
+
+        // if (success is null) return NotFound($"ID not found: {id}");
+        // else return Ok(success);
     }
 
 }
