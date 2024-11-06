@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CargoHubAlt.Migrations
 {
     [DbContext(typeof(CargoHubContext))]
-    partial class CargoHubContextModelSnapshot : ModelSnapshot
+    [Migration("20241106115137_clientupdate")]
+    partial class clientupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -169,6 +172,14 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CommodityCode")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedAt")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -186,23 +197,14 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("item_group")
+                    b.Property<int>("PackOrderQuantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("item_line")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("item_type")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("model_number")
+                    b.Property<string>("ShortDescription")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("pack_order_quantity")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("short_description")
+                    b.Property<string>("SupplierCode")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -213,20 +215,20 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("supplier_id")
+                    b.Property<int?>("TransferId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("UnitOrderQuantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("unit_purchase_quantity")
+                    b.Property<int>("UnitPurchaseQuantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("upc_code")
+                    b.Property<string>("UpcCode")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("updated_at")
+                    b.Property<string>("UpdatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

@@ -69,22 +69,23 @@ public class OrderService : IOrderService
         }
 
         // update Order
-        oldOrder.SourceId = order.SourceId;
+        oldOrder.Source_Id = order.Source_Id;
         oldOrder.Reference = order.Reference;
-        oldOrder.ReferenceExtra = order.ReferenceExtra;
-        oldOrder.OrderStatus = order.OrderStatus;
+        oldOrder.Reference_Extra = order.Reference_Extra;
+        oldOrder.Order_Status = order.Order_Status;
         oldOrder.Notes = order.Notes;
-        oldOrder.ShippingNotes = order.ShippingNotes;
-        oldOrder.PickingNotes = order.PickingNotes;
-        oldOrder.WarehouseId = order.WarehouseId;
-        oldOrder.ShipTo = order.ShipTo;
-        oldOrder.BillTo = order.BillTo;
-        oldOrder.ShipmentId = order.ShipmentId;
-        oldOrder.TotalAmount = order.TotalAmount;
-        oldOrder.TotalDiscount = order.TotalDiscount;
-        oldOrder.TotalTax = order.TotalTax;
-        oldOrder.TotalSurcharge = order.TotalSurcharge;
-        oldOrder.UpdatedAt = DateTime.Now.ToString();
+        oldOrder.Shipping_Notes = order.Shipping_Notes;
+        oldOrder.Picking_Notes = order.Picking_Notes;
+        oldOrder.Warehouse_Id = order.Warehouse_Id;
+        oldOrder.Ship_To = order.Ship_To;
+        oldOrder.Bill_To = order.Bill_To;
+        oldOrder.Shipment_Id = order.Shipment_Id;
+        oldOrder.Total_Amount = order.Total_Amount;
+        oldOrder.Total_Discount = order.Total_Discount;
+        oldOrder.Total_Tax = order.Total_Tax;
+        oldOrder.Total_Surcharge = order.Total_Surcharge;
+        oldOrder.Created_At = order.Created_At;
+        oldOrder.Updated_At = Base.GetTimeStamp();
         oldOrder.Items = order.Items;
 
         _context.Orders.Update(oldOrder);
