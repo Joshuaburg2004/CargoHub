@@ -56,7 +56,7 @@ public class ClientService : IClientService
     }
     public async Task<List<Order>> GetOrdersByClient(int id)
     {
-        return await cargoHubContext.Orders.Where(o => o.BillTo == id || o.ShipTo == id).ToListAsync();
+        return await cargoHubContext.Orders.Where(o => o.Bill_To == id || o.Ship_To == id).ToListAsync();
     }
     public async Task LoadFromJson(string path)
     {

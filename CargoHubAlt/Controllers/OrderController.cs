@@ -55,11 +55,11 @@ public class OrderController : Controller
     {
         if (order == null)
         {
-            return BadRequest();
+            return BadRequest("Order is null");
         }
         else if (!await _orderservice.AddOrder(order))
         {
-            return BadRequest();
+            return BadRequest("Order not added");
         }
         return Ok();
     }
@@ -69,10 +69,12 @@ public class OrderController : Controller
     {
         if (id <= 0 || order == null)
         {
+            Console.WriteLine("id: " + id + " order: " + order);
             return BadRequest();
         }
         else if (!await _orderservice.UpdateOrder(order))
         {
+            Console.WriteLine("id: " + id + " order: " + order + " not updated");
             return BadRequest();
         }
         return Ok();
