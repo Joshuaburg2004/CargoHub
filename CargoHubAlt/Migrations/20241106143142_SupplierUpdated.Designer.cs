@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CargoHubAlt.Migrations
 {
     [DbContext(typeof(CargoHubContext))]
-    [Migration("20241106112342_lifeiswhack")]
-    partial class lifeiswhack
+    [Migration("20241106143142_SupplierUpdated")]
+    partial class SupplierUpdated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,15 +72,15 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ContactEmail")
+                    b.Property<string>("Contact_Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ContactName")
+                    b.Property<string>("Contact_Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ContactPhone")
+                    b.Property<string>("Contact_Phone")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -88,7 +88,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CreatedAt")
+                    b.Property<string>("Created_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -100,11 +100,11 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UpdatedAt")
+                    b.Property<string>("Updated_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ZipCode")
+                    b.Property<string>("Zip_Code")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -356,57 +356,63 @@ namespace CargoHubAlt.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BillTo")
+                    b.Property<int>("Bill_To")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CreatedAt")
+                    b.Property<string>("Created_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Notes")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("OrderStatus")
+                    b.Property<string>("Order_Date")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PickingNotes")
+                    b.Property<string>("Order_Status")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Picking_Notes")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Reference")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ReferenceExtra")
+                    b.Property<string>("Reference_Extra")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ShipTo")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ShipmentId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ShippingNotes")
+                    b.Property<string>("Request_Date")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("SourceId")
+                    b.Property<int>("Ship_To")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("TotalAmount")
+                    b.Property<int>("Shipment_Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Shipping_Notes")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Source_Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Total_Amount")
                         .HasColumnType("REAL");
 
-                    b.Property<double>("TotalDiscount")
+                    b.Property<double>("Total_Discount")
                         .HasColumnType("REAL");
 
-                    b.Property<double>("TotalSurcharge")
+                    b.Property<double>("Total_Surcharge")
                         .HasColumnType("REAL");
 
-                    b.Property<double>("TotalTax")
+                    b.Property<double>("Total_Tax")
                         .HasColumnType("REAL");
 
-                    b.Property<string>("UpdatedAt")
+                    b.Property<string>("Updated_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("WarehouseId")
+                    b.Property<int>("Warehouse_Id")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -486,7 +492,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("AddressExtra")
+                    b.Property<string>("Address_Extra")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -498,7 +504,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ContactName")
+                    b.Property<string>("Contact_Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -506,7 +512,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CreatedAt")
+                    b.Property<string>("Created_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -526,11 +532,11 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UpdatedAt")
+                    b.Property<string>("Updated_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ZipCode")
+                    b.Property<string>("Zip_Code")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -624,20 +630,18 @@ namespace CargoHubAlt.Migrations
                 {
                     b.OwnsMany("OrderedItem", "Items", b1 =>
                         {
-                            b1.Property<int>("OrderId")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("INTEGER");
+                            b1.Property<string>("Item_Id")
+                                .HasColumnType("TEXT");
 
                             b1.Property<int>("Amount")
                                 .HasColumnType("INTEGER");
 
-                            b1.Property<string>("ItemId")
-                                .HasColumnType("TEXT");
+                            b1.Property<int>("OrderId")
+                                .HasColumnType("INTEGER");
 
-                            b1.HasKey("OrderId", "Id");
+                            b1.HasKey("Item_Id");
+
+                            b1.HasIndex("OrderId");
 
                             b1.ToTable("OrderedItem");
 
