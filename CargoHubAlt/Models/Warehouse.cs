@@ -1,8 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace CargoHubAlt.Models
 {
     public class Warehouse : Base
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
@@ -11,10 +13,11 @@ namespace CargoHubAlt.Models
         public string Province { get; set; }
         public string Country { get; set; }
         public Contact Contact { get; set; }
+        public Warehouse() { }
 
-        public Warehouse(string code, string name, string address, string zip, string city, string province, string country, Contact contact)
+        public Warehouse(int id, string code, string name, string address, string zip, string city, string province, string country, Contact contact)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Code = code;
             Name = name;
             Address = address;
@@ -25,10 +28,9 @@ namespace CargoHubAlt.Models
             Contact = contact;
         }
     }
-
+    [Owned]
     public class Contact
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
@@ -37,7 +39,6 @@ namespace CargoHubAlt.Models
 
         public Contact(string name, string phone, string email)
         {
-            Id = Guid.NewGuid();
             Name = name;
             Phone = phone;
             Email = email;

@@ -11,7 +11,7 @@ public class WarehouseController : Controller
         _warehouseservice = warehouseservice;
     }
 
-    [HttpGet]
+    [HttpGet()]
     public async Task<IActionResult> GetWarehouses()
     {
         var warhouses = await _warehouseservice.GetWarehouses();
@@ -19,21 +19,21 @@ public class WarehouseController : Controller
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetWarehousesById([FromRoute] Guid id)
+    public async Task<IActionResult> GetWarehousesById([FromRoute] int id)
     {
         var warehouse = await _warehouseservice.GetWarehousesById(id);
         return Ok(warehouse);
     }
 
-    [HttpPost]
+    [HttpPost()]
     public async Task<IActionResult> AddWarehouse([FromBody] Warehouse warehouse)
     {
         if (warehouse == null) return BadRequest();
         await _warehouseservice.AddWarehouse(warehouse);
-        return Ok();
+        return Created();
     }
 
-    [HttpPut]
+    [HttpPut()]
     public async Task<IActionResult> UpdateWarehouse([FromBody] Warehouse warehouse)
     {
         if (warehouse == null)
@@ -44,9 +44,9 @@ public class WarehouseController : Controller
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteWarehouse([FromRoute] Guid id)
+    public async Task<IActionResult> DeleteWarehouse([FromRoute] int id)
     {
-        if (id == Guid.Empty) return BadRequest();
+        if (id <= 0) return BadRequest();
         await _warehouseservice.DeleteWarehouse(id);
         return Ok();
     }

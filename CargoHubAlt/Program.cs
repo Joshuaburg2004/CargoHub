@@ -6,7 +6,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddTransient<IClients, Clients>();
+        builder.Services.AddTransient<IClientService, ClientService>();
         builder.Services.AddTransient<IInventoryService, InventoryService>();
         builder.Services.AddTransient<IItemTypeService, ItemTypeService>();
         builder.Services.AddTransient<IItemGroupService, ItemGroupService>();
@@ -39,7 +39,7 @@ public class Program
         app.UseAuthorization();
         app.MapControllers();
 
-        app.Urls.Add("https://localhost:5000");
+        app.Urls.Add("http://localhost:3000");
         app.MapGet("/", () => "Hello World!");
         app.Run();
     }

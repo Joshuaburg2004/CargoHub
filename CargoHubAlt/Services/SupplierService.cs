@@ -7,37 +7,23 @@ public class Suppliers : ISuppliers
     {
         cargoHubContext = context;
     }
-    public async Task<IEnumerable<Supplier>> GetAllSuppliers()
+    public async Task<IEnumerable<Supplier>> GetSuppliers()
     {
         return await cargoHubContext.Suppliers.ToListAsync();
     }
-    public async Task<IEnumerable<Supplier>> GetBatchSuppliers(Guid[] ids)
-    {
-        List<Supplier> suppliers = new();
-        foreach (Guid id in ids)
-        {
-            Supplier? supplier = await GetOneSupplier(id);
-            if (supplier != null)
-            {
-                suppliers.Add(supplier);
-            }
-        }
-        return suppliers;
-    }
-    public async Task<Supplier?> GetOneSupplier(Guid id)
+    public async Task<Supplier?> GetSupplier(int id)
     {
         return await cargoHubContext.Suppliers.FindAsync(id);
     }
-    public async Task<Guid?> CreateSupplier(Supplier supplier)
+    public async Task<int?> CreateSupplier(Supplier supplier)
     {
-        supplier.Id = Guid.NewGuid();
         supplier.CreatedAt = Base.GetTimeStamp();
         supplier.UpdatedAt = Base.GetTimeStamp();
         cargoHubContext.Suppliers.Add(supplier);
         await cargoHubContext.SaveChangesAsync();
         return supplier.Id;
     }
-    public async Task<Supplier?> DeleteSupplier(Guid id)
+    public async Task<Supplier?> DeleteSupplier(int id)
     {
         var supplier = await cargoHubContext.Suppliers.FindAsync(id);
         if (supplier == null)
@@ -48,10 +34,10 @@ public class Suppliers : ISuppliers
         await cargoHubContext.SaveChangesAsync();
         return supplier;
     }
-    public async Task<Supplier?> UpdateSupplier(Guid id, Supplier supplier)
+    public async Task<Supplier?> UpdateSupplier(int id, Supplier supplier)
     {
         var origSupplier = await cargoHubContext.Suppliers.FindAsync(id);
-        if (origSupplier == null) return default(Supplier);
+        if (origSupplier == null) return default;
 
         origSupplier.Code = supplier.Code;
         origSupplier.Name = supplier.Name;
@@ -70,8 +56,10 @@ public class Suppliers : ISuppliers
         await cargoHubContext.SaveChangesAsync();
         return origSupplier;
     }
-    // commented out because Item is not done yet
-    // public async Task<IEnumerable<Item>?> GetItemsForSupplier(Guid id){}
+    public async Task<IEnumerable<Item>> GetItemsForSupplier(int id){
+        var items = await cargoHubContext.Items.Where(i => i.SupplierId == id).ToListAsync();
+        return items;
+    }
     public async Task LoadFromJson(string path)
     {
         if (File.Exists(path))

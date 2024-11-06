@@ -13,110 +13,54 @@ public class ItemController : Controller
     [HttpGet]
     public async Task<IActionResult> GetAllItems()
     {
-        IEnumerable<Item> found = await this.itemsService.GetAllItems();
+        IEnumerable<Item> found = await this.itemsService.GetItems();
         return Ok(found);
-    }
-
-    [HttpGet("batch")]
-    public async Task<IActionResult> GetItemsbatch([FromQuery] string[] ids)
-    {
-        IEnumerable<Item?> items = await itemsService.GetItemsBatch(ids);
-        return Ok(items);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetItem([FromRoute] string id)
     {
-        if (Guid.TryParse(id, out Guid result))
-        {
-            Item? found = await this.itemsService.GetItem(result);
-            if (found is null) return NotFound();
-            else return Ok(found);
-        }
-        return BadRequest();
+        Item? found = await this.itemsService.GetItem(id);
+        if (found is null) return NotFound($"Item with UID {id} not found");
+        else return Ok(found);
     }
 
-    [HttpGet("ItemLine/{id}")]
-    public async Task<IActionResult> GetItemsForItemLine([FromRoute] string id)
-    {
-        if (Guid.TryParse(id, out Guid result))
-        {
-            IEnumerable<Item> found = await this.itemsService.GetItemsForItemLine(result);
-            if (found.Count() >= 1) return Ok(found);
-            else return NotFound();
-        }
-        return BadRequest();
-    }
-
-    [HttpGet("ItemGroup/{id}")]
-    public async Task<IActionResult> GetItemsForItemGroup([FromRoute] string id)
-    {
-        if (Guid.TryParse(id, out Guid result))
-        {
-            IEnumerable<Item> found = await this.itemsService.GetItemsForItemGroup(result);
-            if (found.Count() >= 1) return Ok(found);
-            else return NotFound();
-        }
-        return BadRequest();
-    }
-
-    [HttpGet("ItemType/{id}")]
-    public async Task<IActionResult> GetItemsForItemType([FromRoute] string id)
-    {
-        if (Guid.TryParse(id, out Guid result))
-        {
-            IEnumerable<Item> found = await this.itemsService.GetItemsForItemType(result);
-            if (found.Count() >= 1) return Ok(found);
-            else return NotFound();
-        }
-        return BadRequest();
-    }
-
-    [HttpGet("Supplier/{id}")]
-    public async Task<IActionResult> GetItemsForSupplier([FromRoute] string id)
-    {
-        if (Guid.TryParse(id, out Guid result))
-        {
-            IEnumerable<Item> found = await this.itemsService.GetItemsForSupplier(result);
-            if (found.Count() >= 1) return Ok(found);
-            else return NotFound();
-        }
-        return BadRequest();
-    }
 
     [HttpPost()]
     public async Task<IActionResult> AddItem([FromBody] Item? item)
     {
-        if (item is null) return BadRequest();
-        Guid? toReturn = await this.itemsService.AddItem(item);
-        if (toReturn is null) return BadRequest();
+        if (item is null) return BadRequest("Item is null");
+        string? toReturn = await this.itemsService.AddItem(item);
+        if (toReturn is null) return BadRequest("Failed to add item");
         else return Ok(toReturn);
     }
 
     [HttpDelete("{toRemove}")]
     public async Task<IActionResult> RemoveItem([FromRoute] string toRemove)
     {
-        if (Guid.TryParse(toRemove, out Guid found))
-        {
-            Item? toReturn = await this.itemsService.RemoveItem(found);
-            if (toReturn is null) return BadRequest();
-            else return Ok(toReturn);
-        }
-        return BadRequest();
+        Item? toReturn = await this.itemsService.RemoveItem(toRemove);
+        if (toReturn is null) return NotFound($"Item with UID {toRemove} not found");
+        else return Ok(toReturn);
     }
 
     [HttpPut()]
     public async Task<IActionResult> UpdateItem([FromRoute] string toUpdate, [FromBody] Item UpdateTo)
     {
-        if (Guid.TryParse(toUpdate, out Guid found))
-        {
-            Item? toReturn = await this.itemsService.UpdateItem(found, UpdateTo);
-            if (toReturn is null) return BadRequest();
-            else return Ok(toReturn);
-        }
-        return BadRequest();
+        Item? toReturn = await this.itemsService.UpdateItem(toUpdate, UpdateTo);
+        if (toReturn is null) return NotFound($"Item with UID {toUpdate} not found");
+        else return Ok(toReturn);
     }
-
-
-
+    [HttpGet("{id}/inventory")]
+    public async Task<IActionResult> GetInventoryByItem([FromRoute] string id)
+    {
+        Inventory? found = await this.itemsService.GetInventoryByItem(id);
+        if (found is null) return NotFound($"Inventory for item with UID {id} not found");
+        else return Ok(found);
+    }
+    [HttpGet("{id}/inventory/totals")]
+    public async Task<IActionResult> GetInventoryTotalsByItem([FromRoute] string id)
+    {
+        Dictionary<string, int> found = await this.itemsService.GetInventoryTotalsByItem(id);
+        return Ok(found);
+    }
 }

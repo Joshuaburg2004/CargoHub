@@ -1,0 +1,641 @@
+@api_hostAdress = http://localhost:3000
+
+
+// get a list of all warehouses
+GET http://localhost:3000/api/v1/clients
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/clients/1
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/clients/7763/orders
+API_KEY: a1b2c3d4e5
+###
+
+POST  http://localhost:3000/api/v1/clients
+API_KEY: a1b2c3d4e5
+
+{"id": 1, "name": "Raymond Inc", "address": "1296 Daniel Road Apt. 349", "city": "Pierceview", "zip_code": "28301", "province": "Colorado", "country": "United States", "contact_name": "Bryan Clark", "contact_phone": "242.732.3483x2573", "contact_email": "robertcharles@example.net"}
+###
+
+PUT  http://localhost:3000/api/v1/clients/9794
+API_KEY: a1b2c3d4e5
+
+{"id": 9749, "name": "Raymond Inc", "address": "1296 Daniel Road Apt. 349", "city": "Pierceview", "zip_code": "28301", "province": "Colorado", "country": "United States", "contact_name": "Bryan Clark", "contact_phone": "242.732.3483x2573", "contact_email": "robertcharles@example.net"}
+###
+
+DELETE   http://localhost:3000/api/v1/clients/9794
+API_KEY: a1b2c3d4e5
+###
+
+// nu komen alle testen voor inventories
+
+GET http://localhost:3000/api/v1/inventories
+API_KEY: a1b2c3d4e5
+###
+
+
+GET http://localhost:3000/api/v1/inventories/1
+API_KEY: a1b2c3d4e5
+###
+
+POST  http://localhost:3000/api/v1/inventories
+API_KEY: a1b2c3d4e5
+
+{"id": 10000, "item_id": "P000001", "description": "Face-to-face clear-thinking complexity", "item_reference": "sjQ23408K", "locations": [3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817], "total_on_hand": 262, "total_expected": 0, "total_ordered": 80, "total_allocated": 41, "total_available": 141}
+###
+
+PUT   http://localhost:3000/api/v1/inventories/1
+API_KEY: a1b2c3d4e5
+
+{"id": 1, "item_id": "P000001", "description": "quack", "item_reference": "sjQ23408K", "locations": [3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817], "total_on_hand": 262, "total_expected": 0, "total_ordered": 80, "total_allocated": 41, "total_available": 141}
+###
+
+DELETE  http://localhost:3000/api/v1/inventories/1
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/item_groups
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/item_groups/1
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/item_groups/1/items
+API_KEY: a1b2c3d4e5
+###
+
+PUT http://localhost:3000/api/v1/item_groups/0
+API_KEY: a1b2c3d4e5
+Content-Type: application/json
+
+{"id": 0, "name": "Electronics", "description": "miep"}
+###
+
+DELETE  http://localhost:3000/api/v1/item_groups/0
+API_KEY: a1b2c3d4e5
+###
+
+
+POST http://localhost:3000/api/v1/item_groups
+Content-Type: application/json
+
+{"id": 1, "name": "Laptop", "description": ""}
+
+###
+
+
+//this is the item lines part
+GET http://localhost:3000/api/v1/item_lines
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/item_lines/1
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/item_lines/1/items
+API_KEY: a1b2c3d4e5
+###
+
+PUT  http://localhost:3000/api/v1/item_lines/1
+API_KEY: a1b2c3d4e5
+
+{"id": 1, "name": "Home Appliances", "description": "miep"}
+###
+
+DELETE  http://localhost:3000/api/v1/item_lines/1
+API_KEY: a1b2c3d4e5
+###
+
+// this post is exclusive to the testing of dotnet version
+POST http://localhost:3000/api/v1/item_lines
+Content-Type: application/json
+
+{"id": 1, "name": "Laptop", "description": ""}
+
+###
+
+
+
+// this starts the item_types requests
+
+GET http://localhost:3000/api/v1/item_types
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/item_types/1
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/item_types/1/items
+API_KEY: a1b2c3d4e5
+###
+
+PUT  http://localhost:3000/api/v1/item_types/0
+API_KEY: a1b2c3d4e5
+
+{"id": 0, "name": "Laptop", "description": "miep"}
+###
+
+DELETE  http://localhost:3000/api/v1/item_types/1
+API_KEY: a1b2c3d4e5
+###
+
+// this post is exclusive to the testing of dotnet version
+POST http://localhost:3000/api/v1/item_types
+Content-Type: application/json
+
+{"id": 1, "name": "Laptop", "description": ""}
+
+###
+
+//this starts the items requests
+
+GET http://localhost:3000/api/v1/items
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/items/P000001
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/items/P000001/inventory
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/items/P000001/inventory/totals
+API_KEY: a1b2c3d4e5
+###
+
+POST http://localhost:3000/api/v1/items
+API_KEY: a1b2c3d4e5
+Content-Type: application/json
+
+
+{
+    "Uid": "P000004",
+    "code": "sjQ23408K",
+    "description": "Face-to-face clear-thinking complexity",
+    "short_description": "must",
+    "upc_code": "6523540947122",
+    "model_number": "63-OFFTq0T",
+    "commodity_code": "oTo304",
+    "item_line": 11,
+    "item_group": 73,
+    "item_type": 14,
+    "unit_purchase_quantity": 47,
+    "unit_order_quantity": 13,
+    "pack_order_quantity": 11,
+    "supplier_id": 34,
+    "supplier_code": "SUP423",
+    "supplier_part_number": "E-86805-uTM"
+  }
+###
+
+PUT  http://localhost:3000/api/v1/items/P000001
+API_KEY: a1b2c3d4e5
+
+{
+    "uid": "P000001",
+    "code": "sjQ23408K",
+    "description": "miep",
+    "short_description": "must",
+    "upc_code": "6523540947122",
+    "model_number": "63-OFFTq0T",
+    "commodity_code": "oTo304",
+    "item_line": 11,
+    "item_group": 73,
+    "item_type": 14,
+    "unit_purchase_quantity": 47,
+    "unit_order_quantity": 13,
+    "pack_order_quantity": 11,
+    "supplier_id": 34,
+    "supplier_code": "SUP423",
+    "supplier_part_number": "E-86805-uTM"
+}
+###
+
+DELETE  http://localhost:3000/api/v1/items/P000001
+API_KEY: a1b2c3d4e5
+###
+
+// this starts the locations requests
+
+GET http://localhost:3000/api/v1/locations
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/locations/1
+API_KEY: a1b2c3d4e5
+###
+
+POST http://localhost:3000/api/v1/locations
+API_KEY: a1b2c3d4e5
+
+{
+  "id": 4,
+  "warehouse_id": 1,
+  "code": "A.1.0",
+  "name": "Row: A, Rack: 1, Shelf: 0"
+}
+###
+
+PUT  http://localhost:3000/api/v1/locations/1
+API_KEY: a1b2c3d4e5
+
+{
+  "id": 1,
+  "warehouse_id": 1,
+  "code": "A.1.0",
+  "name": "miep"
+}
+###
+
+DELETE  http://localhost:3000/api/v1/locations/1
+API_KEY: a1b2c3d4e5
+###
+
+// this starts the orders requests
+
+GET http://localhost:3000/api/v1/orders
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v1/orders/1
+API_KEY: a1b2c3d4e5
+###
+
+
+GET http://localhost:3000/api/v1/orders/1/items
+API_KEY: a1b2c3d4e5
+###
+
+
+POST http://localhost:3000/api/v1/orders
+API_KEY: a1b2c3d4e5
+
+{
+    "id": 4,
+    "source_id": 9,
+    "order_date": "1999-07-05T19:31:10Z",
+    "request_date": "1999-07-09T19:31:10Z",
+    "reference": "ORD00002",
+    "reference_extra": "Vergelijken raak geluid beetje altijd.",
+    "order_status": "Delivered",
+    "notes": "We hobby thee compleet wiel fijn.",
+    "shipping_notes": "Nood provincie hier.",
+    "picking_notes": "Borstelen dit verf suiker.",
+    "warehouse_id": 20,
+    "ship_to": null,
+    "bill_to": null,
+    "shipment_id": 2,
+    "total_amount": 8484.98,
+    "total_discount": 214.52,
+    "total_tax": 665.09,
+    "total_surcharge": 42.12,
+    "items": [
+        {
+            "item_id": "P003790",
+            "amount": 10
+        }
+    ]
+}
+###
+
+PUT  http://localhost:3000/api/v1/orders/1
+API_KEY: a1b2c3d4e5
+
+{
+    "id": 1,
+    "source_id": 9,
+    "order_date": "1999-07-05T19:31:10Z",
+    "request_date": "1999-07-09T19:31:10Z",
+    "reference": "ORD00002",
+    "reference_extra": "miep.",
+    "order_status": "Delivered",
+    "notes": "We hobby thee compleet wiel fijn.",
+    "shipping_notes": "Nood provincie hier.",
+    "picking_notes": "Borstelen dit verf suiker.",
+    "warehouse_id": 20,
+    "ship_to": null,
+    "bill_to": null,
+    "shipment_id": 2,
+    "total_amount": 8484.98,
+    "total_discount": 214.52,
+    "total_tax": 665.09,
+    "total_surcharge": 42.12,
+    "items": [
+        {
+            "item_id": "P003790",
+            "amount": 10
+        }
+    ]
+}
+###
+// THIS IS A TODO PUT
+
+
+PUT  http://localhost:3000/api/v1/orders/1/items
+API_KEY: a1b2c3d4e5
+
+###
+
+
+DELETE  http://localhost:3000/api/v1/orders/1
+API_KEY: a1b2c3d4e5
+###
+
+
+
+//this starts the shipment requests
+GET   http://localhost:3000/api/v1/shipments
+API_KEY: a1b2c3d4e5
+###
+
+GET   http://localhost:3000/api/v1/shipments/-1
+API_KEY: a1b2c3d4e5
+###
+
+GET   http://localhost:3000/api/v1/shipments/9000/orders
+API_KEY: a1b2c3d4e5
+###
+
+GET   http://localhost:3000/api/v1/shipments/1/items
+API_KEY: a1b2c3d4e5
+###
+
+POST    http://localhost:3000/api/v1/shipments
+API_KEY: a1b2c3d4e5
+
+    {
+        "id": -1,
+        "order_id": 2648,
+        "source_id": 1,
+        "order_date": "1978-03-24",
+        "request_date": "1978-03-26",
+        "shipment_date": "1978-03-28",
+        "shipment_type": "O",
+        "shipment_status": "Transit",
+        "notes": "Gemak vuur bezoek middel zitten soep voetbal koorts.",
+        "carrier_code": "PostNL",
+        "carrier_description": "Royal Dutch Post and Parcel Service",
+        "service_code": "NextDay",
+        "payment_type": "Manual",
+        "transfer_mode": "Sea",
+        "total_package_count": 33,
+        "total_package_weight": 496.2,
+        "items": [
+            {
+                "item_id": "P007558",
+                "amount": 50
+            },
+            {
+                "item_id": "P000342",
+                "amount": 10
+            },
+            {
+                "item_id": "P006596",
+                "amount": 29
+            },
+            {
+                "item_id": "P006065",
+                "amount": 23
+            },
+            {
+                "item_id": "P009122",
+                "amount": 17
+            },
+            {
+                "item_id": "P009634",
+                "amount": 39
+            },
+            {
+                "item_id": "P009858",
+                "amount": 14
+            }
+        ]
+    }
+###
+
+PUT http://localhost:3000/api/v1/shipments/1
+API_KEY: a1b2c3d4e5
+
+{
+    "id": "948029cd-2fae-4e06-a770-d636224626ee", 
+    "order_id": "948029cd-2fae-4e06-a770-d636224626ee", 
+    "source_id": "948029cd-2fae-4e06-a770-d636224626ee", 
+    "order_date": "2000-03-09", 
+    "request_date": "2000-03-11", 
+    "shipment_date": "2000-03-13",
+    "shipment_type": "I", 
+    "shipment_status": "Pending", 
+    "notes": "Zee vertrouwen klas rots heet lachen oneven begrijpen.", 
+    "carrier_code": "DPD", 
+    "carrier_description": "Dynamic Parcel Distribution", 
+    "service_code": "Fastest", 
+    "payment_type": "Manual", 
+    "transfer_mode": "Ground", 
+    "total_package_count": 31, 
+    "total_package_weight": 594.42, 
+    "items": 
+    [
+        {
+            "item_id": "P007435", 
+            "amount": 23
+        },
+        {
+            "item_id": "P009557",
+            "amount": 1
+        },
+    ]
+}
+###
+
+
+
+// THIS IS A TODO PUT
+PUT http://localhost:3000/api/v1/shipments/1/orders
+API_KEY: a1b2c3d4e5
+
+
+###
+
+
+// THIS IS A TODO PUT
+PUT http://localhost:3000/api/v1/shipments/1/items
+API_KEY: a1b2c3d4e5
+
+
+###
+
+PUT http://localhost:3000/api/v1/shipments/1/commit
+API_KEY: a1b2c3d4e5
+
+
+###
+DELETE  http://localhost:3000/api/v1/shipments/1
+API_KEY: a1b2c3d4e5
+
+
+###
+
+// dit is het suppliers gedeelte
+
+GET http://localhost:3000/api/v1/suppliers
+API_KEY: a1b2c3d4e5
+
+###
+
+GET http://localhost:3000/api/v1/suppliers/1
+API_KEY: a1b2c3d4e5
+
+###
+
+GET http://localhost:3000/api/v1/suppliers/1/items
+API_KEY: a1b2c3d4e5
+
+###
+
+POST  http://localhost:3000/api/v1/suppliers
+API_KEY: a1b2c3d4e5
+
+{"id": -1, "code": "SUP0001", "name": "Lee, Parks and Johnson", "address": "5989 Sullivan Drives", "address_extra": "Apt. 996", "city": "Port Anitaburgh", "zip_code": "91688", "province": "Illinois", "country": "Czech Republic", "contact_name": "Toni Barnett", "phonenumber": "363.541.7282x36825", "reference": "LPaJ-SUP0001"}
+###
+
+PUT  http://localhost:3000/api/v1/suppliers/1
+API_KEY: a1b2c3d4e5
+
+{"id": -1, "code": "SUP0001", "name": "Lee, Parks and Johnson", "address": "5989 Sullivan Drives", "address_extra": "Apt. 996", "city": "Port Anitaburgh", "zip_code": "91688", "province": "Illinois", "country": "Czech Republic", "contact_name": "Toni Barnett", "phonenumber": "363.541.7282x36825", "reference": "LPaJ-SUP0001"}
+###
+
+DELETE http://localhost:3000/api/v1/suppliers/1
+API_KEY: a1b2c3d4e5
+
+###
+
+
+// this is everything for the transfers
+GET http://localhost:3000/api/v1/transfers
+API_KEY: a1b2c3d4e5
+
+###
+
+GET http://localhost:3000/api/v1/transfers/1
+API_KEY: a1b2c3d4e5
+
+###
+
+GET http://localhost:3000/api/v1/transfers/1/items
+API_KEY: a1b2c3d4e5
+
+###
+
+POST http://localhost:3000/api/v1/transfers
+API_KEY: a1b2c3d4e5
+
+{
+  \"id": -1,
+  "reference": "TR00001",
+  "transfer_from": null,
+  "transfer_to": 9229,
+  "transfer_status": "Completed",
+  "items": [
+    {
+      "item_id": "P007435",
+      "amount": 23
+    }
+  ]
+}
+###
+
+PUT http://localhost:3000/api/v1/transfers/1
+API_KEY: a1b2c3d4e5
+
+{
+  "id": 1,
+  "reference": "TR00001",
+  "transfer_from": null,
+  "transfer_to": 9229,
+  "transfer_status": "miep",
+  "items": [
+    {
+      "item_id": "P007435",
+      "amount": 23
+    }
+  ]
+}
+###
+
+PUT http://localhost:3000/api/v1/transfers/1/commit
+API_KEY: a1b2c3d4e5
+###
+
+DELETE PUT http://localhost:3000/api/v1/transfers/1
+API_KEY: a1b2c3d4e5
+###
+
+
+
+// this is everything for the warehouses
+GET http://localhost:3000/api/v1/warehouses
+API_KEY: a1b2c3d4e5
+
+###
+
+GET http://localhost:3000/api/v1/warehouses/1
+API_KEY: a1b2c3d4e5
+
+###
+
+GET http://localhost:3000/api/v1/warehouses/1/locations
+API_KEY: a1b2c3d4e5
+
+###
+POST http://localhost:3000/api/v1/warehouses
+API_KEY: a1b2c3d4e5
+
+{
+    "id": 1,
+    "code": "YQZZNL56",
+    "name": "Heemskerk cargo hub",
+    "address": "Karlijndreef 281",
+    "zip": "4002 AS",
+    "city": "Heemskerk",
+    "province": "Friesland",
+    "country": "NL",
+    "contact": {
+      "name": "Fem Keijzer",
+      "phone": "(078) 0013363",
+      "email": "blamore@example.net"
+    }
+  }
+###
+
+PUT http://localhost:3000/api/v1/warehouses/1
+API_KEY: a1b2c3d4e5
+
+{
+    "id": 1,
+    "code": "YQZZNL56",
+    "name": "Heemskerk cargo hub",
+    "address": "Karlijndreef 281",
+    "zip": "4002 AS",
+    "city": "miep",
+    "province": "Friesland",
+    "country": "NL",
+    "contact": {
+      "name": "Fem Keijzer",
+      "phone": "(078) 0013363",
+      "email": "blamore@example.net"
+    }
+  }
+###
+DELETE  http://localhost:3000/api/v1/warehouses/1
+API_KEY: a1b2c3d4e5
+
+###

@@ -12,7 +12,7 @@ public class WarehouseService : IWarehouse
 
     public async Task<List<Warehouse>> GetWarehouses() => await _context.Warehouses.ToListAsync();
 
-    public async Task<Warehouse> GetWarehousesById(Guid id) => await _context.Warehouses.FindAsync(id);
+    public async Task<Warehouse> GetWarehousesById(int id) => await _context.Warehouses.FindAsync(id);
 
     public async Task<bool> AddWarehouse(Warehouse warehouse)
     {
@@ -43,7 +43,7 @@ public class WarehouseService : IWarehouse
         return true;
     }
 
-    public async Task<bool> DeleteWarehouse(Guid id)
+    public async Task<bool> DeleteWarehouse(int id)
     {
         var warehouse = await _context.Warehouses.FindAsync(id);
         if (warehouse == null) return false;

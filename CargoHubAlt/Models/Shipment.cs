@@ -1,22 +1,54 @@
+using Microsoft.EntityFrameworkCore;
+
 public class Shipment
 {
-    public Guid Id { get; set; }
-    public Guid Order_id { get; set; } // maybe this should be a list of order ids
-    public Guid Source_id { get; set; }
-    public string Order_date { get; set; }
-    public string Request_date { get; set; }
-    public string Shipment_date { get; set; }
-    public string Shipment_type { get; set; }
-    public string Shipment_status { get; set; }
-    public string Notes { get; set; }
-    public string Carrier_code { get; set; }
-    public string Carrier_description { get; set; }
-    public string Service_code { get; set; }
-    public string Payment_type { get; set; }
-    public string Transfer_mode { get; set; }
-    public int Total_package_count { get; set; }
-    public int Total_package_weight { get; set; }
-    public string Created_at { get; set; }
-    public string Updated_at { get; set; }
-    public List<Item> Items { get; set; }
+    public int Id { get; set; }
+    public int OrderId { get; set; } // maybe this should be a list of order ids
+    public int SourceId { get; set; }
+    public string? OrderDate { get; set; }
+    public string? RequestDate { get; set; }
+    public string? ShipmentDate { get; set; }
+    public string? ShipmentType { get; set; }
+    public string? ShipmentStatus { get; set; }
+    public string? Notes { get; set; }
+    public string? CarrierCode { get; set; }
+    public string? CarrierDescription { get; set; }
+    public string? ServiceCode { get; set; }
+    public string? PaymentType { get; set; }
+    public string? TransferMode { get; set; }
+    public int TotalPackageCount { get; set; }
+    public int TotalPackageWeight { get; set; }
+    public string? CreatedAt { get; set; }
+    public string? UpdatedAt { get; set; }
+    public List<ShipmentItem>? Items { get; set; }
+
+    public Shipment() { }
+    public Shipment(int id, int orderId, int sourceId, string orderDate, string requestDate, string shipmentDate, string shipmentType, string shipmentStatus, string notes, string carrierCode, string carrierDescription, string serviceCode, string paymentType, string transferMode, int totalPackageCount, int totalPackageWeight, string createdAt, string updatedAt, List<ShipmentItem> items)
+    {
+        Id = id;
+        OrderId = orderId;
+        SourceId = sourceId;
+        OrderDate = orderDate;
+        RequestDate = requestDate;
+        ShipmentDate = shipmentDate;
+        ShipmentType = shipmentType;
+        ShipmentStatus = shipmentStatus;
+        Notes = notes;
+        CarrierCode = carrierCode;
+        CarrierDescription = carrierDescription;
+        ServiceCode = serviceCode;
+        PaymentType = paymentType;
+        TransferMode = transferMode;
+        TotalPackageCount = totalPackageCount;
+        TotalPackageWeight = totalPackageWeight;
+        CreatedAt = createdAt;
+        UpdatedAt = updatedAt;
+        Items = items;
+    }
+}
+[Owned]
+public class ShipmentItem
+{
+    public string? ItemId { get; set; }
+    public int Amount { get; set; }
 }

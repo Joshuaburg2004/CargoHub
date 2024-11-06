@@ -10,75 +10,42 @@ public class ItemsService : IItemsService
         _context = context;
     }
 
-    public async Task<IEnumerable<Item>> GetAllItems()
+    public async Task<IEnumerable<Item>> GetItems()
     {
         return await this._context.Items.ToListAsync();
     }
 
-    public async Task<IEnumerable<Item?>> GetItems(string[] ids)
+    public async Task<Item?> GetItem(string id)
     {
-        List<Item?> toReturn = new(ids.Count());
-        foreach (string one in ids)
-        {
-            if (Guid.TryParse(one, out Guid item))
-            {
-                toReturn.Add(await this._context.Items.FirstOrDefaultAsync(_ => _.Id == item));
-            }
-            else toReturn.Add(null);
+        return await this._context.Items.FirstOrDefaultAsync(_ => _.Uid == id);
+    }
+    public async Task<Inventory?> GetInventoryByItem(string id)
+    {
+        return await this._context.Inventories.FirstOrDefaultAsync(_ => _.Item_id == id);
+    }
+
+    public async Task<Dictionary<string, int>> GetInventoryTotalsByItem(string id){
+        Dictionary<string, int> toReturn = new Dictionary<string, int>();
+        toReturn.Add("total_expected", 0);
+        toReturn.Add("total_ordered", 0);
+        toReturn.Add("total_allocated", 0);
+        toReturn.Add("total_available", 0);
+        foreach(Inventory inv in await this._context.Inventories.Where(_ => _.Item_id == id).ToListAsync()){
+            toReturn["total_expected"] += inv.Total_expected;
+            toReturn["total_ordered"] += inv.Total_ordered;
+            toReturn["total_allocated"] += inv.Total_allocated;
+            toReturn["total_available"] += inv.Total_available;
         }
         return toReturn;
     }
-
-    public async Task<Item?> GetItem(Guid id)
+    public async Task<string?> AddItem(Item toAdd)
     {
-        return await this._context.Items.FirstOrDefaultAsync(_ => _.Id == id);
-    }
-
-    public async Task<IEnumerable<Item>> GetItemsForItemLine(Guid id)
-    {
-        return await this._context.Items.Where(_ => _.ItemLine == id).ToListAsync();
-    }
-
-    public async Task<IEnumerable<Item>> GetItemsForItemGroup(Guid id)
-    {
-        return await this._context.Items.Where(_ => _.ItemGroup == id).ToListAsync();
-    }
-
-    public async Task<IEnumerable<Item>> GetItemsForItemType(Guid id)
-    {
-        return await this._context.Items.Where(_ => _.ItemType == id).ToListAsync();
-    }
-
-    public async Task<IEnumerable<Item>> GetItemsForSupplier(Guid id)
-    {
-        return await this._context.Items.Where(_ => _.SupplierId == id).ToListAsync();
-    }
-
-    public async Task<Guid?> AddItem(Item toAdd)
-    {
-        Guid toReturn = Guid.NewGuid();
-        toAdd.Id = toReturn;
-
         await this._context.Items.AddAsync(toAdd);
-        if (await this._context.SaveChangesAsync() >= 1) return toReturn;
+        if (await this._context.SaveChangesAsync() >= 1) return toAdd.Uid;
         else return null;
     }
 
-    public async Task<IEnumerable<Item?>> GetItemsBatch(string[] ids)
-    {
-        List<Item?> toReturn = new(ids.Count());
-        foreach (string one in ids)
-        {
-            if (Guid.TryParse(one, out Guid item))
-            {
-                toReturn.Add(await this._context.Items.FirstOrDefaultAsync(_ => _.Id == item));
-            }
-            else toReturn.Add(null);
-        }
-        return toReturn;
-}
-
-    public async Task<Item?> UpdateItem(Guid toUpdate, Item UpdateTo)
+    public async Task<Item?> UpdateItem(string toUpdate, Item UpdateTo)
     {
         Item? found = await this._context.Items.FindAsync(toUpdate);
         if (found is null) return null;
@@ -105,7 +72,7 @@ public class ItemsService : IItemsService
         else return null;
     }
 
-    public async Task<Item?> RemoveItem(Guid toRemove)
+    public async Task<Item?> RemoveItem(string toRemove)
     {
         Item? found = await this._context.Items.FindAsync(toRemove);
         if (found is null) return null;

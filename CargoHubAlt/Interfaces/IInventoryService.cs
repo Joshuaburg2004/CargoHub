@@ -1,9 +1,8 @@
 public interface IInventoryService
 {
-    Task<Guid?> CreateInventory(Inventory inventory);
-    Task<Inventory?> FindInventory(Guid id);
-    Task<IEnumerable<Inventory>> FindManyInventories(Guid[] ids);
+    Task<int?> CreateInventory(Inventory inventory);
+    Task<Inventory?> GetOneInventory(int id);
     Task<IEnumerable<Inventory>> GetAllInventories();
-    Task<Inventory?> UpdateInventory(Guid id, Inventory inventory);
-    Task<Inventory?> DeleteInventory(Guid id);
+    Task<Inventory?> UpdateInventory(int id, Inventory inventory);
+    Task<Inventory?> DeleteInventory(int id);
 }

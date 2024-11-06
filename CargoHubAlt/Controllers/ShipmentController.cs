@@ -10,50 +10,94 @@ public class ShipmentController : Controller
         _shipmentService = shipmentService;
     }
 
-    [HttpGet("get")]
+    [HttpGet]
     public async Task<IActionResult> GetShipments()
     {
         var shipments = await _shipmentService.GetShipments();
+        if (shipments == null)
+        {
+            return NotFound();
+        }
         return Ok(shipments);
     }
 
-    [HttpGet("getbyid")]
-    public async Task<IActionResult> GetShipmentById(Guid id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetShipmentById([FromRoute] int id)
     {
-        if (id == Guid.Empty) return BadRequest();
+        if (id <= 0)
+        {
+            return BadRequest();
+        }
         var shipment = await _shipmentService.GetShipment(id);
+        if (shipment == null)
+        {
+            return NotFound();
+        }
         return Ok(shipment);
+
     }
 
-    [HttpPost("add")]
+    [HttpPost]
     public async Task<IActionResult> AddShipment([FromBody] Shipment shipment)
     {
-        if (shipment == null) return BadRequest();
-        await _shipmentService.AddShipment(shipment);
+        if (shipment == null)
+        {
+            return BadRequest();
+        }
+        else if (!await _shipmentService.AddShipment(shipment))
+        {
+            return BadRequest();
+        }
         return Ok();
     }
 
-    [HttpPut("update")]
+    [HttpPut]
     public async Task<IActionResult> UpdateShipment([FromBody] Shipment shipment)
     {
-        if (shipment == null) return BadRequest();
-        await _shipmentService.UpdateShipment(shipment);
+        if (shipment == null)
+        {
+            return BadRequest();
+        }
+        else if (!await _shipmentService.UpdateShipment(shipment))
+        {
+            return BadRequest();
+        }
         return Ok();
     }
 
-    [HttpPut("updateitems")]
-    public async Task<IActionResult> UpdateItemsInShipment(Guid id, Guid shipmentid, [FromBody] List<Item> items)
+    [HttpPut("{id}/items")]
+    public async Task<IActionResult> UpdateItemsInShipment([FromRoute] int id, int shipmentid, [FromBody] List<ShipmentItem> items)
     {
-        if (items == null || id == Guid.Empty || shipmentid == Guid.Empty || items == null) return BadRequest();
-        await _shipmentService.Update_items_in_Shipment(id, shipmentid, items);
+        if (items == null)
+        {
+            return BadRequest();
+        }
+        else if (id <= 0)
+        {
+            return BadRequest();
+        }
+        else if (shipmentid <= 0)
+        {
+            return BadRequest();
+        }
+        else if (!await _shipmentService.Update_items_in_Shipment(id, shipmentid, items))
+        {
+            return BadRequest();
+        }
         return Ok();
     }
 
-    [HttpDelete("delete")]
-    public async Task<IActionResult> DeleteShipment(Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteShipment([FromRoute] int id)
     {
-        if (id == Guid.Empty) return BadRequest();
-        await _shipmentService.DeleteShipment(id);
+        if (id <= 0)
+        {
+            return BadRequest();
+        }
+        else if (!await _shipmentService.DeleteShipment(id))
+        {
+            return BadRequest();
+        }
         return Ok();
     }
 }
