@@ -41,7 +41,7 @@ namespace PythonTests
         public async Task CreateTransfer()
         {
             var requestUri = "/api/v1/transfers";
-            var response = await _client.PostAsync(requestUri, new StringContent("{\"id\": 999999, \"reference\": \"TR00001\", \"transfer_from\": null, \"transfer_to\": 9229, \"transfer_status\": \"Completed\", \"created_at\": \"2000-03-11T13:11:14Z\", \"updated_at\": \"2000-03-12T16:11:14Z\", \"items\": [{\"item_id\": \"P007435\", \"amount\": 23}]}"));
+            var response = await _client.PostAsync(requestUri, new StringContent("{\"id\": 1, \"reference\": \"TR00001\", \"transfer_from\": 0, \"transfer_to\": 9229, \"transfer_status\": \"Completed\", \"created_at\": \"2000-03-11T13:11:14Z\", \"updated_at\": \"2000-03-12T16:11:14Z\", \"items\": [{\"item_id\": \"P007435\", \"amount\": 23}]}"));
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }

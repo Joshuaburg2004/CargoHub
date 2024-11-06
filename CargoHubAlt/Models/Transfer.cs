@@ -6,14 +6,14 @@ public class Transfer
 {
     public int Id { get; set; }
     public string Reference { get; set; }
-    public string Transfer_From { get; set; }
-    public string Transfer_To { get; set; }
+    public int Transfer_From { get; set; }
+    public int Transfer_To { get; set; }
     public string Transfer_Status { get; set; }
     public string Created_At { get; set; }
     public string Updated_At { get; set; }
     public List<TransferItem> Items { get; set; }
     public Transfer(){ }
-    public Transfer(int id, string reference, string transfer_From, string transfer_To, string transfer_Status, string created_At, string updated_At, List<TransferItem> items)
+    public Transfer(int id, string reference, int transfer_From, int transfer_To, string transfer_Status, string created_At, string updated_At, List<TransferItem> items)
     {
         Id = id;
         Reference = reference;
