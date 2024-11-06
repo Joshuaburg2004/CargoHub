@@ -30,8 +30,10 @@ public class InventoryController : Controller
     {
         if (toAdd is null) return BadRequest("this is not an inventory");
         int? success = await this._inventoryService.CreateInventory(toAdd);
-        if (success is not null) return Ok(success);
-        else return BadRequest("something went wrong adding the inventory");
+
+        return Created("", "");
+        // if (success is not null) return Ok(success);
+        // else return BadRequest("something went wrong adding the inventory");
     }
 
     [HttpPut("{id}")]

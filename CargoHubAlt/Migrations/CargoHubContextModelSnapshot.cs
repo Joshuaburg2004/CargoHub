@@ -169,14 +169,6 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CommodityCode")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedAt")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -194,14 +186,23 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PackOrderQuantity")
+                    b.Property<int>("item_group")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ShortDescription")
+                    b.Property<int>("item_line")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("item_type")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("model_number")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("SupplierCode")
+                    b.Property<int>("pack_order_quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("short_description")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -212,20 +213,20 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("TransferId")
+                    b.Property<int>("supplier_id")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("UnitOrderQuantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UnitPurchaseQuantity")
+                    b.Property<int>("unit_purchase_quantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UpcCode")
+                    b.Property<string>("upc_code")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UpdatedAt")
+                    b.Property<string>("updated_at")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

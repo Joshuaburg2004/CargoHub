@@ -57,7 +57,7 @@ public class Suppliers : ISuppliers
         return origSupplier;
     }
     public async Task<IEnumerable<Item>> GetItemsForSupplier(int id){
-        var items = await cargoHubContext.Items.Where(i => i.SupplierId == id).ToListAsync();
+        var items = await cargoHubContext.Items.Where(i => i.supplier_id == id).ToListAsync();
         return items;
     }
     public async Task LoadFromJson(string path)
