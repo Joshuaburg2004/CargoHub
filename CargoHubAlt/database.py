@@ -14,18 +14,18 @@ def read_json(file):
     return data
 
 
-def item_groups(conn, c, lister):
+def item_lines(conn, c, lister):
     for dict in lister:
         if dict["name"] == None:
             dict["name"] = "N/A"
         if dict["description"] == None:
             dict["description"] = "N/A"
-        c.execute("INSERT INTO Item_Groups (Id, Name, Description, Created_At, Updated_At) VALUES (?, ?, ?, ?, ?)", (dict['id'], dict['name'], dict['description'], dict['created_at'], dict['updated_at']))
+        c.execute("INSERT INTO Item_Lines (Id, Name, Description, Created_At, Updated_At) VALUES (?, ?, ?, ?, ?)", (dict['id'], dict['name'], dict['description'], dict['created_at'], dict['updated_at']))
 
 
 def main():
     conn, c = connect()
-    item_groups(conn, c, read_json('item_groups.json'))
+    item_lines(conn, c, read_json('item_lines.json'))
     conn.commit()
     conn.close()
 
