@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CargoHubTesting", "CargoHub
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CargoHubTesting", "CargoHubTesting", "{5F89EA1C-79BB-406A-9A75-CE7223C11DD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PythonTests", "CargoHubTesting\PythonTests\PythonTests.csproj", "{800741F6-AD9D-4714-8C7F-C8F295EBDD29}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "CargoHubTesting\IntegrationTests\IntegrationTests.csproj", "{028B7AEB-B998-409F-8BB2-3821C20CB39D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,19 +25,19 @@ Global
 		{9B17F0B8-285C-4AEC-A9C7-8EDF8551E9C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B17F0B8-285C-4AEC-A9C7-8EDF8551E9C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B17F0B8-285C-4AEC-A9C7-8EDF8551E9C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{800741F6-AD9D-4714-8C7F-C8F295EBDD29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{800741F6-AD9D-4714-8C7F-C8F295EBDD29}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{800741F6-AD9D-4714-8C7F-C8F295EBDD29}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{800741F6-AD9D-4714-8C7F-C8F295EBDD29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{028B7AEB-B998-409F-8BB2-3821C20CB39D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{028B7AEB-B998-409F-8BB2-3821C20CB39D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{028B7AEB-B998-409F-8BB2-3821C20CB39D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{028B7AEB-B998-409F-8BB2-3821C20CB39D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BE652DD0-1B40-4481-886F-B1B73D5CA31B}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9B17F0B8-285C-4AEC-A9C7-8EDF8551E9C1} = {5F89EA1C-79BB-406A-9A75-CE7223C11DD9}
-		{800741F6-AD9D-4714-8C7F-C8F295EBDD29} = {5F89EA1C-79BB-406A-9A75-CE7223C11DD9}
+		{028B7AEB-B998-409F-8BB2-3821C20CB39D} = {5F89EA1C-79BB-406A-9A75-CE7223C11DD9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BE652DD0-1B40-4481-886F-B1B73D5CA31B}
 	EndGlobalSection
 EndGlobal
