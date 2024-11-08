@@ -5,7 +5,7 @@
 namespace CargoHubAlt.Migrations
 {
     /// <inheritdoc />
-    public partial class newdatabse : Migration
+    public partial class DatabaseCreation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
