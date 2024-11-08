@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
 public class Shipment
@@ -49,6 +50,7 @@ public class Shipment
 [Owned]
 public class ShipmentItem
 {
+    [Key]
     public string? ItemId { get; set; }
     public int Amount { get; set; }
 }

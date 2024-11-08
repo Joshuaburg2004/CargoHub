@@ -37,11 +37,11 @@ namespace MyTests
             {
                 Id = Guid.NewGuid(),
                 Reference = "REF123",
-                Transfer_from = "Warehouse1",
-                Transfer_to = "Warehouse2",
-                Transfer_status = "In Progress",
-                Created_at = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
-                Updated_at = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+                Transfer_From = "Warehouse1",
+                Transfer_To = "Warehouse2",
+                Transfer_Status = "In Progress",
+                Created_At = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+                Updated_At = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
                 Items = new List<Item>
                 {
                     new Item
