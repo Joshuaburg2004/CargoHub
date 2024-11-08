@@ -538,11 +538,12 @@ API_KEY: a1b2c3d4e5
 
 POST http://localhost:3000/api/v1/transfers
 API_KEY: a1b2c3d4e5
+Content-Type: application/json
 
 {
-  \"id": -1,
+  "id": 1,
   "reference": "TR00001",
-  "transfer_from": null,
+  "transfer_from": 0,
   "transfer_to": 9229,
   "transfer_status": "Completed",
   "items": [
@@ -576,7 +577,7 @@ PUT http://localhost:3000/api/v1/transfers/1/commit
 API_KEY: a1b2c3d4e5
 ###
 
-DELETE PUT http://localhost:3000/api/v1/transfers/1
+DELETE http://localhost:3000/api/v1/transfers/1
 API_KEY: a1b2c3d4e5
 ###
 

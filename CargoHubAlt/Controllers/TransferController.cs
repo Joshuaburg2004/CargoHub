@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/v1/transfers")]
 public class TransferController : Controller
 {
-    private readonly ITransfer _transferservice;
+    private readonly ITransferService _transferservice;
 
-    public TransferController(ITransfer transferservice)
+    public TransferController(ITransferService transferservice)
     {
         _transferservice = transferservice;
     }
@@ -17,14 +17,18 @@ public class TransferController : Controller
     public async Task<IActionResult> GetTranfersById([FromRoute] int id)
     {
         if (id <= 0) return BadRequest();
-        return Ok(await _transferservice.GetTransferById(id));
+        Transfer? transfer = await _transferservice.GetTransferById(id);
+        if (transfer == null) return NotFound();
+        return Ok(transfer);
     }
 
     [HttpGet("{id}/items")]
     public async Task<IActionResult> GetItemsInTransfer([FromRoute] int id)
     {
         if (id <= 0) return BadRequest();
-        return Ok(await _transferservice.GetItemsInTransfer(id));
+        List<TransferItem>? items = await _transferservice.GetItemsInTransfer(id);
+        if (items == null || items.Count == 0) return NotFound();
+        return Ok(items);
     }
 
     [HttpPost()]
@@ -32,20 +36,24 @@ public class TransferController : Controller
     {
         if (transfer == null || transfer.Items == null) return BadRequest();
         await _transferservice.AddTransfer(transfer);
-        return Created();
+        return Created("Created transfer", transfer);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveTransfer([FromRoute] int id)
     {
         if (id <= 0) return BadRequest();
-        return Ok(await _transferservice.RemoveTransfer(id));
+        Transfer? transfer = await _transferservice.RemoveTransfer(id);
+        if (transfer == null) return NotFound();
+        return Ok(transfer);
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTransfer([FromRoute] int id, [FromBody] Transfer transfer)
     {
-        if (id <= 0 && transfer == null) return BadRequest(); // && moet of zijn maar staat niet op dit toetsenbord zal dit later aanpassen
-        return Ok(await _transferservice.UpdateTransfer(id, transfer));
+        if (id <= 0 || transfer == null) return BadRequest();
+        Transfer? oldTransfer = await _transferservice.UpdateTransfer(id, transfer);
+        if (oldTransfer == null) return NotFound();
+        return Ok(oldTransfer);
     }
 }

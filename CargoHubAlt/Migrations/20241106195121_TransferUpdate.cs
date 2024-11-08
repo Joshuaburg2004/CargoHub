@@ -5,7 +5,7 @@
 namespace CargoHubAlt.Migrations
 {
     /// <inheritdoc />
-    public partial class Update : Migration
+    public partial class TransferUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -105,6 +105,34 @@ namespace CargoHubAlt.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    Uid = table.Column<string>(type: "TEXT", nullable: false),
+                    Code = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    short_description = table.Column<string>(type: "TEXT", nullable: false),
+                    upc_code = table.Column<string>(type: "TEXT", nullable: false),
+                    model_number = table.Column<string>(type: "TEXT", nullable: false),
+                    commodity_code = table.Column<string>(type: "TEXT", nullable: false),
+                    item_line = table.Column<int>(type: "INTEGER", nullable: false),
+                    item_group = table.Column<int>(type: "INTEGER", nullable: false),
+                    item_type = table.Column<int>(type: "INTEGER", nullable: false),
+                    unit_purchase_quantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    unit_order_quantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    pack_order_quantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    supplier_id = table.Column<int>(type: "INTEGER", nullable: false),
+                    supplier_code = table.Column<string>(type: "TEXT", nullable: false),
+                    supplier_part_number = table.Column<string>(type: "TEXT", nullable: false),
+                    created_at = table.Column<string>(type: "TEXT", nullable: false),
+                    updated_at = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.Uid);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
@@ -190,16 +218,16 @@ namespace CargoHubAlt.Migrations
                     Code = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Address = table.Column<string>(type: "TEXT", nullable: false),
-                    AddressExtra = table.Column<string>(type: "TEXT", nullable: false),
+                    Address_Extra = table.Column<string>(type: "TEXT", nullable: false),
                     City = table.Column<string>(type: "TEXT", nullable: false),
-                    ZipCode = table.Column<string>(type: "TEXT", nullable: false),
+                    Zip_Code = table.Column<string>(type: "TEXT", nullable: false),
                     Province = table.Column<string>(type: "TEXT", nullable: false),
                     Country = table.Column<string>(type: "TEXT", nullable: false),
-                    ContactName = table.Column<string>(type: "TEXT", nullable: false),
+                    Contact_Name = table.Column<string>(type: "TEXT", nullable: false),
                     PhoneNumber = table.Column<string>(type: "TEXT", nullable: false),
                     Reference = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<string>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<string>(type: "TEXT", nullable: false)
+                    Created_At = table.Column<string>(type: "TEXT", nullable: false),
+                    Updated_At = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -213,11 +241,11 @@ namespace CargoHubAlt.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Reference = table.Column<string>(type: "TEXT", nullable: false),
-                    Transfer_from = table.Column<string>(type: "TEXT", nullable: false),
-                    Transfer_to = table.Column<string>(type: "TEXT", nullable: false),
-                    Transfer_status = table.Column<string>(type: "TEXT", nullable: false),
-                    Created_at = table.Column<string>(type: "TEXT", nullable: false),
-                    Updated_at = table.Column<string>(type: "TEXT", nullable: false)
+                    Transfer_From = table.Column<string>(type: "TEXT", nullable: false),
+                    Transfer_To = table.Column<string>(type: "TEXT", nullable: false),
+                    Transfer_Status = table.Column<string>(type: "TEXT", nullable: false),
+                    Created_At = table.Column<string>(type: "TEXT", nullable: false),
+                    Updated_At = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -270,14 +298,13 @@ namespace CargoHubAlt.Migrations
                 name: "ShipmentItem",
                 columns: table => new
                 {
-                    ShipmentId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
-                    ItemId = table.Column<string>(type: "TEXT", nullable: true),
-                    Amount = table.Column<int>(type: "INTEGER", nullable: false)
+                    ItemId = table.Column<string>(type: "TEXT", nullable: false),
+                    Amount = table.Column<int>(type: "INTEGER", nullable: false),
+                    ShipmentId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShipmentItem", x => new { x.ShipmentId, x.Id });
+                    table.PrimaryKey("PK_ShipmentItem", x => x.ItemId);
                     table.ForeignKey(
                         name: "FK_ShipmentItem_Shipments_ShipmentId",
                         column: x => x.ShipmentId,
@@ -287,48 +314,39 @@ namespace CargoHubAlt.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Items",
+                name: "TransferItem",
                 columns: table => new
                 {
-                    Uid = table.Column<string>(type: "TEXT", nullable: false),
-                    Code = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    short_description = table.Column<string>(type: "TEXT", nullable: false),
-                    upc_code = table.Column<string>(type: "TEXT", nullable: false),
-                    model_number = table.Column<string>(type: "TEXT", nullable: false),
-                    commodity_code = table.Column<string>(type: "TEXT", nullable: false),
-                    item_line = table.Column<int>(type: "INTEGER", nullable: false),
-                    item_group = table.Column<int>(type: "INTEGER", nullable: false),
-                    item_type = table.Column<int>(type: "INTEGER", nullable: false),
-                    unit_purchase_quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    unit_order_quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    pack_order_quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    supplier_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    supplier_code = table.Column<string>(type: "TEXT", nullable: false),
-                    supplier_part_number = table.Column<string>(type: "TEXT", nullable: false),
-                    created_at = table.Column<string>(type: "TEXT", nullable: false),
-                    updated_at = table.Column<string>(type: "TEXT", nullable: false),
-                    TransferId = table.Column<int>(type: "INTEGER", nullable: true)
+                    Item_Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Amount = table.Column<int>(type: "INTEGER", nullable: false),
+                    TransferId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Items", x => x.Uid);
+                    table.PrimaryKey("PK_TransferItem", x => x.Item_Id);
                     table.ForeignKey(
-                        name: "FK_Items_Transfers_TransferId",
+                        name: "FK_TransferItem_Transfers_TransferId",
                         column: x => x.TransferId,
                         principalTable: "Transfers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_TransferId",
-                table: "Items",
-                column: "TransferId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderedItem_OrderId",
                 table: "OrderedItem",
                 column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShipmentItem_ShipmentId",
+                table: "ShipmentItem",
+                column: "ShipmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransferItem_TransferId",
+                table: "TransferItem",
+                column: "TransferId");
         }
 
         /// <inheritdoc />
@@ -365,16 +383,19 @@ namespace CargoHubAlt.Migrations
                 name: "Suppliers");
 
             migrationBuilder.DropTable(
-                name: "Warehouses");
+                name: "TransferItem");
 
             migrationBuilder.DropTable(
-                name: "Transfers");
+                name: "Warehouses");
 
             migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Shipments");
+
+            migrationBuilder.DropTable(
+                name: "Transfers");
         }
     }
 }

@@ -22,5 +22,7 @@ public class CargoHubContext : DbContext
         modelBuilder.Entity<Order>().HasKey(e => e.Id);
         modelBuilder.Entity<Shipment>().OwnsMany(e => e.Items);
         modelBuilder.Entity<Shipment>().HasKey(e => e.Id);
+        modelBuilder.Entity<Transfer>().OwnsMany(e => e.Items);
+        modelBuilder.Entity<Transfer>().HasKey(e => e.Id);
     }
 }
