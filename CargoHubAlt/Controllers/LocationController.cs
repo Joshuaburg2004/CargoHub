@@ -20,7 +20,9 @@ public class LocationController : Controller
     public async Task<IActionResult> GetOneLocation([FromRoute] int id)
     {
         if (id <= 0) return BadRequest();
-        return Ok(await _locationservice.GetOneLocation(id));
+        Location? location = await _locationservice.GetOneLocation(id);
+        if (location is null) return NotFound();
+        return Ok(location);
     }
 
     [HttpPost()]
@@ -28,7 +30,7 @@ public class LocationController : Controller
     {
         if (toAdd is null) return BadRequest();
         await _locationservice.AddLocation(toAdd);
-        return Ok();
+        return Created("Created location", toAdd);
     }
 
     [HttpPut("{id}")]
