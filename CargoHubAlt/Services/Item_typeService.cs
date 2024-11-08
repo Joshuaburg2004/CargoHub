@@ -46,7 +46,7 @@ public class ItemTypeService : IItemTypeService
 
         found.Name = itemtype.Name;
         found.Description = itemtype.Description;
-        found.UpdatedAt = itemtype.UpdatedAt;
+        found.Updated_At = itemtype.Updated_At;
 
         _cargoHubContext.Item_Types.Update(found);
         await _cargoHubContext.SaveChangesAsync();

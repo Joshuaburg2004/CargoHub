@@ -37,11 +37,19 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Created_At")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Province")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Updated_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -236,7 +244,7 @@ namespace CargoHubAlt.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CreatedAt")
+                    b.Property<string>("Created_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -248,7 +256,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UpdatedAt")
+                    b.Property<string>("Updated_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -263,7 +271,7 @@ namespace CargoHubAlt.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CreatedAt")
+                    b.Property<string>("Created_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -275,7 +283,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UpdatedAt")
+                    b.Property<string>("Updated_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -290,7 +298,7 @@ namespace CargoHubAlt.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CreatedAt")
+                    b.Property<string>("Created_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -302,7 +310,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UpdatedAt")
+                    b.Property<string>("Updated_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -576,10 +584,6 @@ namespace CargoHubAlt.Migrations
                             b1.Property<int>("WarehouseId")
                                 .HasColumnType("INTEGER");
 
-                            b1.Property<string>("CreatedAt")
-                                .IsRequired()
-                                .HasColumnType("TEXT");
-
                             b1.Property<string>("Email")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
@@ -589,10 +593,6 @@ namespace CargoHubAlt.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Phone")
-                                .IsRequired()
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("UpdatedAt")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 

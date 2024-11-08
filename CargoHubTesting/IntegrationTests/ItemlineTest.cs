@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text;
-using Xunit.Abstractions;
+using Xunit;
 using PythonTests.models;
 
 namespace PythonTests;

@@ -5,7 +5,7 @@
 namespace CargoHubAlt.Migrations
 {
     /// <inheritdoc />
-    public partial class DatabaseCreation : Migration
+    public partial class grouptypelineupdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,8 +64,8 @@ namespace CargoHubAlt.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<string>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<string>(type: "TEXT", nullable: false)
+                    Created_At = table.Column<string>(type: "TEXT", nullable: false),
+                    Updated_At = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,8 +80,8 @@ namespace CargoHubAlt.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<string>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<string>(type: "TEXT", nullable: false)
+                    Created_At = table.Column<string>(type: "TEXT", nullable: false),
+                    Updated_At = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,8 +96,8 @@ namespace CargoHubAlt.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<string>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<string>(type: "TEXT", nullable: false)
+                    Created_At = table.Column<string>(type: "TEXT", nullable: false),
+                    Updated_At = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -267,8 +267,8 @@ namespace CargoHubAlt.Migrations
                     Contact_Name = table.Column<string>(type: "TEXT", nullable: false),
                     Contact_Phone = table.Column<string>(type: "TEXT", nullable: false),
                     Contact_Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Contact_CreatedAt = table.Column<string>(type: "TEXT", nullable: false),
-                    Contact_UpdatedAt = table.Column<string>(type: "TEXT", nullable: false)
+                    Created_At = table.Column<string>(type: "TEXT", nullable: false),
+                    Updated_At = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

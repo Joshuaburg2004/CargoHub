@@ -52,7 +52,7 @@ public class ItemLineService : IItemLineService
 
         found.Name = toUpdate.Name;
         found.Description = toUpdate.Description;
-        found.UpdatedAt = Base.GetTimeStamp();
+        found.Updated_At = Base.GetTimeStamp();
 
         this._cargoHubContext.Item_Lines.Update(found);
         await this._cargoHubContext.SaveChangesAsync();

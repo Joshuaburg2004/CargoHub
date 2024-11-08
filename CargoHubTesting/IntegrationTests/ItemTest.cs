@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text;
-using Xunit.Abstractions;
+using Xunit;
 using PythonTests.models;
 
 namespace PythonTests;
@@ -13,17 +13,17 @@ namespace PythonTests;
 public class ItemIntegratieTest : BaseTest
 {
 
-    public static Item TestItem = new("P000001", "sjQ23408K", "Face-to-face clear-thinking complexity",
+    public static PythonTests.models.Item TestItem = new("P000001", "sjQ23408K", "Face-to-face clear-thinking complexity",
      "must", "6523540947122", "63-OFFTq0T", "oTo304", 0, 0,0,0,0,0,0,"SUP423", "E-86805-uTM");
 
     public static string testTypeJson {get => JsonSerializer.Serialize(TestItem);}
 
-    public static Item TestPutItem = new("P000001", "item", "item for testing put",
+    public static PythonTests.models.Item TestPutItem = new("P000001", "item", "item for testing put",
      "must", "6523540947122", "63-OFFTq0T", "oTo304", 0, 0,0,0,0,0,0,"SUP423", "E-86805-uTM");
 
     public string requestUri = "/api/v1/items";
 
-    public Inventory TestInventory = new(5, "P000001", "test", "63-OFFTq0T", new List<int>(){3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817}, 40, 40, 40, 40, 40);
+    public PythonTests.models.Inventory TestInventory = new(5, "P000001", "test", "63-OFFTq0T", new List<int>(){3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817}, 40, 40, 40, 40, 40);
 
 
     public ItemIntegratieTest(): base()
@@ -35,8 +35,8 @@ public class ItemIntegratieTest : BaseTest
         HttpResponseMessage response = await _client.GetAsync(requestUri);
         Xunit.Assert.NotNull(response);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        List<Item>? returnedlist = JsonSerializer.Deserialize<List<Item>>(await response.Content.ReadAsStringAsync());
-        Xunit.Assert.IsType<List<Item>>(returnedlist);
+        List<PythonTests.models.Item>? returnedlist = JsonSerializer.Deserialize<List<PythonTests.models.Item>>(await response.Content.ReadAsStringAsync());
+        Xunit.Assert.IsType<List<PythonTests.models.Item>>(returnedlist);
         Xunit.Assert.Empty(returnedlist);
     }
 
@@ -58,8 +58,8 @@ public class ItemIntegratieTest : BaseTest
         
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/P000001");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Item? ToCompare = JsonSerializer.Deserialize<Item>(await response.Content.ReadAsStringAsync());
-        Xunit.Assert.IsType<Item>(ToCompare);
+        PythonTests.models.Item? ToCompare = JsonSerializer.Deserialize<PythonTests.models.Item>(await response.Content.ReadAsStringAsync());
+        Xunit.Assert.IsType<PythonTests.models.Item>(ToCompare);
         Xunit.Assert.Equal(TestItem.uid, ToCompare.uid);
         Xunit.Assert.Equal(TestItem.code, ToCompare.code);
         Xunit.Assert.Equal(TestItem.description, ToCompare.description);
@@ -84,11 +84,11 @@ public class ItemIntegratieTest : BaseTest
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        List<Item>? responselist = JsonSerializer.Deserialize<List<Item>>(await response.Content.ReadAsStringAsync());
-        Xunit.Assert.IsType<List<Item>>(responselist);
+        List<PythonTests.models.Item>? responselist = JsonSerializer.Deserialize<List<PythonTests.models.Item>>(await response.Content.ReadAsStringAsync());
+        Xunit.Assert.IsType<List<PythonTests.models.Item>>(responselist);
         Xunit.Assert.Single(responselist);
 
-        Item ToCompare = responselist[0];
+        PythonTests.models.Item ToCompare = responselist[0];
 
         Xunit.Assert.Equal(TestItem.uid, ToCompare.uid);
         Xunit.Assert.Equal(TestItem.code, ToCompare.code);
@@ -125,9 +125,9 @@ public class ItemIntegratieTest : BaseTest
     {
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/P000001");
         var responseContent = await response.Content.ReadAsStringAsync();
-        Item? itemtypeafterupdate = JsonSerializer.Deserialize<Item>(responseContent);
+        PythonTests.models.Item? itemtypeafterupdate = JsonSerializer.Deserialize<PythonTests.models.Item>(responseContent);
 
-        Xunit.Assert.IsType<Item>(itemtypeafterupdate);
+        Xunit.Assert.IsType<PythonTests.models.Item>(itemtypeafterupdate);
 
         Xunit.Assert.Equal(TestPutItem.uid, itemtypeafterupdate.uid);
         Xunit.Assert.Equal(TestPutItem.code, itemtypeafterupdate.code);
@@ -164,12 +164,12 @@ public class ItemIntegratieTest : BaseTest
 
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/P000001/inventory");
         var responseContent = await response.Content.ReadAsStringAsync();
-        List<Inventory>? inventoryresponse = JsonSerializer.Deserialize<List<Inventory>>(responseContent);
+        List<PythonTests.models.Inventory>? inventoryresponse = JsonSerializer.Deserialize<List<PythonTests.models.Inventory>>(responseContent);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        Xunit.Assert.IsType<List<Inventory>>(inventoryresponse);
+        Xunit.Assert.IsType<List<PythonTests.models.Inventory>>(inventoryresponse);
         Xunit.Assert.Single(inventoryresponse);
-        Inventory inventoryCompared = inventoryresponse[0];
+        PythonTests.models.Inventory inventoryCompared = inventoryresponse[0];
                 
 
         Xunit.Assert.Equal(TestInventory.id, inventoryCompared.id);

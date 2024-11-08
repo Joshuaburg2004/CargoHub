@@ -50,7 +50,7 @@ public class ItemGroupService: IItemGroupService
 
         found.Name = toUpdate.Name;
         found.Description = toUpdate.Description;
-        found.UpdatedAt = toUpdate.UpdatedAt;
+        found.Updated_At = toUpdate.Updated_At;
         
         this._cargoHubContext.Item_Groups.Update(found);
         await this._cargoHubContext.SaveChangesAsync();

@@ -13,6 +13,8 @@ namespace CargoHubAlt.Models
         public string Province { get; set; }
         public string Country { get; set; }
         public Contact Contact { get; set; }
+        public string Created_At { get; set; } = Base.GetTimeStamp();
+        public string Updated_At { get; set; } = Base.GetTimeStamp();
         public Warehouse() { }
 
         public Warehouse(int id, string code, string name, string address, string zip, string city, string province, string country, Contact contact)
@@ -34,16 +36,12 @@ namespace CargoHubAlt.Models
         public string Name { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public string CreatedAt { get; set; }
-        public string UpdatedAt { get; set; }
 
         public Contact(string name, string phone, string email)
         {
             Name = name;
             Phone = phone;
             Email = email;
-            CreatedAt = Base.GetTimeStamp();
-            UpdatedAt = Base.GetTimeStamp();
         }
     }
 }

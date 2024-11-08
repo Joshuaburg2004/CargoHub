@@ -10,7 +10,7 @@ public class WarehouseService : IWarehouse
         _context = context;
     }
 
-    public async Task<List<Warehouse?>> GetWarehouses() => await _context.Warehouses.ToListAsync();
+    public async Task<List<Warehouse>> GetWarehouses() => await _context.Warehouses.ToListAsync();
 
     public async Task<Warehouse?> GetWarehousesById(int id) => await _context.Warehouses.FirstOrDefaultAsync(_ => _.Id == id);
 
@@ -18,6 +18,8 @@ public class WarehouseService : IWarehouse
     {
         if (await _context.Warehouses.FindAsync(warehouse.Id) != null)
             return null;
+        warehouse.Created_At = Base.GetTimeStamp();
+        warehouse.Updated_At = Base.GetTimeStamp();
         _context.Warehouses.Add(warehouse);
         await _context.SaveChangesAsync();
         return warehouse.Id;
@@ -40,6 +42,7 @@ public class WarehouseService : IWarehouse
         existingWarehouse.Province = warehouse.Province;
         existingWarehouse.Country = warehouse.Country;
         existingWarehouse.Contact = warehouse.Contact;
+        existingWarehouse.Updated_At = Base.GetTimeStamp();
 
         await _context.SaveChangesAsync();
         return existingWarehouse;
