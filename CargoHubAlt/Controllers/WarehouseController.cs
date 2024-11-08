@@ -22,25 +22,26 @@ public class WarehouseController : Controller
     public async Task<IActionResult> GetWarehousesById([FromRoute] int id)
     {
         var warehouse = await _warehouseservice.GetWarehousesById(id);
+        if (warehouse == null)
+            return NotFound();
         return Ok(warehouse);
     }
 
     [HttpPost()]
-    public async Task<IActionResult> AddWarehouse([FromBody] Warehouse warehouse)
+    public async Task<IActionResult> AddWarehouse([FromBody] Warehouse newwarehouse)
     {
+        if (newwarehouse == null) return BadRequest();
+        var warehouse = await _warehouseservice.AddWarehouse(newwarehouse);
         if (warehouse == null) return BadRequest();
-        await _warehouseservice.AddWarehouse(warehouse);
-        return Created();
+        return Created("", "");
     }
 
-    [HttpPut()]
-    public async Task<IActionResult> UpdateWarehouse([FromBody] Warehouse warehouse)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateWarehouse([FromRoute] int id, [FromBody] Warehouse warehouse)
     {
-        if (warehouse == null)
-            return BadRequest();
-        if (await _warehouseservice.UpdateWarehouse(warehouse))
-            return Ok();
-        return NotFound();
+        if (id <= 0 || warehouse == null) return BadRequest();
+        var updatedwarehouse = await _warehouseservice.UpdateWarehouse(id, warehouse);
+        return Ok(updatedwarehouse);
     }
 
     [HttpDelete("{id}")]
@@ -49,5 +50,12 @@ public class WarehouseController : Controller
         if (id <= 0) return BadRequest();
         await _warehouseservice.DeleteWarehouse(id);
         return Ok();
+    }
+
+    [HttpGet("{id}/locations")]
+    public async Task<IActionResult> GetLocationsByWarehouse([FromRoute] int id)
+    {
+        var locations = await _warehouseservice.GetLocationsByWarehouse(id);
+        return Ok(locations);
     }
 }

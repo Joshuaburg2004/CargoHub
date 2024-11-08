@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CargoHubAlt.Migrations
 {
     [DbContext(typeof(CargoHubContext))]
-    [Migration("20241106195121_TransferUpdate")]
-    partial class TransferUpdate
+    [Migration("20241108144244_newdatabse")]
+    partial class newdatabse
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -324,7 +324,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CreatedAt")
+                    b.Property<string>("Created_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -332,11 +332,11 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UpdatedAt")
+                    b.Property<string>("Updated_At")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("warehouse")
+                    b.Property<int>("Warehouse_Id")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -553,17 +553,15 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Transfer_From")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Transfer_From")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Transfer_Status")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Transfer_To")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Transfer_To")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Updated_At")
                         .IsRequired()
@@ -669,9 +667,8 @@ namespace CargoHubAlt.Migrations
                 {
                     b.OwnsMany("TransferItem", "Items", b1 =>
                         {
-                            b1.Property<int>("Item_Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("INTEGER");
+                            b1.Property<string>("Item_Id")
+                                .HasColumnType("TEXT");
 
                             b1.Property<int>("Amount")
                                 .HasColumnType("INTEGER");

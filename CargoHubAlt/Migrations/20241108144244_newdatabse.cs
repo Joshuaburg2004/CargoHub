@@ -5,7 +5,7 @@
 namespace CargoHubAlt.Migrations
 {
     /// <inheritdoc />
-    public partial class TransferUpdate : Migration
+    public partial class newdatabse : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -138,11 +138,11 @@ namespace CargoHubAlt.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    warehouse = table.Column<int>(type: "INTEGER", nullable: false),
+                    Warehouse_Id = table.Column<int>(type: "INTEGER", nullable: false),
                     Code = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<string>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<string>(type: "TEXT", nullable: false)
+                    Created_At = table.Column<string>(type: "TEXT", nullable: false),
+                    Updated_At = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,8 +241,8 @@ namespace CargoHubAlt.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Reference = table.Column<string>(type: "TEXT", nullable: false),
-                    Transfer_From = table.Column<string>(type: "TEXT", nullable: false),
-                    Transfer_To = table.Column<string>(type: "TEXT", nullable: false),
+                    Transfer_From = table.Column<int>(type: "INTEGER", nullable: false),
+                    Transfer_To = table.Column<int>(type: "INTEGER", nullable: false),
                     Transfer_Status = table.Column<string>(type: "TEXT", nullable: false),
                     Created_At = table.Column<string>(type: "TEXT", nullable: false),
                     Updated_At = table.Column<string>(type: "TEXT", nullable: false)
@@ -317,8 +317,7 @@ namespace CargoHubAlt.Migrations
                 name: "TransferItem",
                 columns: table => new
                 {
-                    Item_Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Item_Id = table.Column<string>(type: "TEXT", nullable: false),
                     Amount = table.Column<int>(type: "INTEGER", nullable: false),
                     TransferId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
