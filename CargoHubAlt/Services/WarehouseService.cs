@@ -54,5 +54,5 @@ public class WarehouseService : IWarehouse
         return true;
     }
 
-    public async Task<List<Location>> GetLocationsByWarehouse(int id) => await _context.Locations.Where(l => l.warehouse == id).ToListAsync();
+    public async Task<List<Location>> GetLocationsByWarehouse(int id) => await _context.Locations.Where(l => l.Warehouse_Id == id).ToListAsync();
 }

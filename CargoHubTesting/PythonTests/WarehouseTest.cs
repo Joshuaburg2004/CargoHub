@@ -25,7 +25,7 @@ namespace PythonTests
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
-            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Fact, TestPriority(3)]
@@ -109,7 +109,7 @@ namespace PythonTests
             var requestUri = "/api/v1/warehouses/1";
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
-            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             Xunit.Assert.Equal("", result);
             // No data found, but Status Code is 200 OK => should be 404 Not Found
         }

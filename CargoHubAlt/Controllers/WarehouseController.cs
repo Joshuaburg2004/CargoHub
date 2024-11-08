@@ -23,7 +23,7 @@ public class WarehouseController : Controller
     {
         var warehouse = await _warehouseservice.GetWarehousesById(id);
         if (warehouse == null)
-            return Ok();
+            return NotFound();
         return Ok(warehouse);
     }
 
