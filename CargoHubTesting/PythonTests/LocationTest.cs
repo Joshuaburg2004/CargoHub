@@ -4,6 +4,7 @@ using PythonTests;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Xunit;
+using System.Text;
 namespace PythonTests
 {
     [TestCaseOrderer("PythonTests.PriorityOrderer", "PythonTests")]
@@ -28,14 +29,12 @@ namespace PythonTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
-            // It should absolutely be either 400 bad request or 404 not found, but it is 200 OK.
-            // This is not intended behavior.
         }
         [Fact, TestPriority(3)]
         public async Task CreateLocation()
         {
             var requestUri = "/api/v1/locations";
-            var response = await _client.PostAsync(requestUri, new StringContent("{\"id\": 1, \"warehouse_id\": 1, \"code\": \"A.1.0\", \"name\": \"Row: A, Rack: 1, Shelf: 0\", \"created_at\": \"1992-05-15 03:21:32\", \"updated_at\": \"1992-05-15 03:21:32\"}"));
+            var response = await _client.PostAsync(requestUri, new StringContent("{\"id\": 1,\"warehouse_Id\":1,\"code\":\"A.1.0\",\"name\":\"Row: A, Rack: 1, Shelf: 0\", \"created_At\":\"1992-05-15 03:21:32\",\"updated_At\":\"1992-05-15 03:21:32\"}", encoding:Encoding.UTF8, "application/json"));
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
@@ -47,13 +46,13 @@ namespace PythonTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Contains("{\"id\": 1, \"warehouse_id\": 1, \"code\": \"A.1.0\", \"name\": \"Row: A, Rack: 1, Shelf: 0\"", result);
+            Xunit.Assert.Contains("{\"id\":1,\"warehouse_Id\":1,\"code\":\"A.1.0\",\"name\":\"Row: A, Rack: 1, Shelf: 0\"", result);
         }
         [Fact, TestPriority(5)]
         public async Task PutLocation()
         {
             var requestUri = "/api/v1/locations/1";
-            var response = await _client.PutAsync(requestUri, new StringContent("{\"id\": 1, \"warehouse_id\": 1, \"code\": \"A.1.0\", \"name\": \"Row: A, Rack: 1, Shelf: 1\", \"created_at\": \"1992-05-15 03:21:32\", \"updated_at\": \"1992-05-15 03:21:32\"}"));
+            var response = await _client.PutAsync(requestUri, new StringContent("{\"id\": 1, \"warehouse_id\": 1, \"code\": \"A.1.0\", \"name\": \"Row: A, Rack: 1, Shelf: 1\", \"created_at\": \"1992-05-15 03:21:32\", \"updated_at\": \"1992-05-15 03:21:32\"}", encoding:Encoding.UTF8, "application/json"));
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -65,7 +64,7 @@ namespace PythonTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Contains("{\"id\": 1, \"warehouse_id\": 1, \"code\": \"A.1.0\", \"name\": \"Row: A, Rack: 1, Shelf: 1\"", result);
+            Xunit.Assert.Contains("{\"id\":1,\"warehouse_Id\":1,\"code\":\"A.1.0\",\"name\":\"Row: A, Rack: 1, Shelf: 1\"", result);
         }
         [Fact, TestPriority(7)]
         public async Task DeleteLocation()
@@ -83,9 +82,6 @@ namespace PythonTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
-            Xunit.Assert.Equal("null", result);
-            // It should absolutely be either 400 bad request or 404 not found, but it is 200 OK.
-            // This is not intended behavior.
         }
         [Fact, TestPriority(9)]
         public async Task GetAllLocationsAfterDelete()

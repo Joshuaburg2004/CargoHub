@@ -25,7 +25,7 @@ public class ItemTypeService : IItemTypeService
     public async Task<IEnumerable<Item>?> GetItemsfromItemTypeById(int Id)
     {
         if (Id < 0) return null;
-        List<Item> toReturn = await _cargoHubContext.Items.Where(_ => _.ItemType == Id).ToListAsync();
+        List<Item> toReturn = await _cargoHubContext.Items.Where(_ => _.item_type == Id).ToListAsync();
         return toReturn;
     }
 

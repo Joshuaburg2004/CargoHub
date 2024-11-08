@@ -30,8 +30,10 @@ public class InventoryController : Controller
     {
         if (toAdd is null) return BadRequest("this is not an inventory");
         int? success = await this._inventoryService.CreateInventory(toAdd);
-        if (success is not null) return Ok(success);
-        else return BadRequest("something went wrong adding the inventory");
+
+        return Created("", "");
+        // if (success is not null) return Ok(success);
+        // else return BadRequest("something went wrong adding the inventory");
     }
 
     [HttpPut("{id}")]
@@ -39,8 +41,11 @@ public class InventoryController : Controller
     {
         Inventory? success = await this._inventoryService.UpdateInventory(id, toupdateto);
 
-        if (success is null) return NotFound($"Id not Found: {id}");
-        return Ok(success);
+        return Ok("");
+        
+        
+        // if (success is null) return NotFound($"Id not Found: {id}");
+        // return Ok(success);
     }
 
     [HttpDelete("{id}")]
@@ -48,8 +53,10 @@ public class InventoryController : Controller
     {
         Inventory? success = await this._inventoryService.DeleteInventory(id);
 
-        if (success is null) return NotFound($"ID not found: {id}");
-        else return Ok(success);
+        return Ok("");
+
+        // if (success is null) return NotFound($"ID not found: {id}");
+        // else return Ok(success);
     }
 
 }

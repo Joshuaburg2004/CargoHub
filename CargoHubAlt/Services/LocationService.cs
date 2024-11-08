@@ -25,10 +25,10 @@ public class LocationService : ILocationService
         if (location is null) { return null; }
 
         location.Id = Location.Id;
-        location.warehouse = Location.warehouse;
+        location.Warehouse_Id = Location.Warehouse_Id;
         location.Code = Location.Code;
         location.Name = Location.Name;
-        location.UpdatedAt = Location.UpdatedAt;
+        location.Updated_At = Location.Updated_At;
 
         _context.Locations.Update(location);
         await _context.SaveChangesAsync();

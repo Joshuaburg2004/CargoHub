@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-public class TransferService : ITransfer
+public class TransferService : ITransferService
 {
     private readonly CargoHubContext _context;
 
@@ -14,40 +14,43 @@ public class TransferService : ITransfer
 
     public async Task<Transfer> GetTransferById(int id) => await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
 
-    public async Task<List<Item>> GetItemsInTransfer(int id)
+    public async Task<List<TransferItem>?> GetItemsInTransfer(int id)
     {
         Transfer? transfer = await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
-        return transfer?.Items ?? new List<Item>();
+        return transfer?.Items ?? null;
     }
 
-    public async Task<bool> AddTransfer(Transfer transfer)
+    public async Task<int?> AddTransfer(Transfer transfer)
     {
+        transfer.Created_At = Base.GetTimeStamp();
+        transfer.Updated_At = Base.GetTimeStamp();
         await _context.Transfers.AddAsync(transfer);
-        await _context.SaveChangesAsync();
-        return true;
+        if (await this._context.SaveChangesAsync() >= 1) return transfer.Id;
+        else return null;
     }
 
-    public async Task<bool> RemoveTransfer(int id)
+    public async Task<Transfer?> RemoveTransfer(int id)
     {
         Transfer? transfer = await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
-        if (transfer == null) return false;
+        if (transfer == null) return null;
         _context.Transfers.Remove(transfer);
         await _context.SaveChangesAsync();
-        return true;
+        return transfer;
     }
 
-    public async Task<bool> UpdateTransfer(int id, Transfer transfer)
+    public async Task<Transfer?> UpdateTransfer(int id, Transfer transfer)
     {
         Transfer? oldTransfer = await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
-        if (oldTransfer == null) return false;
+        if (oldTransfer == null) return oldTransfer;
 
         oldTransfer.Reference = transfer.Reference;
-        oldTransfer.Transfer_from = transfer.Transfer_from;
-        oldTransfer.Transfer_to = transfer.Transfer_to;
-        oldTransfer.Transfer_status = transfer.Transfer_status;
-        oldTransfer.Updated_at = transfer.Updated_at;
+        oldTransfer.Transfer_From = transfer.Transfer_From;
+        oldTransfer.Transfer_To = transfer.Transfer_To;
+        oldTransfer.Transfer_Status = transfer.Transfer_Status;
+        transfer.Created_At = transfer.Created_At;
+        transfer.Updated_At = Base.GetTimeStamp();
 
         await _context.SaveChangesAsync();
-        return true;
+        return oldTransfer;
     }
 }

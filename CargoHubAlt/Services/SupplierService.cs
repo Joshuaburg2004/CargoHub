@@ -17,8 +17,8 @@ public class Suppliers : ISuppliers
     }
     public async Task<int?> CreateSupplier(Supplier supplier)
     {
-        supplier.CreatedAt = Base.GetTimeStamp();
-        supplier.UpdatedAt = Base.GetTimeStamp();
+        supplier.Created_At = Base.GetTimeStamp();
+        supplier.Updated_At = Base.GetTimeStamp();
         cargoHubContext.Suppliers.Add(supplier);
         await cargoHubContext.SaveChangesAsync();
         return supplier.Id;
@@ -42,22 +42,22 @@ public class Suppliers : ISuppliers
         origSupplier.Code = supplier.Code;
         origSupplier.Name = supplier.Name;
         origSupplier.Address = supplier.Address;
-        origSupplier.AddressExtra = supplier.AddressExtra;
+        origSupplier.Address_Extra = supplier.Address_Extra;
         origSupplier.City = supplier.City;
-        origSupplier.ZipCode = supplier.ZipCode;
+        origSupplier.Zip_Code = supplier.Zip_Code;
         origSupplier.Province = supplier.Province;
         origSupplier.Country = supplier.Country;
-        origSupplier.ContactName = supplier.ContactName;
+        origSupplier.Contact_Name = supplier.Contact_Name;
         origSupplier.PhoneNumber = supplier.PhoneNumber;
         origSupplier.Reference = supplier.Reference;
-        origSupplier.UpdatedAt = Base.GetTimeStamp();
+        origSupplier.Updated_At = Base.GetTimeStamp();
 
         cargoHubContext.Suppliers.Update(origSupplier);
         await cargoHubContext.SaveChangesAsync();
         return origSupplier;
     }
     public async Task<IEnumerable<Item>> GetItemsForSupplier(int id){
-        var items = await cargoHubContext.Items.Where(i => i.SupplierId == id).ToListAsync();
+        var items = await cargoHubContext.Items.Where(i => i.supplier_id == id).ToListAsync();
         return items;
     }
     public async Task LoadFromJson(string path)

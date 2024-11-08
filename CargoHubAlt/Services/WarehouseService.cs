@@ -10,24 +10,26 @@ public class WarehouseService : IWarehouse
         _context = context;
     }
 
-    public async Task<List<Warehouse>> GetWarehouses() => await _context.Warehouses.ToListAsync();
+    public async Task<List<Warehouse?>> GetWarehouses() => await _context.Warehouses.ToListAsync();
 
-    public async Task<Warehouse> GetWarehousesById(int id) => await _context.Warehouses.FindAsync(id);
+    public async Task<Warehouse?> GetWarehousesById(int id) => await _context.Warehouses.FirstOrDefaultAsync(_ => _.Id == id);
 
-    public async Task<bool> AddWarehouse(Warehouse warehouse)
+    public async Task<int?> AddWarehouse(Warehouse warehouse)
     {
+        if (await _context.Warehouses.FindAsync(warehouse.Id) != null)
+            return null;
         _context.Warehouses.Add(warehouse);
         await _context.SaveChangesAsync();
-        return true;
+        return warehouse.Id;
     }
 
-    public async Task<bool> UpdateWarehouse(Warehouse warehouse)
+    public async Task<Warehouse?> UpdateWarehouse(int id, Warehouse warehouse)
     {
         if (warehouse == null)
-            return false;
-        var existingWarehouse = await _context.Warehouses.FindAsync(warehouse.Id);
+            return warehouse;
+        var existingWarehouse = await _context.Warehouses.FindAsync(id);
         if (existingWarehouse == null)
-            return false;
+            return null;
 
         existingWarehouse.Id = warehouse.Id;
         existingWarehouse.Code = warehouse.Code;
@@ -40,7 +42,7 @@ public class WarehouseService : IWarehouse
         existingWarehouse.Contact = warehouse.Contact;
 
         await _context.SaveChangesAsync();
-        return true;
+        return existingWarehouse;
     }
 
     public async Task<bool> DeleteWarehouse(int id)
@@ -51,4 +53,6 @@ public class WarehouseService : IWarehouse
         await _context.SaveChangesAsync();
         return true;
     }
+
+    public async Task<List<Location>> GetLocationsByWarehouse(int id) => await _context.Locations.Where(l => l.Warehouse_Id == id).ToListAsync();
 }

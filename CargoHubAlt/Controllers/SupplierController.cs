@@ -41,7 +41,7 @@ public class SupplierController : Controller
         {
             return BadRequest("failed to create supplier");
         }
-        return Created();
+        return Created("Created supplier", newSupplier);
     }
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSupplier(int id)
