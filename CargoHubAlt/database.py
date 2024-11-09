@@ -16,11 +16,10 @@ def read_json(file):
 
 def item_lines(conn, c, lister):
     for dict in lister:
-        if dict["name"] == None:
-            dict["name"] = "N/A"
-        if dict["description"] == None:
-            dict["description"] = "N/A"
-        c.execute("INSERT INTO Item_Lines (Id, Name, Description, Created_At, Updated_At) VALUES (?, ?, ?, ?, ?)", (dict['id'], dict['name'], dict['description'], dict['created_at'], dict['updated_at']))
+        for i in dict.keys():
+            if dict[i] == None:
+                dict[i] = "N/A"
+        c.execute("INSERT INTO Item_Lines (Id, Source_Id, Order_Date, Created_At, Updated_At) VALUES (?, ?, ?, ?, ?)", (dict['id'], dict['name'], dict['description'], dict['created_at'], dict['updated_at']))
 
 
 def main():
