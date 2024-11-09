@@ -56,33 +56,32 @@ public class ShipmentService : IShipmentService
         return true;
     }
 
-    public async Task<bool> UpdateShipment(Shipment shipment)
+    public async Task<bool> UpdateShipment(int id, Shipment shipment)
     {
         // Checks before updating a shipment
-        Shipment? oldShipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == shipment.Id);
+        Shipment? oldShipment = await _context.Shipments.FindAsync(id);
         if (oldShipment == null)
         {
             return false;
         }
 
         // Update shipment
-        oldShipment.OrderId = shipment.OrderId;
-        oldShipment.SourceId = shipment.SourceId;
-        oldShipment.OrderDate = shipment.OrderDate;
-        oldShipment.RequestDate = shipment.RequestDate;
-        oldShipment.ShipmentDate = shipment.ShipmentDate;
-        oldShipment.ShipmentType = shipment.ShipmentType;
-        oldShipment.ShipmentStatus = shipment.ShipmentStatus;
+        oldShipment.Order_Id = shipment.Order_Id;
+        oldShipment.Source_Id = shipment.Source_Id;
+        oldShipment.Order_Date = shipment.Order_Date;
+        oldShipment.Request_Date = shipment.Request_Date;
+        oldShipment.Shipment_Date = shipment.Shipment_Date;
+        oldShipment.Shipment_Type = shipment.Shipment_Type;
+        oldShipment.Shipment_Status = shipment.Shipment_Status;
         oldShipment.Notes = shipment.Notes;
-        oldShipment.CarrierCode = shipment.CarrierCode;
-        oldShipment.CarrierDescription = shipment.CarrierDescription;
-        oldShipment.ServiceCode = shipment.ServiceCode;
-        oldShipment.PaymentType = shipment.PaymentType;
-        oldShipment.TransferMode = shipment.TransferMode;
-        oldShipment.TotalPackageCount = shipment.TotalPackageCount;
-        oldShipment.TotalPackageWeight = shipment.TotalPackageWeight;
-        oldShipment.CreatedAt = shipment.CreatedAt;
-        oldShipment.UpdatedAt = DateTime.Now.ToString();
+        oldShipment.Carrier_Code = shipment.Carrier_Code;
+        oldShipment.Carrier_Description = shipment.Carrier_Description;
+        oldShipment.Service_Code = shipment.Service_Code;
+        oldShipment.Payment_Type = shipment.Payment_Type;
+        oldShipment.Transfer_Mode = shipment.Transfer_Mode;
+        oldShipment.Total_Package_Count = shipment.Total_Package_Count;
+        oldShipment.Total_Package_Weight = shipment.Total_Package_Weight;
+        oldShipment.Updated_At = DateTime.Now.ToString();
         oldShipment.Items = shipment.Items;
 
         _context.Shipments.Update(oldShipment);
@@ -91,10 +90,10 @@ public class ShipmentService : IShipmentService
         return true;
     }
 
-    public async Task<bool> Update_items_in_Shipment(int id, int shipmentid, List<ShipmentItem> items)
+    public async Task<bool> Update_items_in_Shipment(int id, List<ShipmentItem> items)
     {
         // Checks before updating items in a shipment
-        var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == shipmentid);
+        var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == id);
         if (shipment == null)
         {
             return false;
@@ -102,6 +101,24 @@ public class ShipmentService : IShipmentService
 
         // Update items in shipment
         shipment.Items = items;
+
+        _context.Shipments.Update(shipment);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> Update_Order_in_Shipment(int id, Order order)
+    {
+        // Checks before updating order in a shipment
+        var shipment = await _context.Shipments.FindAsync(id);
+        if (shipment == null)
+        {
+            return false;
+        }
+
+        // Update order in shipment
+        shipment.Order_Id = order.Id;
 
         _context.Shipments.Update(shipment);
         await _context.SaveChangesAsync();
