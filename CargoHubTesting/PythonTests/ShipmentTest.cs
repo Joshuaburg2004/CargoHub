@@ -74,7 +74,7 @@ namespace PythonTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Equal("3", result);
+            Xunit.Assert.Contains("{\"id\":3,", result);
         }
 
         [Fact, TestPriority(7)]
@@ -124,12 +124,10 @@ namespace PythonTests
         public async Task PutOrderInShipment()
         {
             var requestUri = "/api/v1/shipments/1/orders";
-            var response = await _client.PutAsync(requestUri, new StringContent("[{\"id\": 4, \"source_Id\": 9, \"order_Date\": \"1999-07-05T19:31:10Z\", \"request_Date\": \"1999-07-09T19:31:10Z\", \"reference\": \"ORD00002\", \"reference_Extra\": \"Vergelijken raak geluid beetje altijd.\", \"order_Status\": \"Delivered\", \"notes\": \"We hobby thee compleet wiel fijn.\", \"shipping_Notes\": \"Nood provincie hier.\", \"picking_Notes\": \"Borstelen dit verf suiker.\", \"warehouse_Id\": 20, \"ship_To\": 1, \"bill_To\": 1, \"shipment_Id\": 2, \"total_Amount\": 8484.98, \"total_Discount\": 214.52, \"total_Tax\": 665.09, \"total_Surcharge\": 42.12, \"items\": [{\"item_Id\": \"P003790\", \"amount\": 10}]}]", Encoding.UTF8, "application/json"));
-
+            var response = await _client.PutAsync(requestUri, new StringContent("{\"id\": 3, \"source_id\": 52, \"order_date\": \"1983-09-26T19:06:08Z\", \"request_date\": \"1983-09-30T19:06:08Z\", \"reference\": \"ORD00003\", \"reference_extra\": \"Vergeven kamer goed enkele wiel tussen.\", \"order_status\": \"Delivered\", \"notes\": \"Zeil hoeveel onze map sex ding.\", \"shipping_notes\": \"Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.\", \"picking_notes\": \"Grof geven politie suiker bodem zuid.\", \"warehouse_id\": 11, \"ship_to\": 0, \"bill_to\": 0, \"shipment_id\": 3, \"total_amount\": 1156.14, \"total_discount\": 420.45, \"total_tax\": 677.42, \"total_surcharge\": 86.03, \"created_at\": \"1983-09-26T19:06:08Z\", \"updated_at\": \"1983-09-28T15:06:08Z\", \"items\": [{\"item_id\": \"P010669\", \"amount\": 16}]}", Encoding.UTF8, "application/json"));
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Equal("[]", result);
         }
 
         [Fact, TestPriority(12)]
@@ -140,7 +138,7 @@ namespace PythonTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Contains("{\"id\": 1, \"source_id\": 52, \"order_date\": \"1983-09-26T19:06:08Z\", \"request_date\": \"1983-09-30T19:06:08Z\", \"reference\": \"ORD00003\", \"reference_extra\": \"Vergeven kamer goed enkele wiel tussen.\", \"order_status\": \"Delivered\", \"notes\": \"Zeil hoeveel onze map sex ding.\", \"shipping_notes\": \"Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.\", \"picking_notes\": \"Grof geven politie suiker bodem zuid.\", \"warehouse_id\": 11, \"ship_to\": null, \"bill_to\": null, \"shipment_id\": 1, \"total_amount\": 1156.14, \"total_discount\": 420.45, \"total_tax\": 677.42, \"total_surcharge\": 86.03, \"created_at\": ", result);
+            Xunit.Assert.Contains("{\"id\":3,\"source_Id\":52,\"order_Date\":\"1983-09-26T19:06:08Z\",\"request_Date\":\"1983-09-30T19:06:08Z\",\"reference\":\"ORD00003\",\"reference_Extra\":\"Vergeven kamer goed enkele wiel tussen.\",\"order_Status\":\"Delivered\",\"notes\":\"Zeil hoeveel onze map sex ding.\",\"shipping_Notes\":\"Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.\",\"picking_Notes\":\"Grof geven politie suiker bodem zuid.\",\"warehouse_Id\":11,\"ship_To\":0,\"bill_To\":0,\"shipment_Id\":3,\"total_Amount\":1156.14,\"total_Discount\":420.45,\"total_Tax\":677.42,\"total_Surcharge\":86.03,\"created_At\":", result);
         }
 
         [Fact, TestPriority(13)]

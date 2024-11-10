@@ -63,7 +63,12 @@ public class ShipmentController : Controller
         {
             return NotFound();
         }
-        return Ok(shipment.Order_Id);
+        Order? order = await _shipmentService.GetOrderInShipment(id);
+        if (order == null)
+        {
+            return NotFound("order not found");
+        }
+        return Ok(order);
     }
 
     [HttpPost]

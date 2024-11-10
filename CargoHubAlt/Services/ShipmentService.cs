@@ -37,6 +37,20 @@ public class ShipmentService : IShipmentService
         }
     }
 
+    public async Task<Order?> GetOrderInShipment(int id)
+    {
+        Shipment? shipment = await _context.Shipments.FindAsync(id);
+        if (shipment != null)
+        {
+            Order? order = await _context.Orders.FindAsync(shipment.Order_Id);
+            if (order != null)
+            {
+                return order;
+            }
+        }
+        return null;
+    }
+
     public async Task<bool> AddShipment(Shipment shipment)
     {
         // Checks before adding a shipment
@@ -117,10 +131,35 @@ public class ShipmentService : IShipmentService
             return false;
         }
 
-        // Update order in shipment
-        shipment.Order_Id = order.Id;
+        var oldOrder = await _context.Orders.FindAsync(order.Id);
+        if (oldOrder == null)
+        {
+            return false;
+        }
 
-        _context.Shipments.Update(shipment);
+        // Update order
+        oldOrder.Id = order.Id;
+        oldOrder.Source_Id = order.Source_Id;
+        oldOrder.Order_Date = order.Order_Date;
+        oldOrder.Request_Date = order.Request_Date;
+        oldOrder.Reference = order.Reference;
+        oldOrder.Reference_Extra = order.Reference_Extra;
+        oldOrder.Order_Status = order.Order_Status;
+        oldOrder.Notes = order.Notes;
+        oldOrder.Shipping_Notes = order.Shipping_Notes;
+        oldOrder.Picking_Notes = order.Picking_Notes;
+        oldOrder.Warehouse_Id = order.Warehouse_Id;
+        oldOrder.Ship_To = order.Ship_To;
+        oldOrder.Bill_To = order.Bill_To;
+        oldOrder.Shipment_Id = order.Shipment_Id;
+        oldOrder.Total_Amount = order.Total_Amount;
+        oldOrder.Total_Discount = order.Total_Discount;
+        oldOrder.Total_Tax = order.Total_Tax;
+        oldOrder.Total_Surcharge = order.Total_Surcharge;
+        oldOrder.Updated_At = DateTime.Now.ToString();
+        oldOrder.Items = order.Items;
+
+        _context.Orders.Update(oldOrder);
         await _context.SaveChangesAsync();
 
         return true;
