@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/shipment")]
+[Route("api/v1/shipments")]
 public class ShipmentController : Controller
 {
     private readonly IShipmentService _shipmentService;
@@ -16,7 +16,7 @@ public class ShipmentController : Controller
         var shipments = await _shipmentService.GetShipments();
         if (shipments == null)
         {
-            return NotFound();
+            return BadRequest();
         }
         return Ok(shipments);
     }
@@ -34,7 +34,41 @@ public class ShipmentController : Controller
             return NotFound();
         }
         return Ok(shipment);
+    }
 
+    [HttpGet("{id}/items")]
+    public async Task<IActionResult> GetItemsInShipment([FromRoute] int id)
+    {
+        if (id <= 0)
+        {
+            return BadRequest();
+        }
+        var shipment = await _shipmentService.GetShipment(id);
+        if (shipment == null)
+        {
+            return NotFound();
+        }
+        return Ok(shipment.Items);
+    }
+
+    [HttpGet("{id}/orders")]
+    public async Task<IActionResult> GetOrdersInShipment([FromRoute] int id)
+    {
+        if (id <= 0)
+        {
+            return BadRequest();
+        }
+        var shipment = await _shipmentService.GetShipment(id);
+        if (shipment == null)
+        {
+            return NotFound();
+        }
+        Order? order = await _shipmentService.GetOrderInShipment(id);
+        if (order == null)
+        {
+            return NotFound("order not found");
+        }
+        return Ok(order);
     }
 
     [HttpPost]
@@ -51,14 +85,14 @@ public class ShipmentController : Controller
         return Ok();
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdateShipment([FromBody] Shipment shipment)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateShipment([FromRoute] int id, [FromBody] Shipment shipment)
     {
         if (shipment == null)
         {
             return BadRequest();
         }
-        else if (!await _shipmentService.UpdateShipment(shipment))
+        else if (!await _shipmentService.UpdateShipment(id, shipment))
         {
             return BadRequest();
         }
@@ -66,7 +100,7 @@ public class ShipmentController : Controller
     }
 
     [HttpPut("{id}/items")]
-    public async Task<IActionResult> UpdateItemsInShipment([FromRoute] int id, int shipmentid, [FromBody] List<ShipmentItem> items)
+    public async Task<IActionResult> UpdateItemsInShipment([FromRoute] int id, [FromBody] List<ShipmentItem> items)
     {
         if (items == null)
         {
@@ -76,15 +110,29 @@ public class ShipmentController : Controller
         {
             return BadRequest();
         }
-        else if (shipmentid <= 0)
+        else if (!await _shipmentService.Update_items_in_Shipment(id, items))
         {
             return BadRequest();
         }
-        else if (!await _shipmentService.Update_items_in_Shipment(id, shipmentid, items))
+        return Ok(items);
+    }
+
+    [HttpPut("{id}/orders")]
+    public async Task<IActionResult> UpdateOrderInShipment([FromRoute] int id, [FromBody] Order order)
+    {
+        if (order == null)
         {
-            return BadRequest();
+            return BadRequest("null order");
         }
-        return Ok();
+        else if (id <= 0)
+        {
+            return BadRequest("id <= 0");
+        }
+        else if (!await _shipmentService.Update_Order_in_Shipment(id, order))
+        {
+            return BadRequest("update order failed");
+        }
+        return Ok(order);
     }
 
     [HttpDelete("{id}")]

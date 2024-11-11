@@ -37,6 +37,20 @@ public class ShipmentService : IShipmentService
         }
     }
 
+    public async Task<Order?> GetOrderInShipment(int id)
+    {
+        Shipment? shipment = await _context.Shipments.FindAsync(id);
+        if (shipment != null)
+        {
+            Order? order = await _context.Orders.FindAsync(shipment.Order_Id);
+            if (order != null)
+            {
+                return order;
+            }
+        }
+        return null;
+    }
+
     public async Task<bool> AddShipment(Shipment shipment)
     {
         // Checks before adding a shipment
@@ -56,33 +70,32 @@ public class ShipmentService : IShipmentService
         return true;
     }
 
-    public async Task<bool> UpdateShipment(Shipment shipment)
+    public async Task<bool> UpdateShipment(int id, Shipment shipment)
     {
         // Checks before updating a shipment
-        Shipment? oldShipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == shipment.Id);
+        Shipment? oldShipment = await _context.Shipments.FindAsync(id);
         if (oldShipment == null)
         {
             return false;
         }
 
         // Update shipment
-        oldShipment.OrderId = shipment.OrderId;
-        oldShipment.SourceId = shipment.SourceId;
-        oldShipment.OrderDate = shipment.OrderDate;
-        oldShipment.RequestDate = shipment.RequestDate;
-        oldShipment.ShipmentDate = shipment.ShipmentDate;
-        oldShipment.ShipmentType = shipment.ShipmentType;
-        oldShipment.ShipmentStatus = shipment.ShipmentStatus;
+        oldShipment.Order_Id = shipment.Order_Id;
+        oldShipment.Source_Id = shipment.Source_Id;
+        oldShipment.Order_Date = shipment.Order_Date;
+        oldShipment.Request_Date = shipment.Request_Date;
+        oldShipment.Shipment_Date = shipment.Shipment_Date;
+        oldShipment.Shipment_Type = shipment.Shipment_Type;
+        oldShipment.Shipment_Status = shipment.Shipment_Status;
         oldShipment.Notes = shipment.Notes;
-        oldShipment.CarrierCode = shipment.CarrierCode;
-        oldShipment.CarrierDescription = shipment.CarrierDescription;
-        oldShipment.ServiceCode = shipment.ServiceCode;
-        oldShipment.PaymentType = shipment.PaymentType;
-        oldShipment.TransferMode = shipment.TransferMode;
-        oldShipment.TotalPackageCount = shipment.TotalPackageCount;
-        oldShipment.TotalPackageWeight = shipment.TotalPackageWeight;
-        oldShipment.CreatedAt = shipment.CreatedAt;
-        oldShipment.UpdatedAt = DateTime.Now.ToString();
+        oldShipment.Carrier_Code = shipment.Carrier_Code;
+        oldShipment.Carrier_Description = shipment.Carrier_Description;
+        oldShipment.Service_Code = shipment.Service_Code;
+        oldShipment.Payment_Type = shipment.Payment_Type;
+        oldShipment.Transfer_Mode = shipment.Transfer_Mode;
+        oldShipment.Total_Package_Count = shipment.Total_Package_Count;
+        oldShipment.Total_Package_Weight = shipment.Total_Package_Weight;
+        oldShipment.Updated_At = DateTime.Now.ToString();
         oldShipment.Items = shipment.Items;
 
         _context.Shipments.Update(oldShipment);
@@ -91,10 +104,10 @@ public class ShipmentService : IShipmentService
         return true;
     }
 
-    public async Task<bool> Update_items_in_Shipment(int id, int shipmentid, List<ShipmentItem> items)
+    public async Task<bool> Update_items_in_Shipment(int id, List<ShipmentItem> items)
     {
         // Checks before updating items in a shipment
-        var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == shipmentid);
+        var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == id);
         if (shipment == null)
         {
             return false;
@@ -104,6 +117,49 @@ public class ShipmentService : IShipmentService
         shipment.Items = items;
 
         _context.Shipments.Update(shipment);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> Update_Order_in_Shipment(int id, Order order)
+    {
+        // Checks before updating order in a shipment
+        var shipment = await _context.Shipments.FindAsync(id);
+        if (shipment == null)
+        {
+            return false;
+        }
+
+        var oldOrder = await _context.Orders.FindAsync(order.Id);
+        if (oldOrder == null)
+        {
+            return false;
+        }
+
+        // Update order
+        oldOrder.Id = order.Id;
+        oldOrder.Source_Id = order.Source_Id;
+        oldOrder.Order_Date = order.Order_Date;
+        oldOrder.Request_Date = order.Request_Date;
+        oldOrder.Reference = order.Reference;
+        oldOrder.Reference_Extra = order.Reference_Extra;
+        oldOrder.Order_Status = order.Order_Status;
+        oldOrder.Notes = order.Notes;
+        oldOrder.Shipping_Notes = order.Shipping_Notes;
+        oldOrder.Picking_Notes = order.Picking_Notes;
+        oldOrder.Warehouse_Id = order.Warehouse_Id;
+        oldOrder.Ship_To = order.Ship_To;
+        oldOrder.Bill_To = order.Bill_To;
+        oldOrder.Shipment_Id = order.Shipment_Id;
+        oldOrder.Total_Amount = order.Total_Amount;
+        oldOrder.Total_Discount = order.Total_Discount;
+        oldOrder.Total_Tax = order.Total_Tax;
+        oldOrder.Total_Surcharge = order.Total_Surcharge;
+        oldOrder.Updated_At = DateTime.Now.ToString();
+        oldOrder.Items = order.Items;
+
+        _context.Orders.Update(oldOrder);
         await _context.SaveChangesAsync();
 
         return true;
