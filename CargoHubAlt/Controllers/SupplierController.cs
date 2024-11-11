@@ -1,66 +1,71 @@
 using Microsoft.AspNetCore.Mvc;
-[Route("api/v1/suppliers")]
-public class SupplierController : Controller
+
+namespace CargoHub.Controllers
 {
-    private ISuppliers Suppliers { get; set; }
-    public SupplierController(ISuppliers suppliers)
+    [ApiController]
+    [Route("api/v1/suppliers")]
+    public class SupplierController : Controller
     {
-        Suppliers = suppliers;
-    }
-    [HttpGet()]
-    public async Task<IActionResult> GetSuppliers()
-    {
-        var suppliers = await Suppliers.GetSuppliers();
-        return Ok(suppliers);
-    }
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetSupplier(int id)
-    {
-        var supplier = await Suppliers.GetSupplier(id);
-        if (supplier == null)
+        private ISuppliers Suppliers { get; set; }
+        public SupplierController(ISuppliers suppliers)
         {
-            return NotFound($"supplier with ID {id} not found");
+            Suppliers = suppliers;
         }
-        return Ok(supplier);
-    }
-    [HttpGet("{id}/items")]
-    public async Task<IActionResult> GetItemsForSupplier(int id)
-    {
-        var items = await Suppliers.GetItemsForSupplier(id);
-        if (items == null)
+        [HttpGet()]
+        public async Task<IActionResult> GetSuppliers()
         {
-            return NotFound($"no items found for supplier with ID {id}");
+            var suppliers = await Suppliers.GetSuppliers();
+            return Ok(suppliers);
         }
-        return Ok(items);
-    }
-    [HttpPost()]
-    public async Task<IActionResult> CreateSupplier([FromBody] Supplier supplier)
-    {
-        var newSupplier = await Suppliers.CreateSupplier(supplier);
-        if (newSupplier == null)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSupplier(int id)
         {
-            return BadRequest("failed to create supplier");
+            var supplier = await Suppliers.GetSupplier(id);
+            if (supplier == null)
+            {
+                return NotFound($"supplier with ID {id} not found");
+            }
+            return Ok(supplier);
         }
-        return Created("Created supplier", newSupplier);
-    }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteSupplier(int id)
-    {
-        var supplier = await Suppliers.DeleteSupplier(id);
-        if (supplier == null)
+        [HttpGet("{id}/items")]
+        public async Task<IActionResult> GetItemsForSupplier(int id)
         {
-            return NotFound($"supplier with ID {id} not found");
+            var items = await Suppliers.GetItemsForSupplier(id);
+            if (items == null)
+            {
+                return NotFound($"no items found for supplier with ID {id}");
+            }
+            return Ok(items);
         }
-        return Ok(supplier);
-    }
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateSupplier(int id, [FromBody] Supplier supplier)
-    {
-        var oldSupplier = await Suppliers.UpdateSupplier(id, supplier);
-        if (oldSupplier == null)
+        [HttpPost()]
+        public async Task<IActionResult> CreateSupplier([FromBody] Supplier supplier)
         {
-            return NotFound($"supplier with ID {id} not found");
+            var newSupplier = await Suppliers.CreateSupplier(supplier);
+            if (newSupplier == null)
+            {
+                return BadRequest("failed to create supplier");
+            }
+            return Created("Created supplier", newSupplier);
         }
-        return Ok(oldSupplier);
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSupplier(int id)
+        {
+            var supplier = await Suppliers.DeleteSupplier(id);
+            if (supplier == null)
+            {
+                return NotFound($"supplier with ID {id} not found");
+            }
+            return Ok(supplier);
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateSupplier(int id, [FromBody] Supplier supplier)
+        {
+            var oldSupplier = await Suppliers.UpdateSupplier(id, supplier);
+            if (oldSupplier == null)
+            {
+                return NotFound($"supplier with ID {id} not found");
+            }
+            return Ok(oldSupplier);
+        }
     }
 }

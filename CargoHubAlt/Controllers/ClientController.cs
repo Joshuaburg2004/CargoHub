@@ -1,64 +1,82 @@
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/v1/clients")]
-public class ClientController : Controller
+namespace CargoHubAlt.Controllers
 {
-    public IClientService Clients { get; set; }
-    public ClientController(IClientService clients)
+    [ApiController]
+    [Route("api/v1/clients")]
+    public class ClientController : Controller
     {
-        Clients = clients;
-    }
-    [HttpGet()]
-    public async Task<IActionResult> GetAllClients(){
-        return Ok(await Clients.GetAllClients());
-    }
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetOneClient([FromRoute] int id){
-        if(id < 0){
-            return BadRequest("ID cannot be smaller than 0.");
+        public IClientService Clients { get; set; }
+        public ClientController(IClientService clients)
+        {
+            Clients = clients;
         }
-        var client = await Clients.GetClient(id);
-        if(client == null){
-            return BadRequest("The requested id was not found.");
+        [HttpGet()]
+        public async Task<IActionResult> GetAllClients()
+        {
+            return Ok(await Clients.GetAllClients());
         }
-        return Ok(client);
-    }
-    [HttpGet("{id}/orders")]
-    public async Task<IActionResult> GetOrdersByClient([FromRoute] int id){
-        if(id < 0){
-            return BadRequest("ID cannot be smaller than 0.");
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOneClient([FromRoute] int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest("ID cannot be smaller than 0.");
+            }
+            var client = await Clients.GetClient(id);
+            if (client == null)
+            {
+                return BadRequest("The requested id was not found.");
+            }
+            return Ok(client);
         }
-        List<Order> orders = await Clients.GetOrdersByClient(id);
-        if(orders.Count == 0){
-            return BadRequest("The requested id was not found as the bill to or ship to destination.");
+        [HttpGet("{id}/orders")]
+        public async Task<IActionResult> GetOrdersByClient([FromRoute] int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest("ID cannot be smaller than 0.");
+            }
+            List<Order> orders = await Clients.GetOrdersByClient(id);
+            if (orders.Count == 0)
+            {
+                return BadRequest("The requested id was not found as the bill to or ship to destination.");
+            }
+            return Ok(orders);
         }
-        return Ok(orders);
-    }
-    [HttpPost()]
-    public async Task<IActionResult> AddClient([FromBody] Client client){
-        if(client == null){
-            return BadRequest("Client cannot be null.");
+        [HttpPost()]
+        public async Task<IActionResult> AddClient([FromBody] Client client)
+        {
+            if (client == null)
+            {
+                return BadRequest("Client cannot be null.");
+            }
+            await Clients.AddClient(client);
+            return Created("Created client:", client);
         }
-        await Clients.AddClient(client);
-        return Created("Created client:", client);
-    }
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateClient([FromRoute] int id, [FromBody] Client client){
-        if(id < 0){
-            return BadRequest("ID cannot be smaller than 0.");
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateClient([FromRoute] int id, [FromBody] Client client)
+        {
+            if (id < 0)
+            {
+                return BadRequest("ID cannot be smaller than 0.");
+            }
+            if (client == null)
+            {
+                return BadRequest("Client cannot be null.");
+            }
+            await Clients.UpdateClient(id, client);
+            return Ok();
         }
-        if(client == null){
-            return BadRequest("Client cannot be null.");
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteClient([FromRoute] int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest("ID cannot be smaller than 0.");
+            }
+            await Clients.RemoveClient(id);
+            return Ok();
         }
-        await Clients.UpdateClient(id, client);
-        return Ok();
-    }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteClient([FromRoute] int id){
-        if(id < 0){
-            return BadRequest("ID cannot be smaller than 0.");
-        }
-        await Clients.RemoveClient(id);
-        return Ok();
     }
 }
