@@ -1,6 +1,6 @@
 using CargoHubAlt.Models;
 
-namespace CargoHub.Interfaces
+namespace CargoHubAlt.Interfaces
 {
     public interface IOrderService
     {
