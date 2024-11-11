@@ -1,45 +1,49 @@
-using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
-[PrimaryKey("Uid")]
-public class Item : Base
+public class Item:Base
 {
-    public required string Uid { get; set; }
-    public string Code { get; set; }
-    public string Description { get; set; }
-    public string ShortDescription { get; set; }
-    public string UpcCode { get; set; }
-    public string ModelNumber { get; set; }
-    public string CommodityCode { get; set; }
-    public int ItemLine { get; set; }
-    public int ItemGroup { get; set; }
-    public int ItemType { get; set; }
-    public int UnitPurchaseQuantity { get; set; }
-    public int UnitOrderQuantity { get; set; }
-    public int PackOrderQuantity { get; set; }
-    public int SupplierId { get; set; }
-    public string SupplierCode { get; set; }
-    public string SupplierPartNumber { get; set; }
-    public string CreatedAt { get; set; } = GetTimeStamp();
-    public string UpdatedAt { get; set; } = GetTimeStamp();
+    [Key]
+    public string Uid {get; set;}
+    public string Code {get; set;}
+    public string Description {get; set;}
+    public string short_description {get; set;}
+    public string upc_code {get; set;}
+    public string model_number {get; set;}
+    public string commodity_code {get; set;}
 
-    public Item() { }
-    public Item(string uid, string code, string description, string shortDescription, string upcCode, string modelNumber, string commodityCode, int itemLine, int itemGroup, int itemType, int unitPurchaseQuantity, int unitOrderQuantity, int packOrderQuantity, int supplierId, string supplierCode, string supplierPartNumber)
+    public int item_line {get; set;}
+    public int item_group {get; set;}
+    public int item_type {get; set;}
+    public int unit_purchase_quantity {get; set;}
+    public int unit_order_quantity {get; set;}
+    public int pack_order_quantity {get; set;}
+    public int supplier_id {get; set;}
+    public string supplier_code {get; set;}
+    public string supplier_part_number {get; set;}
+    public string created_at {get; set;} = GetTimeStamp();
+    public string updated_at {get; set;} = GetTimeStamp();
+
+
+    public Item(string uid, string code, string description, string short_description, string upc_code, string model_number, string commodity_code, int item_line, int item_group, int item_type, int unit_purchase_quantity, int unit_order_quantity, int pack_order_quantity, int supplier_id, string supplier_code, string supplier_part_number)
     {
-        Uid = uid;
-        Code = code;
-        Description = description;
-        ShortDescription = shortDescription;
-        UpcCode = upcCode;
-        ModelNumber = modelNumber;
-        CommodityCode = commodityCode;
-        ItemLine = itemLine;
-        ItemGroup = itemGroup;
-        ItemType = itemType;
-        UnitPurchaseQuantity = unitPurchaseQuantity;
-        UnitOrderQuantity = unitOrderQuantity;
-        PackOrderQuantity = packOrderQuantity;
-        SupplierId = supplierId;
-        SupplierCode = supplierCode;
-        SupplierPartNumber = supplierPartNumber;
+        this.Uid = uid;
+        this.Code = code;
+        this.Description = description;
+        this.short_description = short_description;
+        this.upc_code = upc_code;
+        this.model_number = model_number;
+        this.commodity_code = commodity_code;
+        this.item_line = item_line;
+        this.item_group = item_group;
+        this.item_type = item_type;
+        this.unit_purchase_quantity = unit_purchase_quantity;
+        this.unit_order_quantity = unit_order_quantity;
+        this.pack_order_quantity = pack_order_quantity;
+        this.supplier_id = supplier_id;
+        this.supplier_code = supplier_code;
+        this.supplier_part_number = supplier_part_number;
     }
+    
+    
+
 }
