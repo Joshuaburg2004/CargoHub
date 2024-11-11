@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using CargoHubAlt.Interfaces;
+using CargoHubAlt.Models;
 
 namespace CargoHubAlt.Controllers
 {

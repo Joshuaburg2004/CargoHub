@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using CargoHubAlt.Interfaces;
+using CargoHubAlt.Models;
 
 namespace CargoHub.Controllers
 {
@@ -6,15 +8,15 @@ namespace CargoHub.Controllers
     [Route("api/v1/suppliers")]
     public class SupplierController : Controller
     {
-        private ISuppliers Suppliers { get; set; }
-        public SupplierController(ISuppliers suppliers)
+        private ISupplierService Suppliers { get; set; }
+        public SupplierController(ISupplierService suppliers)
         {
             Suppliers = suppliers;
         }
         [HttpGet()]
-        public async Task<IActionResult> GetSuppliers()
+        public async Task<IActionResult> GetAllSuppliers()
         {
-            var suppliers = await Suppliers.GetSuppliers();
+            var suppliers = await Suppliers.GetAllSuppliers();
             return Ok(suppliers);
         }
         [HttpGet("{id}")]
@@ -30,7 +32,7 @@ namespace CargoHub.Controllers
         [HttpGet("{id}/items")]
         public async Task<IActionResult> GetItemsForSupplier(int id)
         {
-            var items = await Suppliers.GetItemsForSupplier(id);
+            var items = await Suppliers.GetItemsfromSupplierById(id);
             if (items == null)
             {
                 return NotFound($"no items found for supplier with ID {id}");
@@ -40,7 +42,7 @@ namespace CargoHub.Controllers
         [HttpPost()]
         public async Task<IActionResult> CreateSupplier([FromBody] Supplier supplier)
         {
-            var newSupplier = await Suppliers.CreateSupplier(supplier);
+            var newSupplier = await Suppliers.AddSupplier(supplier);
             if (newSupplier == null)
             {
                 return BadRequest("failed to create supplier");

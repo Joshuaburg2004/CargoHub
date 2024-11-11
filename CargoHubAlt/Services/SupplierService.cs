@@ -13,7 +13,7 @@ namespace CargoHubAlt.Services
         {
             cargoHubContext = context;
         }
-        public async Task<List<Supplier>> GetAllSupplier()
+        public async Task<List<Supplier>> GetAllSuppliers()
         {
             return await cargoHubContext.Suppliers.ToListAsync();
         }

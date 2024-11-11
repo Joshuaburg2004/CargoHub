@@ -14,7 +14,7 @@ namespace CargoHubAlt.Services
             _context = context;
         }
 
-        public async Task<List<Shipment>?> GetAllShipment()
+        public async Task<List<Shipment>?> GetAllShipments()
         {
             List<Shipment> shipments = await _context.Shipments.ToListAsync();
             if (shipments != null)

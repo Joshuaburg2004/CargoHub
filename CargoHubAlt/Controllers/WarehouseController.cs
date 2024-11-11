@@ -1,5 +1,6 @@
-using CargoHubAlt.Models;
 using Microsoft.AspNetCore.Mvc;
+using CargoHubAlt.Interfaces;
+using CargoHubAlt.Models;
 
 namespace CargoHubAlt.Controllers
 {
@@ -7,24 +8,24 @@ namespace CargoHubAlt.Controllers
     [Route("/api/v1/warehouses")]
     public class WarehouseController : Controller
     {
-        private readonly IWarehouse _warehouseservice;
+        private readonly IWarehouseService _warehouseservice;
 
-        public WarehouseController(IWarehouse warehouseservice)
+        public WarehouseController(IWarehouseService warehouseservice)
         {
             _warehouseservice = warehouseservice;
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetWarehouses()
+        public async Task<IActionResult> GetAllWarehouses()
         {
-            var warhouses = await _warehouseservice.GetWarehouses();
+            var warhouses = await _warehouseservice.GetAllWarehouses();
             return Ok(warhouses);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWarehousesById([FromRoute] int id)
         {
-            var warehouse = await _warehouseservice.GetWarehousesById(id);
+            var warehouse = await _warehouseservice.GetWarehouseById(id);
             if (warehouse == null)
                 return NotFound();
             return Ok(warehouse);
@@ -58,7 +59,7 @@ namespace CargoHubAlt.Controllers
         [HttpGet("{id}/locations")]
         public async Task<IActionResult> GetLocationsByWarehouse([FromRoute] int id)
         {
-            var locations = await _warehouseservice.GetLocationsByWarehouse(id);
+            var locations = await _warehouseservice.GetLocationsfromWarehouseById(id);
             return Ok(locations);
         }
     }
