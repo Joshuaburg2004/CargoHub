@@ -80,12 +80,12 @@ namespace CargoHubAlt.Services
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<ItemGroup>? inventorys = JsonSerializer.Deserialize<List<ItemGroup>>(json);
-                if (inventorys == null)
+                List<ItemGroup>? itemGroups = JsonSerializer.Deserialize<List<ItemGroup>>(json);
+                if (itemGroups == null)
                 {
                     return;
                 }
-                foreach (ItemGroup inventory in inventorys)
+                foreach (ItemGroup inventory in itemGroups)
                 {
                     await SaveToDatabase(inventory);
                 }

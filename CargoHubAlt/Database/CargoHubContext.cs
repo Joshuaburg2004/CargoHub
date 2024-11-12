@@ -14,7 +14,7 @@ namespace CargoHubAlt.Database
         public DbSet<Item> Items { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<ItemGroup> ItemGroups { get; set; }
-        public DbSet<Item_line> ItemLines { get; set; }
+        public DbSet<ItemLine> ItemLines { get; set; }
         public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Item_type> ItemTypes { get; set; }

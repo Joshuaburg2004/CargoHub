@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces;
+using System.Text.Json;
 
 namespace CargoHubAlt.Services
 {
@@ -14,18 +15,18 @@ namespace CargoHubAlt.Services
             _cargoHubContext = context;
         }
 
-        public async Task<Item_line?> FindItemLine(int Id)
+        public async Task<ItemLine?> FindItemLine(int Id)
         {
-            return await this._cargoHubContext.ItemLines.FirstOrDefaultAsync(item_Line => item_Line.Id == Id);
+            return await this._cargoHubContext.ItemLines.FirstOrDefaultAsync(item_Line => item_Line.id == Id);
         }
 
-        public async Task<IEnumerable<Item_line?>> FindManyItemLine(IEnumerable<int> Ids)
+        public async Task<IEnumerable<ItemLine?>> FindManyItemLine(IEnumerable<int> Ids)
         {
-            List<Item_line?> toReturn = new List<Item_line?>();
+            List<ItemLine?> toReturn = new List<ItemLine?>();
 
             foreach (int id in Ids)
             {
-                toReturn.Append(await this._cargoHubContext.ItemLines.FirstOrDefaultAsync(item_Line => item_Line.Id == id));
+                toReturn.Append(await this._cargoHubContext.ItemLines.FirstOrDefaultAsync(item_Line => item_Line.id == id));
             }
             return toReturn;
 
@@ -38,24 +39,24 @@ namespace CargoHubAlt.Services
             return toReturn;
         }
 
-        public async Task<IEnumerable<Item_line>> GetAllItemLine()
+        public async Task<IEnumerable<ItemLine>> GetAllItemLine()
         {
             return await _cargoHubContext.ItemLines.ToListAsync();
         }
-        public async Task<int?> AddItemLine(Item_line linetype)
+        public async Task<int?> AddItemLine(ItemLine linetype)
         {
             await _cargoHubContext.ItemLines.AddAsync(linetype);
             await _cargoHubContext.SaveChangesAsync();
-            return linetype.Id;
+            return linetype.id;
         }
-        public async Task<Item_line?> UpdateItemLine(int Id, Item_line toUpdate)
+        public async Task<ItemLine?> UpdateItemLine(int Id, ItemLine toUpdate)
         {
-            Item_line? found = await _cargoHubContext.ItemLines.FirstOrDefaultAsync(item_Line => item_Line.Id == Id);
+            ItemLine? found = await _cargoHubContext.ItemLines.FirstOrDefaultAsync(item_Line => item_Line.id == Id);
             if (found == null) return found;
 
-        found.Name = toUpdate.Name;
-        found.Description = toUpdate.Description;
-        found.Updated_At = Base.GetTimeStamp();
+        found.name = toUpdate.name;
+        found.description = toUpdate.description;
+        found.updated_At = Base.GetTimeStamp();
 
             this._cargoHubContext.ItemLines.Update(found);
             await this._cargoHubContext.SaveChangesAsync();
@@ -63,14 +64,41 @@ namespace CargoHubAlt.Services
         }
 
 
-        public async Task<Item_line?> DeleteItemLine(int Id)
+        public async Task<ItemLine?> DeleteItemLine(int Id)
         {
-            Item_line? found = await this.FindItemLine(Id);
+            ItemLine? found = await this.FindItemLine(Id);
             if (found is null) return null;
 
             this._cargoHubContext.ItemLines.Remove(found);
             if (await this._cargoHubContext.SaveChangesAsync() >= 1) return found;
             else return null;
+        }
+        public async Task LoadFromJson(string path)
+        {
+            path = "data/" + path;
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                List<ItemLine>? itemLines = JsonSerializer.Deserialize<List<ItemLine>>(json);
+                if (itemLines == null)
+                {
+                    return;
+                }
+                foreach (ItemLine inventory in itemLines)
+                {
+                    await SaveToDatabase(inventory);
+                }
+            }
+        }
+        public async Task<int> SaveToDatabase(ItemLine itemGroup){
+            if(itemGroup is null){
+                return -1;
+            }
+            if(itemGroup.name == null){itemGroup.name = "N/A";}
+            if(itemGroup.description == null){itemGroup.description = "N/A";}
+            await _cargoHubContext.ItemLines.AddAsync(itemGroup);
+            await _cargoHubContext.SaveChangesAsync();
+            return itemGroup.id;   
         }
     }
 }

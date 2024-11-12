@@ -23,7 +23,7 @@ namespace CargoHubAlt.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneItemLine([FromRoute] int id)
         {
-            Item_line? toReturn = await this._itemsService.FindItemLine(id);
+            ItemLine? toReturn = await this._itemsService.FindItemLine(id);
 
             if (toReturn is null) return Ok("null");
             else return Ok(toReturn);
@@ -36,7 +36,7 @@ namespace CargoHubAlt.Controllers
         [HttpGet("batch")]
         public async Task<IActionResult> getBatchItemLine([FromQuery] IEnumerable<int> ids)
         {
-            IEnumerable<Item_line?> found = await this._itemsService.FindManyItemLine(ids);
+            IEnumerable<ItemLine?> found = await this._itemsService.FindManyItemLine(ids);
             return Ok(found);
         }
 
@@ -52,7 +52,7 @@ namespace CargoHubAlt.Controllers
 
 
         [HttpPost()]
-        public async Task<IActionResult> AddItemLine([FromBody] Item_line? toAdd)
+        public async Task<IActionResult> AddItemLine([FromBody] ItemLine? toAdd)
         {
             if (toAdd is null) return BadRequest("this is not an item Line");
             int? success = await this._itemsService.AddItemLine(toAdd);
@@ -61,7 +61,7 @@ namespace CargoHubAlt.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> putItemLine([FromRoute] int id, [FromBody] Item_line toupdateto)
+        public async Task<IActionResult> putItemLine([FromRoute] int id, [FromBody] ItemLine toupdateto)
         {
 
             await _itemsService.UpdateItemLine(id, toupdateto);
@@ -73,10 +73,15 @@ namespace CargoHubAlt.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> deleteItemLine([FromRoute] int id)
         {
-            Item_line? success = await this._itemsService.DeleteItemLine(id);
+            ItemLine? success = await this._itemsService.DeleteItemLine(id);
 
             if (success is null) return NotFound($"ID not found: {id}");
             else return Ok();
+        }
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadLocations([FromRoute] string path){
+            await _itemsService.LoadFromJson(path);
+            return Ok();
         }
     }
 }
