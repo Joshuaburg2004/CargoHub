@@ -1,4 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using CargoHubAlt.Models;
+using CargoHubAlt.Interfaces;
+using CargoHubAlt.Services;
+using CargoHubAlt.Database;
 
 public class Program
 {
@@ -12,11 +16,11 @@ public class Program
         builder.Services.AddTransient<IItemGroupService, ItemGroupService>();
         builder.Services.AddTransient<IItemLineService, ItemLineService>();
         builder.Services.AddTransient<IItemsService, ItemsService>();
-        builder.Services.AddTransient<IWarehouse, WarehouseService>();
+        builder.Services.AddTransient<IWarehouseService, WarehouseService>();
         builder.Services.AddTransient<IShipmentService, ShipmentService>();
         builder.Services.AddTransient<ITransferService, TransferService>();
         builder.Services.AddTransient<ILocationService, LocationService>();
-        builder.Services.AddTransient<ISuppliers, Suppliers>();
+        builder.Services.AddTransient<ISupplierService, Suppliers>();
         builder.Services.AddTransient<IOrderService, OrderService>();
 
         builder.Services.AddControllers();

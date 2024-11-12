@@ -1,11 +1,13 @@
 using CargoHubAlt.Models;
-
-public interface IWarehouse
+namespace CargoHubAlt.Interfaces
 {
-    public Task<List<Warehouse>> GetWarehouses();
-    public Task<Warehouse> GetWarehousesById(int id);
-    public Task<int?> AddWarehouse(Warehouse warehouse);
-    public Task<Warehouse> UpdateWarehouse(int id, Warehouse warehouse);
-    public Task<bool> DeleteWarehouse(int id);
-    public Task<List<Location>> GetLocationsByWarehouse(int id);
+    public interface IWarehouseService
+    {
+        public Task<Warehouse?> GetWarehouseById(int Id);
+        public Task<List<Warehouse>?> GetAllWarehouses();
+        public Task<List<Location>?> GetLocationsfromWarehouseById(int Id);
+        public Task<int?> AddWarehouse(Warehouse warehouse);
+        public Task<Warehouse?> UpdateWarehouse(int Id, Warehouse warehouse);
+        public Task<Warehouse?> DeleteWarehouse(int Id);
+    }
 }

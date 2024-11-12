@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using CargoHubAlt.Models;
+using CargoHubAlt.Database;
 
 namespace CargoHubAlt.Models
 {
+    [PrimaryKey("Id")]
     public class Warehouse : Base
     {
         public int Id { get; set; }
