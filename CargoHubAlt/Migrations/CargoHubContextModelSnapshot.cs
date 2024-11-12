@@ -527,47 +527,38 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("CargoHubAlt.Models.Warehouse", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
+                    b.Property<string>("address")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("City")
-                        .IsRequired()
+                    b.Property<string>("city")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
+                    b.Property<string>("code")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
+                    b.Property<string>("country")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Created_At")
-                        .IsRequired()
+                    b.Property<string>("created_at")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<string>("name")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Province")
-                        .IsRequired()
+                    b.Property<string>("province")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Updated_At")
-                        .IsRequired()
+                    b.Property<string>("updated_at")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Zip")
-                        .IsRequired()
+                    b.Property<string>("zip")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.ToTable("Warehouses");
                 });
@@ -664,20 +655,20 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("CargoHubAlt.Models.Warehouse", b =>
                 {
-                    b.OwnsOne("CargoHubAlt.Models.Contact", "Contact", b1 =>
+                    b.OwnsOne("CargoHubAlt.Models.Contact", "contact", b1 =>
                         {
                             b1.Property<int>("WarehouseId")
                                 .HasColumnType("INTEGER");
 
-                            b1.Property<string>("Email")
+                            b1.Property<string>("email")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("Name")
+                            b1.Property<string>("name")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("Phone")
+                            b1.Property<string>("phone")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
@@ -689,7 +680,7 @@ namespace CargoHubAlt.Migrations
                                 .HasForeignKey("WarehouseId");
                         });
 
-                    b.Navigation("Contact")
+                    b.Navigation("contact")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

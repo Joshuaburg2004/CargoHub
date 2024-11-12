@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces;
+using System.Text.Json;
 
 namespace CargoHubAlt.Services
 {
@@ -22,8 +23,8 @@ namespace CargoHubAlt.Services
         {
             if (await _context.Warehouses.FindAsync(warehouse.Id) != null)
                 return null;
-            warehouse.Created_At = Base.GetTimeStamp();
-            warehouse.Updated_At = Base.GetTimeStamp();
+            warehouse.CreatedAt = Base.GetTimeStamp();
+            warehouse.UpdatedAt = Base.GetTimeStamp();
             _context.Warehouses.Add(warehouse);
             await _context.SaveChangesAsync();
             return warehouse.Id;
@@ -47,7 +48,7 @@ namespace CargoHubAlt.Services
             existingWarehouse.Province = warehouse.Province;
             existingWarehouse.Country = warehouse.Country;
             existingWarehouse.Contact = warehouse.Contact;
-            existingWarehouse.Updated_At = Base.GetTimeStamp();
+            existingWarehouse.UpdatedAt = Base.GetTimeStamp();
 
             await _context.SaveChangesAsync();
             return existingWarehouse;
@@ -63,5 +64,37 @@ namespace CargoHubAlt.Services
         }
 
         public async Task<List<Location>?> GetLocationsfromWarehouseById(int id) => await _context.Locations.Where(l => l.WarehouseId == id).ToListAsync();
+        public async Task LoadFromJson(string path)
+        {
+            path = "data/" + path;
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                List<Warehouse>? warehouses = JsonSerializer.Deserialize<List<Warehouse>>(json);
+                if (warehouses == null)
+                {
+                    return;
+                }
+                foreach (Warehouse warehouse in warehouses)
+                {
+                    await SaveToDatabase(warehouse);
+                }
+            }
+        }
+        public async Task<int> SaveToDatabase(Warehouse warehouse){
+            if(warehouse is null){
+                return -1;
+            }
+            if(warehouse.Code == null){warehouse.Code = "N/A";}
+            if(warehouse.Name == null){warehouse.Name = "N/A";}
+            if(warehouse.Address == null){warehouse.Address = "N/A";}
+            if(warehouse.Zip == null){warehouse.Zip = "N/A";}
+            if(warehouse.Province == null){warehouse.Province = "N/A";}
+            if(warehouse.Country == null){warehouse.Country = "N/A";}
+            await _context.Warehouses.AddAsync(warehouse);
+            await _context.SaveChangesAsync();
+            return warehouse.Id;
+        }
     }
+    
 }

@@ -9,5 +9,6 @@ namespace CargoHubAlt.Interfaces
         public Task<int?> AddWarehouse(Warehouse warehouse);
         public Task<Warehouse?> UpdateWarehouse(int Id, Warehouse warehouse);
         public Task<Warehouse?> DeleteWarehouse(int Id);
+        public Task LoadFromJson(string path);
     }
 }
