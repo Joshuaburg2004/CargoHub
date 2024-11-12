@@ -2,6 +2,7 @@
 using CargoHubAlt.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CargoHubAlt.Migrations
 {
     [DbContext(typeof(CargoHubContext))]
-    partial class CargoHubContextModelSnapshot : ModelSnapshot
+    [Migration("20241112095410_ItemGroup")]
+    partial class ItemGroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -195,6 +198,7 @@ namespace CargoHubAlt.Migrations
             modelBuilder.Entity("CargoHubAlt.Models.ItemGroup", b =>
                 {
                     b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("created_at")

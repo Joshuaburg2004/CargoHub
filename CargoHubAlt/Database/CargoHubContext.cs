@@ -13,14 +13,14 @@ namespace CargoHubAlt.Database
         public DbSet<Transfer> Transfers { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Location> Locations { get; set; }
-        public DbSet<Item_group> Item_Groups { get; set; }
-        public DbSet<Item_line> Item_Lines { get; set; }
+        public DbSet<ItemGroup> ItemGroups { get; set; }
+        public DbSet<Item_line> ItemLines { get; set; }
         public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Item_type> Item_Types { get; set; }
+        public DbSet<Item_type> ItemTypes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-                modelBuilder.Entity<Order>().OwnsMany(o => o.Items, a =>
+            modelBuilder.Entity<Order>().OwnsMany(o => o.Items, a =>
             {
                 a.WithOwner().HasForeignKey("OrderId");
                 a.Property<int>("Id");
