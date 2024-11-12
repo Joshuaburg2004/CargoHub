@@ -4,33 +4,33 @@ using CargoHubAlt.Database;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("Id")]
+    [PrimaryKey("id")]
     public class Client : Base
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string Zip_Code { get; set; }
-        public string Province { get; set; }
-        public string Country { get; set; }
-        public string Contact_Name { get; set; }
-        public string Contact_Phone { get; set; }
-        public string Contact_Email { get; set; }
-        public string Created_At { get; set; } = GetTimeStamp();
-        public string Updated_At { get; set; } = GetTimeStamp();
-        public Client(int id, string name, string address, string city, string zip_Code, string province, string country, string contact_Name, string contact_Phone, string contact_Email)
+        public int id { get; set; }
+        public string name { get; set; }
+        public string address { get; set; }
+        public string city { get; set; }
+        public string zip_code { get; set; }
+        public string province { get; set; }
+        public string country { get; set; }
+        public string contact_name { get; set; }
+        public string contact_phone { get; set; }
+        public string contact_email { get; set; }
+        public string created_at { get; set; } = GetTimeStamp();
+        public string updated_at { get; set; } = GetTimeStamp();
+        public Client(int id, string name, string address, string city, string zip_code, string province, string country, string contact_name, string contact_phone, string contact_email)
         {
-            this.Id = id;
-            this.Name = name;
-            this.Address = address;
-            this.City = city;
-            this.Zip_Code = zip_Code;
-            this.Province = province;
-            this.Country = country;
-            this.Contact_Name = contact_Name;
-            this.Contact_Phone = contact_Phone;
-            this.Contact_Email = contact_Email;
+            this.id = id;
+            this.name = name;
+            this.address = address;
+            this.city = city;
+            this.zip_code = zip_code;
+            this.province = province;
+            this.country = country;
+            this.contact_name = contact_name;
+            this.contact_phone = contact_phone;
+            this.contact_email = contact_email;
         }
     }
 }

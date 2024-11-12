@@ -80,5 +80,10 @@ namespace CargoHubAlt.Controllers
             await Clients.RemoveClient(id);
             return Ok();
         }
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadClient([FromRoute] string path){
+            await Clients.LoadFromJson(path);
+            return Ok();
+        }
     }
 }
