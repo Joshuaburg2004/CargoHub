@@ -4,22 +4,22 @@ using CargoHubAlt.Database;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("id")]
+    [PrimaryKey("Id")]
     public class Location : Base
     {
-        public int id { get; set; }
-        public int warehouse_id { get; set; }
-        public string code { get; set; }
-        public string name { get; set; }
-        public string created_at { get; set; } = GetTimeStamp();
-        public string updated_at { get; set; } = GetTimeStamp();
+        public int Id { get; set; }
+        public int WarehouseId { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string CreatedAt { get; set; } = GetTimeStamp();
+        public string UpdatedAt { get; set; } = GetTimeStamp();
 
-        public Location(int id, int warehouse_id, string code, string name)
+        public Location(int id, int warehouseId, string code, string name)
         {
-            this.id = id;
-            this.warehouse_id = warehouse_id;
-            this.code = code;
-            this.name = name;
+            Id = id;
+            WarehouseId = warehouseId;
+            Code = code;
+            Name = name;
         }
     }
 }

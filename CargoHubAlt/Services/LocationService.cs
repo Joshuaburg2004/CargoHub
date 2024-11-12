@@ -16,25 +16,25 @@ namespace CargoHubAlt.Services
 
         public async Task<List<Location>> GetAllLocations() => await _context.Locations.ToListAsync();
 
-        public async Task<Location?> GetOneLocation(int id) => await _context.Locations.FirstOrDefaultAsync(x => x.id == id);
+        public async Task<Location?> GetOneLocation(int id) => await _context.Locations.FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<int?> AddLocation(Location Location)
         {
             await _context.Locations.AddAsync(Location);
-            if (await _context.SaveChangesAsync() >= 0) return Location.id;
+            if (await _context.SaveChangesAsync() >= 0) return Location.Id;
             else return null;
         }
 
         public async Task<Location?> UpdateLocation(int id, Location Location)
         {
-            Location? location = await _context.Locations.FirstOrDefaultAsync(x => x.id == id);
+            Location? location = await _context.Locations.FirstOrDefaultAsync(x => x.Id == id);
             if (location is null) { return null; }
 
-            location.id = Location.id;
-            location.warehouse_id = Location.warehouse_id;
-            location.code = Location.code;
-            location.name = Location.name;
-            location.updated_at = Location.updated_at;
+            location.Id = Location.Id;
+            location.WarehouseId = Location.WarehouseId;
+            location.Code = Location.Code;
+            location.Name = Location.Name;
+            location.UpdatedAt = Location.UpdatedAt;
 
             _context.Locations.Update(location);
             await _context.SaveChangesAsync();
@@ -43,7 +43,7 @@ namespace CargoHubAlt.Services
 
         public async Task<Location?> DeleteLocation(int id)
         {
-            Location? location = await _context.Locations.FirstOrDefaultAsync(x => x.id == id);
+            Location? location = await _context.Locations.FirstOrDefaultAsync(x => x.Id == id);
             if (location is null) { return null; }
 
             _context.Remove(location);
@@ -71,11 +71,11 @@ namespace CargoHubAlt.Services
             if(location is null){
                 return -1;
             }
-            if(location.name == null){location.name = "N/A";}
-            if(location.code == null){location.code = "N/A";}
+            if(location.Name == null){location.Name = "N/A";}
+            if(location.Code == null){location.Code = "N/A";}
             await _context.Locations.AddAsync(location);
             await _context.SaveChangesAsync();
-            return location.id;
+            return location.Id;
         }
     }
 }
