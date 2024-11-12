@@ -5,8 +5,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("Id")]
-
     public class Shipment
     {
         public int Id { get; set; }
@@ -53,11 +51,10 @@ namespace CargoHubAlt.Models
             Items = items;
         }
     }
-    [Owned]
     public class ShipmentItem
     {
-        [Key]
-        public string? ItemId { get; set; }
+        public int ShipmentId { get; set; }
+        public string? Item_Id { get; set; }
         public int Amount { get; set; }
     }
 }

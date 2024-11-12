@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("Id")]
     public class Order : Base
     {
         public int Id { get; set; }
@@ -59,12 +58,11 @@ namespace CargoHubAlt.Models
             }
         }
     }
-
     [Owned]
     public class OrderedItem
     {
-        [Key]
         public string? Item_Id { get; set; }
         public int Amount { get; set; }
     }
+
 }

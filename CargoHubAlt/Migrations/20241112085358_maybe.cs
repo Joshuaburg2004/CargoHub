@@ -5,11 +5,7 @@
 namespace CargoHubAlt.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:CargoHubAlt/Migrations/20241108154230_grouptypelineupdate.cs
-    public partial class grouptypelineupdate : Migration
-========
-    public partial class newnamespace : Migration
->>>>>>>> c2d2f649f79a190b0068e654990d126f1a850db5:CargoHubAlt/Migrations/20241111134223_newnamespace.cs
+    public partial class maybe : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -244,12 +240,12 @@ namespace CargoHubAlt.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Reference = table.Column<string>(type: "TEXT", nullable: false),
+                    Reference = table.Column<string>(type: "TEXT", nullable: true),
                     Transfer_From = table.Column<int>(type: "INTEGER", nullable: false),
                     Transfer_To = table.Column<int>(type: "INTEGER", nullable: false),
-                    Transfer_Status = table.Column<string>(type: "TEXT", nullable: false),
-                    Created_At = table.Column<string>(type: "TEXT", nullable: false),
-                    Updated_At = table.Column<string>(type: "TEXT", nullable: false)
+                    Transfer_Status = table.Column<string>(type: "TEXT", nullable: true),
+                    Created_At = table.Column<string>(type: "TEXT", nullable: true),
+                    Updated_At = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -283,13 +279,15 @@ namespace CargoHubAlt.Migrations
                 name: "OrderedItem",
                 columns: table => new
                 {
-                    Item_Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Amount = table.Column<int>(type: "INTEGER", nullable: false),
-                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    OrderId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Item_Id = table.Column<string>(type: "TEXT", nullable: true),
+                    Amount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderedItem", x => x.Item_Id);
+                    table.PrimaryKey("PK_OrderedItem", x => x.Id);
                     table.ForeignKey(
                         name: "FK_OrderedItem_Orders_OrderId",
                         column: x => x.OrderId,
@@ -302,13 +300,15 @@ namespace CargoHubAlt.Migrations
                 name: "ShipmentItem",
                 columns: table => new
                 {
-                    ItemId = table.Column<string>(type: "TEXT", nullable: false),
-                    Amount = table.Column<int>(type: "INTEGER", nullable: false),
-                    ShipmentId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ShipmentId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Item_Id = table.Column<string>(type: "TEXT", nullable: true),
+                    Amount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShipmentItem", x => x.ItemId);
+                    table.PrimaryKey("PK_ShipmentItem", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ShipmentItem_Shipments_ShipmentId",
                         column: x => x.ShipmentId,
@@ -321,13 +321,15 @@ namespace CargoHubAlt.Migrations
                 name: "TransferItem",
                 columns: table => new
                 {
-                    Item_Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Amount = table.Column<int>(type: "INTEGER", nullable: false),
-                    TransferId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TransferId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Item_Id = table.Column<string>(type: "TEXT", nullable: true),
+                    Amount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TransferItem", x => x.Item_Id);
+                    table.PrimaryKey("PK_TransferItem", x => x.Id);
                     table.ForeignKey(
                         name: "FK_TransferItem_Transfers_TransferId",
                         column: x => x.TransferId,

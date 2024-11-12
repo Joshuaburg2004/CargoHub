@@ -20,12 +20,26 @@ namespace CargoHubAlt.Database
         public DbSet<Item_type> Item_Types { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>().OwnsMany(e => e.Items);
-            modelBuilder.Entity<Order>().HasKey(e => e.Id);
-            modelBuilder.Entity<Shipment>().OwnsMany(e => e.Items);
-            modelBuilder.Entity<Shipment>().HasKey(e => e.Id);
-            modelBuilder.Entity<Transfer>().OwnsMany(e => e.Items);
-            modelBuilder.Entity<Transfer>().HasKey(e => e.Id);
+                modelBuilder.Entity<Order>().OwnsMany(o => o.Items, a =>
+            {
+                a.WithOwner().HasForeignKey("OrderId");
+                a.Property<int>("Id");
+                a.HasKey("Id");
+            });
+
+            modelBuilder.Entity<Shipment>().OwnsMany(s => s.Items, a =>
+            {
+                a.WithOwner().HasForeignKey("ShipmentId");
+                a.Property<int>("Id");
+                a.HasKey("Id");
+            });
+
+            modelBuilder.Entity<Transfer>().OwnsMany(t => t.Items, a =>
+            {
+                a.WithOwner().HasForeignKey("TransferId");
+                a.Property<int>("Id");
+                a.HasKey("Id");
+            });
         }
     }
 }

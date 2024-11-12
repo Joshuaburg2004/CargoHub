@@ -14,28 +14,21 @@ namespace CargoHubAlt.Services
             _context = context;
         }
 
-    public async Task<List<Warehouse>?> GetWarehouses() => await _context.Warehouses.ToListAsync();
+    public async Task<List<Warehouse>?> GetAllWarehouses() => await _context.Warehouses.ToListAsync();
 
         public async Task<Warehouse?> GetWarehouseById(int id) => await _context.Warehouses.FirstOrDefaultAsync(_ => _.Id == id);
 
-    public async Task<int?> AddWarehouse(Warehouse warehouse)
-    {
-        if (await _context.Warehouses.FindAsync(warehouse.Id) != null)
-            return null;
-        warehouse.Created_At = Base.GetTimeStamp();
-        warehouse.Updated_At = Base.GetTimeStamp();
-        _context.Warehouses.Add(warehouse);
-        await _context.SaveChangesAsync();
-        return warehouse.Id;
-    }
         public async Task<int?> AddWarehouse(Warehouse warehouse)
         {
             if (await _context.Warehouses.FindAsync(warehouse.Id) != null)
                 return null;
+            warehouse.Created_At = Base.GetTimeStamp();
+            warehouse.Updated_At = Base.GetTimeStamp();
             _context.Warehouses.Add(warehouse);
             await _context.SaveChangesAsync();
             return warehouse.Id;
         }
+
 
         public async Task<Warehouse?> UpdateWarehouse(int id, Warehouse warehouse)
         {
