@@ -23,8 +23,8 @@ namespace CargoHubAlt.Services
         }
         public async Task<int?> AddSupplier(Supplier supplier)
         {
-            supplier.Created_At = Base.GetTimeStamp();
-            supplier.Updated_At = Base.GetTimeStamp();
+            supplier.CreatedAt = Base.GetTimeStamp();
+            supplier.UpdatedAt = Base.GetTimeStamp();
             cargoHubContext.Suppliers.Add(supplier);
             await cargoHubContext.SaveChangesAsync();
             return supplier.Id;
@@ -48,15 +48,15 @@ namespace CargoHubAlt.Services
             origSupplier.Code = supplier.Code;
             origSupplier.Name = supplier.Name;
             origSupplier.Address = supplier.Address;
-            origSupplier.Address_Extra = supplier.Address_Extra;
+            origSupplier.AddressExtra = supplier.AddressExtra;
             origSupplier.City = supplier.City;
-            origSupplier.Zip_Code = supplier.Zip_Code;
+            origSupplier.ZipCode = supplier.ZipCode;
             origSupplier.Province = supplier.Province;
             origSupplier.Country = supplier.Country;
-            origSupplier.Contact_Name = supplier.Contact_Name;
-            origSupplier.PhoneNumber = supplier.PhoneNumber;
+            origSupplier.ContactName = supplier.ContactName;
+            origSupplier.Phonenumber = supplier.Phonenumber;
             origSupplier.Reference = supplier.Reference;
-            origSupplier.Updated_At = Base.GetTimeStamp();
+            origSupplier.UpdatedAt = Base.GetTimeStamp();
 
             cargoHubContext.Suppliers.Update(origSupplier);
             await cargoHubContext.SaveChangesAsync();
@@ -69,10 +69,11 @@ namespace CargoHubAlt.Services
         }
         public async Task LoadFromJson(string path)
         {
+            path = "data/" + path;
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<Supplier>? suppliers = JsonSerializer.Deserialize<List<Supplier>>(json); // This wont work because the json is not correct with C# currently
+                List<Supplier>? suppliers = JsonSerializer.Deserialize<List<Supplier>>(json);
                 if (suppliers == null)
                 {
                     return;
@@ -83,6 +84,24 @@ namespace CargoHubAlt.Services
                 }
             }
         }
-        public async Task SaveToDatabase(Supplier supplier) => await AddSupplier(supplier);
+        public async Task<int> SaveToDatabase(Supplier supplier){
+            if(supplier is null){
+                return -1;
+            }
+            if(supplier.Name == null){supplier.Name = "N/A";}
+            if(supplier.Address == null){supplier.Address = "N/A";}
+            if(supplier.City == null){supplier.City = "N/A";}
+            if(supplier.AddressExtra == null){supplier.AddressExtra = "N/A";}
+            if(supplier.Province == null){supplier.Province = "N/A";}
+            if(supplier.Country == null){supplier.Country = "N/A";}
+            if(supplier.Code == null){supplier.Code = "N/A";}
+            if(supplier.ZipCode == null){supplier.ZipCode = "N/A";}
+            if(supplier.ContactName == null){supplier.ContactName = "N/A";}
+            if(supplier.Phonenumber == null){supplier.Phonenumber = "N/A";}
+            if(supplier.Reference == null){supplier.Reference = "N/A";}
+            await cargoHubContext.Suppliers.AddAsync(supplier);
+            await cargoHubContext.SaveChangesAsync();
+            return supplier.Id;
+        }
     }
 }

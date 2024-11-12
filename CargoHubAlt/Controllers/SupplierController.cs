@@ -69,5 +69,10 @@ namespace CargoHub.Controllers
             }
             return Ok(oldSupplier);
         }
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadClient([FromRoute] string path){
+            await Suppliers.LoadFromJson(path);
+            return Ok();
+        }
     }
 }

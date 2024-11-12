@@ -442,7 +442,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Address_Extra")
+                    b.Property<string>("AddressExtra")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -454,7 +454,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Contact_Name")
+                    b.Property<string>("ContactName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -462,7 +462,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Created_At")
+                    b.Property<string>("CreatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -470,7 +470,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PhoneNumber")
+                    b.Property<string>("Phonenumber")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -482,11 +482,11 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Updated_At")
+                    b.Property<string>("UpdatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Zip_Code")
+                    b.Property<string>("ZipCode")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
