@@ -7,31 +7,29 @@ namespace CargoHubAlt.Models
 {
     public class Transfer
     {
-        public int Id { get; set; }
-        public string? Reference { get; set; }
-        public int Transfer_From { get; set; }
-        public int Transfer_To { get; set; }
-        public string? Transfer_Status { get; set; }
-        public string? Created_At { get; set; }
-        public string? Updated_At { get; set; }
-        public List<TransferItem> Items { get; set; } = new List<TransferItem>();
+        public int id { get; set; }
+        public string? reference { get; set; }
+        public int? transfer_from { get; set; } = 0;
+        public int? transfer_to { get; set; } = 0;
+        public string? transfer_status { get; set; }
+        public string? created_at { get; set; } = Base.GetTimeStamp();
+        public string? updated_at { get; set; } = Base.GetTimeStamp();
+        public List<TransferItem> items { get; set; } = new List<TransferItem>();
         public Transfer(){ }
-        public Transfer(int id, string reference, int transfer_From, int transfer_To, string transfer_Status, string created_At, string updated_At, List<TransferItem> items)
+        public Transfer(int id, string reference, int transfer_from, int transfer_to, string transfer_status, List<TransferItem> items)
         {
-            Id = id;
-            Reference = reference;
-            Transfer_From = transfer_From;
-            Transfer_To = transfer_To;
-            Transfer_Status = transfer_Status;
-            Created_At = created_At;
-            Updated_At = updated_At;
-            Items = items;
+            this.id = id;
+            this.reference = reference;
+            this.transfer_from = transfer_from;
+            this.transfer_to = transfer_to;
+            this.transfer_status = transfer_status;
+            this.items = items;
         }
     }
     [Owned]
     public class TransferItem{
-        public string? Item_Id { get; set; }
-        public int Amount {get; set;}
+        public string? item_id { get; set; }
+        public int amount {get; set;}
     }
 
 }

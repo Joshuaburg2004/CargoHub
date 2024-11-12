@@ -39,7 +39,7 @@ namespace CargoHub.Controllers
         [HttpPost()]
         public async Task<IActionResult> AddTransfer([FromBody] Transfer transfer)
         {
-            if (transfer == null || transfer.Items == null) return BadRequest();
+            if (transfer == null || transfer.items == null) return BadRequest();
             await _transferservice.AddTransfer(transfer);
             return Created("Created transfer", transfer);
         }
@@ -60,6 +60,11 @@ namespace CargoHub.Controllers
             Transfer? oldTransfer = await _transferservice.UpdateTransfer(id, transfer);
             if (oldTransfer == null) return NotFound();
             return Ok(oldTransfer);
+        }
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadClient([FromRoute] string path){
+            await _transferservice.LoadFromJson(path);
+            return Ok();
         }
     }
 }

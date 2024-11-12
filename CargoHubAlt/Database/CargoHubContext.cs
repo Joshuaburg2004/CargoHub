@@ -34,7 +34,7 @@ namespace CargoHubAlt.Database
                 a.HasKey("Id");
             });
 
-            modelBuilder.Entity<Transfer>().OwnsMany(t => t.Items, a =>
+            modelBuilder.Entity<Transfer>().OwnsMany(t => t.items, a =>
             {
                 a.WithOwner().HasForeignKey("TransferId");
                 a.Property<int>("Id");
