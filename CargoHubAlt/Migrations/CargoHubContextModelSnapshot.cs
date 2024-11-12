@@ -244,13 +244,12 @@ namespace CargoHubAlt.Migrations
                     b.ToTable("ItemLines");
                 });
 
-            modelBuilder.Entity("CargoHubAlt.Models.Item_type", b =>
+            modelBuilder.Entity("CargoHubAlt.Models.ItemType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Created_At")
+                    b.Property<string>("CreatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -262,7 +261,7 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Updated_At")
+                    b.Property<string>("UpdatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

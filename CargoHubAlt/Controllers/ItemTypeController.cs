@@ -42,7 +42,7 @@ namespace CargoHub.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> AddItemType([FromBody] Item_type? itemtype)
+        public async Task<IActionResult> AddItemType([FromBody] ItemType? itemtype)
         {
             if (itemtype is null) return BadRequest("this is not an item Type");
             int? success = await _itemsService.AddItemType(itemtype);
@@ -51,7 +51,7 @@ namespace CargoHub.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> putItemType([FromRoute] int id, [FromBody] Item_type itemtype)
+        public async Task<IActionResult> putItemType([FromRoute] int id, [FromBody] ItemType itemtype)
         {
             if (id < 0) return BadRequest("invalid ID");
 
@@ -68,6 +68,11 @@ namespace CargoHub.Controllers
 
             if (success is not null) return Ok();
             else return BadRequest("id not found");
+        }
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadLocations([FromRoute] string path){
+            await _itemsService.LoadFromJson(path);
+            return Ok();
         }
     }
 }

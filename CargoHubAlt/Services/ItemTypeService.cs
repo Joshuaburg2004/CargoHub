@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces;
+using System.Text.Json;
 
 namespace CargoHubAlt.Services
 {
@@ -15,13 +16,13 @@ namespace CargoHubAlt.Services
             _cargoHubContext = context;
         }
 
-        public async Task<Item_type?> GetItemTypeById(int Id)
+        public async Task<ItemType?> GetItemTypeById(int Id)
         {
 
             return await _cargoHubContext.ItemTypes.FirstOrDefaultAsync(item_type => item_type.Id == Id);
         }
 
-        public async Task<IEnumerable<Item_type>> GetAllItemType()
+        public async Task<IEnumerable<ItemType>> GetAllItemType()
         {
             return await _cargoHubContext.ItemTypes.ToListAsync();
         }
@@ -34,9 +35,9 @@ namespace CargoHubAlt.Services
             return toReturn;
         }
 
-        public async Task<int?> AddItemType(Item_type itemtype)
+        public async Task<int?> AddItemType(ItemType itemtype)
         {
-            Item_type? found = await _cargoHubContext.ItemTypes.FirstOrDefaultAsync(x => x.Id == itemtype.Id);
+            ItemType? found = await _cargoHubContext.ItemTypes.FirstOrDefaultAsync(x => x.Id == itemtype.Id);
             if (found is not null) { return null; }
 
             await _cargoHubContext.ItemTypes.AddAsync(itemtype);
@@ -44,14 +45,14 @@ namespace CargoHubAlt.Services
             return itemtype.Id;
         }
 
-        public async Task<Item_type?> UpdateItemType(int Id, Item_type itemtype)
+        public async Task<ItemType?> UpdateItemType(int Id, ItemType itemtype)
         {
-            Item_type? found = await GetItemTypeById(Id);
+            ItemType? found = await GetItemTypeById(Id);
             if (found is null) return null;
 
         found.Name = itemtype.Name;
         found.Description = itemtype.Description;
-        found.Updated_At = itemtype.Updated_At;
+        found.UpdatedAt = itemtype.UpdatedAt;
 
             _cargoHubContext.ItemTypes.Update(found);
             await _cargoHubContext.SaveChangesAsync();
@@ -59,14 +60,41 @@ namespace CargoHubAlt.Services
         }
 
 
-        public async Task<Item_type?> DeleteItemType(int Id)
+        public async Task<ItemType?> DeleteItemType(int Id)
         {
-            Item_type? found = await GetItemTypeById(Id);
+            ItemType? found = await GetItemTypeById(Id);
             if (found is null) return null;
 
             _cargoHubContext.ItemTypes.Remove(found);
             await _cargoHubContext.SaveChangesAsync();
             return found;
+        }
+        public async Task LoadFromJson(string path)
+        {
+            path = "data/" + path;
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                List<ItemType>? itemLines = JsonSerializer.Deserialize<List<ItemType>>(json);
+                if (itemLines == null)
+                {
+                    return;
+                }
+                foreach (ItemType itemType in itemLines)
+                {
+                    await SaveToDatabase(itemType);
+                }
+            }
+        }
+        public async Task<int> SaveToDatabase(ItemType itemType){
+            if(itemType is null){
+                return -1;
+            }
+            if(itemType.Name == null){itemType.Name = "N/A";}
+            if(itemType.Description == null){itemType.Description = "N/A";}
+            await _cargoHubContext.ItemTypes.AddAsync(itemType);
+            await _cargoHubContext.SaveChangesAsync();
+            return itemType.Id;   
         }
     }
 }

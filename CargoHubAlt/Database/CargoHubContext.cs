@@ -17,7 +17,7 @@ namespace CargoHubAlt.Database
         public DbSet<ItemLine> ItemLines { get; set; }
         public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Item_type> ItemTypes { get; set; }
+        public DbSet<ItemType> ItemTypes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Order>().OwnsMany(o => o.Items, a =>
