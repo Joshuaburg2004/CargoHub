@@ -35,7 +35,7 @@ namespace CargoHubAlt.Services
         public async Task<IEnumerable<Item>?> GetItemsfromItemLineById(int Id)
         {
             if (Id < 0) return null;
-            List<Item> toReturn = await _cargoHubContext.Items.Where(_ => _.item_line == Id).ToListAsync();
+            List<Item> toReturn = await _cargoHubContext.Items.Where(_ => _.ItemLine == Id).ToListAsync();
             return toReturn;
         }
 

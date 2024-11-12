@@ -64,7 +64,7 @@ namespace CargoHubAlt.Services
         }
         public async Task<List<Item>?> GetItemsfromSupplierById(int id)
         {
-            var items = await cargoHubContext.Items.Where(i => i.supplier_id == id).ToListAsync();
+            var items = await cargoHubContext.Items.Where(i => i.SupplierId == id).ToListAsync();
             return items;
         }
         public async Task LoadFromJson(string path)

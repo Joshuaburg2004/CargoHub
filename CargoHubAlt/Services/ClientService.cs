@@ -96,7 +96,7 @@ namespace CargoHubAlt.Services
             if(client.ContactEmail == null){client.ContactEmail = "N/A";}
             await _cargoHubContext.Clients.AddAsync(client);
             await _cargoHubContext.SaveChangesAsync();
-            return client.Id;   
+            return client.Id;
         }
     }
 }

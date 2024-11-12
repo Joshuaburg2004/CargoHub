@@ -39,7 +39,7 @@ namespace CargoHubAlt.Services
         public async Task<IEnumerable<Item>?> GetItemsfromItemGroupById(int id)
         {
             if (id < 0) return null;
-            return await this._cargoHubContext.Items.Where(_ => _.item_group == id).ToListAsync();
+            return await this._cargoHubContext.Items.Where(_ => _.ItemGroup == id).ToListAsync();
         }
 
 
