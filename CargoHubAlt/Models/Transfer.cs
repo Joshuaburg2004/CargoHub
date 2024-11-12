@@ -28,8 +28,8 @@ namespace CargoHubAlt.Models
             Items = items;
         }
     }
+    [Owned]
     public class TransferItem{
-        public int TransferId { get; set;}
         public string? Item_Id { get; set; }
         public int Amount {get; set;}
     }

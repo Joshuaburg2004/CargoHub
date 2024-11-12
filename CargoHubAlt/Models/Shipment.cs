@@ -51,9 +51,8 @@ namespace CargoHubAlt.Models
             Items = items;
         }
     }
-    public class ShipmentItem
+    [Owned]    public class ShipmentItem
     {
-        public int ShipmentId { get; set; }
         public string? Item_Id { get; set; }
         public int Amount { get; set; }
     }
