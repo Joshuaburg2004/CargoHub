@@ -6,23 +6,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("id")]
+    [PrimaryKey("Id")]
     public class ItemGroup : Base
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int id { get; set; }
-        public string name { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
 
-        public string description { get; set; }
-        public string created_at { get; set; } = GetTimeStamp();
-        public string updated_at { get; set; } = GetTimeStamp();
+        public string Description { get; set; }
+        public string CreatedAt { get; set; } = GetTimeStamp();
+        public string UpdatedAt { get; set; } = GetTimeStamp();
 
         public ItemGroup(int id, string name, string description)
         {
-            this.id = id;
-            this.name = name;
-            this.description = description;
+            Id = id;
+            Name = name;
+            Description = description;
         }
     }
 }

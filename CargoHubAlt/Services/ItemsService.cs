@@ -24,7 +24,7 @@ namespace CargoHubAlt.Services
         }
         public async Task<IEnumerable<Inventory>> GetInventoryByItem(string id)
         {
-            return await this._context.Inventories.Where(_ => _.item_id == id).ToListAsync();
+            return await this._context.Inventories.Where(_ => _.ItemId == id).ToListAsync();
         }
 
         public async Task<Dictionary<string, int>> GetInventoryTotalsByItem(string id)
@@ -34,12 +34,12 @@ namespace CargoHubAlt.Services
             toReturn.Add("total_ordered", 0);
             toReturn.Add("total_allocated", 0);
             toReturn.Add("total_available", 0);
-            foreach (Inventory inv in await this._context.Inventories.Where(_ => _.item_id == id).ToListAsync())
+            foreach (Inventory inv in await this._context.Inventories.Where(_ => _.ItemId == id).ToListAsync())
             {
-                toReturn["total_expected"] += inv.total_expected;
-                toReturn["total_ordered"] += inv.total_ordered;
-                toReturn["total_allocated"] += inv.total_allocated;
-                toReturn["total_available"] += inv.total_available;
+                toReturn["total_expected"] += inv.TotalExpected;
+                toReturn["total_ordered"] += inv.TotalOrdered;
+                toReturn["total_allocated"] += inv.TotalAllocated;
+                toReturn["total_available"] += inv.TotalAvailable;
             }
             return toReturn;
         }

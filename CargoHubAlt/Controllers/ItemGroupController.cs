@@ -56,7 +56,7 @@ namespace CargoHubAlt.Controllers
         {
             if (toAdd is null) return BadRequest("this is not an item group");
             int? success = await this._itemsService.AddItemGroup(toAdd);
-            if (success is not null) return Ok(toAdd.id);
+            if (success is not null) return Ok(toAdd.Id);
             else return BadRequest();
         }
 

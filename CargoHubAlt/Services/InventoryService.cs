@@ -15,7 +15,7 @@ namespace CargoHubAlt.Services
         }
         public async Task<Inventory?> GetOneInventory(int id)
         {
-            return await this._cargoHubContext.Inventories.FirstOrDefaultAsync(inventory => inventory.id == id);
+            return await this._cargoHubContext.Inventories.FirstOrDefaultAsync(inventory => inventory.Id == id);
         }
 
         public async Task<IEnumerable<Inventory>> GetAllInventories()
@@ -25,28 +25,28 @@ namespace CargoHubAlt.Services
 
         public async Task<int?> CreateInventory(Inventory inventory)
         {
-            inventory.created_at = Inventory.GetTimeStamp();
-            inventory.updated_at = Inventory.GetTimeStamp();
+            inventory.CreatedAt = Inventory.GetTimeStamp();
+            inventory.UpdatedAt = Inventory.GetTimeStamp();
             await this._cargoHubContext.Inventories.AddAsync(inventory);
-            if (await this._cargoHubContext.SaveChangesAsync() >= 1) return inventory.id;
+            if (await this._cargoHubContext.SaveChangesAsync() >= 1) return inventory.Id;
             else return null;
         }
 
         public async Task<Inventory?> UpdateInventory(int id, Inventory inventory)
         {
-            Inventory? found = await this._cargoHubContext.Inventories.FirstOrDefaultAsync(x => x.id == id);
+            Inventory? found = await this._cargoHubContext.Inventories.FirstOrDefaultAsync(x => x.Id == id);
             if (found is null) return null;
             var orig_found = found;
-            found.item_id = inventory.item_id;
-            found.description = inventory.description;
-            found.item_reference = inventory.item_reference;
-            found.locations = inventory.locations;
-            found.total_on_hand = inventory.total_on_hand;
-            found.total_expected = inventory.total_expected;
-            found.total_ordered = inventory.total_ordered;
-            found.total_allocated = inventory.total_allocated;
-            found.total_available = inventory.total_available;
-            found.updated_at = Inventory.GetTimeStamp();
+            found.ItemId = inventory.ItemId;
+            found.Description = inventory.Description;
+            found.ItemReference = inventory.ItemReference;
+            found.Locations = inventory.Locations;
+            found.TotalOnHand = inventory.TotalOnHand;
+            found.TotalExpected = inventory.TotalExpected;
+            found.TotalOrdered = inventory.TotalOrdered;
+            found.TotalAllocated = inventory.TotalAllocated;
+            found.TotalAvailable = inventory.TotalAvailable;
+            found.UpdatedAt = Inventory.GetTimeStamp();
             this._cargoHubContext.Inventories.Update(found);
             await this._cargoHubContext.SaveChangesAsync();
             return orig_found;
@@ -54,7 +54,7 @@ namespace CargoHubAlt.Services
 
         public async Task<Inventory?> DeleteInventory(int id)
         {
-            Inventory? found = await this._cargoHubContext.Inventories.FirstOrDefaultAsync(x => x.id == id);
+            Inventory? found = await this._cargoHubContext.Inventories.FirstOrDefaultAsync(x => x.Id == id);
             if (found is null) return null;
             this._cargoHubContext.Inventories.Remove(found);
             if (await this._cargoHubContext.SaveChangesAsync() >= 1) return found;
@@ -81,12 +81,12 @@ namespace CargoHubAlt.Services
             if(inventory is null){
                 return -1;
             }
-            if(inventory.item_id == null){inventory.item_id = "N/A";}
-            if(inventory.description == null){inventory.description = "N/A";}
-            if(inventory.item_reference == null){inventory.item_reference = "N/A";}
+            if(inventory.ItemId == null){inventory.ItemId = "N/A";}
+            if(inventory.Description == null){inventory.Description = "N/A";}
+            if(inventory.ItemReference == null){inventory.ItemReference = "N/A";}
             await _cargoHubContext.Inventories.AddAsync(inventory);
             await _cargoHubContext.SaveChangesAsync();
-            return inventory.id;   
+            return inventory.Id;   
         }
     }
 }

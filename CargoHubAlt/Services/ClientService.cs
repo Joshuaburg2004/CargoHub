@@ -23,11 +23,11 @@ namespace CargoHubAlt.Services
         }
         public async Task<int?> AddClient(Client client)
         {
-            client.created_at = Base.GetTimeStamp();
-            client.updated_at = Base.GetTimeStamp();
+            client.CreatedAt = Base.GetTimeStamp();
+            client.UpdatedAt = Base.GetTimeStamp();
             await _cargoHubContext.Clients.AddAsync(client);
             await _cargoHubContext.SaveChangesAsync();
-            return client.id;
+            return client.Id;
         }
         public async Task<Client?> UpdateClient(int id, Client client)
         {
@@ -36,16 +36,16 @@ namespace CargoHubAlt.Services
             {
                 return origClient;
             }
-            origClient.name = client.name;
-            origClient.address = client.address;
-            origClient.city = client.city;
-            origClient.zip_code = client.zip_code;
-            origClient.province = client.province;
-            origClient.country = client.country;
-            origClient.contact_name = client.contact_name;
-            origClient.contact_phone = client.contact_phone;
-            origClient.contact_email = client.contact_email;
-            origClient.updated_at = Base.GetTimeStamp();
+            origClient.Name = client.Name;
+            origClient.Address = client.Address;
+            origClient.City = client.City;
+            origClient.ZipCode = client.ZipCode;
+            origClient.Province = client.Province;
+            origClient.Country = client.Country;
+            origClient.ContactName = client.ContactName;
+            origClient.ContactPhone = client.ContactPhone;
+            origClient.ContactEmail = client.ContactEmail;
+            origClient.UpdatedAt = Base.GetTimeStamp();
             await _cargoHubContext.SaveChangesAsync();
             return origClient;
         }
@@ -85,18 +85,18 @@ namespace CargoHubAlt.Services
             if(client is null){
                 return -1;
             }
-            if(client.name == null){client.name = "N/A";}
-            if(client.address == null){client.address = "N/A";}
-            if(client.city == null){client.city = "N/A";}
-            if(client.zip_code == null){client.zip_code = "N/A";}
-            if(client.province == null){client.province = "N/A";}
-            if(client.country == null){client.country = "N/A";}
-            if(client.contact_name == null){client.contact_name = "N/A";}
-            if(client.contact_phone == null){client.contact_phone = "N/A";}
-            if(client.contact_email == null){client.contact_email = "N/A";}
+            if(client.Name == null){client.Name = "N/A";}
+            if(client.Address == null){client.Address = "N/A";}
+            if(client.City == null){client.City = "N/A";}
+            if(client.ZipCode == null){client.ZipCode = "N/A";}
+            if(client.Province == null){client.Province = "N/A";}
+            if(client.Country == null){client.Country = "N/A";}
+            if(client.ContactName == null){client.ContactName = "N/A";}
+            if(client.ContactPhone == null){client.ContactPhone = "N/A";}
+            if(client.ContactEmail == null){client.ContactEmail = "N/A";}
             await _cargoHubContext.Clients.AddAsync(client);
             await _cargoHubContext.SaveChangesAsync();
-            return client.id;   
+            return client.Id;   
         }
     }
 }

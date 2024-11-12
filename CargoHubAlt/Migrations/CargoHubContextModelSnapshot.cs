@@ -18,105 +18,105 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("CargoHubAlt.Models.Client", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("address")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("city")
+                    b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("contact_email")
+                    b.Property<string>("ContactEmail")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("contact_name")
+                    b.Property<string>("ContactName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("contact_phone")
+                    b.Property<string>("ContactPhone")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("country")
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("created_at")
+                    b.Property<string>("CreatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("province")
+                    b.Property<string>("Province")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("updated_at")
+                    b.Property<string>("UpdatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("zip_code")
+                    b.Property<string>("ZipCode")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("CargoHubAlt.Models.Inventory", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("created_at")
+                    b.Property<string>("CreatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("item_id")
+                    b.Property<string>("ItemId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("item_reference")
+                    b.Property<string>("ItemReference")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("locations")
+                    b.Property<string>("Locations")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("total_allocated")
+                    b.Property<int>("TotalAllocated")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("total_available")
+                    b.Property<int>("TotalAvailable")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("total_expected")
+                    b.Property<int>("TotalExpected")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("total_on_hand")
+                    b.Property<int>("TotalOnHand")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("total_ordered")
+                    b.Property<int>("TotalOrdered")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("updated_at")
+                    b.Property<string>("UpdatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Inventories");
                 });
@@ -194,52 +194,52 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("CargoHubAlt.Models.ItemGroup", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("created_at")
+                    b.Property<string>("CreatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("updated_at")
+                    b.Property<string>("UpdatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("ItemGroups");
                 });
 
             modelBuilder.Entity("CargoHubAlt.Models.ItemLine", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("created_at")
+                    b.Property<string>("CreatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("updated_At")
+                    b.Property<string>("UpdatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("ItemLines");
                 });
