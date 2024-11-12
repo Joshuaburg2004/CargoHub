@@ -272,30 +272,30 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("CargoHubAlt.Models.Location", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Code")
+                    b.Property<string>("code")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Created_At")
+                    b.Property<string>("created_at")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Updated_At")
+                    b.Property<string>("updated_at")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Warehouse_Id")
+                    b.Property<int>("warehouse_id")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.ToTable("Locations");
                 });

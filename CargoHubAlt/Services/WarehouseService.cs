@@ -62,6 +62,6 @@ namespace CargoHubAlt.Services
             return warehouse;
         }
 
-        public async Task<List<Location>?> GetLocationsfromWarehouseById(int id) => await _context.Locations.Where(l => l.Warehouse_Id == id).ToListAsync();
+        public async Task<List<Location>?> GetLocationsfromWarehouseById(int id) => await _context.Locations.Where(l => l.warehouse_id == id).ToListAsync();
     }
 }
