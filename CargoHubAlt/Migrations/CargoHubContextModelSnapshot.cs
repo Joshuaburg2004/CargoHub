@@ -498,29 +498,29 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("CargoHubAlt.Models.Transfer", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("created_at")
+                    b.Property<string>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("reference")
+                    b.Property<string>("Reference")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("transfer_from")
+                    b.Property<int?>("TransferFrom")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("transfer_status")
+                    b.Property<string>("TransferStatus")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("transfer_to")
+                    b.Property<int?>("TransferTo")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("updated_at")
+                    b.Property<string>("UpdatedAt")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Transfers");
                 });
@@ -634,20 +634,20 @@ namespace CargoHubAlt.Migrations
 
             modelBuilder.Entity("CargoHubAlt.Models.Transfer", b =>
                 {
-                    b.OwnsMany("CargoHubAlt.Models.TransferItem", "items", b1 =>
+                    b.OwnsMany("CargoHubAlt.Models.TransferItem", "Items", b1 =>
                         {
                             b1.Property<int>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("INTEGER");
 
+                            b1.Property<int>("Amount")
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<string>("ItemId")
+                                .HasColumnType("TEXT");
+
                             b1.Property<int>("TransferId")
                                 .HasColumnType("INTEGER");
-
-                            b1.Property<int>("amount")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<string>("item_id")
-                                .HasColumnType("TEXT");
 
                             b1.HasKey("Id");
 
@@ -659,7 +659,7 @@ namespace CargoHubAlt.Migrations
                                 .HasForeignKey("TransferId");
                         });
 
-                    b.Navigation("items");
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("CargoHubAlt.Models.Warehouse", b =>

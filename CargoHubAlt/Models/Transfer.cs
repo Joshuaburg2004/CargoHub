@@ -7,29 +7,29 @@ namespace CargoHubAlt.Models
 {
     public class Transfer
     {
-        public int id { get; set; }
-        public string? reference { get; set; }
-        public int? transfer_from { get; set; } = 0;
-        public int? transfer_to { get; set; } = 0;
-        public string? transfer_status { get; set; }
-        public string? created_at { get; set; } = Base.GetTimeStamp();
-        public string? updated_at { get; set; } = Base.GetTimeStamp();
-        public List<TransferItem> items { get; set; } = new List<TransferItem>();
+        public int Id { get; set; }
+        public string? Reference { get; set; }
+        public int? TransferFrom { get; set; } = 0;
+        public int? TransferTo { get; set; } = 0;
+        public string? TransferStatus { get; set; }
+        public string? CreatedAt { get; set; } = Base.GetTimeStamp();
+        public string? UpdatedAt { get; set; } = Base.GetTimeStamp();
+        public List<TransferItem> Items { get; set; } = new List<TransferItem>();
         public Transfer(){ }
         public Transfer(int id, string reference, int transfer_from, int transfer_to, string transfer_status, List<TransferItem> items)
         {
-            this.id = id;
-            this.reference = reference;
-            this.transfer_from = transfer_from;
-            this.transfer_to = transfer_to;
-            this.transfer_status = transfer_status;
-            this.items = items;
+            Id = id;
+            Reference = reference;
+            TransferFrom = transfer_from;
+            TransferTo = transfer_to;
+            TransferStatus = transfer_status;
+            Items = items;
         }
     }
     [Owned]
     public class TransferItem{
-        public string? item_id { get; set; }
-        public int amount {get; set;}
+        public string? ItemId { get; set; }
+        public int Amount {get; set;}
     }
 
 }

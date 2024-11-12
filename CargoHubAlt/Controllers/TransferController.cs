@@ -39,7 +39,7 @@ namespace CargoHub.Controllers
         [HttpPost()]
         public async Task<IActionResult> AddTransfer([FromBody] Transfer transfer)
         {
-            if (transfer == null || transfer.items == null) return BadRequest();
+            if (transfer == null || transfer.Items == null) return BadRequest();
             await _transferservice.AddTransfer(transfer);
             return Created("Created transfer", transfer);
         }
