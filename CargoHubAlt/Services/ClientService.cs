@@ -62,7 +62,7 @@ namespace CargoHubAlt.Services
         }
         public async Task<List<Order>> GetOrdersByClient(int id)
         {
-            return await _cargoHubContext.Orders.Where(o => o.Bill_To == id || o.Ship_To == id).ToListAsync();
+            return await _cargoHubContext.Orders.Where(o => o.BillTo == id || o.ShipTo == id).ToListAsync();
         }
         public async Task LoadFromJson(string path)
         {
