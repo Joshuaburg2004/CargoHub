@@ -4,34 +4,34 @@ using CargoHubAlt.Database;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("Id")]
+    [PrimaryKey("id")]
     public class Inventory : Base
     {
-        public int Id { get; set; }
-        public string Item_id { get; set; }
-        public string Description { get; set; }
-        public string Item_reference { get; set; }
-        public List<int> Locations { get; set; }
-        public int Total_on_hand { get; set; }
-        public int Total_expected { get; set; }
-        public int Total_ordered { get; set; }
-        public int Total_allocated { get; set; }
-        public int Total_available { get; set; }
-        public string Created_at { get; set; } = GetTimeStamp();
-        public string Updated_at { get; set; } = GetTimeStamp();
+        public int id { get; set; }
+        public string item_id { get; set; }
+        public string description { get; set; }
+        public string item_reference { get; set; }
+        public List<int> locations { get; set; }
+        public int total_on_hand { get; set; }
+        public int total_expected { get; set; }
+        public int total_ordered { get; set; }
+        public int total_allocated { get; set; }
+        public int total_available { get; set; }
+        public string created_at { get; set; } = GetTimeStamp();
+        public string updated_at { get; set; } = GetTimeStamp();
 
         public Inventory(int id, string item_id, string description, string item_reference, List<int> locations, int total_on_hand, int total_expected, int total_ordered, int total_allocated, int total_available)
         {
-            this.Id = id;
-            this.Item_id = item_id;
-            this.Description = description;
-            this.Item_reference = item_reference;
-            this.Locations = locations;
-            this.Total_on_hand = total_on_hand;
-            this.Total_expected = total_expected;
-            this.Total_ordered = total_ordered;
-            this.Total_allocated = total_allocated;
-            this.Total_available = total_available;
+            this.id = id;
+            this.item_id = item_id;
+            this.description = description;
+            this.item_reference = item_reference;
+            this.locations = locations;
+            this.total_on_hand = total_on_hand;
+            this.total_expected = total_expected;
+            this.total_ordered = total_ordered;
+            this.total_allocated = total_allocated;
+            this.total_available = total_available;
         }
     }
 }

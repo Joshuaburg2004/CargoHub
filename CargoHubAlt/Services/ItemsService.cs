@@ -20,11 +20,11 @@ namespace CargoHubAlt.Services
 
         public async Task<Item?> GetItem(string id)
         {
-            return await this._context.Items.FirstOrDefaultAsync(_ => _.Uid == id);
+            return await this._context.Items.FirstOrDefaultAsync(_ => _.uid == id);
         }
         public async Task<IEnumerable<Inventory>> GetInventoryByItem(string id)
         {
-            return await this._context.Inventories.Where(_ => _.Item_id == id).ToListAsync();
+            return await this._context.Inventories.Where(_ => _.item_id == id).ToListAsync();
         }
 
         public async Task<Dictionary<string, int>> GetInventoryTotalsByItem(string id)
@@ -34,19 +34,19 @@ namespace CargoHubAlt.Services
             toReturn.Add("total_ordered", 0);
             toReturn.Add("total_allocated", 0);
             toReturn.Add("total_available", 0);
-            foreach (Inventory inv in await this._context.Inventories.Where(_ => _.Item_id == id).ToListAsync())
+            foreach (Inventory inv in await this._context.Inventories.Where(_ => _.item_id == id).ToListAsync())
             {
-                toReturn["total_expected"] += inv.Total_expected;
-                toReturn["total_ordered"] += inv.Total_ordered;
-                toReturn["total_allocated"] += inv.Total_allocated;
-                toReturn["total_available"] += inv.Total_available;
+                toReturn["total_expected"] += inv.total_expected;
+                toReturn["total_ordered"] += inv.total_ordered;
+                toReturn["total_allocated"] += inv.total_allocated;
+                toReturn["total_available"] += inv.total_available;
             }
             return toReturn;
         }
         public async Task<string?> AddItem(Item toAdd)
         {
             await this._context.Items.AddAsync(toAdd);
-            if (await this._context.SaveChangesAsync() >= 1) return toAdd.Uid;
+            if (await this._context.SaveChangesAsync() >= 1) return toAdd.uid;
             else return null;
         }
 
@@ -54,9 +54,9 @@ namespace CargoHubAlt.Services
         {
             Item? found = await this._context.Items.FindAsync(toUpdate);
             if (found is null) return null;
-            found.Uid = UpdateTo.Uid;
-            found.Code = UpdateTo.Code;
-            found.Description = UpdateTo.Description;
+            found.uid = UpdateTo.uid;
+            found.code = UpdateTo.code;
+            found.description = UpdateTo.description;
             found.short_description = UpdateTo.short_description;
             found.upc_code = UpdateTo.upc_code;
             found.model_number = UpdateTo.model_number;

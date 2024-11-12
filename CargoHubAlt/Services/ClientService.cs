@@ -8,25 +8,25 @@ namespace CargoHubAlt.Services
 {
     public class ClientService : IClientService
     {
-        private readonly CargoHubContext cargoHubContext;
+        private readonly CargoHubContext _cargoHubContext;
         public ClientService(CargoHubContext context)
         {
-            cargoHubContext = context;
+            _cargoHubContext = context;
         }
         public async Task<IEnumerable<Client>> GetAllClients()
         {
-            return await cargoHubContext.Clients.ToListAsync();
+            return await _cargoHubContext.Clients.ToListAsync();
         }
         public async Task<Client?> GetClient(int id)
         {
-            return await cargoHubContext.Clients.FindAsync(id);
+            return await _cargoHubContext.Clients.FindAsync(id);
         }
         public async Task<int?> AddClient(Client client)
         {
             client.created_at = Base.GetTimeStamp();
             client.updated_at = Base.GetTimeStamp();
-            await cargoHubContext.Clients.AddAsync(client);
-            await cargoHubContext.SaveChangesAsync();
+            await _cargoHubContext.Clients.AddAsync(client);
+            await _cargoHubContext.SaveChangesAsync();
             return client.id;
         }
         public async Task<Client?> UpdateClient(int id, Client client)
@@ -46,23 +46,23 @@ namespace CargoHubAlt.Services
             origClient.contact_phone = client.contact_phone;
             origClient.contact_email = client.contact_email;
             origClient.updated_at = Base.GetTimeStamp();
-            await cargoHubContext.SaveChangesAsync();
+            await _cargoHubContext.SaveChangesAsync();
             return origClient;
         }
         public async Task<Client?> RemoveClient(int id)
         {
-            Client? client = cargoHubContext.Clients.Find(id);
+            Client? client = _cargoHubContext.Clients.Find(id);
             if (client == null)
             {
                 return client;
             }
-            cargoHubContext.Clients.Remove(client);
-            await cargoHubContext.SaveChangesAsync();
+            _cargoHubContext.Clients.Remove(client);
+            await _cargoHubContext.SaveChangesAsync();
             return client;
         }
         public async Task<List<Order>> GetOrdersByClient(int id)
         {
-            return await cargoHubContext.Orders.Where(o => o.Bill_To == id || o.Ship_To == id).ToListAsync();
+            return await _cargoHubContext.Orders.Where(o => o.Bill_To == id || o.Ship_To == id).ToListAsync();
         }
         public async Task LoadFromJson(string path)
         {
@@ -94,8 +94,8 @@ namespace CargoHubAlt.Services
             if(client.contact_name == null){client.contact_name = "N/A";}
             if(client.contact_phone == null){client.contact_phone = "N/A";}
             if(client.contact_email == null){client.contact_email = "N/A";}
-            await cargoHubContext.Clients.AddAsync(client);
-            await cargoHubContext.SaveChangesAsync();
+            await _cargoHubContext.Clients.AddAsync(client);
+            await _cargoHubContext.SaveChangesAsync();
             return client.id;   
         }
     }

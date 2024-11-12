@@ -4,12 +4,12 @@ using CargoHubAlt.Database;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("Uid")]
+    [PrimaryKey("uid")]
     public class Item : Base
     {
-        public string Uid { get; set; }
-        public string Code { get; set; }
-        public string Description { get; set; }
+        public string uid { get; set; }
+        public string code { get; set; }
+        public string description { get; set; }
         public string short_description { get; set; }
         public string upc_code { get; set; }
         public string model_number { get; set; }
@@ -30,9 +30,9 @@ namespace CargoHubAlt.Models
 
         public Item(string uid, string code, string description, string short_description, string upc_code, string model_number, string commodity_code, int item_line, int item_group, int item_type, int unit_purchase_quantity, int unit_order_quantity, int pack_order_quantity, int supplier_id, string supplier_code, string supplier_part_number)
         {
-            this.Uid = uid;
-            this.Code = code;
-            this.Description = description;
+            this.uid = uid;
+            this.code = code;
+            this.description = description;
             this.short_description = short_description;
             this.upc_code = upc_code;
             this.model_number = model_number;
