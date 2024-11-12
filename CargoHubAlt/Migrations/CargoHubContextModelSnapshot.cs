@@ -418,8 +418,8 @@ namespace CargoHubAlt.Migrations
                     b.Property<int>("TotalPackageCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("TotalPackageWeight")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("TotalPackageWeight")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("TransferMode")
                         .HasColumnType("TEXT");
@@ -612,7 +612,7 @@ namespace CargoHubAlt.Migrations
                             b1.Property<int>("Amount")
                                 .HasColumnType("INTEGER");
 
-                            b1.Property<string>("Item_Id")
+                            b1.Property<string>("ItemId")
                                 .HasColumnType("TEXT");
 
                             b1.Property<int>("ShipmentId")

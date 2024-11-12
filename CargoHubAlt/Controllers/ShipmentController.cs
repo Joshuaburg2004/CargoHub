@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using CargoHubAlt.Interfaces;
 using CargoHubAlt.Models;
+using CargoHubAlt.Services;
 
 namespace CargoHub.Controllers
 {
     [ApiController]
-    [Route("api/shipment")]
+    [Route("api/v1/shipments")]
     public class ShipmentController : Controller
     {
         private readonly IShipmentService _shipmentService;
@@ -71,6 +72,11 @@ namespace CargoHub.Controllers
         {
             if (id <= 0) return BadRequest();
             await _shipmentService.DeleteShipment(id);
+            return Ok();
+        }
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadClient([FromRoute] string path){
+            await _shipmentService.LoadFromJson(path);
             return Ok();
         }
     }

@@ -22,16 +22,16 @@ namespace CargoHubAlt.Models
 
         public Inventory(int id, string itemId, string description, string itemReference, List<int> locations, int totalOnHand, int totalExpected, int totalOrdered, int totalAllocated, int totalAvailable)
         {
-            this.Id = id;
-            this.ItemId = itemId;
-            this.Description = description;
-            this.ItemReference = itemReference;
-            this.Locations = locations;
-            this.TotalOnHand = totalOnHand;
-            this.TotalExpected = totalExpected;
-            this.TotalOrdered = totalOrdered;
-            this.TotalAllocated = totalAllocated;
-            this.TotalAvailable = totalAvailable;
+            Id = id;
+            ItemId = itemId;
+            Description = description;
+            ItemReference = itemReference;
+            Locations = locations;
+            TotalOnHand = totalOnHand;
+            TotalExpected = totalExpected;
+            TotalOrdered = totalOrdered;
+            TotalAllocated = totalAllocated;
+            TotalAvailable = totalAvailable;
         }
     }
 }

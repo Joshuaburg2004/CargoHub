@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces;
+using System.Text.Json;
 
 namespace CargoHubAlt.Services
 {
@@ -139,6 +140,42 @@ namespace CargoHubAlt.Services
             await _context.SaveChangesAsync();
 
             return shipment;
+        }
+        public async Task LoadFromJson(string path)
+        {
+            path = "data/" + path;
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                List<Shipment>? shipments = JsonSerializer.Deserialize<List<Shipment>>(json);
+                if (shipments == null)
+                {
+                    return;
+                }
+                foreach (Shipment shipment in shipments)
+                {
+                    await SaveToDatabase(shipment);
+                }
+            }
+        }
+        public async Task<int> SaveToDatabase(Shipment shipment){
+            if(shipment is null){
+                return -1;
+            }
+            if(shipment.OrderDate == null){shipment.OrderDate = "N/A";}
+            if(shipment.RequestDate == null){shipment.RequestDate = "N/A";}
+            if(shipment.ShipmentDate == null){shipment.ShipmentDate = "N/A";}
+            if(shipment.ShipmentType == null){shipment.ShipmentType = "N/A";}
+            if(shipment.ShipmentStatus == null){shipment.ShipmentStatus = "N/A";}
+            if(shipment.Notes == null){shipment.Notes = "N/A";}
+            if(shipment.CarrierCode == null){shipment.CarrierCode = "N/A";}
+            if(shipment.CarrierDescription == null){shipment.CarrierDescription = "N/A";}
+            if(shipment.ServiceCode == null){shipment.ServiceCode = "N/A";}
+            if(shipment.PaymentType == null){shipment.PaymentType = "N/A";}
+            if(shipment.TransferMode == null){shipment.TransferMode = "N/A";}
+            await _context.Shipments.AddAsync(shipment);
+            await _context.SaveChangesAsync();
+            return shipment.Id;
         }
     }
 }
