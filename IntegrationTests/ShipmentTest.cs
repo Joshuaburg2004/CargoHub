@@ -16,8 +16,8 @@ namespace IntegrationTests
         private List<ShipmentItem> _itemPutted = new List<ShipmentItem>(){ new ShipmentItem() { ItemId = "P010689", Amount = 16 } };
         private Shipment _shipmentToAdd = new Shipment(1, 3, 52, "1973-01-28", "1973-01-30", "1973-02-01", "I", "Pending", "Hoog genot springen afspraak mond bus.", "DHL", "DHL Express", "NextDay", "Automatic", "Ground", 29, 463.0, new List<ShipmentItem> { new ShipmentItem(){ ItemId = "P010669", Amount = 16 } });
         private Shipment _shipmentToPut = new Shipment(1, 3, 52, "1973-01-28", "1973-01-30", "1973-02-01", "I", "Pending", "Hoog genot springen afspraak mond bus.", "DHL", "DHL Express", "NextDay", "Automatic", "Ground", 39, 463.0, new List<ShipmentItem> { new ShipmentItem(){ ItemId = "P010669", Amount = 16 } });
-        private Order _orderAdded = new Order(3, 24, "1983-09-26T19:06:08Z", "1983-09-30T19:06:08Z", "ORD00003", "Vergeven kamer goed enkele wiel tussen.", "Delivered", "Zeil hoeveel onze map sex ding.", "Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.", "Grof geven politie suiker bodem zuid.", 11, 0, 0, 3, 1156.14, 420.45, 677.42, 86.03, new List<OrderedItem> { new OrderedItem(){ ItemId = "P010669", Amount = 16 } });
-        private Order _orderPutted = new Order(3, 52, "1983-09-26T19:06:08Z", "1983-09-30T19:06:08Z", "ORD00003", "Vergeven kamer goed enkele wiel tussen.", "Delivered", "Zeil hoeveel onze map sex ding.", "Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.", "Grof geven politie suiker bodem zuid.", 11, 0, 0, 3, 1156.14, 420.45, 677.42, 86.03, new List<OrderedItem> { new OrderedItem(){ ItemId = "P010669", Amount = 16 } }); // changed sourceId
+        private Order _orderAdded = new Order(3, 24, "1983-09-26T19:06:08Z", "1983-09-30T19:06:08Z", "ORD00003", "Vergeven kamer goed enkele wiel tussen.", "Delivered", "Zeil hoeveel onze map sex ding.", "Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.", "Grof geven politie suiker bodem zuid.", 11, 0, 0, 1, 1156.14, 420.45, 677.42, 86.03, new List<OrderedItem> { new OrderedItem(){ ItemId = "P010669", Amount = 16 } });
+        private List<int> _orderPutted = new List<int>(){3};
         private OrderedItem _itemAddedToOrder = new OrderedItem(){ ItemId = "P010669", Amount = 16 };
 
         public ShipmentTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
@@ -97,7 +97,6 @@ namespace IntegrationTests
             Xunit.Assert.Equal(_itemAdded.Amount,item.Amount);
         }
         
-        // method does not exist on asp code yet...
         [Fact, TestPriority(6)]
         public async Task GetOrdersInShipment()
         {
@@ -111,26 +110,10 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Order? order = await response.Content.ReadFromJsonAsync<Order>();
+            List<int>? order = await response.Content.ReadFromJsonAsync<List<int>>();
             Xunit.Assert.NotNull(order);
-            Xunit.Assert.Equal(_orderAdded.Id,order.Id);
-            Xunit.Assert.Equal(_orderAdded.SourceId,order.SourceId);
-            Xunit.Assert.Equal(_orderAdded.OrderDate,order.OrderDate);
-            Xunit.Assert.Equal(_orderAdded.RequestDate,order.RequestDate);
-            Xunit.Assert.Equal(_orderAdded.Reference,order.Reference);
-            Xunit.Assert.Equal(_orderAdded.ReferenceExtra,order.ReferenceExtra);
-            Xunit.Assert.Equal(_orderAdded.OrderStatus,order.OrderStatus);
-            Xunit.Assert.Equal(_orderAdded.Notes,order.Notes);
-            Xunit.Assert.Equal(_orderAdded.ShippingNotes,order.ShippingNotes);
-            Xunit.Assert.Equal(_orderAdded.PickingNotes,order.PickingNotes);
-            Xunit.Assert.Equal(_orderAdded.WarehouseId,order.WarehouseId);
-            Xunit.Assert.Equal(_orderAdded.ShipTo,order.ShipTo);
-            Xunit.Assert.Equal(_orderAdded.BillTo,order.BillTo);
-            Xunit.Assert.Equal(_orderAdded.ShipmentId,order.ShipmentId);
-            Xunit.Assert.Equal(_orderAdded.TotalAmount,order.TotalAmount);
-            Xunit.Assert.Equal(_orderAdded.TotalDiscount,order.TotalDiscount);
-            Xunit.Assert.Equal(_orderAdded.TotalTax,order.TotalTax);
-            Xunit.Assert.Equal(_orderAdded.TotalSurcharge,order.TotalSurcharge);
+            Xunit.Assert.Single(order);
+            Xunit.Assert.Equal(3,order.FirstOrDefault());
         }
 
         [Fact, TestPriority(7)]
@@ -204,7 +187,6 @@ namespace IntegrationTests
             Xunit.Assert.Equal(_itemPutted[0].Amount,item.Amount);
         }
 
-        // method does not exist on asp code yet...
         [Fact, TestPriority(11)]
         public async Task PutOrderInShipment()
         {
@@ -215,7 +197,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        // method does not exist on asp code yet...
+        // method returns an int, which means that this method is no longer needed
         [Fact, TestPriority(12)]
         public async Task GetOrdersInShipmentAfterPutting()
         {
@@ -224,26 +206,16 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Order? order = await response.Content.ReadFromJsonAsync<Order>();
+            List<int>? order = await response.Content.ReadFromJsonAsync<List<int>>();
             Xunit.Assert.NotNull(order);
-            Xunit.Assert.Equal(_orderPutted.Id,order.Id);
-            Xunit.Assert.Equal(_orderPutted.SourceId,order.SourceId);
-            Xunit.Assert.Equal(_orderPutted.OrderDate,order.OrderDate);
-            Xunit.Assert.Equal(_orderPutted.RequestDate,order.RequestDate);
-            Xunit.Assert.Equal(_orderPutted.Reference,order.Reference);
-            Xunit.Assert.Equal(_orderPutted.ReferenceExtra,order.ReferenceExtra);
-            Xunit.Assert.Equal(_orderPutted.OrderStatus,order.OrderStatus);
-            Xunit.Assert.Equal(_orderPutted.Notes,order.Notes);
-            Xunit.Assert.Equal(_orderPutted.ShippingNotes,order.ShippingNotes);
-            Xunit.Assert.Equal(_orderPutted.PickingNotes,order.PickingNotes);
-            Xunit.Assert.Equal(_orderPutted.WarehouseId,order.WarehouseId);
-            Xunit.Assert.Equal(_orderPutted.ShipTo,order.ShipTo);
-            Xunit.Assert.Equal(_orderPutted.BillTo,order.BillTo);
-            Xunit.Assert.Equal(_orderPutted.ShipmentId,order.ShipmentId);
-            Xunit.Assert.Equal(_orderPutted.TotalAmount,order.TotalAmount);
-            Xunit.Assert.Equal(_orderPutted.TotalDiscount,order.TotalDiscount);
-            Xunit.Assert.Equal(_orderPutted.TotalTax,order.TotalTax);
-            Xunit.Assert.Equal(_orderPutted.TotalSurcharge,order.TotalSurcharge);
+            Xunit.Assert.Single(order);
+            Xunit.Assert.Equal(3,order.FirstOrDefault());
+            var requestUriOrder = $"/api/v1/orders/{order.FirstOrDefault()}";
+            var responseOrder = await _client.GetAsync(requestUriOrder);
+            var resultOrder = await responseOrder.Content.ReadFromJsonAsync<Order>();
+            Xunit.Assert.NotNull(resultOrder);
+            Xunit.Assert.Equal(_orderAdded.Id,resultOrder.Id);
+            Xunit.Assert.Equal("Packed",resultOrder.OrderStatus);
         }
 
         [Fact, TestPriority(13)]

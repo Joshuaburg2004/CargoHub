@@ -57,6 +57,21 @@ namespace CargoHub.Controllers
             return Ok(items);
         }
 
+        [HttpGet("{id}/orders")]
+        public async Task<IActionResult> GetOrdersInShipment([FromRoute] int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+            var orders = await _shipmentService.GetOrdersFromShipmentById(id);
+            if (orders == null)
+            {
+                return NotFound();
+            }
+            return Ok(orders);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddShipment([FromBody] Shipment shipment)
         {
@@ -77,7 +92,15 @@ namespace CargoHub.Controllers
         public async Task<IActionResult> UpdateItemsInShipment([FromRoute] int id, [FromBody] List<ShipmentItem> items)
         {
             if (id <= 0 || items == null) return BadRequest();
-            await _shipmentService.Update_items_in_Shipment(id, items);
+            await _shipmentService.UpdateItemsInShipment(id, items);
+            return Ok();
+        }
+
+        [HttpPut("{id}/orders")]
+        public async Task<IActionResult> UpdateOrdersInShipment([FromRoute] int id, [FromBody] List<int> orders)
+        {
+            if (id <= 0 || orders == null) return BadRequest();
+            await _shipmentService.UpdateOrdersInShipment(id, orders);
             return Ok();
         }
 

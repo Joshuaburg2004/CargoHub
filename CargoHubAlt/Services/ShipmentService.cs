@@ -54,6 +54,11 @@ namespace CargoHubAlt.Services
             }
         }
 
+        public async Task<List<int>?> GetOrdersFromShipmentById(int id)
+        {
+            return await _context.Orders.Where(x => x.ShipmentId == id).Select(x => x.Id).ToListAsync();
+        }
+
         public async Task<int?> AddShipment(Shipment shipment)
         {
             // Checks before adding a shipment
@@ -108,7 +113,7 @@ namespace CargoHubAlt.Services
             return oldShipment;
         }
 
-        public async Task<Shipment?> Update_items_in_Shipment(int id, List<ShipmentItem> items)
+        public async Task<Shipment?> UpdateItemsInShipment(int id, List<ShipmentItem> items)
         {
             // Checks before updating items in a shipment
             var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == id);
@@ -124,6 +129,40 @@ namespace CargoHubAlt.Services
             await _context.SaveChangesAsync();
 
             return shipment;
+        }
+
+        public async Task UpdateOrdersInShipment(int id, List<int> orders)
+        {
+            var packedOrders = await GetOrdersFromShipmentById(id);
+            if (packedOrders == null)
+            {
+                return;
+            }
+            foreach(var order in packedOrders)
+            {
+                if(!orders.Contains(order))
+                {
+                   var orderToUnpack = await _context.Orders.FirstOrDefaultAsync(x => x.Id == order);
+                   if(orderToUnpack != null)
+                   {
+                       orderToUnpack.ShipmentId = -1;
+                       orderToUnpack.OrderStatus = "Scheduled";
+                       _context.Orders.Update(orderToUnpack);
+                   }
+                }
+            }
+            foreach (var order in orders)
+            {
+                var orderToPack = await _context.Orders.FirstOrDefaultAsync(x => x.Id == order);
+                if (orderToPack != null)
+                {
+                    orderToPack.ShipmentId = id;
+                    orderToPack.OrderStatus = "Packed";
+                    _context.Orders.Update(orderToPack);
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Shipment?> DeleteShipment(int id)
