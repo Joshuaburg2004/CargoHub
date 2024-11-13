@@ -1,12 +1,12 @@
 using System.Net;
 using System.Text;
 
-namespace PythonTests
+namespace IntegrationTests
 {
-    [TestCaseOrderer("PythonTests.PriorityOrderer", "PythonTests")]
+    [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
     public class TransferTest : BaseTest
     {
-        public TransferTest() : base() { }
+        public TransferTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
 
         [Fact, TestPriority(1)]
         public async Task GetAllTransfers()

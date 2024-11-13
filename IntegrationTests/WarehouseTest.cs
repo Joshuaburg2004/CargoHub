@@ -1,12 +1,12 @@
 using System.Net;
 using System.Text.Json;
 
-namespace PythonTests
+namespace IntegrationTests
 {
-    [TestCaseOrderer("PythonTests.PriorityOrderer", "PythonTests")]
+    [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
     public class WarehouseTest : BaseTest
     {
-        public WarehouseTest() : base() { }
+        public WarehouseTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
 
         [Fact, TestPriority(1)]
         public async Task GetAllWarehouses()

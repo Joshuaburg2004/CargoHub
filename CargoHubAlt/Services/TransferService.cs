@@ -69,10 +69,12 @@ namespace CargoHubAlt.Services
                 {
                     return;
                 }
+                var transaction = _context.Database.BeginTransaction();
                 foreach (Transfer transfer in transfers)
                 {
                     await SaveToDatabase(transfer);
                 }
+                await transaction.CommitAsync();
             }
         }
         public async Task<int> SaveToDatabase(Transfer transfer){

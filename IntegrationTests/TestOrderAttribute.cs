@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace PythonTests
+namespace IntegrationTests
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     [ExcludeFromCodeCoverage]
