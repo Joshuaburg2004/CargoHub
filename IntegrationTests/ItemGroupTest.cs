@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text;
 using Xunit;
-using CargoHubAlt.Models;
+using IntegrationTests.models;
+
 namespace IntegrationTests{
 
     [TestCaseOrderer("IntegrationTests.PriorityOrderer","IntegrationTests")]
@@ -12,10 +13,10 @@ namespace IntegrationTests{
     public class ItemGroupTest : BaseTest
     {
 
-        public static ItemGroup testType = new(1, "Laptop", "");
-        public static ItemGroup PutType = new(1, "smart Name", "smart Description");
+        public static item_group testType = new(1, "Laptop", "");
+        public static item_group PutType = new(1, "smart name", "smart description");
         public static string testTypeJson {get => JsonSerializer.Serialize(testType);}
-        public static Item TestItem = new("P000004", "sjQ23408K", "Face-to-face clear-thinking complexity",
+        public static IntegrationTests.models.Item TestItem = new("P000004", "sjQ23408K", "Face-to-face clear-thinking complexity",
         "must", "6523540947122", "63-OFFTq0T", "oTo304", 1, 1,1,1,1,1,1,"SUP423", "E-86805-uTM");
         public ItemGroupTest(CustomWebApplicationFactory<Program> factory) : base(factory)
         {}
@@ -26,14 +27,14 @@ namespace IntegrationTests{
             HttpResponseMessage response = await _client.GetAsync("/api/v1/item_groups");
             Xunit.Assert.NotNull(response);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            List<ItemGroup>? returnedlist = JsonSerializer.Deserialize<List<ItemGroup>>(await response.Content.ReadAsStringAsync());
-            Xunit.Assert.IsType<List<ItemGroup>>(returnedlist);
+            List<item_group>? returnedlist = JsonSerializer.Deserialize<List<item_group>>(await response.Content.ReadAsStringAsync());
+            Xunit.Assert.IsType<List<item_group>>(returnedlist);
             Xunit.Assert.Single(returnedlist);
             
-            ItemGroup returned = returnedlist[0];
-            Xunit.Assert.Equal(testType.Id, returned.Id);
-            Xunit.Assert.Equal(testType.Name, returned.Name);
-            Xunit.Assert.Equal(testType.Description, returned.Description);
+            item_group returned = returnedlist[0];
+            Xunit.Assert.Equal(testType.id, returned.id);
+            Xunit.Assert.Equal(testType.name, returned.name);
+            Xunit.Assert.Equal(testType.description, returned.description);
         }
 
         [Fact, TestPriority(1)]
@@ -42,11 +43,11 @@ namespace IntegrationTests{
             HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_groups/1");
             Console.Error.WriteLine(await response.Content.ReadAsStringAsync());
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            ItemGroup? returned = JsonSerializer.Deserialize<ItemGroup>(await response.Content.ReadAsStringAsync());
-            Xunit.Assert.IsType<ItemGroup>(returned);
-            Xunit.Assert.Equal(testType.Id, returned.Id);
-            Xunit.Assert.Equal(testType.Name, returned.Name);
-            Xunit.Assert.Equal(testType.Description, returned.Description);
+            item_group? returned = JsonSerializer.Deserialize<item_group>(await response.Content.ReadAsStringAsync());
+            Xunit.Assert.IsType<item_group>(returned);
+            Xunit.Assert.Equal(testType.id, returned.id);
+            Xunit.Assert.Equal(testType.name, returned.name);
+            Xunit.Assert.Equal(testType.description, returned.description);
         }
 
         [Fact, TestPriority(2)]
@@ -64,13 +65,13 @@ namespace IntegrationTests{
         {
             HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_groups/1");
             var responseContent = await response.Content.ReadAsStringAsync();
-            ItemGroup? ItemGroupafterupdate = JsonSerializer.Deserialize<ItemGroup>(responseContent);
+            item_group? ItemGroupafterupdate = JsonSerializer.Deserialize<item_group>(responseContent);
 
-            Xunit.Assert.IsType<ItemGroup>(ItemGroupafterupdate);
+            Xunit.Assert.IsType<item_group>(ItemGroupafterupdate);
 
-            Xunit.Assert.Equal(PutType.Id, ItemGroupafterupdate.Id);
-            Xunit.Assert.Equal(PutType.Name, ItemGroupafterupdate.Name);
-            Xunit.Assert.Equal(PutType.Description, ItemGroupafterupdate.Description);
+            Xunit.Assert.Equal(PutType.id, ItemGroupafterupdate.id);
+            Xunit.Assert.Equal(PutType.name, ItemGroupafterupdate.name);
+            Xunit.Assert.Equal(PutType.description, ItemGroupafterupdate.description);
         }
 
         [Fact, TestPriority(4)]
@@ -83,14 +84,14 @@ namespace IntegrationTests{
 
             HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_groups/1/items");
             var responseContent = await response.Content.ReadAsStringAsync();
-            List<Item>? ItemGroupafterupdate = JsonSerializer.Deserialize<List<Item>>(responseContent);
+            List<IntegrationTests.models.Item>? ItemGroupafterupdate = JsonSerializer.Deserialize<List<IntegrationTests.models.Item>>(responseContent);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            Xunit.Assert.IsType<List<Item>>(ItemGroupafterupdate);
+            Xunit.Assert.IsType<List<IntegrationTests.models.Item>>(ItemGroupafterupdate);
             
-            Item ToReturn = ItemGroupafterupdate[0];
-            Xunit.Assert.Equal(TestItem.Uid, ToReturn.Uid);
-            Xunit.Assert.Equal(TestItem.Code, ToReturn.Code);
+            IntegrationTests.models.Item ToReturn = ItemGroupafterupdate[0];
+            Xunit.Assert.Equal(TestItem.uid, ToReturn.uid);
+            Xunit.Assert.Equal(TestItem.code, ToReturn.code);
 
             HttpResponseMessage responsedelete = await _client.DeleteAsync("/api/v1/items/P000004");
 
