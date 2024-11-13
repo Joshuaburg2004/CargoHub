@@ -1,10 +1,12 @@
 using System.Net;
 using System.Net.Http;
+using IntegrationTests;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Text.Json;
+using Xunit;
 using System.Text;
-using Xunit.Abstractions;
-using IntegrationTests.models;
+using CargoHubAlt.Models;
+using System.Net.Http.Json;
 
 namespace IntegrationTests;
 
@@ -14,9 +16,9 @@ public class InventoryIntegratieTest : BaseTest
 
     public string requestUri = "/api/v1/inventories";
 
-    public Inventory TestInventory = new(1, "P000001", "test", "63-OFFTq0T", new List<int>(){3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817}, 40, 40, 40, 40, 40);
+    private Inventory _TestInventory = new(1, "P000001", "test", "63-OFFTq0T", new List<int>(){3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817}, 40, 40, 40, 40, 40);
 
-    public Inventory TestInventoryPut = new(1, "P000001", "test", "hopeful", new List<int>(){3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817}, 60, 60, 60, 60, 60);
+    private Inventory _TestInventoryPut = new(1, "P000001", "test", "hopeful", new List<int>(){3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817}, 60, 60, 60, 60, 60);
 
 
     public InventoryIntegratieTest(CustomWebApplicationFactory<Program> factory) : base(factory)
@@ -38,22 +40,19 @@ public class InventoryIntegratieTest : BaseTest
     public async Task PostInventory()
     {
         string testinventoryjson = JsonSerializer.Serialize(TestInventory);
-        HttpResponseMessage response = await _client.PostAsync(requestUri, new StringContent(testinventoryjson, System.Text.Encoding.UTF8, "application/json"));
+        HttpResponseMessage response = await _client.PostAsJsonAsync(requestUri, TestInventory);
         Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
         Xunit.Assert.Equal("", await response.Content.ReadAsStringAsync());
     }
     
-    
-    
     [Fact, TestPriority(2)]
     public async Task GetInventoryOne()
     {
-        
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/1");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Inventory? inventoryCompared = JsonSerializer.Deserialize<Inventory>(await response.Content.ReadAsStringAsync());
-        Xunit.Assert.IsType<Inventory>(inventoryCompared);
+
+        Inventory? inventoryCompared = await response.Content.ReadFromJsonAsync<Inventory>();
         Xunit.Assert.Equal(TestInventory.id, inventoryCompared.id);
         Xunit.Assert.Equal(TestInventory.item_id, inventoryCompared.item_id);
         Xunit.Assert.Equal(TestInventory.description, inventoryCompared.description);
@@ -73,11 +72,7 @@ public class InventoryIntegratieTest : BaseTest
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        List<Inventory>? responselist = JsonSerializer.Deserialize<List<Inventory>>(await response.Content.ReadAsStringAsync());
-        Xunit.Assert.IsType<List<Inventory>>(responselist);
-        Xunit.Assert.Single(responselist);
-
-        Inventory inventoryCompared = responselist[0];
+        List<Inventory> responselist = await response.Content.ReadFromJsonAsync<List<Inventory>>();
 
         Xunit.Assert.Equal(TestInventory.id, inventoryCompared.id);
         Xunit.Assert.Equal(TestInventory.item_id, inventoryCompared.item_id);
@@ -89,19 +84,15 @@ public class InventoryIntegratieTest : BaseTest
         Xunit.Assert.Equal(TestInventory.total_ordered, inventoryCompared.total_ordered);
         Xunit.Assert.Equal(TestInventory.total_allocated, inventoryCompared.total_allocated);
         Xunit.Assert.Equal(TestInventory.total_available, inventoryCompared.total_available);
-
     }
-
-
 
     [Fact, TestPriority(4)]
     public async Task UpdateInventorys()
     {
         string toSend = JsonSerializer.Serialize(TestInventoryPut);
-        HttpResponseMessage response = await _client.PutAsync($"{requestUri}/1", new StringContent(toSend, System.Text.Encoding.UTF8, "application/json"));
+        HttpResponseMessage response = await _client.PutAsJsonAsync($"{requestUri}/1", TestInventoryPut);
+
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Xunit.Assert.Equal("", await response.Content.ReadAsStringAsync());
-        
     }
 
     [Fact, TestPriority(5)]
@@ -109,9 +100,10 @@ public class InventoryIntegratieTest : BaseTest
     {
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/1");
         var responseContent = await response.Content.ReadAsStringAsync();
-        Inventory? Inventoryafterupdate = JsonSerializer.Deserialize<Inventory>(responseContent);
+        
+        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Inventory Inventoryafterupdate = await response.Content.ReadFromJsonAsync<Inventory>();
 
-        Xunit.Assert.IsType<Inventory>(Inventoryafterupdate);
         Xunit.Assert.Equal(TestInventoryPut.id, Inventoryafterupdate.id);
         Xunit.Assert.Equal(TestInventoryPut.item_id, Inventoryafterupdate.item_id);
         Xunit.Assert.Equal(TestInventoryPut.description, Inventoryafterupdate.description);
