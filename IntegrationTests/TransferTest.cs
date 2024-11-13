@@ -1,11 +1,45 @@
 using System.Net;
+using System.Net.Http;
+using IntegrationTests;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Xunit;
 using System.Text;
+using CargoHubAlt.Models;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace IntegrationTests
 {
     [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
     public class TransferTest : BaseTest
     {
+        public static Transfer testtransfer = new Transfer
+        {
+            Id = 1,
+            Reference = "TR00001",
+            TransferFrom = 0,
+            TransferTo = 9229,
+            TransferStatus = "Completed",
+            Items = new List<TransferItem>
+            {
+                new TransferItem { ItemId = "P007435", Amount = 23 }
+            }
+        };
+
+        public static Transfer testtransfer2 = new Transfer
+        {
+            Id = 1,
+            Reference = "TR00002",
+            TransferFrom = 0,
+            TransferTo = 1,
+            TransferStatus = "Completed",
+            Items = new List<TransferItem>
+            {
+                new TransferItem { ItemId = "P007435", Amount = 23 }
+            }
+        };
+
         public TransferTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
 
         [Fact, TestPriority(1)]
@@ -42,7 +76,7 @@ namespace IntegrationTests
         public async Task CreateTransfer()
         {
             var requestUri = "/api/v1/transfers";
-            var response = await _client.PostAsync(requestUri, new StringContent("{\"id\": 1,\"reference\": \"TR00001\", \"transfer_from\": 0, \"transfer_to\": 9229, \"transfer_status\": \"Completed\", \"created_at\": \"2000-03-11T13:11:14Z\", \"updated_at\": \"2000-03-12T16:11:14Z\", \"items\": [{\"item_id\": \"P007435\", \"amount\": 23}]}", encoding:Encoding.UTF8, "application/json"));
+            var response = await _client.PostAsJsonAsync(requestUri, testtransfer);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
@@ -53,16 +87,26 @@ namespace IntegrationTests
             var requestUri = "/api/v1/transfers/1";
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
+
+            Transfer res = await response.Content.ReadFromJsonAsync<Transfer>();
+
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Contains("{\"id\":1,\"reference\":\"TR00001\",\"transfer_From\":0,\"transfer_To\":9229,\"transfer_Status\":\"Completed\",\"created_At\":",result);
+
+            Xunit.Assert.Equal(testtransfer.Id, res.Id);
+            Xunit.Assert.Equal(testtransfer.Reference, res.Reference);
+            Xunit.Assert.Equal(testtransfer.TransferFrom, res.TransferFrom);
+            Xunit.Assert.Equal(testtransfer.TransferTo, res.TransferTo);
+            Xunit.Assert.Equal(testtransfer.TransferStatus, res.TransferStatus);
+            Xunit.Assert.Equal(testtransfer.CreatedAt, res.CreatedAt);
+            Xunit.Assert.Equal(testtransfer.UpdatedAt, res.UpdatedAt);
         }
 
         [Fact, TestPriority(6)]
         public async Task PutTransfer()
         {
             var requestUri = "/api/v1/transfers/1";
-            var response = await _client.PutAsync(requestUri, new StringContent("{\"id\": 1, \"reference\": \"TR00001\", \"transfer_from\": 0, \"transfer_to\": 1, \"transfer_status\": \"Completed\", \"created_at\": \"2000-03-11T13:11:14Z\", \"updated_at\": \"2000-03-12T16:11:14Z\", \"items\": [{\"item_id\": \"P007435\", \"amount\": 23}]}", encoding:Encoding.UTF8, "application/json"));
+            var response = await _client.PutAsJsonAsync(requestUri, testtransfer2);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -71,23 +115,23 @@ namespace IntegrationTests
         public async Task GetTransferAfterUpdating()
         {
             var requestUri = "/api/v1/transfers/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.DeleteAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
-            Xunit.Assert.NotNull(result);
+
+            Transfer res = await response.Content.ReadFromJsonAsync<Transfer>();
+           
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Contains("{\"id\":1,\"reference\":\"TR00001\",\"transfer_From\":0,\"transfer_To\":1,\"transfer_Status\":\"Completed\",\"created_At\":",result);
+
+            Xunit.Assert.Equal(testtransfer2.Id, res.Id);
+            Xunit.Assert.Equal(testtransfer2.Reference, res.Reference);
+            Xunit.Assert.Equal(testtransfer2.TransferFrom, res.TransferFrom);
+            Xunit.Assert.Equal(testtransfer2.TransferTo, res.TransferTo);
+            Xunit.Assert.Equal(testtransfer2.TransferStatus, res.TransferStatus);
+            Xunit.Assert.Equal(testtransfer2.CreatedAt, res.CreatedAt);
+            Xunit.Assert.Equal(testtransfer2.UpdatedAt, res.UpdatedAt);
         }
 
         [Fact, TestPriority(8)]
-        public async Task DeleteTransfer()
-        {
-            var requestUri = "/api/v1/transfers/1";
-            var response = await _client.DeleteAsync(requestUri);
-            var result = await response.Content.ReadAsStringAsync();
-            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-
-        [Fact, TestPriority(9)]
         public async Task GetTransferAfterDelete()
         {
             var requestUri = "/api/v1/transfers/1";
@@ -96,7 +140,7 @@ namespace IntegrationTests
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
         }
 
-        [Fact, TestPriority(10)]
+        [Fact, TestPriority(9)]
         public async Task GetTranserItemsAfterDelete()
         {
             var requestUri = "/api/v1/transfers/1/items";
