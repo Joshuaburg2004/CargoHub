@@ -1,4 +1,4 @@
-namespace PythonTests.models;
+namespace IntegrationTests.models;
 
 public class InventoryTotals
 {

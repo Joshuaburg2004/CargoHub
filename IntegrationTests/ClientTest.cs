@@ -1,16 +1,20 @@
 using System.Net;
 using System.Net.Http;
-using PythonTests;
+using IntegrationTests;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Xunit;
 using System.Text;
-namespace PythonTests
+using CargoHubAlt.Models;
+using System.Net.Http.Json;
+namespace IntegrationTests
 {
-    [TestCaseOrderer("PythonTests.PriorityOrderer","PythonTests")]
-    public class ClientTest :BaseTest
+    [TestCaseOrderer("IntegrationTests.PriorityOrderer","IntegrationTests")]
+    public class ClientTest : BaseTest
     {
-        public ClientTest() :base() { }
+        private Client _clientToAdd = new Client(1, "Raymond Inc", "1296 Daniel Road Apt. 349", "Pierceview", "28301", "Colorado", "United States", "Bryan Clark", "242.732.3483x2573", "test@hr.nl");
+        private Client _clientToPut = new Client(1, "Raymond Inc JR", "1296 Daniel Road Apt. 349", "Pierceview", "28301", "Colorado", "United States", "Bryan Clark", "242.732.3483x2573", "test@hr.nl");
+        public ClientTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
         [Fact,TestPriority(1)]
         public async Task GetAllClients()
         {
@@ -36,7 +40,7 @@ namespace PythonTests
         public async Task CreateClient()
         {
             var requestUri = "/api/v1/clients";
-            var response = await _client.PostAsync(requestUri,new StringContent("{\"id\":1,\"name\":\"Raymond Inc\",\"address\":\"1296 Daniel Road Apt. 349\",\"city\":\"Pierceview\",\"zip_code\":\"28301\",\"province\":\"Colorado\",\"country\":\"United States\",\"contact_name\":\"Bryan Clark\",\"contact_phone\":\"242.732.3483x2573\",\"contact_email\":\"test@hr.nl\",\"created_at\":\"1983-09-26T19:06:08Z\",\"updated_at\":\"1983-09-28T15:06:08Z\"}",encoding:Encoding.UTF8,"application/json"));
+            var response = await _client.PostAsJsonAsync(requestUri,_clientToAdd);
             var result = await response.Content.ReadAsStringAsync();
             Console.Error.WriteLine(result);
             Xunit.Assert.Equal(HttpStatusCode.Created,response.StatusCode);
@@ -49,13 +53,24 @@ namespace PythonTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK,response.StatusCode);
-            Xunit.Assert.Contains("{\"id\":1,\"name\":\"Raymond Inc\",\"address\":\"1296 Daniel Road Apt. 349\",\"city\":\"Pierceview\",\"zip_Code\":\"28301\",\"province\":\"Colorado\",\"country\":\"United States\",\"contact_Name\":\"Bryan Clark\",\"contact_Phone\":\"242.732.3483x2573\",\"contact_Email\":\"test@hr.nl\"",result);
+            Client? client = await response.Content.ReadFromJsonAsync<Client>();
+            Xunit.Assert.NotNull(client);
+            Xunit.Assert.Equal(_clientToAdd.Id,client.Id);
+            Xunit.Assert.Equal(_clientToAdd.Name,client.Name);
+            Xunit.Assert.Equal(_clientToAdd.Address,client.Address);
+            Xunit.Assert.Equal(_clientToAdd.City,client.City);
+            Xunit.Assert.Equal(_clientToAdd.ZipCode,client.ZipCode);
+            Xunit.Assert.Equal(_clientToAdd.Province,client.Province);
+            Xunit.Assert.Equal(_clientToAdd.Country,client.Country);
+            Xunit.Assert.Equal(_clientToAdd.ContactName,client.ContactName);
+            Xunit.Assert.Equal(_clientToAdd.ContactPhone,client.ContactPhone);
+            Xunit.Assert.Equal(_clientToAdd.ContactEmail,client.ContactEmail);
         }
         [Fact,TestPriority(5)]
         public async Task PutClient()
         {
             var requestUri = "/api/v1/clients/1";
-            var response = await _client.PutAsync(requestUri,new StringContent("{\"id\":1,\"name\":\"Raymond Inc JR\",\"address\":\"1296 Daniel Road Apt. 349\",\"city\":\"Pierceview\",\"zip_code\":\"28301\",\"province\":\"Colorado\",\"country\":\"United States\",\"contact_name\":\"Bryan Clark\",\"contact_phone\":\"242.732.3483x2573\",\"contact_email\":\"test@hr.nl\",\"created_at\":\"1983-09-26T19:06:08Z\",\"updated_at\":\"1983-09-28T15:06:08Z\"}",encoding:Encoding.UTF8,"application/json"));
+            var response = await _client.PutAsJsonAsync(requestUri, _clientToPut);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK,response.StatusCode);
         }
@@ -67,7 +82,18 @@ namespace PythonTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK,response.StatusCode);
-            Xunit.Assert.Contains("{\"id\":1,\"name\":\"Raymond Inc JR\",\"address\":\"1296 Daniel Road Apt. 349\",\"city\":\"Pierceview\",\"zip_Code\":\"28301\",\"province\":\"Colorado\",\"country\":\"United States\",\"contact_Name\":\"Bryan Clark\",\"contact_Phone\":\"242.732.3483x2573\",\"contact_Email\":\"",result);
+            Client? client = await response.Content.ReadFromJsonAsync<Client>();
+            Xunit.Assert.NotNull(client);
+            Xunit.Assert.Equal(_clientToPut.Id,client.Id);
+            Xunit.Assert.Equal(_clientToPut.Name,client.Name);
+            Xunit.Assert.Equal(_clientToPut.Address,client.Address);
+            Xunit.Assert.Equal(_clientToPut.City,client.City);
+            Xunit.Assert.Equal(_clientToPut.ZipCode,client.ZipCode);
+            Xunit.Assert.Equal(_clientToPut.Province,client.Province);
+            Xunit.Assert.Equal(_clientToPut.Country,client.Country);
+            Xunit.Assert.Equal(_clientToPut.ContactName,client.ContactName);
+            Xunit.Assert.Equal(_clientToPut.ContactPhone,client.ContactPhone);
+            Xunit.Assert.Equal(_clientToPut.ContactEmail,client.ContactEmail);
         }
         [Fact,TestPriority(7)]
         public async Task DeleteClient()

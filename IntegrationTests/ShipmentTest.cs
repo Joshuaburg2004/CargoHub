@@ -1,16 +1,16 @@
 using System.Net;
 using System.Net.Http;
-using PythonTests;
+using IntegrationTests;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Xunit;
 using System.Text;
-namespace PythonTests
+namespace IntegrationTests
 {
-    [TestCaseOrderer("PythonTests.PriorityOrderer", "PythonTests")]
+    [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
     public class ShipmentTest : BaseTest
     {
-        public ShipmentTest() : base() { }
+        public ShipmentTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
         [Fact, TestPriority(1)]
         public async Task GetAllShipments()
         {

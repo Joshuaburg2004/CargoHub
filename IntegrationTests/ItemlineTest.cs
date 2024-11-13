@@ -4,21 +4,21 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text;
 using Xunit;
-using PythonTests.models;
+using IntegrationTests.models;
 
-namespace PythonTests;
+namespace IntegrationTests;
 
-[TestCaseOrderer("PythonTests.PriorityOrderer", "PythonTests")]
+[TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
 
-public class item_lineIntegratieTest : BaseTest
+public class ItemLineTest : BaseTest
 {
 
     public static item_line testType = new(1, "Laptop", "");
     public static item_line PutType = new(1, "smart name", "smart description");
     public static string testTypeJson {get => JsonSerializer.Serialize(testType);}
-    public static PythonTests.models.Item TestItem = new("P000004", "sjQ23408K", "Face-to-face clear-thinking complexity",
+    public static IntegrationTests.models.Item TestItem = new("P000004", "sjQ23408K", "Face-to-face clear-thinking complexity",
      "must", "6523540947122", "63-OFFTq0T", "oTo304", 1, 1,1,1,1,1,1,"SUP423", "E-86805-uTM");
-    public item_lineIntegratieTest(): base()
+    public ItemLineTest(CustomWebApplicationFactory<Program> factory) : base(factory)
     {}
 
     [Fact, TestPriority(0)]
@@ -84,12 +84,12 @@ public class item_lineIntegratieTest : BaseTest
 
         HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_lines/1/items");
         var responseContent = await response.Content.ReadAsStringAsync();
-        List<PythonTests.models.Item>? ItemLineafterupdate = JsonSerializer.Deserialize<List<PythonTests.models.Item>>(responseContent);
+        List<IntegrationTests.models.Item>? ItemLineafterupdate = JsonSerializer.Deserialize<List<IntegrationTests.models.Item>>(responseContent);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        Xunit.Assert.IsType<List<PythonTests.models.Item>>(ItemLineafterupdate);
+        Xunit.Assert.IsType<List<IntegrationTests.models.Item>>(ItemLineafterupdate);
         
-        PythonTests.models.Item ToReturn = ItemLineafterupdate[0];
+        IntegrationTests.models.Item ToReturn = ItemLineafterupdate[0];
         Xunit.Assert.Equal(TestItem.uid, ToReturn.uid);
         Xunit.Assert.Equal(TestItem.code, ToReturn.code);
 

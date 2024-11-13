@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text;
 using Xunit.Abstractions;
-using PythonTests.models;
+using IntegrationTests.models;
 
-namespace PythonTests;
+namespace IntegrationTests;
 
-[TestCaseOrderer("PythonTests.PriorityOrderer", "PythonTests")]
+[TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
 public class InventoryIntegratieTest : BaseTest
 {
 
@@ -19,7 +19,7 @@ public class InventoryIntegratieTest : BaseTest
     public Inventory TestInventoryPut = new(1, "P000001", "test", "hopeful", new List<int>(){3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817}, 60, 60, 60, 60, 60);
 
 
-    public InventoryIntegratieTest(): base()
+    public InventoryIntegratieTest(CustomWebApplicationFactory<Program> factory) : base(factory)
     {}
 
     [Fact, TestPriority(0)]

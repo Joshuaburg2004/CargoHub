@@ -1,6 +1,6 @@
 using System.Net.Sockets;
 
-namespace PythonTests.models;
+namespace IntegrationTests.models;
 
 public class Item
 {

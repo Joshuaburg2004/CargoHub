@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 
-namespace PythonTests
+namespace IntegrationTests
 {
     [ExcludeFromCodeCoverage]
     public class PriorityOrderer : ITestCaseOrderer
