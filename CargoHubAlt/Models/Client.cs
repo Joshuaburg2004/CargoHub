@@ -11,26 +11,26 @@ namespace CargoHubAlt.Models
         public string Name { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
-        public string Zip_Code { get; set; }
+        public string ZipCode { get; set; }
         public string Province { get; set; }
         public string Country { get; set; }
-        public string Contact_Name { get; set; }
-        public string Contact_Phone { get; set; }
-        public string Contact_Email { get; set; }
-        public string Created_At { get; set; } = GetTimeStamp();
-        public string Updated_At { get; set; } = GetTimeStamp();
-        public Client(int id, string name, string address, string city, string zip_Code, string province, string country, string contact_Name, string contact_Phone, string contact_Email)
+        public string ContactName { get; set; }
+        public string ContactPhone { get; set; }
+        public string ContactEmail { get; set; }
+        public string CreatedAt { get; set; } = GetTimeStamp();
+        public string UpdatedAt { get; set; } = GetTimeStamp();
+        public Client(int id, string name, string address, string city, string zipCode, string province, string country, string contactName, string contactPhone, string contactEmail)
         {
-            this.Id = id;
-            this.Name = name;
-            this.Address = address;
-            this.City = city;
-            this.Zip_Code = zip_Code;
-            this.Province = province;
-            this.Country = country;
-            this.Contact_Name = contact_Name;
-            this.Contact_Phone = contact_Phone;
-            this.Contact_Email = contact_Email;
+            Id = id;
+            Name = name;
+            Address = address;
+            City = city;
+            ZipCode = zipCode;
+            Province = province;
+            Country = country;
+            ContactName = contactName;
+            ContactPhone = contactPhone;
+            ContactEmail = contactEmail;
         }
     }
 }

@@ -10,5 +10,7 @@ namespace CargoHubAlt.Interfaces
         public Task<int?> AddSupplier(Supplier supplier);
         public Task<Supplier?> UpdateSupplier(int Id, Supplier supplier);
         public Task<Supplier?> DeleteSupplier(int Id);
+        public Task LoadFromJson(string path);
+
     }
 }

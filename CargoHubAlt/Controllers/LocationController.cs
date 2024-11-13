@@ -53,5 +53,10 @@ namespace CargoHub.Controllers
             await _locationservice.DeleteLocation(id);
             return Ok();
         }
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadClient([FromRoute] string path){
+            await _locationservice.LoadFromJson(path);
+            return Ok();
+        }
     }
 }

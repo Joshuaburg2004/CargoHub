@@ -11,5 +11,6 @@ namespace CargoHubAlt.Interfaces
         public Task<bool> UpdateOrder(Order order);
         public Task<bool> UpdateOrderedItems(int orderId, List<OrderedItem> items);
         public Task<bool> RemoveOrder(int orderId);
+        public Task LoadFromJson(string path);
     }
 }

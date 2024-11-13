@@ -8,18 +8,18 @@ namespace CargoHubAlt.Models
     public class Location : Base
     {
         public int Id { get; set; }
-        public int Warehouse_Id { get; set; }
+        public int WarehouseId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public string Created_At { get; set; } = GetTimeStamp();
-        public string Updated_At { get; set; } = GetTimeStamp();
+        public string CreatedAt { get; set; } = GetTimeStamp();
+        public string UpdatedAt { get; set; } = GetTimeStamp();
 
-        public Location(int id, int warehouse_Id, string code, string name)
+        public Location(int id, int warehouseId, string code, string name)
         {
-            this.Id = id;
-            this.Warehouse_Id = warehouse_Id;
-            this.Code = code;
-            this.Name = name;
+            Id = id;
+            WarehouseId = warehouseId;
+            Code = code;
+            Name = name;
         }
     }
 }

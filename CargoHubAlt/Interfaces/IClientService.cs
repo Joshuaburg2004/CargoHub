@@ -10,5 +10,6 @@ namespace CargoHubAlt.Interfaces
         public Task<Client?> RemoveClient(int id);
         public Task<Client?> UpdateClient(int id, Client client);
         public Task<List<Order>> GetOrdersByClient(int id);
+        public Task LoadFromJson(string path);
     }
 }

@@ -5,8 +5,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("Id")]
-
     public class Shipment
     {
         public int Id { get; set; }
@@ -24,39 +22,38 @@ namespace CargoHubAlt.Models
         public string? PaymentType { get; set; }
         public string? TransferMode { get; set; }
         public int TotalPackageCount { get; set; }
-        public int TotalPackageWeight { get; set; }
+        public double TotalPackageWeight { get; set; }
         public string? CreatedAt { get; set; }
         public string? UpdatedAt { get; set; }
-        public List<ShipmentItem>? Items { get; set; }
+        public List<ShipmentItem> Items { get; set; } = new();
 
         public Shipment() { }
-        public Shipment(int id, int orderId, int sourceId, string orderDate, string requestDate, string shipmentDate, string shipmentType, string shipmentStatus, string notes, string carrierCode, string carrierDescription, string serviceCode, string paymentType, string transferMode, int totalPackageCount, int totalPackageWeight, string createdAt, string updatedAt, List<ShipmentItem> items)
+        public Shipment(int id, int order_id, int source_id, string order_date, string request_date, string shipment_date, string shipment_type, string shipment_status, string notes, string carrier_code, string carrier_description, string service_code, string payment_type, string transfer_mode, int total_package_count, int total_package_weight, string created_at, string updated_at, List<ShipmentItem> items)
         {
             Id = id;
-            OrderId = orderId;
-            SourceId = sourceId;
-            OrderDate = orderDate;
-            RequestDate = requestDate;
-            ShipmentDate = shipmentDate;
-            ShipmentType = shipmentType;
-            ShipmentStatus = shipmentStatus;
+            OrderId = order_id;
+            SourceId = source_id;
+            OrderDate = order_date;
+            RequestDate = request_date;
+            ShipmentDate = shipment_date;
+            ShipmentType = shipment_type;
+            ShipmentStatus = shipment_status;
             Notes = notes;
-            CarrierCode = carrierCode;
-            CarrierDescription = carrierDescription;
-            ServiceCode = serviceCode;
-            PaymentType = paymentType;
-            TransferMode = transferMode;
-            TotalPackageCount = totalPackageCount;
-            TotalPackageWeight = totalPackageWeight;
-            CreatedAt = createdAt;
-            UpdatedAt = updatedAt;
+            CarrierCode = carrier_code;
+            CarrierDescription = carrier_description;
+            ServiceCode = service_code;
+            PaymentType = payment_type;
+            TransferMode = transfer_mode;
+            TotalPackageCount = total_package_count;
+            TotalPackageWeight = total_package_weight;
+            CreatedAt = created_at;
+            UpdatedAt = updated_at;
             Items = items;
         }
     }
-    [Owned]
+    [Owned]    
     public class ShipmentItem
     {
-        [Key]
         public string? ItemId { get; set; }
         public int Amount { get; set; }
     }

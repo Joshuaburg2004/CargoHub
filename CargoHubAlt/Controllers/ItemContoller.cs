@@ -8,23 +8,23 @@ namespace CargoHubAlt.Controllers
     [Route("api/v1/items")]
     public class ItemController : Controller
     {
-        readonly IItemsService itemsService;
+        readonly IItemsService _itemsService;
         public ItemController(IItemsService itemsservice)
         {
-            itemsService = itemsservice;
+            _itemsService = itemsservice;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllItems()
         {
-            IEnumerable<Item> found = await this.itemsService.GetItems();
+            IEnumerable<Item> found = await this._itemsService.GetItems();
             return Ok(found);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetItem([FromRoute] string id)
         {
-            Item? found = await this.itemsService.GetItem(id);
+            Item? found = await this._itemsService.GetItem(id);
             if (found is null) return NotFound($"Item with UID {id} not found");
             else return Ok(found);
         }
@@ -34,7 +34,7 @@ namespace CargoHubAlt.Controllers
         public async Task<IActionResult> AddItem([FromBody] Item? item)
         {
             if (item is null) return BadRequest("Item is null");
-            string? toReturn = await this.itemsService.AddItem(item);
+            string? toReturn = await this._itemsService.AddItem(item);
 
             return Created("", "");
 
@@ -45,7 +45,7 @@ namespace CargoHubAlt.Controllers
         [HttpDelete("{toRemove}")]
         public async Task<IActionResult> RemoveItem([FromRoute] string toRemove)
         {
-            Item? toReturn = await this.itemsService.RemoveItem(toRemove);
+            Item? toReturn = await this._itemsService.RemoveItem(toRemove);
 
             return Ok("");
 
@@ -56,7 +56,7 @@ namespace CargoHubAlt.Controllers
         [HttpPut("{toUpdate}")]
         public async Task<IActionResult> UpdateItem([FromRoute] string toUpdate, [FromBody] Item UpdateTo)
         {
-            Item? toReturn = await this.itemsService.UpdateItem(toUpdate, UpdateTo);
+            Item? toReturn = await this._itemsService.UpdateItem(toUpdate, UpdateTo);
 
             return Ok("");
 
@@ -66,7 +66,7 @@ namespace CargoHubAlt.Controllers
         [HttpGet("{id}/inventory")]
         public async Task<IActionResult> GetInventoryByItem([FromRoute] string id)
         {
-            IEnumerable<Inventory> found = await this.itemsService.GetInventoryByItem(id);
+            IEnumerable<Inventory> found = await this._itemsService.GetInventoryByItem(id);
 
             return Ok(found);
 
@@ -76,8 +76,13 @@ namespace CargoHubAlt.Controllers
         [HttpGet("{id}/inventory/totals")]
         public async Task<IActionResult> GetInventoryTotalsByItem([FromRoute] string id)
         {
-            Dictionary<string, int> found = await this.itemsService.GetInventoryTotalsByItem(id);
+            Dictionary<string, int> found = await this._itemsService.GetInventoryTotalsByItem(id);
             return Ok(found);
+        }
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadClient([FromRoute] string path){
+            await _itemsService.LoadFromJson(path);
+            return Ok();
         }
     }
 }

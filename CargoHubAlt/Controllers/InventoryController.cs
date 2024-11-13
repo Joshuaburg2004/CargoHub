@@ -62,6 +62,10 @@ namespace CargoHubAlt.Controllers
             // if (success is null) return NotFound($"ID not found: {id}");
             // else return Ok(success);
         }
-
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadLocations([FromRoute] string path){
+            await _inventoryService.LoadFromJson(path);
+            return Ok();
+        }
     }
 }

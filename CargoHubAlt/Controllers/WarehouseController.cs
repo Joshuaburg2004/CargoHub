@@ -62,5 +62,10 @@ namespace CargoHubAlt.Controllers
             var locations = await _warehouseservice.GetLocationsfromWarehouseById(id);
             return Ok(locations);
         }
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadClient([FromRoute] string path){
+            await _warehouseservice.LoadFromJson(path);
+            return Ok();
+        }
     }
 }

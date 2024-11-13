@@ -23,7 +23,7 @@ namespace CargoHubAlt.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneItemGroup([FromRoute] int id)
         {
-            Item_group? toReturn = await this._itemsService.FindItemGroup(id);
+            ItemGroup? toReturn = await this._itemsService.FindItemGroup(id);
 
             if (toReturn is null) return Ok("null");
             return Ok(toReturn);
@@ -36,7 +36,7 @@ namespace CargoHubAlt.Controllers
         [HttpGet("batch")]
         public async Task<IActionResult> getBatchItemGroup([FromQuery] int[] ids)
         {
-            IEnumerable<Item_group?> found = await this._itemsService.FindManyItemGroup(ids);
+            IEnumerable<ItemGroup?> found = await this._itemsService.FindManyItemGroup(ids);
             return Ok(found);
         }
 
@@ -52,7 +52,7 @@ namespace CargoHubAlt.Controllers
 
 
         [HttpPost()]
-        public async Task<IActionResult> AddItemGroup([FromBody] Item_group? toAdd)
+        public async Task<IActionResult> AddItemGroup([FromBody] ItemGroup? toAdd)
         {
             if (toAdd is null) return BadRequest("this is not an item group");
             int? success = await this._itemsService.AddItemGroup(toAdd);
@@ -61,10 +61,10 @@ namespace CargoHubAlt.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> putItemGroup([FromRoute] int id, [FromBody] Item_group toupdateto)
+        public async Task<IActionResult> putItemGroup([FromRoute] int id, [FromBody] ItemGroup toupdateto)
         {
 
-            Item_group? success = await this._itemsService.UpdateItemGroup(id, toupdateto);
+            ItemGroup? success = await this._itemsService.UpdateItemGroup(id, toupdateto);
 
             return Ok();
 
@@ -76,12 +76,17 @@ namespace CargoHubAlt.Controllers
         public async Task<IActionResult> deleteItemgroup([FromRoute] int id)
         {
 
-            Item_group? success = await this._itemsService.DeleteItemGroup(id);
+            ItemGroup? success = await this._itemsService.DeleteItemGroup(id);
 
             return Ok();
 
             // if (success is null) return NotFound($"ID not found: {id}");
             // else return Ok(success);
+        }
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadLocations([FromRoute] string path){
+            await _itemsService.LoadFromJson(path);
+            return Ok();
         }
     }
 }

@@ -61,5 +61,10 @@ namespace CargoHub.Controllers
             if (oldTransfer == null) return NotFound();
             return Ok(oldTransfer);
         }
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadClient([FromRoute] string path){
+            await _transferservice.LoadFromJson(path);
+            return Ok();
+        }
     }
 }

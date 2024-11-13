@@ -11,5 +11,6 @@ namespace CargoHubAlt.Interfaces
         public Task<string?> AddItem(Item item);
         public Task<Item?> UpdateItem(string toUpdate, Item UpdateTo);
         public Task<Item?> RemoveItem(string toRemove);
+        public Task LoadFromJson(string path);
     }
 }

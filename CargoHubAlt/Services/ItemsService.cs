@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces;
+using System.Text.Json;
 
 namespace CargoHubAlt.Services
 {
@@ -24,7 +25,7 @@ namespace CargoHubAlt.Services
         }
         public async Task<IEnumerable<Inventory>> GetInventoryByItem(string id)
         {
-            return await this._context.Inventories.Where(_ => _.Item_id == id).ToListAsync();
+            return await this._context.Inventories.Where(_ => _.ItemId == id).ToListAsync();
         }
 
         public async Task<Dictionary<string, int>> GetInventoryTotalsByItem(string id)
@@ -34,12 +35,12 @@ namespace CargoHubAlt.Services
             toReturn.Add("total_ordered", 0);
             toReturn.Add("total_allocated", 0);
             toReturn.Add("total_available", 0);
-            foreach (Inventory inv in await this._context.Inventories.Where(_ => _.Item_id == id).ToListAsync())
+            foreach (Inventory inv in await this._context.Inventories.Where(_ => _.ItemId == id).ToListAsync())
             {
-                toReturn["total_expected"] += inv.Total_expected;
-                toReturn["total_ordered"] += inv.Total_ordered;
-                toReturn["total_allocated"] += inv.Total_allocated;
-                toReturn["total_available"] += inv.Total_available;
+                toReturn["total_expected"] += inv.TotalExpected;
+                toReturn["total_ordered"] += inv.TotalOrdered;
+                toReturn["total_allocated"] += inv.TotalAllocated;
+                toReturn["total_available"] += inv.TotalAvailable;
             }
             return toReturn;
         }
@@ -57,20 +58,20 @@ namespace CargoHubAlt.Services
             found.Uid = UpdateTo.Uid;
             found.Code = UpdateTo.Code;
             found.Description = UpdateTo.Description;
-            found.short_description = UpdateTo.short_description;
-            found.upc_code = UpdateTo.upc_code;
-            found.model_number = UpdateTo.model_number;
-            found.commodity_code = UpdateTo.commodity_code;
-            found.item_line = UpdateTo.item_line;
-            found.item_group = UpdateTo.item_group;
-            found.item_type = UpdateTo.item_type;
-            found.unit_purchase_quantity = UpdateTo.unit_purchase_quantity;
-            found.unit_order_quantity = UpdateTo.unit_order_quantity;
-            found.pack_order_quantity = UpdateTo.pack_order_quantity;
-            found.supplier_id = UpdateTo.supplier_id;
-            found.supplier_code = UpdateTo.supplier_code;
-            found.supplier_part_number = UpdateTo.supplier_part_number;
-            found.updated_at = UpdateTo.updated_at;
+            found.ShortDescription = UpdateTo.ShortDescription;
+            found.UpcCode = UpdateTo.UpcCode;
+            found.ModelNumber = UpdateTo.ModelNumber;
+            found.CommodityCode = UpdateTo.CommodityCode;
+            found.ItemLine = UpdateTo.ItemLine;
+            found.ItemGroup = UpdateTo.ItemGroup;
+            found.ItemType = UpdateTo.ItemType;
+            found.UnitPurchaseQuantity = UpdateTo.UnitPurchaseQuantity;
+            found.UnitOrderQuantity = UpdateTo.UnitOrderQuantity;
+            found.PackOrderQuantity = UpdateTo.PackOrderQuantity;
+            found.SupplierId = UpdateTo.SupplierId;
+            found.SupplierCode = UpdateTo.SupplierCode;
+            found.SupplierPartNumber = UpdateTo.SupplierPartNumber;
+            found.UpdatedAt = UpdateTo.UpdatedAt;
 
 
             if (await this._context.SaveChangesAsync() >= 1) return found;
@@ -86,14 +87,38 @@ namespace CargoHubAlt.Services
             else return null;
         }
 
-        public Task<bool> Load()
+        public async Task LoadFromJson(string path)
         {
-            throw new NotImplementedException();
+            path = "data/" + path;
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                List<Item>? items = JsonSerializer.Deserialize<List<Item>>(json);
+                if (items == null)
+                {
+                    return;
+                }
+                foreach (Item item in items)
+                {
+                    await SaveToDatabase(item);
+                }
+            }
         }
-
-        public Task<bool> Save()
-        {
-            throw new NotImplementedException();
+        public async Task<string> SaveToDatabase(Item item){
+            if(item is null){
+                return "Please provide an item to add.";
+            }
+            if(item.Code == null){item.Code = "N/A";}
+            if(item.Description == null){item.Description = "N/A";}
+            if(item.ShortDescription == null){item.ShortDescription = "N/A";}
+            if(item.UpcCode == null){item.UpcCode = "N/A";}
+            if(item.ModelNumber == null){item.ModelNumber = "N/A";}
+            if(item.CommodityCode == null){item.CommodityCode = "N/A";}
+            if(item.SupplierCode == null){item.SupplierCode = "N/A";}
+            if(item.SupplierPartNumber == null){item.SupplierPartNumber = "N/A";}
+            await _context.Items.AddAsync(item);
+            await _context.SaveChangesAsync();
+            return item.Uid;   
         }
     }
 }
