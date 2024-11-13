@@ -5,11 +5,59 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Xunit;
 using System.Text;
+using CargoHubAlt.Models;
+using System.Net.Http.Json;
 namespace IntegrationTests
 {
     [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
     public class OrderTest : BaseTest
     {
+        private Order neworder = new Order
+        {
+            Id = 1,
+            SourceId = 52,
+            OrderDate = "1983-09-26T19:06:08Z",
+            RequestDate = "1983-09-30T19:06:08Z",
+            Reference = "ORD00003",
+            ReferenceExtra = "Vergeven kamer goed enkele wiel tussen.",
+            OrderStatus = "Delivered",
+            Notes = "Zeil hoeveel onze map",
+            ShippingNotes = "Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.",
+            PickingNotes = "Grof geven politie suiker bodem zuid.",
+            WarehouseId = 11,
+            ShipTo = 1,
+            BillTo = 1,
+            ShipmentId = 3,
+            TotalAmount = 1156.14,
+            TotalDiscount = 420.45,
+            TotalTax = 677.42,
+            TotalSurcharge = 86.03,
+            Items = new System.Collections.Generic.List<OrderedItem> { new OrderedItem { ItemId = "P010689", Amount = 16 } }
+        };
+
+        Order updatedorder = new Order
+        {
+            Id = 1,
+            SourceId = 52,
+            OrderDate = "1983-09-26T19:06:08Z",
+            RequestDate = "1983-09-30T19:06:08Z",
+            Reference = "ORD00003",
+            ReferenceExtra = "Vergeven kamer goed enkele wiel tussen.",
+            OrderStatus = "Delivered",
+            Notes = "Zeil hoeveel onze map",
+            ShippingNotes = "Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.",
+            PickingNotes = "Grof geven politie suiker bodem zuid.",
+            WarehouseId = 11,
+            ShipTo = 1,
+            BillTo = 1,
+            ShipmentId = 3,
+            TotalAmount = 1156.14,
+            TotalDiscount = 420.45,
+            TotalTax = 677.42,
+            TotalSurcharge = 86.03,
+            Items = new System.Collections.Generic.List<OrderedItem> { new OrderedItem { ItemId = "P010689", Amount = 16 } }
+        };
+
         public OrderTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
         [Fact, TestPriority(1)]
         public async Task GetAllOrders()
@@ -39,7 +87,7 @@ namespace IntegrationTests
         public async Task CreateOrder()
         {
             var requestUri = "/api/v1/orders";
-            var response = await _client.PostAsync(requestUri, new StringContent("{\"id\": 1, \"source_id\": 52, \"order_date\": \"1983-09-26T19:06:08Z\", \"request_date\": \"1983-09-30T19:06:08Z\", \"reference\": \"ORD00003\", \"reference_extra\": \"Vergeven kamer goed enkele wiel tussen.\", \"order_status\": \"Delivered\", \"notes\": \"Zeil hoeveel onze map sex ding.\", \"shipping_notes\": \"Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.\", \"picking_notes\": \"Grof geven politie suiker bodem zuid.\", \"warehouse_id\": 11, \"ship_to\": 1, \"bill_to\": 1, \"shipment_id\": 3, \"total_amount\": 1156.14, \"total_discount\": 420.45, \"total_tax\": 677.42, \"total_surcharge\": 86.03, \"created_at\": \"1983-09-26T19:06:08Z\", \"updated_at\": \"1983-09-28T15:06:08Z\", \"items\": [{\"item_id\": \"P010669\", \"amount\": 16}]}", Encoding.UTF8, "application/json"));
+            var response = await _client.PostAsJsonAsync(requestUri, neworder);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -51,7 +99,28 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Contains("{\"id\":1,\"source_Id\":52,\"order_Date\":\"1983-09-26T19:06:08Z\",\"request_Date\":\"1983-09-30T19:06:08Z\",\"reference\":\"ORD00003\",\"reference_Extra\":\"Vergeven kamer goed enkele wiel tussen.\",\"order_Status\":\"Delivered\",\"notes\":\"Zeil hoeveel onze map sex ding.\",\"shipping_Notes\":\"Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.\",\"picking_Notes\":\"Grof geven politie suiker bodem zuid.\",\"warehouse_Id\":11,\"ship_To\":1,\"bill_To\":1,\"shipment_Id\":3,\"total_Amount\":1156.14,\"total_Discount\":420.45,\"total_Tax\":677.42,\"total_Surcharge\":86.03", result);
+            
+            Order order = await response.Content.ReadFromJsonAsync<Order>();
+
+            Xunit.Assert.NotNull(order);
+            Xunit.Assert.Equal(neworder.Id, order.Id);
+            Xunit.Assert.Equal(neworder.SourceId, order.SourceId);
+            Xunit.Assert.Equal(neworder.OrderDate, order.OrderDate);
+            Xunit.Assert.Equal(neworder.RequestDate, order.RequestDate);
+            Xunit.Assert.Equal(neworder.Reference, order.Reference);
+            Xunit.Assert.Equal(neworder.ReferenceExtra, order.ReferenceExtra);
+            Xunit.Assert.Equal(neworder.OrderStatus, order.OrderStatus);
+            Xunit.Assert.Equal(neworder.Notes, order.Notes);
+            Xunit.Assert.Equal(neworder.ShippingNotes, order.ShippingNotes);
+            Xunit.Assert.Equal(neworder.PickingNotes, order.PickingNotes);
+            Xunit.Assert.Equal(neworder.WarehouseId, order.WarehouseId);
+            Xunit.Assert.Equal(neworder.ShipTo, order.ShipTo);
+            Xunit.Assert.Equal(neworder.BillTo, order.BillTo);
+            Xunit.Assert.Equal(neworder.ShipmentId, order.ShipmentId);
+            Xunit.Assert.Equal(neworder.TotalAmount, order.TotalAmount);
+            Xunit.Assert.Equal(neworder.TotalDiscount, order.TotalDiscount);
+            Xunit.Assert.Equal(neworder.TotalTax, order.TotalTax);
+            Xunit.Assert.Equal(neworder.TotalSurcharge, order.TotalSurcharge);
         }
         [Fact, TestPriority(5)]
         public async Task GetItemsFromOrderAfterAdding()
@@ -61,13 +130,15 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Equal("[{\"item_Id\":\"P010669\",\"amount\":16}]", result);
+
+            Xunit.Assert.Contains("[{\"itemId\":\"P010689\",\"amount\":16}]", result);
+            
         }
         [Fact, TestPriority(6)]
         public async Task PutOrder()
         {
             var requestUri = "/api/v1/orders/1";
-            var response = await _client.PutAsync(requestUri, new StringContent("{\"id\": 1, \"source_id\": 52, \"order_date\": \"1983-09-26T19:06:08Z\", \"request_date\": \"1983-09-30T19:06:08Z\", \"reference\": \"ORD00003\", \"reference_extra\": \"Vergeven kamer goed enkele wiel tussen.\", \"order_status\": \"Delivered\", \"notes\": \"Zeil hoeveel onze map sex ding.\", \"shipping_notes\": \"Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.\", \"picking_notes\": \"Grof geven politie suiker bodem zuid.\", \"warehouse_id\": 11, \"ship_to\": 0, \"bill_to\": 0, \"shipment_id\": 3, \"total_amount\": 1156.14, \"total_discount\": 420.45, \"total_tax\": 677.42, \"total_surcharge\": 86.03, \"created_at\": \"1983-09-26T19:06:08Z\", \"updated_at\": \"1983-09-28T15:06:08Z\", \"items\": [{\"item_id\": \"P010669\", \"amount\": 16}]}", Encoding.UTF8, "application/json"));
+            var response = await _client.PutAsJsonAsync(requestUri, updatedorder);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -79,14 +150,35 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Contains("{\"id\":1,\"source_Id\":52,\"order_Date\":\"1983-09-26T19:06:08Z\",\"request_Date\":\"1983-09-30T19:06:08Z\",\"reference\":\"ORD00003\",\"reference_Extra\":\"Vergeven kamer goed enkele wiel tussen.\",\"order_Status\":\"Delivered\",\"notes\":\"Zeil hoeveel onze map sex ding.\",\"shipping_Notes\":\"Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.\",\"picking_Notes\":\"Grof geven politie suiker bodem zuid.\",\"warehouse_Id\":11,\"ship_To\":0,\"bill_To\":0,\"shipment_Id\":3,\"total_Amount\":1156.14,\"total_Discount\":420.45,\"total_Tax\":677.42,\"total_Surcharge\":86.03,\"created_At\":", result);
+
+            Order order = await response.Content.ReadFromJsonAsync<Order>();
+
+            Xunit.Assert.NotNull(order);
+            Xunit.Assert.Equal(updatedorder.Id, order.Id);
+            Xunit.Assert.Equal(updatedorder.SourceId, order.SourceId);
+            Xunit.Assert.Equal(updatedorder.OrderDate, order.OrderDate);
+            Xunit.Assert.Equal(updatedorder.RequestDate, order.RequestDate);
+            Xunit.Assert.Equal(updatedorder.Reference, order.Reference);
+            Xunit.Assert.Equal(updatedorder.ReferenceExtra, order.ReferenceExtra);
+            Xunit.Assert.Equal(updatedorder.OrderStatus, order.OrderStatus);
+            Xunit.Assert.Equal(updatedorder.Notes, order.Notes);
+            Xunit.Assert.Equal(updatedorder.ShippingNotes, order.ShippingNotes);
+            Xunit.Assert.Equal(updatedorder.PickingNotes, order.PickingNotes);
+            Xunit.Assert.Equal(updatedorder.WarehouseId, order.WarehouseId);
+            Xunit.Assert.Equal(updatedorder.ShipTo, order.ShipTo);
+            Xunit.Assert.Equal(updatedorder.BillTo, order.BillTo);
+            Xunit.Assert.Equal(updatedorder.ShipmentId, order.ShipmentId);
+            Xunit.Assert.Equal(updatedorder.TotalAmount, order.TotalAmount);
+            Xunit.Assert.Equal(updatedorder.TotalDiscount, order.TotalDiscount);
+            Xunit.Assert.Equal(updatedorder.TotalTax, order.TotalTax);
+            Xunit.Assert.Equal(updatedorder.TotalSurcharge, order.TotalSurcharge);
         }
 
         [Fact, TestPriority(8)]
         public async Task PutOrderItems()
         {
             var requestUri = "/api/v1/orders/1/items";
-            var response = await _client.PutAsync(requestUri, new StringContent("[{\"item_id\": \"P010689\", \"amount\": 16}]", Encoding.UTF8, "application/json"));
+            var response = await _client.PutAsJsonAsync(requestUri, new System.Collections.Generic.List<OrderedItem> { new OrderedItem { ItemId = "P010689", Amount = 20 } });
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             // Gives Internal Server Error, is because it is updating the Inventories in which the item resides.
@@ -101,7 +193,7 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Contains("{\"item_Id\":\"P010689\",\"amount\":16}", result);
+            Xunit.Assert.Contains("[{\"itemId\":\"P010689\",\"amount\":20}]", result);
         }
         [Fact, TestPriority(10)]
         public async Task DeleteOrder()
