@@ -12,7 +12,11 @@ namespace IntegrationTests
     [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
     public class ShipmentTest : BaseTest
     {
+        private ShipmentItem _itemAdded = new ShipmentItem(){ ItemId = "P010669", Amount = 16 };
         private Shipment _shipmentToAdd = new Shipment(1, 3, 52, "1973-01-28", "1973-01-30", "1973-02-01", "I", "Pending", "Hoog genot springen afspraak mond bus.", "DHL", "DHL Express", "NextDay", "Automatic", "Ground", 29, 463.0, new List<ShipmentItem> { new ShipmentItem(){ ItemId = "P010669", Amount = 16 } });
+        // new StringContent("{\"id\": 3, \"source_id\": 24, \"order_date\": \"1983-09-26T19:06:08Z\", \"request_date\": \"1983-09-30T19:06:08Z\", \"reference\": \"ORD00003\", \"reference_extra\": \"Vergeven kamer goed enkele wiel tussen.\", \"order_status\": \"Delivered\", \"notes\": \"Zeil hoeveel onze map sex ding.\", \"shipping_notes\": \"Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.\", \"picking_notes\": \"Grof geven politie suiker bodem zuid.\", \"warehouse_id\": 11, \"ship_to\": 0, \"bill_to\": 0, \"shipment_id\": 3, \"total_amount\": 1156.14, \"total_discount\": 420.45, \"total_tax\": 677.42, \"total_surcharge\": 86.03, \"items\": [{\"item_id\": \"P010669\", \"amount\": 16}]}", Encoding.UTF8, "application/json")
+        private Order _orderAdded = new Order(3, 24, "1983-09-26T19:06:08Z", "1983-09-30T19:06:08Z", "ORD00003", "Vergeven kamer goed enkele wiel tussen.", "Delivered", "Zeil hoeveel onze map sex ding.", "Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.", "Grof geven politie suiker bodem zuid.", 11, 0, 0, 1, 1156.14, 420.45, 677.42, 86.03, new List<OrderedItem> { new OrderedItem(){ ItemId = "P010669", Amount = 16 } });
+        private OrderedItem _itemAddedToOrder = new OrderedItem(){ ItemId = "P010669", Amount = 16 };
 
         public ShipmentTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
         [Fact, TestPriority(1)]
@@ -54,7 +58,24 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Contains("{\"id\":1,\"order_Id\":3,\"source_Id\":52,\"order_Date\":\"1973-01-28\",\"request_Date\":\"1973-01-30\",\"shipment_Date\":\"1973-02-01\",\"shipment_Type\":\"I\",\"shipment_Status\":\"Pending\",\"notes\":\"Hoog genot springen afspraak mond bus.\",\"carrier_Code\":\"DHL\",\"carrier_Description\":\"DHL Express\",\"service_Code\":\"NextDay\",\"payment_Type\":\"Automatic\",\"transfer_Mode\":\"Ground\",\"total_Package_Count\":29,\"total_Package_Weight\":463", result);
+            Shipment? shipment = await response.Content.ReadFromJsonAsync<Shipment>();
+            Xunit.Assert.NotNull(shipment);
+            Xunit.Assert.Equal(_shipmentToAdd.Id,shipment.Id);
+            Xunit.Assert.Equal(_shipmentToAdd.OrderId,shipment.OrderId);
+            Xunit.Assert.Equal(_shipmentToAdd.SourceId,shipment.SourceId);
+            Xunit.Assert.Equal(_shipmentToAdd.OrderDate,shipment.OrderDate);
+            Xunit.Assert.Equal(_shipmentToAdd.RequestDate,shipment.RequestDate);
+            Xunit.Assert.Equal(_shipmentToAdd.ShipmentDate,shipment.ShipmentDate);
+            Xunit.Assert.Equal(_shipmentToAdd.ShipmentType,shipment.ShipmentType);
+            Xunit.Assert.Equal(_shipmentToAdd.ShipmentStatus,shipment.ShipmentStatus);
+            Xunit.Assert.Equal(_shipmentToAdd.Notes,shipment.Notes);
+            Xunit.Assert.Equal(_shipmentToAdd.CarrierCode,shipment.CarrierCode);
+            Xunit.Assert.Equal(_shipmentToAdd.CarrierDescription,shipment.CarrierDescription);
+            Xunit.Assert.Equal(_shipmentToAdd.ServiceCode,shipment.ServiceCode);
+            Xunit.Assert.Equal(_shipmentToAdd.PaymentType,shipment.PaymentType);
+            Xunit.Assert.Equal(_shipmentToAdd.TransferMode,shipment.TransferMode);
+            Xunit.Assert.Equal(_shipmentToAdd.TotalPackageCount,shipment.TotalPackageCount);
+            Xunit.Assert.Equal(_shipmentToAdd.TotalPackageWeight,shipment.TotalPackageWeight);
         }
 
         [Fact, TestPriority(5)]
@@ -65,15 +86,22 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Xunit.Assert.Equal("[{\"item_Id\":\"P010669\",\"amount\":16}]", result);
+            List<ShipmentItem>? list = await response.Content.ReadFromJsonAsync<List<ShipmentItem>>();
+            Xunit.Assert.NotNull(list);
+            Assert.Single(list);
+            ShipmentItem? item = list.FirstOrDefault();
+            Xunit.Assert.NotNull(item);
+            Xunit.Assert.Equal(_itemAdded.ItemId,item.ItemId);
+            Xunit.Assert.Equal(_itemAdded.Amount,item.Amount);
         }
 
         [Fact, TestPriority(6)]
         public async Task GetOrdersInShipment()
         {
+            // TODO: Finish this tests
             // create order
             var requestUriOrder = "/api/v1/orders";
-            await _client.PostAsync(requestUriOrder, new StringContent("{\"id\": 3, \"source_id\": 24, \"order_date\": \"1983-09-26T19:06:08Z\", \"request_date\": \"1983-09-30T19:06:08Z\", \"reference\": \"ORD00003\", \"reference_extra\": \"Vergeven kamer goed enkele wiel tussen.\", \"order_status\": \"Delivered\", \"notes\": \"Zeil hoeveel onze map sex ding.\", \"shipping_notes\": \"Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.\", \"picking_notes\": \"Grof geven politie suiker bodem zuid.\", \"warehouse_id\": 11, \"ship_to\": 0, \"bill_to\": 0, \"shipment_id\": 3, \"total_amount\": 1156.14, \"total_discount\": 420.45, \"total_tax\": 677.42, \"total_surcharge\": 86.03, \"items\": [{\"item_id\": \"P010669\", \"amount\": 16}]}", Encoding.UTF8, "application/json"));
+            await _client.PostAsJsonAsync(requestUriOrder, _orderAdded);
 
             // do the test
             var requestUri = "/api/v1/shipments/1/orders";
