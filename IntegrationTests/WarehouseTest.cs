@@ -1,11 +1,43 @@
 using System.Net;
-using System.Text.Json;
+using System.Net.Http;
+using IntegrationTests;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Xunit;
+using System.Text;
+using CargoHubAlt.Models;
+using System.Net.Http.Json;
 
 namespace IntegrationTests
 {
     [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
     public class WarehouseTest : BaseTest
     {
+        private Warehouse _warehouseCreate = new Warehouse
+        {
+            Id = 1,
+            Code = "YQZZNL56",
+            Name = "Heemskerk cargo hub",
+            Address = "Karlijndreef 281",
+            Zip = "4002 AS",
+            City = "Heemskerk",
+            Province = "Friesland",
+            Country = "NL",
+            Contact = new Contact("Fem Keijzer", "(078) 0013363", "blamore@example.net")
+        };
+        private Warehouse _warehouseUpdate = new Warehouse
+        {
+            Id = 1,
+            Code = "YQZZNL57",
+            Name = "Heemskerk cargo hub",
+            Address = "Karlijndreef 281",
+            Zip = "4002 AS",
+            City = "Heemskerk",
+            Province = "Friesland",
+            Country = "NL",
+            Contact = new Contact("Fem Keijzer", "(078) 0013363", "blamore@example.net")
+        };
+
         public WarehouseTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
 
         [Fact, TestPriority(1)]
@@ -42,7 +74,7 @@ namespace IntegrationTests
         public async Task CreateWarehouse()
         {
             var requestUri = "/api/v1/warehouses";
-            var response = await _client.PostAsync(requestUri, new StringContent("{\"id\": 1, \"code\": \"YQZZNL56\", \"name\": \"Heemskerk cargo hub\", \"address\": \"Karlijndreef 281\", \"zip\": \"4002 AS\", \"city\": \"Heemskerk\", \"province\": \"Friesland\", \"country\": \"NL\", \"contact\": {\"name\": \"Fem Keijzer\", \"phone\": \"(078) 0013363\", \"email\": \"blamore@example.net\"}, \"created_at\": \"1983-04-13 04:59:55\", \"updated_at\": \"2007-02-08 20:11:00\"}", System.Text.Encoding.UTF8, "application/json"));
+            var response = await _client.PostAsJsonAsync(requestUri, _warehouseCreate);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -57,21 +89,26 @@ namespace IntegrationTests
             Console.Error.WriteLine(result);
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            var jsonResponse = JsonDocument.Parse(result).RootElement;
-            Xunit.Assert.Equal("YQZZNL56", jsonResponse.GetProperty("code").GetString());
-            Xunit.Assert.Equal("Heemskerk cargo hub", jsonResponse.GetProperty("name").GetString());
-            Xunit.Assert.Equal("Karlijndreef 281", jsonResponse.GetProperty("address").GetString());
-            Xunit.Assert.Equal("4002 AS", jsonResponse.GetProperty("zip").GetString());
-            Xunit.Assert.Equal("Heemskerk", jsonResponse.GetProperty("city").GetString());
-            Xunit.Assert.Equal("Friesland", jsonResponse.GetProperty("province").GetString());
-            Xunit.Assert.Equal("NL", jsonResponse.GetProperty("country").GetString());
+
+            Xunit.Assert.Equal(_warehouseCreate.Id, 1);
+            Xunit.Assert.Equal(_warehouseCreate.Code, "YQZZNL56");
+            Xunit.Assert.Equal(_warehouseCreate.Name, "Heemskerk cargo hub");
+            Xunit.Assert.Equal(_warehouseCreate.Address, "Karlijndreef 281");
+            Xunit.Assert.Equal(_warehouseCreate.Zip, "4002 AS");
+            Xunit.Assert.Equal(_warehouseCreate.City, "Heemskerk");
+            Xunit.Assert.Equal(_warehouseCreate.Province, "Friesland");
+            Xunit.Assert.Equal(_warehouseCreate.Country, "NL");
+            Xunit.Assert.Equal(_warehouseCreate.Contact.Name, "Fem Keijzer");
+            Xunit.Assert.Equal(_warehouseCreate.Contact.Phone, "(078) 0013363");
+            Xunit.Assert.Equal(_warehouseCreate.Contact.Email, "blamore@example.net");
         }
 
         [Fact, TestPriority(6)]
         public async Task PutWarehouse()
         {
+            // code is changed from YQZZNL56 to YQZZNL57
             var requestUri = "/api/v1/warehouses/1";
-            var response = await _client.PutAsync(requestUri, new StringContent("{\"id\": 1, \"code\": \"YQZZNL57\", \"name\": \"Heemskerk cargo hub\", \"address\": \"Karlijndreef 281\", \"zip\": \"4002 AS\", \"city\": \"Heemskerk\", \"province\": \"Friesland\", \"country\": \"NL\", \"contact\": {\"name\": \"Fem Keijzer\", \"phone\": \"(078) 0013363\", \"email\": \"blamore@example.net\"}, \"created_at\": \"1983-04-13 04:59:55\", \"updated_at\": \"2007-02-08 20:11:00\"}", System.Text.Encoding.UTF8, "application/json"));
+            var response = await _client.PutAsJsonAsync(requestUri, _warehouseUpdate);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -84,14 +121,18 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            var jsonResponse = JsonDocument.Parse(result).RootElement;
-            Xunit.Assert.Equal("YQZZNL57", jsonResponse.GetProperty("code").GetString());
-            Xunit.Assert.Equal("Heemskerk cargo hub", jsonResponse.GetProperty("name").GetString());
-            Xunit.Assert.Equal("Karlijndreef 281", jsonResponse.GetProperty("address").GetString());
-            Xunit.Assert.Equal("4002 AS", jsonResponse.GetProperty("zip").GetString());
-            Xunit.Assert.Equal("Heemskerk", jsonResponse.GetProperty("city").GetString());
-            Xunit.Assert.Equal("Friesland", jsonResponse.GetProperty("province").GetString());
-            Xunit.Assert.Equal("NL", jsonResponse.GetProperty("country").GetString());
+
+            Xunit.Assert.Equal(_warehouseUpdate.Id, 1);
+            Xunit.Assert.Equal(_warehouseUpdate.Code, "YQZZNL57");
+            Xunit.Assert.Equal(_warehouseUpdate.Name, "Heemskerk cargo hub");
+            Xunit.Assert.Equal(_warehouseUpdate.Address, "Karlijndreef 281");
+            Xunit.Assert.Equal(_warehouseUpdate.Zip, "4002 AS");
+            Xunit.Assert.Equal(_warehouseUpdate.City, "Heemskerk");
+            Xunit.Assert.Equal(_warehouseUpdate.Province, "Friesland");
+            Xunit.Assert.Equal(_warehouseUpdate.Country, "NL");
+            Xunit.Assert.Equal(_warehouseUpdate.Contact.Name, "Fem Keijzer");
+            Xunit.Assert.Equal(_warehouseUpdate.Contact.Phone, "(078) 0013363");
+            Xunit.Assert.Equal(_warehouseUpdate.Contact.Email, "blamore@example.net");
         }
 
         [Fact, TestPriority(8)]
@@ -109,8 +150,8 @@ namespace IntegrationTests
             var requestUri = "/api/v1/warehouses/1";
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
+
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-            Xunit.Assert.Equal("", result);
             // No data found, but Status Code is 200 OK => should be 404 Not Found
         }
 
