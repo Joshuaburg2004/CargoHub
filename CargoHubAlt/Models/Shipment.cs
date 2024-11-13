@@ -23,12 +23,12 @@ namespace CargoHubAlt.Models
         public string? TransferMode { get; set; }
         public int TotalPackageCount { get; set; }
         public double TotalPackageWeight { get; set; }
-        public string? CreatedAt { get; set; }
-        public string? UpdatedAt { get; set; }
+        public string? CreatedAt { get; set; } = Base.GetTimeStamp();
+        public string? UpdatedAt { get; set; } = Base.GetTimeStamp();
         public List<ShipmentItem> Items { get; set; } = new();
 
         public Shipment() { }
-        public Shipment(int id, int order_id, int source_id, string order_date, string request_date, string shipment_date, string shipment_type, string shipment_status, string notes, string carrier_code, string carrier_description, string service_code, string payment_type, string transfer_mode, int total_package_count, int total_package_weight, string created_at, string updated_at, List<ShipmentItem> items)
+        public Shipment(int id, int order_id, int source_id, string order_date, string request_date, string shipment_date, string shipment_type, string shipment_status, string notes, string carrier_code, string carrier_description, string service_code, string payment_type, string transfer_mode, int total_package_count, double total_package_weight, List<ShipmentItem> items)
         {
             Id = id;
             OrderId = order_id;
@@ -46,8 +46,6 @@ namespace CargoHubAlt.Models
             TransferMode = transfer_mode;
             TotalPackageCount = total_package_count;
             TotalPackageWeight = total_package_weight;
-            CreatedAt = created_at;
-            UpdatedAt = updated_at;
             Items = items;
         }
     }

@@ -5,11 +5,15 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Xunit;
 using System.Text;
+using System.Net.Http.Json;
+using CargoHubAlt.Models;
 namespace IntegrationTests
 {
     [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
     public class ShipmentTest : BaseTest
     {
+        private Shipment _shipmentToAdd = new Shipment(1, 3, 52, "1973-01-28", "1973-01-30", "1973-02-01", "I", "Pending", "Hoog genot springen afspraak mond bus.", "DHL", "DHL Express", "NextDay", "Automatic", "Ground", 29, 463.0, new List<ShipmentItem> { new ShipmentItem(){ ItemId = "P010669", Amount = 16 } });
+
         public ShipmentTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
         [Fact, TestPriority(1)]
         public async Task GetAllShipments()
@@ -31,15 +35,13 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
-            // It should absolutely be either 400 bad request or 404 not found, but it is 200 OK.
-            // This is not intended behavior.
         }
 
         [Fact, TestPriority(3)]
         public async Task CreateShipment()
         {
             var requestUri = "/api/v1/shipments";
-            var response = await _client.PostAsync(requestUri, new StringContent("{\"id\": 1, \"order_id\": 3, \"source_id\": 52, \"order_date\": \"1973-01-28\", \"request_date\": \"1973-01-30\", \"shipment_date\": \"1973-02-01\", \"shipment_type\": \"I\", \"shipment_status\": \"Pending\", \"notes\": \"Hoog genot springen afspraak mond bus.\", \"carrier_code\": \"DHL\", \"carrier_description\": \"DHL Express\", \"service_code\": \"NextDay\", \"payment_type\": \"Automatic\", \"transfer_mode\": \"Ground\", \"total_package_count\": 29, \"total_package_weight\": 463.0, \"created_at\": \"1973-01-28T20:09:11Z\", \"updated_at\": \"1973-01-29T22:09:11Z\", \"items\": [{\"item_id\": \"P010669\", \"amount\": 16}]}", Encoding.UTF8, "application/json"));
+            var response = await _client.PostAsJsonAsync(requestUri, _shipmentToAdd);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
