@@ -108,10 +108,10 @@ namespace CargoHubAlt.Services
             return oldShipment;
         }
 
-        public async Task<Shipment?> Update_items_in_Shipment(int id, int shipmentid, List<ShipmentItem> items)
+        public async Task<Shipment?> Update_items_in_Shipment(int id, List<ShipmentItem> items)
         {
             // Checks before updating items in a shipment
-            var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == shipmentid);
+            var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == id);
             if (shipment == null)
             {
                 return null;

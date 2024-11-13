@@ -22,7 +22,7 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
             // Add a new DbContextOptions<CargoHubContext> registration
             services.AddDbContext<CargoHubContext>(options =>
             {
-                options.UseSqlite("DataSource=./TestDatabase.db");
+                options.UseSqlite("DataSource=TestDatabase.db");
             });
 
             // Ensure the database is created and migrations are applied

@@ -10,7 +10,7 @@ namespace CargoHubAlt.Interfaces
         public Task<int?> AddShipment(Shipment shipment);
         public Task<Shipment?> UpdateShipment(int shipmentid, Shipment shipment);
         public Task<Shipment?> DeleteShipment(int Id);
-        public Task<Shipment?> Update_items_in_Shipment(int id, int shipmentid, List<ShipmentItem> items);
+        public Task<Shipment?> Update_items_in_Shipment(int id, List<ShipmentItem> items);
         public Task LoadFromJson(string path);
     }
 }
