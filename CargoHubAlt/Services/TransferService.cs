@@ -58,6 +58,19 @@ namespace CargoHubAlt.Services
             await _context.SaveChangesAsync();
             return oldTransfer;
         }
+
+        public async Task CommitTransferById(int id)
+        {
+            Transfer? transfer = await GetTransferById(id);
+            if (transfer == null) return;
+            foreach(var transferItem in transfer.Items){
+                var inventories = _context.Inventories.Where(x => x.ItemId == transferItem.ItemId);
+                foreach(var inventory in inventories){
+                    // assume the python code means to iterate over the locations, because as is the inventories dont end up being stored in one location but in several (with a list of locations per inventory)
+                    // needs to be checked with PO
+                }
+            }
+        }
         public async Task LoadFromJson(string path)
         {
             path = "data/" + path;
