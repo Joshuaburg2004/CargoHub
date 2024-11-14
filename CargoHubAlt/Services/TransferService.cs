@@ -59,10 +59,10 @@ namespace CargoHubAlt.Services
             return oldTransfer;
         }
 
-        public async Task CommitTransferById(int id)
+        public async Task<bool> CommitTransferById(int id)
         {
             Transfer? transfer = await GetTransferById(id);
-            if (transfer == null) return;
+            if (transfer == null) return false;
             var transaction = _context.Database.BeginTransaction();
             try{
                 foreach(var transferItem in transfer.Items){
@@ -86,14 +86,19 @@ namespace CargoHubAlt.Services
                         }
                     }
                 }
+                transfer.TransferStatus = "Processed";
+                Transfer? transfer1 = await UpdateTransfer(id, transfer);
+                if(transfer1 == null){ return false; }
                 await transaction.CommitAsync();
+
             }
             catch(Exception ex){
                 Console.WriteLine(ex.Message);
                 await transaction.RollbackAsync();
-                return;
+                return false;
             }
             await _context.SaveChangesAsync();
+            return true;
         }
         public async Task LoadFromJson(string path)
         {
