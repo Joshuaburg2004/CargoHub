@@ -63,13 +63,37 @@ namespace CargoHubAlt.Services
         {
             Transfer? transfer = await GetTransferById(id);
             if (transfer == null) return;
-            foreach(var transferItem in transfer.Items){
-                var inventories = _context.Inventories.Where(x => x.ItemId == transferItem.ItemId);
-                foreach(var inventory in inventories){
-                    // assume the python code means to iterate over the locations, because as is the inventories dont end up being stored in one location but in several (with a list of locations per inventory)
-                    // needs to be checked with PO
+            var transaction = _context.Database.BeginTransaction();
+            try{
+                foreach(var transferItem in transfer.Items){
+                    var inventories = _context.Inventories.Where(x => x.ItemId == transferItem.ItemId);
+                    foreach(var inventory in inventories){
+                        // assume the python code means to iterate over the locations, because as is the inventories dont end up being stored in one location but in several (with a list of locations per inventory)
+                        // needs to be checked with PO
+                        foreach(int ider in inventory.Locations){
+                            if(ider == transfer.TransferFrom){
+                                inventory.TotalOnHand -= transferItem.Amount;
+                                inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
+                                inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
+                                _context.Inventories.Update(inventory);
+                            }
+                            else if (ider == transfer.TransferTo){
+                                inventory.TotalOnHand += transferItem.Amount;
+                                inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
+                                inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
+                                _context.Inventories.Update(inventory);
+                            }
+                        }
+                    }
                 }
+                await transaction.CommitAsync();
             }
+            catch(Exception ex){
+                Console.WriteLine(ex.Message);
+                await transaction.RollbackAsync();
+                return;
+            }
+            await _context.SaveChangesAsync();
         }
         public async Task LoadFromJson(string path)
         {
