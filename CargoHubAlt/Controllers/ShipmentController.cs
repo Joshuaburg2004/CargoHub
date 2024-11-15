@@ -40,7 +40,36 @@ namespace CargoHub.Controllers
                 return NotFound();
             }
             return Ok(shipment);
+        }
 
+        [HttpGet("{id}/items")]
+        public async Task<IActionResult> GetItemsInShipment([FromRoute] int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+            var items = await _shipmentService.GetItemsfromShipmentById(id);
+            if (items == null)
+            {
+                return NotFound();
+            }
+            return Ok(items);
+        }
+
+        [HttpGet("{id}/orders")]
+        public async Task<IActionResult> GetOrdersInShipment([FromRoute] int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+            var orders = await _shipmentService.GetOrdersFromShipmentById(id);
+            if (orders == null)
+            {
+                return NotFound();
+            }
+            return Ok(orders);
         }
 
         [HttpPost]
@@ -51,19 +80,27 @@ namespace CargoHub.Controllers
             return Created("Created location", shipment);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateShipment([FromRoute] int Shipmentid, [FromBody] Shipment shipment)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateShipment([FromRoute] int id, [FromBody] Shipment shipment)
         {
-            if (Shipmentid <= 0 || shipment is null) return BadRequest();
-            await _shipmentService.UpdateShipment(Shipmentid, shipment);
+            if (id <= 0 || shipment is null) return BadRequest();
+            await _shipmentService.UpdateShipment(id, shipment);
             return Ok();
         }
 
         [HttpPut("{id}/items")]
-        public async Task<IActionResult> UpdateItemsInShipment([FromRoute] int id, int shipmentid, [FromBody] List<ShipmentItem> items)
+        public async Task<IActionResult> UpdateItemsInShipment([FromRoute] int id, [FromBody] List<ShipmentItem> items)
         {
-            if (id <= 0 || shipmentid <= 0 || items == null) return BadRequest();
-            await _shipmentService.Update_items_in_Shipment(id, shipmentid, items);
+            if (id <= 0 || items == null) return BadRequest();
+            await _shipmentService.UpdateItemsInShipment(id, items);
+            return Ok();
+        }
+
+        [HttpPut("{id}/orders")]
+        public async Task<IActionResult> UpdateOrdersInShipment([FromRoute] int id, [FromBody] List<int> orders)
+        {
+            if (id <= 0 || orders == null) return BadRequest();
+            await _shipmentService.UpdateOrdersInShipment(id, orders);
             return Ok();
         }
 
