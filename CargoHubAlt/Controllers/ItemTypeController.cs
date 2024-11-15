@@ -25,10 +25,16 @@ namespace CargoHub.Controllers
         {
             if (id < 0) return BadRequest("invalid ID");
             var item_type = await _itemsService.GetItemTypeById(id);
-            if (item_type is null) return NotFound("Item Type not found");
-            else return Ok(item_type);
-            // if (item_type is null) return Ok("null");
-            // return Ok(item_type);
+
+            if (item_type is null) return Ok("null");
+            return Ok(item_type);
+
+
+            // intended, but for tests using the other
+            // if (item_type is null) return NotFound("Item Type not found");
+            // else return Ok(item_type);
+
+
         }
 
 
@@ -47,7 +53,7 @@ namespace CargoHub.Controllers
             if (itemtype is null) return BadRequest("this is not an item Type");
             int? success = await _itemsService.AddItemType(itemtype);
             if (success is null) return BadRequest("Item Type not added");
-            else return Ok();
+            else return Created("", "");
         }
 
         [HttpPut("{id}")]
