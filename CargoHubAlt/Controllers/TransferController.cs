@@ -53,6 +53,14 @@ namespace CargoHub.Controllers
             return Ok(transfer);
         }
 
+        [HttpPut("{id}/commit")]
+        public async Task<IActionResult> CommitTransfer([FromRoute] int id)
+        {
+            if (id <= 0) return BadRequest();
+            bool result = await _transferservice.CommitTransferById(id);
+            if(!result) return BadRequest("Something went wrong while committing the transfer");
+            return Ok($"Processed batch transfer with id:{id}");
+        }
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTransfer([FromRoute] int id, [FromBody] Transfer transfer)
         {

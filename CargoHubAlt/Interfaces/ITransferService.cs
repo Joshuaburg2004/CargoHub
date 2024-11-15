@@ -10,6 +10,7 @@ namespace CargoHubAlt.Interfaces
         public Task<int?> AddTransfer(Transfer transfer);
         public Task<Transfer?> UpdateTransfer(int Transfer_id, Transfer transfer);
         public Task<Transfer?> RemoveTransfer(int transfer_id);
+        public Task<bool> CommitTransferById(int transfer_id);
         public Task LoadFromJson(string path);
     }
 }
