@@ -124,17 +124,17 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             Warehouse? warehouse = await response.Content.ReadFromJsonAsync<Warehouse>();
-            Xunit.Assert.Equal(_warehouseCreate.Id, warehouse.Id);
-            Xunit.Assert.Equal(_warehouseCreate.Code, warehouse.Code);
-            Xunit.Assert.Equal(_warehouseCreate.Name, warehouse.Name);
-            Xunit.Assert.Equal(_warehouseCreate.Address, warehouse.Address);
-            Xunit.Assert.Equal(_warehouseCreate.Zip, warehouse.Zip);
-            Xunit.Assert.Equal(_warehouseCreate.City, warehouse.City);
-            Xunit.Assert.Equal(_warehouseCreate.Province, warehouse.Province);
-            Xunit.Assert.Equal(_warehouseCreate.Country, warehouse.Country);
-            Xunit.Assert.Equal(_warehouseCreate.Contact.Name, warehouse.Contact.Name);
-            Xunit.Assert.Equal(_warehouseCreate.Contact.Phone, warehouse.Contact.Phone);
-            Xunit.Assert.Equal(_warehouseCreate.Contact.Email, warehouse.Contact.Email);
+            Xunit.Assert.Equal(_warehouseUpdate.Id, warehouse.Id);
+            Xunit.Assert.Equal(_warehouseUpdate.Code, warehouse.Code);
+            Xunit.Assert.Equal(_warehouseUpdate.Name, warehouse.Name);
+            Xunit.Assert.Equal(_warehouseUpdate.Address, warehouse.Address);
+            Xunit.Assert.Equal(_warehouseUpdate.Zip, warehouse.Zip);
+            Xunit.Assert.Equal(_warehouseUpdate.City, warehouse.City);
+            Xunit.Assert.Equal(_warehouseUpdate.Province, warehouse.Province);
+            Xunit.Assert.Equal(_warehouseUpdate.Country, warehouse.Country);
+            Xunit.Assert.Equal(_warehouseUpdate.Contact.Name, warehouse.Contact.Name);
+            Xunit.Assert.Equal(_warehouseUpdate.Contact.Phone, warehouse.Contact.Phone);
+            Xunit.Assert.Equal(_warehouseUpdate.Contact.Email, warehouse.Contact.Email);
         }
 
         [Fact, TestPriority(8)]
