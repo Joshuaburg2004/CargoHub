@@ -121,6 +121,56 @@ namespace CargoHubAlt.Services
             {
                 return null;
             }
+            var current = shipment.Items;
+            if (current == null)
+            {
+                return null;
+            }
+            foreach(var item in current){
+                bool found = false;
+                foreach(var newItem in items){
+                    if(item.ItemId == newItem.ItemId){
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found){
+                    var inventories = await _context.Inventories.Where(x => x.ItemId == item.ItemId).ToListAsync();
+                    int maxOrdered = -1;
+                    Inventory? maxInventory = null;
+                    foreach(var inventory in inventories){
+                        if(inventory.TotalOrdered > maxOrdered){
+                            maxOrdered = inventory.TotalOrdered;
+                            maxInventory = inventory;
+                        }
+                    }
+                    if(maxInventory != null){
+                        maxInventory.TotalOrdered -= item.Amount;
+                        maxInventory.TotalExpected = maxInventory.TotalOnHand + maxInventory.TotalOrdered;
+                        _context.Inventories.Update(maxInventory);
+                    }
+                }
+            }
+            foreach(var item2 in current){
+                foreach(var newItem2 in items){
+                    if(item2.ItemId == newItem2.ItemId){
+                        var inventories = await _context.Inventories.Where(x => x.ItemId == item2.ItemId).ToListAsync();
+                        int maxOrdered = -1;
+                        Inventory? maxInventory = null;
+                        foreach(var inventory in inventories){
+                            if(inventory.TotalOrdered > maxOrdered){
+                                maxOrdered = inventory.TotalOrdered;
+                                maxInventory = inventory;
+                            }
+                        }
+                        if(maxInventory != null){
+                            maxInventory.TotalOrdered += newItem2.Amount - item2.Amount;
+                            maxInventory.TotalExpected = maxInventory.TotalOnHand + maxInventory.TotalOrdered;
+                            _context.Inventories.Update(maxInventory);
+                        }
+                    }
+                }
+            }
 
             // Update items in shipment
             shipment.Items = items;
