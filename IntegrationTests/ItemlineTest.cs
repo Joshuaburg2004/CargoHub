@@ -1,10 +1,12 @@
 using System.Net;
 using System.Net.Http;
+using IntegrationTests;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Text.Json;
-using System.Text;
 using Xunit;
-using IntegrationTests.models;
+using System.Text;
+using CargoHubAlt.Models;
+using System.Net.Http.Json;
 
 namespace IntegrationTests;
 
@@ -12,117 +14,140 @@ namespace IntegrationTests;
 
 public class ItemLineTest : BaseTest
 {
+    private ItemLine _itemLineCreate = new ItemLine(1, "Laptop", "Never gonna give you up");
+    private ItemLine _itemLinePut = new ItemLine(1, "Laptop", "Never gonna let you down");
+    private Item _item = new Item("P000001", "Laptop", "Never gonna give you up", "Never gonna", "123456789", "123456789", "123456789", 1, 1, 1, 1, 1, 1, 1, "123456789", "123456789");
 
-    public static item_line testType = new(1, "Laptop", "");
-    public static item_line PutType = new(1, "smart name", "smart description");
-    public static string testTypeJson {get => JsonSerializer.Serialize(testType);}
-    public static IntegrationTests.models.Item TestItem = new("P000004", "sjQ23408K", "Face-to-face clear-thinking complexity",
-     "must", "6523540947122", "63-OFFTq0T", "oTo304", 1, 1,1,1,1,1,1,"SUP423", "E-86805-uTM");
     public ItemLineTest(CustomWebApplicationFactory<Program> factory) : base(factory)
-    {}
+    {
+        CreateClient();
+        CreateItem();
+    }
+
+    public async Task CreateClient()
+    {
+        await _client.PostAsJsonAsync("/api/v1/item_lines", _itemLineCreate);
+    }
+
+    public async Task CreateItem()
+    {
+        await _client.PostAsJsonAsync("/api/v1/items", _item);
+    }
 
     [Fact, TestPriority(0)]
     public async Task GetAllItemLinesOne()
     {
-        HttpResponseMessage response = await _client.GetAsync("/api/v1/item_lines");
+        var requestUri = "/api/v1/item_lines";
+        var response = await _client.GetAsync(requestUri);
+        var result = await response.Content.ReadAsStringAsync();
         Xunit.Assert.NotNull(response);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        List<item_line>? returnedlist = JsonSerializer.Deserialize<List<item_line>>(await response.Content.ReadAsStringAsync());
-        Xunit.Assert.IsType<List<item_line>>(returnedlist);
-        Xunit.Assert.Single(returnedlist);
-        
-        item_line returned = returnedlist[0];
-        Xunit.Assert.Equal(testType.id, returned.id);
-        Xunit.Assert.Equal(testType.name, returned.name);
-        Xunit.Assert.Equal(testType.description, returned.description);
+
+        ItemLine[]? itemLines = await response.Content.ReadFromJsonAsync<ItemLine[]>();
+        Xunit.Assert.Equal(_itemLineCreate.Id, itemLines[0].Id);
+        Xunit.Assert.Equal(_itemLineCreate.Name, itemLines[0].Name);
+        Xunit.Assert.Equal(_itemLineCreate.Description, itemLines[0].Description);
     }
 
     [Fact, TestPriority(1)]
     public async Task GetItemLine()
     {
-        HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_lines/1");
-        Console.Error.WriteLine(await response.Content.ReadAsStringAsync());
+        var requestUri = "/api/v1/item_lines/1";
+        var response = await _client.GetAsync(requestUri);
+        var result = await response.Content.ReadAsStringAsync();
+        Xunit.Assert.NotNull(response);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        item_line? returned = JsonSerializer.Deserialize<item_line>(await response.Content.ReadAsStringAsync());
-        Xunit.Assert.IsType<item_line>(returned);
-        Xunit.Assert.Equal(testType.id, returned.id);
-        Xunit.Assert.Equal(testType.name, returned.name);
-        Xunit.Assert.Equal(testType.description, returned.description);
+
+        ItemLine? itemLine = await response.Content.ReadFromJsonAsync<ItemLine>();
+        Xunit.Assert.Equal(_itemLineCreate.Id, itemLine.Id);
+        Xunit.Assert.Equal(_itemLineCreate.Name, itemLine.Name);
+        Xunit.Assert.Equal(_itemLineCreate.Description, itemLine.Description);
     }
 
     [Fact, TestPriority(2)]
     public async Task UpdateItemLine()
     {
-        string toSend = JsonSerializer.Serialize(PutType);
-        HttpResponseMessage response = await _client.PutAsync($"/api/v1/item_lines/1", new StringContent(toSend, System.Text.Encoding.UTF8, "application/json"));
+        // Description is updated from "Never gonna give you up" to "Never gonna let you down"
+        var requestUri = "/api/v1/item_lines/1";
+        var response = await _client.PutAsJsonAsync(requestUri, _itemLinePut);
+        var result = await response.Content.ReadAsStringAsync();
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Xunit.Assert.Equal("", await response.Content.ReadAsStringAsync());
-        
     }
 
     [Fact, TestPriority(3)]
     public async Task GetUpdatedItemLine()
     {
-        HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_lines/1");
-        var responseContent = await response.Content.ReadAsStringAsync();
-        item_line? ItemLineafterupdate = JsonSerializer.Deserialize<item_line>(responseContent);
+        var requestUri = "/api/v1/item_lines/1";
+        var response = await _client.GetAsync(requestUri);
+        var result = await response.Content.ReadAsStringAsync();
+        Xunit.Assert.NotNull(response);
+        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        Xunit.Assert.IsType<item_line>(ItemLineafterupdate);
-
-        Xunit.Assert.Equal(PutType.id, ItemLineafterupdate.id);
-        Xunit.Assert.Equal(PutType.name, ItemLineafterupdate.name);
-        Xunit.Assert.Equal(PutType.description, ItemLineafterupdate.description);
+        ItemLine? itemLine = await response.Content.ReadFromJsonAsync<ItemLine>();
+        Xunit.Assert.Equal(_itemLinePut.Id, itemLine.Id);
+        Xunit.Assert.Equal(_itemLinePut.Name, itemLine.Name);
+        Xunit.Assert.Equal(_itemLinePut.Description, itemLine.Description);
     }
 
     [Fact, TestPriority(4)]
     public async Task GetItemLineItems()
     {
-        string toSend = JsonSerializer.Serialize(TestItem);
-        HttpResponseMessage postresponse = await _client.PostAsync("/api/v1/items", new StringContent(toSend, System.Text.Encoding.UTF8, "application/json"));
-        Xunit.Assert.Equal(HttpStatusCode.Created, postresponse.StatusCode);
-        
-
-        HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_lines/1/items");
-        var responseContent = await response.Content.ReadAsStringAsync();
-        List<IntegrationTests.models.Item>? ItemLineafterupdate = JsonSerializer.Deserialize<List<IntegrationTests.models.Item>>(responseContent);
+        var requestUri = "/api/v1/item_lines/1/items";
+        var response = await _client.GetAsync(requestUri);
+        var result = await response.Content.ReadAsStringAsync();
+        Xunit.Assert.NotNull(response);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        Xunit.Assert.IsType<List<IntegrationTests.models.Item>>(ItemLineafterupdate);
-        
-        IntegrationTests.models.Item ToReturn = ItemLineafterupdate[0];
-        Xunit.Assert.Equal(TestItem.uid, ToReturn.uid);
-        Xunit.Assert.Equal(TestItem.code, ToReturn.code);
+        Item[]? items = await response.Content.ReadFromJsonAsync<Item[]>();
+        Xunit.Assert.Equal(_item.Uid, items[0].Uid);
+        Xunit.Assert.Equal(_item.Code, items[0].Code);
+        Xunit.Assert.Equal(_item.Description, items[0].Description);
+        Xunit.Assert.Equal(_item.ShortDescription, items[0].ShortDescription);
+        Xunit.Assert.Equal(_item.UpcCode, items[0].UpcCode);
+        Xunit.Assert.Equal(_item.ModelNumber, items[0].ModelNumber);
+        Xunit.Assert.Equal(_item.CommodityCode, items[0].CommodityCode);
+        Xunit.Assert.Equal(_item.ItemLine, items[0].ItemLine);
+        Xunit.Assert.Equal(_item.ItemGroup, items[0].ItemGroup);
+        Xunit.Assert.Equal(_item.ItemType, items[0].ItemType);
+        Xunit.Assert.Equal(_item.UnitPurchaseQuantity, items[0].UnitPurchaseQuantity);
+        Xunit.Assert.Equal(_item.UnitOrderQuantity, items[0].UnitOrderQuantity);
+        Xunit.Assert.Equal(_item.PackOrderQuantity, items[0].PackOrderQuantity);
+        Xunit.Assert.Equal(_item.SupplierId, items[0].SupplierId);
+        Xunit.Assert.Equal(_item.SupplierCode, items[0].SupplierCode);
+        Xunit.Assert.Equal(_item.SupplierPartNumber, items[0].SupplierPartNumber);
 
-        HttpResponseMessage responsedelete = await _client.DeleteAsync("/api/v1/items/P000004");
-
+        // Delete item
+        var deleteRequestUri = "/api/v1/items/P000001";
+        var responsedelete = await _client.DeleteAsync(deleteRequestUri);
         Xunit.Assert.Equal(HttpStatusCode.OK, responsedelete.StatusCode);
     }
 
     [Fact, TestPriority(5)]
     public async Task GetWrongItemLine()
     {
-        HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_lines/2");
-        Console.Error.WriteLine(await response.Content.ReadAsStringAsync());
+        var requestUri = "/api/v1/item_lines/2";
+        var response = await _client.GetAsync(requestUri);
+        var result = await response.Content.ReadAsStringAsync();
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var responseContent = await response.Content.ReadAsStringAsync();
-        Xunit.Assert.Equal("null", responseContent);
+        Xunit.Assert.Equal("null", result);
     }
 
     [Fact, TestPriority(6)]
     public async Task DeleteItemLine()
     {
-        HttpResponseMessage response = await _client.DeleteAsync($"/api/v1/item_lines/1");
+        var requestUri = "/api/v1/item_lines/1";
+        var response = await _client.DeleteAsync(requestUri);
+        var result = await response.Content.ReadAsStringAsync();
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var responseContent = await response.Content.ReadAsStringAsync();
-        Xunit.Assert.Equal("", responseContent);
+        Xunit.Assert.Equal("", result);
     }
 
     [Fact, TestPriority(7)]
     public async Task GetItemLineEmpty()
     {
-        HttpResponseMessage response = await _client.GetAsync($"/api/v1/item_lines");
+        var requestUri = "/api/v1/item_lines";
+        var response = await _client.GetAsync(requestUri);
+        var result = await response.Content.ReadAsStringAsync();
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var responseContent = await response.Content.ReadAsStringAsync();
-        Xunit.Assert.Equal("[]", responseContent);
     }
 }

@@ -43,26 +43,27 @@ namespace CargoHubAlt.Services
         {
             return await _cargoHubContext.ItemLines.ToListAsync();
         }
+
         public async Task<int?> AddItemLine(ItemLine linetype)
         {
             await _cargoHubContext.ItemLines.AddAsync(linetype);
             await _cargoHubContext.SaveChangesAsync();
             return linetype.Id;
         }
+
         public async Task<ItemLine?> UpdateItemLine(int Id, ItemLine toUpdate)
         {
             ItemLine? found = await _cargoHubContext.ItemLines.FirstOrDefaultAsync(item_Line => item_Line.Id == Id);
             if (found == null) return found;
 
-        found.Name = toUpdate.Name;
-        found.Description = toUpdate.Description;
-        found.UpdatedAt = Base.GetTimeStamp();
+            found.Name = toUpdate.Name;
+            found.Description = toUpdate.Description;
+            found.UpdatedAt = Base.GetTimeStamp();
 
             this._cargoHubContext.ItemLines.Update(found);
             await this._cargoHubContext.SaveChangesAsync();
             return found;
         }
-
 
         public async Task<ItemLine?> DeleteItemLine(int Id)
         {
@@ -73,6 +74,7 @@ namespace CargoHubAlt.Services
             if (await this._cargoHubContext.SaveChangesAsync() >= 1) return found;
             else return null;
         }
+
         public async Task LoadFromJson(string path)
         {
             path = "data/" + path;
@@ -90,15 +92,18 @@ namespace CargoHubAlt.Services
                 }
             }
         }
-        public async Task<int> SaveToDatabase(ItemLine itemGroup){
-            if(itemGroup is null){
+
+        public async Task<int> SaveToDatabase(ItemLine itemGroup)
+        {
+            if (itemGroup is null)
+            {
                 return -1;
             }
-            if(itemGroup.Name == null){itemGroup.Name = "N/A";}
-            if(itemGroup.Description == null){itemGroup.Description = "N/A";}
+            if (itemGroup.Name == null) { itemGroup.Name = "N/A"; }
+            if (itemGroup.Description == null) { itemGroup.Description = "N/A"; }
             await _cargoHubContext.ItemLines.AddAsync(itemGroup);
             await _cargoHubContext.SaveChangesAsync();
-            return itemGroup.Id;   
+            return itemGroup.Id;
         }
     }
 }
