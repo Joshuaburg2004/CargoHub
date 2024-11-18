@@ -20,11 +20,11 @@ public class ItemLineTest : BaseTest
 
     public ItemLineTest(CustomWebApplicationFactory<Program> factory) : base(factory)
     {
-        CreateClient();
+        CreateItemLine();
         CreateItem();
     }
 
-    public async Task CreateClient()
+    public async Task CreateItemLine()
     {
         await _client.PostAsJsonAsync("/api/v1/item_lines", _itemLineCreate);
     }
