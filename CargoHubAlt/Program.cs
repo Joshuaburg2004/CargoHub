@@ -3,12 +3,28 @@ using CargoHubAlt.Models;
 using CargoHubAlt.Interfaces;
 using CargoHubAlt.Services;
 using CargoHubAlt.Database;
+using Serilog;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 public class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Logging.ClearProviders();
+        builder.Logging.AddConsole();
+
+        Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+        builder.Host.UseSerilog();
 
         builder.Services.AddTransient<IClientService, ClientService>();
         builder.Services.AddTransient<IInventoryService, InventoryService>();
@@ -27,6 +43,8 @@ public class Program
         builder.Services.AddDbContext<CargoHubContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         var app = builder.Build();
+
+        app.UseSerilogRequestLogging();
 
         if (app.Environment.IsDevelopment())
         {
