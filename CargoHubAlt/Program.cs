@@ -22,11 +22,14 @@ public class Program
         builder.Services.AddTransient<ILocationService, LocationService>();
         builder.Services.AddTransient<ISupplierService, Suppliers>();
         builder.Services.AddTransient<IOrderService, OrderService>();
+        builder.Services.Configure<ApiKeyOptions>(builder.Configuration.GetSection("Users"));
+
 
         builder.Services.AddControllers();
         builder.Services.AddDbContext<CargoHubContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         var app = builder.Build();
+        
 
         if (app.Environment.IsDevelopment())
         {

@@ -6,6 +6,7 @@ namespace CargoHubAlt.Controllers
 {
     [ApiController]
     [Route("api/v1/clients")]
+    [ApiKeyActionFilter]
     public class ClientController : Controller
     {
         public IClientService Clients { get; set; }
