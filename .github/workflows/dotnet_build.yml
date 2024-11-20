@@ -79,25 +79,25 @@ jobs:
         dotnet-version: 8.0.x
 
 
-    # Install the Dependencies
-    - name: Install Dependencies
-      run:  |
-        cd CargoHubAlt
-        dotnet add package microsoft.aspnetcore
-        dotnet add package microsoft.aspnetcore.openapi
-        dotnet add package Microsoft.EntityFrameworkCore
-        dotnet add package Microsoft.EntityFrameworkCore.Design
-        dotnet add package Microsoft.EntityFrameworkCore.Sqlite
-        dotnet add package Microsoft.EntityFrameworkCore.Tools
-        dotnet add package swashbuckle.aspnetcore
-        cd ../
-        cd IntegrationTests
-        dotnet add package coverlet.collector
-        dotnet add package Microsoft.AspNetCore.Mvc.Core
-        dotnet add package Microsoft.AspNetCore.Mvc.Testing
-        dotnet add package Microsoft.NET.Test.Sdk
-        dotnet add package xunit
-        dotnet add package xunit.runner.visualstudio
+    # # Install the Dependencies
+    # - name: Install Dependencies
+    #   run:  |
+    #     cd CargoHubAlt
+    #     dotnet add package microsoft.aspnetcore
+    #     dotnet add package microsoft.aspnetcore.openapi
+    #     dotnet add package Microsoft.EntityFrameworkCore
+    #     dotnet add package Microsoft.EntityFrameworkCore.Design
+    #     dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+    #     dotnet add package Microsoft.EntityFrameworkCore.Tools
+    #     dotnet add package swashbuckle.aspnetcore
+    #     cd ../
+    #     cd IntegrationTests
+    #     dotnet add package coverlet.collector
+    #     dotnet add package Microsoft.AspNetCore.Mvc.Core
+    #     dotnet add package Microsoft.AspNetCore.Mvc.Testing
+    #     dotnet add package Microsoft.NET.Test.Sdk
+    #     dotnet add package xunit
+    #     dotnet add package xunit.runner.visualstudio
 
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
