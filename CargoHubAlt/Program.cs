@@ -21,7 +21,9 @@ public class Program
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
     .WriteTo.Console()
-    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.Logger(lc => lc
+        .Filter.ByIncludingOnly(evt => evt.Properties["SourceContext"].ToString().Contains("TransferController"))
+        .WriteTo.File("Logs/TransferController.log"))
     .CreateLogger();
 
         builder.Host.UseSerilog();
