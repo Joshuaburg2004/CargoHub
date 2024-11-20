@@ -83,6 +83,7 @@ jobs:
     # Install the Dependencies
     - name: Install Dependencies
       run:  |
+        cd IntegrationTests
         dotnet add package microsoft.aspnetcore
         dotnet add package microsoft.aspnetcore.openapi
         dotnet add package Microsoft.EntityFrameworkCore
@@ -96,7 +97,6 @@ jobs:
         dotnet add package Microsoft.NET.Test.Sdk
         dotnet add package xunit
         dotnet add package xunit.runner.visualstudio
-        
 
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
@@ -104,7 +104,6 @@ jobs:
       run: |
         dotnet restore 
         dotnet build --no-restore 
-        dotnet run --no-restore --no-build
 
 
     # Execute all unit tests in the solution
