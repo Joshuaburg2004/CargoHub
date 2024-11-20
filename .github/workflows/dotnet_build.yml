@@ -40,10 +40,9 @@ name: .NET Core Desktop
 
 
 
-### remember to remove 329-pipeline-test-opzetten for this. It is exclusively for testing this pipeline 
 on:
   push:
-    branches: [ "main", "development", "341-pipeline-build-opzetten" ]
+    branches: [ "main", "development" ]
   pull_request:
     branches: [ "main", "development" ]
 
