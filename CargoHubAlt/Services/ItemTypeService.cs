@@ -50,9 +50,9 @@ namespace CargoHubAlt.Services
             ItemType? found = await GetItemTypeById(Id);
             if (found is null) return null;
 
-        found.Name = itemtype.Name;
-        found.Description = itemtype.Description;
-        found.UpdatedAt = itemtype.UpdatedAt;
+            found.Name = itemtype.Name;
+            found.Description = itemtype.Description;
+            found.UpdatedAt = itemtype.UpdatedAt;
 
             _cargoHubContext.ItemTypes.Update(found);
             await _cargoHubContext.SaveChangesAsync();

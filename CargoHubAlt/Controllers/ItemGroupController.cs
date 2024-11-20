@@ -25,11 +25,11 @@ namespace CargoHubAlt.Controllers
         {
             ItemGroup? toReturn = await this._itemsService.FindItemGroup(id);
 
-            if (toReturn is null) return Ok("null");
-            return Ok(toReturn);
+            // if (toReturn is null) return Ok("null");
+            // return Ok(toReturn);
 
-            // if (toReturn is null) return NotFound($"ID {id} not found");
-            // else return Ok(toReturn);
+            if (toReturn is null) return NotFound($"ID {id} not found");
+            else return Ok(toReturn);
 
         }
 
@@ -66,10 +66,10 @@ namespace CargoHubAlt.Controllers
 
             ItemGroup? success = await this._itemsService.UpdateItemGroup(id, toupdateto);
 
-            return Ok();
+            // return Ok();
 
-            // if (success is null) return NotFound($"Id not Found: {id}");
-            // return Ok(success);
+            if (success is null) return NotFound($"Id not Found: {id}");
+            return Ok(success);
         }
 
         [HttpDelete("{id}")]
@@ -78,10 +78,10 @@ namespace CargoHubAlt.Controllers
 
             ItemGroup? success = await this._itemsService.DeleteItemGroup(id);
 
-            return Ok();
+            // return Ok();
 
-            // if (success is null) return NotFound($"ID not found: {id}");
-            // else return Ok(success);
+            if (success is null) return NotFound($"ID not found: {id}");
+            else return Ok(success);
         }
         [HttpPost("load/{path}")]
         public async Task<IActionResult> LoadLocations([FromRoute] string path){
