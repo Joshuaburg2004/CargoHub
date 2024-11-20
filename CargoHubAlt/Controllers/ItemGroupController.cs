@@ -25,11 +25,11 @@ namespace CargoHubAlt.Controllers
         {
             ItemGroup? toReturn = await this._itemsService.FindItemGroup(id);
 
-            if (toReturn is null) return Ok("null");
-            return Ok(toReturn);
+            // if (toReturn is null) return Ok("null");
+            // return Ok(toReturn);
 
-            // if (toReturn is null) return NotFound($"ID {id} not found");
-            // else return Ok(toReturn);
+            if (toReturn is null) return NotFound($"ID {id} not found");
+            else return Ok(toReturn);
 
         }
 

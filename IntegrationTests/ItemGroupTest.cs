@@ -19,16 +19,16 @@ public class ItemGroupTest : BaseTest
     private Item _item = new Item("P000001", "Book", "Never gonna give you up", "Never gonna", "123456789", "123456789", "123456789", 1, 1, 1, 1, 1, 1, 1, "123456789", "123456789");
     public ItemGroupTest(CustomWebApplicationFactory<Program> factory) : base(factory)
     {
-        CreateItemGroup();
-        CreateItem();
+        _createItemGroup();
+        _createItem();
     }
 
-    public async Task CreateItemGroup()
+    private async Task _createItemGroup()
     {
         await _client.PostAsJsonAsync("/api/v1/item_groups", _itemGroupCreate);
     }
 
-    public async Task CreateItem()
+    private async Task _createItem()
     {
         await _client.PostAsJsonAsync("/api/v1/items", _item);
     }
@@ -42,7 +42,8 @@ public class ItemGroupTest : BaseTest
         Xunit.Assert.NotNull(response);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        ItemGroup[]? itemGroups = await response.Content.ReadFromJsonAsync<ItemGroup[]>();
+        List<ItemGroup>? itemGroups = await response.Content.ReadFromJsonAsync<List<ItemGroup>>();
+        Xunit.Assert.NotNull(itemGroups);
         Xunit.Assert.Equal(_itemGroupCreate.Id, itemGroups[0].Id);
         Xunit.Assert.Equal(_itemGroupCreate.Name, itemGroups[0].Name);
         Xunit.Assert.Equal(_itemGroupCreate.Description, itemGroups[0].Description);
@@ -58,6 +59,7 @@ public class ItemGroupTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         ItemGroup? itemGroup = await response.Content.ReadFromJsonAsync<ItemGroup>();
+        Xunit.Assert.NotNull(itemGroup);
         Xunit.Assert.Equal(_itemGroupCreate.Id, itemGroup.Id);
         Xunit.Assert.Equal(_itemGroupCreate.Name, itemGroup.Name);
         Xunit.Assert.Equal(_itemGroupCreate.Description, itemGroup.Description);
@@ -83,6 +85,7 @@ public class ItemGroupTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         ItemGroup? itemGroup = await response.Content.ReadFromJsonAsync<ItemGroup>();
+        Xunit.Assert.NotNull(itemGroup);
         Xunit.Assert.Equal(_itemGroupPut.Id, itemGroup.Id);
         Xunit.Assert.Equal(_itemGroupPut.Name, itemGroup.Name);
         Xunit.Assert.Equal(_itemGroupPut.Description, itemGroup.Description);
@@ -97,7 +100,8 @@ public class ItemGroupTest : BaseTest
         Xunit.Assert.NotNull(response);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        Item[]? items = await response.Content.ReadFromJsonAsync<Item[]>();
+        List<Item>? items = await response.Content.ReadFromJsonAsync<List<Item>>();
+        Xunit.Assert.NotNull(items);
         Xunit.Assert.Equal(_item.Uid, items[0].Uid);
         Xunit.Assert.Equal(_item.Code, items[0].Code);
         Xunit.Assert.Equal(_item.Description, items[0].Description);
@@ -127,8 +131,8 @@ public class ItemGroupTest : BaseTest
         var requestUri = "/api/v1/item_groups/2";
         var response = await _client.GetAsync(requestUri);
         var result = await response.Content.ReadAsStringAsync();
-        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Xunit.Assert.Equal("null", result);
+        Xunit.Assert.NotNull(result);
+        Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
     }
 
     [Fact, TestPriority(6)]
