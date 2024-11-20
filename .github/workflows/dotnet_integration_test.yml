@@ -79,8 +79,6 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Add CargohubAlt dependencies
-      run: dotnet add 
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
