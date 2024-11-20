@@ -43,7 +43,7 @@ name: .NET Core Desktop
 ### remember to remove 329-pipeline-test-opzetten for this. It is exclusively for testing this pipeline 
 on:
   push:
-    branches: [ "main", "development", "329-pipeline-test-opzetten" ]
+    branches: [ "main", "development"]
   pull_request:
     branches: [ "main", "development" ]
 
@@ -106,15 +106,38 @@ jobs:
         dotnet build --no-restore 
 
 
-    # Execute all unit tests in the solution
-    - name: Execute unit tests
+    # Execute all integration tests in the solution
+    - name: Execute integration tests
       run: dotnet test ${{env.Test_Project_Path}}
 
-    # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+    - name: Run tests with coverage
+      run: |
+        dotnet test --no-build --configuration Release \
+          --collect:"XPlat Code Coverage" \
+          --results-directory ./TestResults \
+          /p:CoverletOutputFormat=cobertura \
+          /p:CoverletOutput=./TestResults/coverage/
+
+    - name: Generate coverage report
+      run: |
+        dotnet tool install -g dotnet-reportgenerator-globaltool
+        reportgenerator \
+          -reports:TestResults/coverage/coverage.cobertura.xml \
+          -targetdir:TestResults/CoverageReport \
+          -reporttypes:HtmlInline
+
+    - name: Extract coverage percentage
+      id: extract-coverage
+      run: |
+        COVERAGE=$(grep 'line-rate' TestResults/coverage/coverage.cobertura.xml | sed 's/.*line-rate="\([^"]*\)".*/\1/')
+        echo "Coverage: $COVERAGE"
+        echo "coverage=$COVERAGE" >> $GITHUB_ENV
+
+    # # Restore the application to populate the obj folder with RuntimeIdentifiers
+    # - name: Restore the application
+    #   run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+    #   env:
+    #     Configuration: ${{ matrix.configuration }}
 
     # # Decode the base 64 encoded pfx and save the Signing_Certificate
     # - name: Decode the pfx
