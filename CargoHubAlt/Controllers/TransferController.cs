@@ -58,7 +58,7 @@ namespace CargoHub.Controllers
         {
             if (id <= 0) return BadRequest();
             bool result = await _transferservice.CommitTransferById(id);
-            if(!result) return BadRequest("Something went wrong while committing the transfer");
+            if (!result) return BadRequest("Something went wrong while committing the transfer");
             return Ok($"Processed batch transfer with id:{id}");
         }
         [HttpPut("{id}")]
@@ -70,7 +70,8 @@ namespace CargoHub.Controllers
             return Ok(oldTransfer);
         }
         [HttpPost("load/{path}")]
-        public async Task<IActionResult> LoadClient([FromRoute] string path){
+        public async Task<IActionResult> LoadClient([FromRoute] string path)
+        {
             await _transferservice.LoadFromJson(path);
             return Ok();
         }
