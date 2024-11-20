@@ -21,9 +21,12 @@ public class Program
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
     .WriteTo.Console()
-        .WriteTo.Logger(lc => lc
+      .WriteTo.Logger(lc => lc
         .Filter.ByIncludingOnly(evt => evt.Properties["SourceContext"].ToString().Contains("OrderController"))
         .WriteTo.File("Logs/OrderController.log"))
+    .WriteTo.Logger(lc => lc
+        .Filter.ByIncludingOnly(evt => evt.Properties["SourceContext"].ToString().Contains("TransferController"))
+        .WriteTo.File("Logs/TransferController.log"))
     .CreateLogger();
 
         builder.Host.UseSerilog();
