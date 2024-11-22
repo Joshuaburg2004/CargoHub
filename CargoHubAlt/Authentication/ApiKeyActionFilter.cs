@@ -26,7 +26,6 @@ public class ApiKeyActionFilter : Attribute, IAsyncActionFilter{
             return;
         }
         var path = context.Request.Path.ToString().Replace("/api/v1/", "").Split("/");
-        Console.WriteLine(path);
         AccessLevel? access = path[0] switch {
             "clients" => user.EndpointAccess.Clients,
             "inventories" => user.EndpointAccess.Inventories,
@@ -48,8 +47,13 @@ public class ApiKeyActionFilter : Attribute, IAsyncActionFilter{
             return;
         }
         int statusCode = CheckAccess(access, context.Request.Method);
+        if(statusCode == 401){
+            context.Response.StatusCode = 401;
+            Console.WriteLine("Access denied");
+            return;
+        }
         await next();
-        context.Response.StatusCode = 200;
+        context.Response.StatusCode = statusCode;
         return;
     }
     // returns StatusCode
