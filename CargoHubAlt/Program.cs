@@ -22,10 +22,7 @@ public class Program
         builder.Services.AddTransient<ILocationService, LocationService>();
         builder.Services.AddTransient<ISupplierService, Suppliers>();
         builder.Services.AddTransient<IOrderService, OrderService>();
-        builder.Services.Configure<ApiKeyOptions>(builder.Configuration.GetSection("Users"));
         builder.Services.AddScoped<ApiKeyActionFilter>();
-
-
         builder.Services.AddControllers();
         builder.Services.AddControllers(options => {
             options.Filters.AddService<ApiKeyActionFilter>();

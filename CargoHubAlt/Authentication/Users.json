@@ -1,0 +1,182 @@
+[
+  {
+    "ApiKey": "a1b2c3d4e5",
+    "App": "CargoHUB Dashboard 1",
+    "EndpointAccess": {
+      "Clients": {
+        "Full": true,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "Inventories": {
+        "Full": true,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "Items": {
+        "Full": true,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "ItemTypes": {
+        "Full": true,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "ItemGroups": {
+        "Full": true,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "ItemLines": {
+        "Full": true,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "Locations": {
+        "Full": true,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "Orders": {
+        "Full": true,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "Shipments": {
+        "Full": true,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "Suppliers": {
+        "Full": true,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "Transfers": {
+        "Full": true,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "Warehouses": {
+        "Full": true,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      }
+    }
+  },
+  {
+    "ApiKey": "a1b2c3d4e5",
+    "App": "CargoHUB Dashboard 1",
+    "EndpointAccess": {
+      "Clients": {
+        "Full": false,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Inventories": {
+        "Full": false,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Items": {
+        "Full": false,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "ItemTypes": {
+        "Full": false,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "ItemGroups": {
+        "Full": false,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "ItemLines": {
+        "Full": false,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Locations": {
+        "Full": false,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Orders": {
+        "Full": false,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Shipments": {
+        "Full": false,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Suppliers": {
+        "Full": false,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Transfers": {
+        "Full": false,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Warehouses": {
+        "Full": false,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      }
+    }
+  }
+]

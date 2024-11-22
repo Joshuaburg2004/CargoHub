@@ -5,22 +5,10 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
 using System.Text.Json; 
 public class ApiKeyActionFilter : Attribute, IAsyncActionFilter{
-    private List<User> _users;
     public async Task OnActionExecutionAsync(ActionExecutingContext actionContext, ActionExecutionDelegate next){
         var context = actionContext.HttpContext;
-        var option = context.RequestServices.GetService<IOptions<ApiKeyOptions>>();
-        if (option == null){
-            context.Response.StatusCode = 500;
-            Console.WriteLine("No options found");
-            return;
-        }
-        var options = option.Value;
-        if (options == null){
-            context.Response.StatusCode = 500;
-            Console.WriteLine("No options found 2");
-            return;
-        }
-        _users = options.Users;
+        var _users = ApiKeyOptions.Users;
+
         if(_users.Count == 0){
             context.Response.StatusCode = 401;
             Console.WriteLine("No users found");
