@@ -42,13 +42,18 @@ public class Program
             app.UseHsts();
         }
 
-        app.UseHttpsRedirection();
+        app.Use(async (context, next) =>
+        {
+            await next.Invoke();
+            Console.WriteLine($"{context.Connection.RemoteIpAddress} - - [{DateTime.Now}] \"{context.Request.Method} {context.Request.Path}\" {context.Response.StatusCode} -");
+        });
         app.UseRouting();
         app.UseAuthorization();
         app.MapControllers();
 
         app.Urls.Add("http://localhost:3000");
         app.MapGet("/", () => "Hello World!");
+        Console.WriteLine("Serving on port 3000");
         app.Run();
     }
 }
