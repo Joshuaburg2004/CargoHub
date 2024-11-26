@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
 using CargoHubAlt.Database;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("Id")]
     public class Client : Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
@@ -19,9 +20,8 @@ namespace CargoHubAlt.Models
         public string ContactEmail { get; set; }
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
-        public Client(int id, string name, string address, string city, string zipCode, string province, string country, string contactName, string contactPhone, string contactEmail)
+        public Client(string name, string address, string city, string zipCode, string province, string country, string contactName, string contactPhone, string contactEmail)
         {
-            Id = id;
             Name = name;
             Address = address;
             City = city;
