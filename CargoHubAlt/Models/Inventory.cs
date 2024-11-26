@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
 using CargoHubAlt.Database;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("Id")]
     public class Inventory : Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string ItemId { get; set; }
         public string Description { get; set; }
@@ -20,9 +21,8 @@ namespace CargoHubAlt.Models
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
 
-        public Inventory(int id, string itemId, string description, string itemReference, List<int> locations, int totalOnHand, int totalExpected, int totalOrdered, int totalAllocated, int totalAvailable)
+        public Inventory(string itemId, string description, string itemReference, List<int> locations, int totalOnHand, int totalExpected, int totalOrdered, int totalAllocated, int totalAvailable)
         {
-            Id = id;
             ItemId = itemId;
             Description = description;
             ItemReference = itemReference;

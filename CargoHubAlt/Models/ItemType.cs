@@ -6,11 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("Id")]
     public class ItemType : Base
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
 
@@ -18,9 +16,8 @@ namespace CargoHubAlt.Models
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
 
-        public ItemType(int id, string name, string description)
+        public ItemType(string name, string description)
         {
-            Id = id;
             Name = name;
             Description = description;
         }

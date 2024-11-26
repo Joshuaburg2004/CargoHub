@@ -2,12 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("Id")]
     public class Order : Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int SourceId { get; set; }
         public string? OrderDate { get; set; }
@@ -32,9 +33,8 @@ namespace CargoHubAlt.Models
 
         public Order() { }
 
-        public Order(int id, int sourceId, string orderDate, string requestDate, string reference, string referenceExtra, string orderStatus, string notes, string shippingNotes, string pickingNotes, int warehouseId, int shipTo, int billTo, int shipmentId, double totalAmount, double totalDiscount, double totalTax, double totalSurcharge, List<OrderedItem>? items)
+        public Order(int sourceId, string orderDate, string requestDate, string reference, string referenceExtra, string orderStatus, string notes, string shippingNotes, string pickingNotes, int warehouseId, int shipTo, int billTo, int shipmentId, double totalAmount, double totalDiscount, double totalTax, double totalSurcharge, List<OrderedItem>? items)
         {
-            Id = id;
             SourceId = sourceId;
             OrderDate = orderDate;
             RequestDate = requestDate;

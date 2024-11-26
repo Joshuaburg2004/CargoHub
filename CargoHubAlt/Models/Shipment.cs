@@ -2,11 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CargoHubAlt.Models
 {
     public class Shipment
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int OrderId { get; set; } // maybe this should be a list of order ids
         public int SourceId { get; set; }
@@ -28,9 +30,8 @@ namespace CargoHubAlt.Models
         public List<ShipmentItem> Items { get; set; } = new();
 
         public Shipment() { }
-        public Shipment(int id, int order_id, int source_id, string order_date, string request_date, string shipment_date, string shipment_type, string shipment_status, string notes, string carrier_code, string carrier_description, string service_code, string payment_type, string transfer_mode, int total_package_count, double total_package_weight, List<ShipmentItem> items)
+        public Shipment(int order_id, int source_id, string order_date, string request_date, string shipment_date, string shipment_type, string shipment_status, string notes, string carrier_code, string carrier_description, string service_code, string payment_type, string transfer_mode, int total_package_count, double total_package_weight, List<ShipmentItem> items)
         {
-            Id = id;
             OrderId = order_id;
             SourceId = source_id;
             OrderDate = order_date;
@@ -49,7 +50,7 @@ namespace CargoHubAlt.Models
             Items = items;
         }
     }
-    [Owned]    
+    [Owned]
     public class ShipmentItem
     {
         public string? ItemId { get; set; }

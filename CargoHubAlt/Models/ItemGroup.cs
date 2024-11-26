@@ -1,16 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
-using CargoHubAlt.Database; 
-using System.ComponentModel.DataAnnotations;
+using CargoHubAlt.Database;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CargoHubAlt.Models
 {
-    [PrimaryKey("Id")]
     public class ItemGroup : Base
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
 
@@ -18,9 +15,8 @@ namespace CargoHubAlt.Models
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
 
-        public ItemGroup(int id, string name, string description)
+        public ItemGroup(string name, string description)
         {
-            Id = id;
             Name = name;
             Description = description;
         }
