@@ -58,7 +58,7 @@ POST  http://localhost:3000/api/v1/inventories
 API_KEY: a1b2c3d4e5
 Content-Type: application/json
 
-{"id": 10000, "itemId": "P000001", "description": "Face-to-face clear-thinking complexity", "itemReference": "sjQ23408K", "locations": [3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817], "totalOnHand": 262, "totalExpected": 0, "totalOrdered": 80, "totalAllocated": 41, "totalAvailable": 141}
+{"id": 100000, "itemId": "P000001", "description": "Face-to-face clear-thinking complexity", "itemReference": "sjQ23408K", "locations": [3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817], "totalOnHand": 262, "totalExpected": 0, "totalOrdered": 80, "totalAllocated": 41, "totalAvailable": 141}
 ###
 POST  http://localhost:3000/api/v1/inventories/load/inventories.json
 ###

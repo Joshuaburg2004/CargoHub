@@ -20,7 +20,7 @@ namespace CargoHubAlt.Models
         public int TotalAvailable { get; set; }
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
-
+        public Inventory() { }
         public Inventory(int id, string itemId, string description, string itemReference, List<int> locations, int totalOnHand, int totalExpected, int totalOrdered, int totalAllocated, int totalAvailable)
         {
             Id = id;

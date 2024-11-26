@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CargoHubAlt.Models
 {
@@ -14,7 +15,7 @@ namespace CargoHubAlt.Models
         public string Name { get; set; }
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
-
+        public Location() { }
         public Location(int id, int warehouseId, string code, string name)
         {
             Id = id;

@@ -15,7 +15,7 @@ namespace CargoHubAlt.Models
         public string Description { get; set; }
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
-
+        public ItemType() { }
         public ItemType(int id, string name, string description)
         {
             Id = id;
