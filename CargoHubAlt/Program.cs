@@ -43,11 +43,15 @@ public class Program
         builder.Services.AddTransient<ILocationService, LocationService>();
         builder.Services.AddTransient<ISupplierService, Suppliers>();
         builder.Services.AddTransient<IOrderService, OrderService>();
-
+        builder.Services.AddScoped<ApiKeyActionFilter>();
         builder.Services.AddControllers();
+        builder.Services.AddControllers(options => {
+            options.Filters.AddService<ApiKeyActionFilter>();
+        });
         builder.Services.AddDbContext<CargoHubContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         var app = builder.Build();
+        
 
         app.UseSerilogRequestLogging();
 
@@ -61,13 +65,18 @@ public class Program
             app.UseHsts();
         }
 
-        app.UseHttpsRedirection();
+        app.Use(async (context, next) =>
+        {
+            await next.Invoke();
+            Console.WriteLine($"{context.Connection.RemoteIpAddress} - - [{DateTime.Now}] \"{context.Request.Method} {context.Request.Path}\" {context.Response.StatusCode} -");
+        });
         app.UseRouting();
         app.UseAuthorization();
         app.MapControllers();
 
         app.Urls.Add("http://localhost:3000");
         app.MapGet("/", () => "Hello World!");
+        Console.WriteLine("Serving on port 3000");
         app.Run();
     }
 }
