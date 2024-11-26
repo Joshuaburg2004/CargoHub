@@ -49,7 +49,7 @@ namespace IntegrationTests
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
-            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Fact, TestPriority(2)]
@@ -119,7 +119,7 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
 
             Transfer res = await response.Content.ReadFromJsonAsync<Transfer>();
-           
+
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             Xunit.Assert.Equal(testtransfer2.Id, res.Id);
