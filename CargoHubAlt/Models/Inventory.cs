@@ -21,6 +21,19 @@ namespace CargoHubAlt.Models
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
 
+        public Inventory(int id, string itemId, string description, string itemReference, List<int> locations, int totalOnHand, int totalExpected, int totalOrdered, int totalAllocated, int totalAvailable)
+        {
+            Id = id;
+            ItemId = itemId;
+            Description = description;
+            ItemReference = itemReference;
+            Locations = locations;
+            TotalOnHand = totalOnHand;
+            TotalExpected = totalExpected;
+            TotalOrdered = totalOrdered;
+            TotalAllocated = totalAllocated;
+            TotalAvailable = totalAvailable;
+        }
         public Inventory(string itemId, string description, string itemReference, List<int> locations, int totalOnHand, int totalExpected, int totalOrdered, int totalAllocated, int totalAvailable)
         {
             ItemId = itemId;

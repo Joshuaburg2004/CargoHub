@@ -15,6 +15,13 @@ namespace CargoHubAlt.Models
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
 
+        public Location(int id, int warehouseId, string code, string name)
+        {
+            Id = id;
+            WarehouseId = warehouseId;
+            Code = code;
+            Name = name;
+        }
         public Location(int warehouseId, string code, string name)
         {
             WarehouseId = warehouseId;

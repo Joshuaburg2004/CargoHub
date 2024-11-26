@@ -18,6 +18,15 @@ namespace CargoHubAlt.Models
         public string? UpdatedAt { get; set; } = Base.GetTimeStamp();
         public List<TransferItem> Items { get; set; } = new List<TransferItem>();
         public Transfer() { }
+        public Transfer(int id, string reference, int transfer_from, int transfer_to, string transfer_status, List<TransferItem> items)
+        {
+            Id = id;
+            Reference = reference;
+            TransferFrom = transfer_from;
+            TransferTo = transfer_to;
+            TransferStatus = transfer_status;
+            Items = items;
+        }
         public Transfer(string reference, int transfer_from, int transfer_to, string transfer_status, List<TransferItem> items)
         {
             Reference = reference;
