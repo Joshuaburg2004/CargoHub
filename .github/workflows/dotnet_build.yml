@@ -76,9 +76,7 @@ jobs:
 
 
       - name: Execute integration tests
-        run: |
-          cd IntegrationTests
-          dotnet test --no-build
+        run: dotnet test ${{env.IntegrationTest_Project_Path}}
 
 
       - name: Run tests with coverage
