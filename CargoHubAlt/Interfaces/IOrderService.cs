@@ -1,10 +1,16 @@
-public interface IOrderService
+using CargoHubAlt.Models;
+
+namespace CargoHubAlt.Interfaces
 {
-    public Task<List<Order>?> GetOrders();
-    public Task<Order?> GetOrder(int orderId);
-    public Task<List<OrderedItem>?> GetOrderedItems(int orderId);
-    public Task<bool> AddOrder(Order order);
-    public Task<bool> UpdateOrder(Order order);
-    public Task<bool> UpdateOrderedItems(int orderId, List<OrderedItem> items);
-    public Task<bool> RemoveOrder(int orderId);
+    public interface IOrderService
+    {
+        public Task<List<Order>?> GetOrders();
+        public Task<Order?> GetOrder(int orderId);
+        public Task<List<OrderedItem>?> GetOrderedItems(int orderId);
+        public Task<bool> AddOrder(Order order);
+        public Task<bool> UpdateOrder(Order order);
+        public Task<bool> UpdateOrderedItems(int orderId, List<OrderedItem> items);
+        public Task<bool> RemoveOrder(int orderId);
+        public Task LoadFromJson(string path);
+    }
 }

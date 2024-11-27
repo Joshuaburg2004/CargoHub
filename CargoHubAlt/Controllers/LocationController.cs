@@ -1,49 +1,62 @@
 using Microsoft.AspNetCore.Mvc;
+using CargoHubAlt.Interfaces;
+using CargoHubAlt.Models;
 
-[Route("api/v1/locations")]
-public class LocationController : Controller
+namespace CargoHub.Controllers
 {
-    private readonly ILocationService _locationservice;
-
-    public LocationController(ILocationService locationService)
+    [ApiController]
+    [Route("api/v1/locations")]
+    public class LocationController : Controller
     {
-        _locationservice = locationService;
-    }
+        private readonly ILocationService _locationservice;
 
-    [HttpGet()]
-    public async Task<IActionResult> GetAllLocations()
-    {
-        return Ok(await _locationservice.GetAllLocations());
-    }
+        public LocationController(ILocationService locationService)
+        {
+            _locationservice = locationService;
+        }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetOneLocation([FromRoute] int id)
-    {
-        if (id <= 0) return BadRequest();
-        return Ok(await _locationservice.GetOneLocation(id));
-    }
+        [HttpGet()]
+        public async Task<IActionResult> GetAllLocations()
+        {
+            return Ok(await _locationservice.GetAllLocations());
+        }
 
-    [HttpPost()]
-    public async Task<IActionResult> PostLocation([FromBody] Location toAdd)
-    {
-        if (toAdd is null) return BadRequest();
-        await _locationservice.AddLocation(toAdd);
-        return Ok();
-    }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOneLocation([FromRoute] int id)
+        {
+            if (id <= 0) return BadRequest();
+            Location? location = await _locationservice.GetOneLocation(id);
+            if (location is null) return NotFound();
+            return Ok(location);
+        }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateLocation([FromRoute] int id, [FromBody] Location toUpdate)
-    {
-        if (id <= 0 || toUpdate is null) return BadRequest();
-        await _locationservice.UpdateLocation(id, toUpdate);
-        return Ok();
-    }
+        [HttpPost()]
+        public async Task<IActionResult> PostLocation([FromBody] Location toAdd)
+        {
+            if (toAdd is null) return BadRequest();
+            await _locationservice.AddLocation(toAdd);
+            return Created("Created location", toAdd);
+        }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteLocation([FromRoute] int id)
-    {
-        if (id <= 0) return BadRequest();
-        await _locationservice.DeleteLocation(id);
-        return Ok();
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateLocation([FromRoute] int id, [FromBody] Location toUpdate)
+        {
+            if (id <= 0 || toUpdate is null) return BadRequest();
+            await _locationservice.UpdateLocation(id, toUpdate);
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteLocation([FromRoute] int id)
+        {
+            if (id <= 0) return BadRequest();
+            await _locationservice.DeleteLocation(id);
+            return Ok();
+        }
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadClient([FromRoute] string path){
+            await _locationservice.LoadFromJson(path);
+            return Ok();
+        }
     }
 }

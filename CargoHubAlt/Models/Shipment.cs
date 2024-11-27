@@ -1,54 +1,79 @@
 using Microsoft.EntityFrameworkCore;
+using CargoHubAlt.Models;
+using CargoHubAlt.Database;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class Shipment
+namespace CargoHubAlt.Models
 {
-    public int Id { get; set; }
-    public int OrderId { get; set; } // maybe this should be a list of order ids
-    public int SourceId { get; set; }
-    public string? OrderDate { get; set; }
-    public string? RequestDate { get; set; }
-    public string? ShipmentDate { get; set; }
-    public string? ShipmentType { get; set; }
-    public string? ShipmentStatus { get; set; }
-    public string? Notes { get; set; }
-    public string? CarrierCode { get; set; }
-    public string? CarrierDescription { get; set; }
-    public string? ServiceCode { get; set; }
-    public string? PaymentType { get; set; }
-    public string? TransferMode { get; set; }
-    public int TotalPackageCount { get; set; }
-    public int TotalPackageWeight { get; set; }
-    public string? CreatedAt { get; set; }
-    public string? UpdatedAt { get; set; }
-    public List<ShipmentItem>? Items { get; set; }
-
-    public Shipment() { }
-    public Shipment(int id, int orderId, int sourceId, string orderDate, string requestDate, string shipmentDate, string shipmentType, string shipmentStatus, string notes, string carrierCode, string carrierDescription, string serviceCode, string paymentType, string transferMode, int totalPackageCount, int totalPackageWeight, string createdAt, string updatedAt, List<ShipmentItem> items)
+    public class Shipment
     {
-        Id = id;
-        OrderId = orderId;
-        SourceId = sourceId;
-        OrderDate = orderDate;
-        RequestDate = requestDate;
-        ShipmentDate = shipmentDate;
-        ShipmentType = shipmentType;
-        ShipmentStatus = shipmentStatus;
-        Notes = notes;
-        CarrierCode = carrierCode;
-        CarrierDescription = carrierDescription;
-        ServiceCode = serviceCode;
-        PaymentType = paymentType;
-        TransferMode = transferMode;
-        TotalPackageCount = totalPackageCount;
-        TotalPackageWeight = totalPackageWeight;
-        CreatedAt = createdAt;
-        UpdatedAt = updatedAt;
-        Items = items;
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public int OrderId { get; set; } // maybe this should be a list of order ids
+        public int SourceId { get; set; }
+        public string? OrderDate { get; set; }
+        public string? RequestDate { get; set; }
+        public string? ShipmentDate { get; set; }
+        public string? ShipmentType { get; set; }
+        public string? ShipmentStatus { get; set; }
+        public string? Notes { get; set; }
+        public string? CarrierCode { get; set; }
+        public string? CarrierDescription { get; set; }
+        public string? ServiceCode { get; set; }
+        public string? PaymentType { get; set; }
+        public string? TransferMode { get; set; }
+        public int TotalPackageCount { get; set; }
+        public double TotalPackageWeight { get; set; }
+        public string? CreatedAt { get; set; } = Base.GetTimeStamp();
+        public string? UpdatedAt { get; set; } = Base.GetTimeStamp();
+        public List<ShipmentItem> Items { get; set; } = new();
+
+        public Shipment() { }
+        public Shipment(int id, int order_id, int source_id, string order_date, string request_date, string shipment_date, string shipment_type, string shipment_status, string notes, string carrier_code, string carrier_description, string service_code, string payment_type, string transfer_mode, int total_package_count, double total_package_weight, List<ShipmentItem> items)
+        {
+            Id = id;
+            OrderId = order_id;
+            SourceId = source_id;
+            OrderDate = order_date;
+            RequestDate = request_date;
+            ShipmentDate = shipment_date;
+            ShipmentType = shipment_type;
+            ShipmentStatus = shipment_status;
+            Notes = notes;
+            CarrierCode = carrier_code;
+            CarrierDescription = carrier_description;
+            ServiceCode = service_code;
+            PaymentType = payment_type;
+            TransferMode = transfer_mode;
+            TotalPackageCount = total_package_count;
+            TotalPackageWeight = total_package_weight;
+            Items = items;
+        }
+        public Shipment(int order_id, int source_id, string order_date, string request_date, string shipment_date, string shipment_type, string shipment_status, string notes, string carrier_code, string carrier_description, string service_code, string payment_type, string transfer_mode, int total_package_count, double total_package_weight, List<ShipmentItem> items)
+        {
+            OrderId = order_id;
+            SourceId = source_id;
+            OrderDate = order_date;
+            RequestDate = request_date;
+            ShipmentDate = shipment_date;
+            ShipmentType = shipment_type;
+            ShipmentStatus = shipment_status;
+            Notes = notes;
+            CarrierCode = carrier_code;
+            CarrierDescription = carrier_description;
+            ServiceCode = service_code;
+            PaymentType = payment_type;
+            TransferMode = transfer_mode;
+            TotalPackageCount = total_package_count;
+            TotalPackageWeight = total_package_weight;
+            Items = items;
+        }
     }
-}
-[Owned]
-public class ShipmentItem
-{
-    public string? ItemId { get; set; }
-    public int Amount { get; set; }
+    [Owned]
+    public class ShipmentItem
+    {
+        public string? ItemId { get; set; }
+        public int Amount { get; set; }
+    }
 }

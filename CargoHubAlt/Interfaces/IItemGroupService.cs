@@ -1,12 +1,17 @@
-public interface IItemGroupService
-{
-    public Task<Item_group?> FindItemGroup(int Id);
-    public Task<IEnumerable<Item_group?>> FindManyItemGroup(IEnumerable<int> Ids);
-    public Task<IEnumerable<Item_group>> GetAllItemGroup();
-    public Task<IEnumerable<Item>?> GetItemsfromItemGroupById(int id);
+using CargoHubAlt.Models;
 
-    public Task<int?> AddItemGroup(Item_group toAdd);
-    public Task<Item_group?> UpdateItemGroup(int Id, Item_group toUpdate);
-    public Task<Item_group?> DeleteItemGroup(int Id);
-    
+namespace CargoHubAlt.Interfaces
+{
+    public interface IItemGroupService
+    {
+        public Task<ItemGroup?> FindItemGroup(int Id);
+        public Task<IEnumerable<ItemGroup?>> FindManyItemGroup(IEnumerable<int> Ids);
+        public Task<IEnumerable<ItemGroup>> GetAllItemGroup();
+        public Task<IEnumerable<Item>?> GetItemsfromItemGroupById(int id);
+
+        public Task<int?> AddItemGroup(ItemGroup toAdd);
+        public Task<ItemGroup?> UpdateItemGroup(int Id, ItemGroup toUpdate);
+        public Task<ItemGroup?> DeleteItemGroup(int Id);
+        public Task LoadFromJson(string path);
+    }
 }

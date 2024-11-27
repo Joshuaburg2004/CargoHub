@@ -1,110 +1,143 @@
 using Microsoft.AspNetCore.Mvc;
+using CargoHubAlt.Interfaces;
+using CargoHubAlt.Models;
 
-[Route("api/v1/orders")]
-public class OrderController : Controller
+namespace CargoHub.Controllers
 {
-    readonly IOrderService _orderservice;
-    public OrderController(IOrderService orderService)
+    [ApiController]
+    [Route("api/v1/orders")]
+    public class OrderController : Controller
     {
-        _orderservice = orderService;
-    }
+        private readonly ILogger<OrderController> _logger;
+        private readonly IOrderService _orderservice;
+        public OrderController(IOrderService orderService, ILogger<OrderController> logger)
+        {
+            _orderservice = orderService;
+            _logger = logger;
+        }
 
-    [HttpGet]
-    public async Task<IActionResult> GetOrders()
-    {
-        List<Order>? orders = await _orderservice.GetOrders();
-        if (orders == null)
+        [HttpGet]
+        public async Task<IActionResult> GetOrders()
         {
-            return NotFound();
+            List<Order>? orders = await _orderservice.GetOrders();
+            if (orders == null)
+            {
+                _logger.LogInformation("No orders found");
+                return NotFound();
+            }
+            _logger.LogInformation($"Found {orders.Count} orders");
+            return Ok(orders);
         }
-        return Ok(orders);
-    }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetOrder([FromRoute] int id)
-    {
-        if (id <= 0)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOrder([FromRoute] int id)
         {
-            return BadRequest();
+            if (id <= 0)
+            {
+                _logger.LogInformation("Invalid id");
+                return BadRequest();
+            }
+            Order? order = await _orderservice.GetOrder(id);
+            if (order == null)
+            {
+                _logger.LogInformation($"No order found with id: {id}");
+                return NotFound();
+            }
+            _logger.LogInformation($"Order found with id: {id}");
+            return Ok(order);
         }
-        Order? order = await _orderservice.GetOrder(id);
-        if (order == null)
-        {
-            return NotFound();
-        }
-        return Ok(order);
-    }
 
-    [HttpGet("{id}/items")]
-    public async Task<IActionResult> GetOrderedItems([FromRoute] int id)
-    {
-        if (id <= 0)
+        [HttpGet("{id}/items")]
+        public async Task<IActionResult> GetOrderedItems([FromRoute] int id)
         {
-            return BadRequest();
+            if (id <= 0)
+            {
+                _logger.LogInformation("Invalid id");
+                return BadRequest();
+            }
+            List<OrderedItem>? items = await _orderservice.GetOrderedItems(id);
+            if (items == null)
+            {
+                _logger.LogInformation($"No items found for order with id: {id}");
+                return NotFound();
+            }
+            _logger.LogInformation($"Items found for order with id: {id}");
+            return Ok(items);
         }
-        List<OrderedItem>? items = await _orderservice.GetOrderedItems(id);
-        if (items == null)
-        {
-            return NotFound();
-        }
-        return Ok(items);
-    }
 
-    [HttpPost]
-    public async Task<IActionResult> AddOrder([FromBody] Order order)
-    {
-        if (order == null)
+        [HttpPost]
+        public async Task<IActionResult> AddOrder([FromBody] Order order)
         {
-            return BadRequest("Order is null");
+            if (order == null)
+            {
+                _logger.LogInformation("Order is null");
+                return BadRequest("Order is null");
+            }
+            else if (!await _orderservice.AddOrder(order))
+            {
+                _logger.LogInformation("Order not added");
+                return BadRequest("Order not added");
+            }
+            _logger.LogInformation($"Order with id: {order.Id} added");
+            return Ok();
         }
-        else if (!await _orderservice.AddOrder(order))
-        {
-            return BadRequest("Order not added");
-        }
-        return Ok();
-    }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateOrder([FromRoute] int id, [FromBody] Order order)
-    {
-        if (id <= 0 || order == null)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOrder([FromRoute] int id, [FromBody] Order order)
         {
-            Console.WriteLine("id: " + id + " order: " + order);
-            return BadRequest();
+            if (id <= 0 || order == null)
+            {
+                _logger.LogInformation("Invalid id or order");
+                return BadRequest();
+            }
+            else if (!await _orderservice.UpdateOrder(order))
+            {
+                _logger.LogInformation("Order not updated");
+                return BadRequest();
+            }
+            _logger.LogInformation($"Order with id: {id} updated");
+            return Ok();
         }
-        else if (!await _orderservice.UpdateOrder(order))
-        {
-            Console.WriteLine("id: " + id + " order: " + order + " not updated");
-            return BadRequest();
-        }
-        return Ok();
-    }
 
-    [HttpPut("{id}/items")]
-    public async Task<IActionResult> UpdateOrderedItems([FromRoute] int id, [FromBody] List<OrderedItem> items)
-    {
-        if (id <= 0 || items == null)
+        [HttpPut("{id}/items")]
+        public async Task<IActionResult> UpdateOrderedItems([FromRoute] int id, [FromBody] List<OrderedItem> items)
         {
-            return BadRequest();
+            if (id <= 0 || items == null)
+            {
+                _logger.LogInformation("Invalid id or items");
+                return BadRequest();
+            }
+            else if (!await _orderservice.UpdateOrderedItems(id, items))
+            {
+                _logger.LogInformation("Items not updated");
+                return BadRequest();
+            }
+            _logger.LogInformation($"Items for order with id: {id} updated");
+            return Ok();
         }
-        else if (!await _orderservice.UpdateOrderedItems(id, items))
-        {
-            return BadRequest();
-        }
-        return Ok();
-    }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> RemoveOrder([FromRoute] int id)
-    {
-        if (id <= 0)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveOrder([FromRoute] int id)
         {
-            return BadRequest();
+            if (id <= 0)
+            {
+                _logger.LogInformation("Invalid id");
+                return BadRequest();
+            }
+            else if (!await _orderservice.RemoveOrder(id))
+            {
+                _logger.LogInformation("Order not removed");
+                return BadRequest();
+            }
+            _logger.LogInformation($"Order with id: {id} removed");
+            return Ok();
         }
-        else if (!await _orderservice.RemoveOrder(id))
+        [HttpPost("load/{path}")]
+        public async Task<IActionResult> LoadClient([FromRoute] string path)
         {
-            return BadRequest();
+            await _orderservice.LoadFromJson(path);
+            _logger.LogInformation($"Orders loaded from json path: {path}");
+            return Ok();
         }
-        return Ok();
     }
 }
