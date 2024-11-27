@@ -89,7 +89,7 @@ namespace IntegrationTests
             var requestUri = "/api/v1/orders";
             var response = await _client.PostAsJsonAsync(requestUri, neworder);
             var result = await response.Content.ReadAsStringAsync();
-            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
         [Fact, TestPriority(4)]
         public async Task GetOneOrderAfterAdding()
@@ -99,7 +99,7 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            
+
             Order order = await response.Content.ReadFromJsonAsync<Order>();
 
             Xunit.Assert.NotNull(order);
@@ -132,7 +132,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             Xunit.Assert.Contains("[{\"itemId\":\"P010689\",\"amount\":16}]", result);
-            
+
         }
         [Fact, TestPriority(6)]
         public async Task PutOrder()
