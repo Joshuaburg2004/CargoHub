@@ -36,9 +36,7 @@ namespace CargoHubAlt.Controllers
             int? success = await this._inventoryService.CreateInventory(toAdd);
             if(success is null) return BadRequest("This is not an inventory");
             if(success == -1) return BadRequest("This inventory already exists");
-            return Created("", "");
-            // if (success is not null) return Ok(success);
-            // else return BadRequest("something went wrong adding the inventory");
+            return Created("api/v1/inventories", success);
         }
 
         [HttpPut("{id}")]
@@ -46,11 +44,11 @@ namespace CargoHubAlt.Controllers
         {
             Inventory? success = await this._inventoryService.UpdateInventory(id, toupdateto);
 
-            return Ok("");
+            // return Ok("");
 
 
-            // if (success is null) return NotFound($"Id not Found: {id}");
-            // return Ok(success);
+            if (success is null) return NotFound($"Id not Found: {id}");
+            return Ok(success);
         }
 
         [HttpDelete("{id}")]
@@ -58,10 +56,10 @@ namespace CargoHubAlt.Controllers
         {
             Inventory? success = await this._inventoryService.DeleteInventory(id);
 
-            return Ok("");
+            // return Ok("");
 
-            // if (success is null) return NotFound($"ID not found: {id}");
-            // else return Ok(success);
+            if (success is null) return NotFound($"ID not found: {id}");
+            else return Ok(success);
         }
         [HttpPost("load/{path}")]
         public async Task<IActionResult> LoadLocations([FromRoute] string path){

@@ -39,8 +39,6 @@ public class InventoryIntegratieTest : BaseTest
         var result = await response.Content.ReadAsStringAsync();
         Xunit.Assert.NotNull(result);
         Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
-        // It should absolutely be either 400 bad request or 404 not found,but it is 200 OK.
-        // This is not intended behavior.
     }
 
     [Fact, TestPriority(2)]
@@ -53,12 +51,15 @@ public class InventoryIntegratieTest : BaseTest
     [Fact, TestPriority(3)]
     public async Task CreateSadInventory()
     {
-        HttpResponseMessage response = await _client.PostAsJsonAsync(requestUri, new Inventory(1, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40));
+        HttpResponseMessage response = await _client.PostAsJsonAsync(requestUri, _TestInventory);
         Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        response = await _client.PostAsJsonAsync(requestUri, "");
-        Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        response = await _client.PostAsJsonAsync(requestUri, new ItemGroup(15, "wrong", "stuff"));
-        Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Xunit.Assert.Equal("This inventory already exists", await response.Content.ReadAsStringAsync());
+        HttpResponseMessage newresponse = await _client.PostAsJsonAsync(requestUri, "");
+        Xunit.Assert.Equal(HttpStatusCode.BadRequest, newresponse.StatusCode);
+        Xunit.Assert.Contains("One or more validation errors occurred.", await newresponse.Content.ReadAsStringAsync());
+        HttpResponseMessage newresponses = await _client.PostAsJsonAsync(requestUri, new ItemGroup(15, "wrong", "stuff"));
+        Xunit.Assert.Equal(HttpStatusCode.BadRequest, newresponses.StatusCode);
+        Xunit.Assert.Contains("One or more validation errors occurred.", await newresponses.Content.ReadAsStringAsync());
     }
 
     [Fact, TestPriority(4)]
@@ -83,13 +84,20 @@ public class InventoryIntegratieTest : BaseTest
     }
 
     [Fact, TestPriority(5)]
-    public async Task UpdateInventorys()
+    public async Task UpdateInventory()
     {
         HttpResponseMessage response = await _client.PutAsJsonAsync($"{requestUri}/1", _TestInventoryPut);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact, TestPriority(6)]
+    public async Task UpdateSadInventory()
+    {
+        HttpResponseMessage response = await _client.PutAsJsonAsync($"{requestUri}/55", _TestInventoryPut);
+        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact, TestPriority(7)]
     public async Task GetUpdatedInventoryTest()
     {
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/1");
@@ -109,26 +117,37 @@ public class InventoryIntegratieTest : BaseTest
         Xunit.Assert.Equal(_TestInventoryPut.TotalAllocated, inventoryCompared.TotalAllocated);
         Xunit.Assert.Equal(_TestInventoryPut.TotalAvailable, inventoryCompared.TotalAvailable);
     }
+    [Fact, TestPriority(8)]
+    public async Task GetUpdatedSadInventoryTest() 
+    {
+        HttpResponseMessage response = await _client.GetAsync($"{requestUri}/55");
+        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
 
-    [Fact, TestPriority(7)]
+    [Fact, TestPriority(9)]
     public async Task DeleteInventory()
     {
         HttpResponseMessage response = await _client.DeleteAsync($"{requestUri}/1");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact, TestPriority(8)]
+    [Fact, TestPriority(10)]
+    public async Task DeleteSadInventory()
+    {
+        HttpResponseMessage response = await _client.DeleteAsync($"{requestUri}/1");
+        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact, TestPriority(11)]
     public async Task GetOneInventoryAfterDelete()
     {
         var response = await _client.GetAsync($"{requestUri}/1");
         var result = await response.Content.ReadAsStringAsync();
         Xunit.Assert.NotNull(result);
         Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
-        // It should absolutely be either 400 bad request or 404 not found,but it is 200 OK.
-        // This is not intended behavior.
     }
 
-    [Fact, TestPriority(9)]
+    [Fact, TestPriority(12)]
     public async Task GetAllInventorysEmpty()
     {
         HttpResponseMessage response = await _client.GetAsync(requestUri);
