@@ -61,10 +61,24 @@ jobs:
 
 
     steps:
+
+    #updates the project to use the most recent version
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+  
+      # Install the .NET Core workload
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+
       - name: Execute integration tests
         run: |
           cd IntegrationTests
-          dotnet test IntegrationTests.csproj --no-build
+          dotnet test --no-build
 
 
       - name: Run tests with coverage
