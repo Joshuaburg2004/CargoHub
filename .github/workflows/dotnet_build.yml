@@ -59,8 +59,10 @@ jobs:
 
     env:
       Solution_Name: CargoHubAspNet.sln                        
-      IntegrationTest_Project_Path: .\IntegrationTests\IntegrationTests.csproj  
-      UnitTest_Project_Path: NaN
+      Test_Project_Path: .\IntegrationTests\IntegrationTests.csproj               
+      Wap_Project_Directory: CargoHubAlt   
+      Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj                   
+
 
 
     steps:
