@@ -22,6 +22,18 @@ namespace CargoHubAlt.Models
         public string? UpdatedAt { get; set; } = Base.GetTimeStamp();
         public Warehouse() { }
 
+        public Warehouse(int id, string code, string name, string address, string zip, string city, string province, string country, Contact contact)
+        {
+            Id = id;
+            Code = code;
+            Name = name;
+            Address = address;
+            Zip = zip;
+            City = city;
+            Province = province;
+            Country = country;
+            Contact = contact;
+        }
         public Warehouse(string code, string name, string address, string zip, string city, string province, string country, Contact contact)
         {
             Code = code;

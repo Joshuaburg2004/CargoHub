@@ -22,6 +22,22 @@ namespace CargoHubAlt.Models
         public string Reference { get; set; }
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
+        public Supplier() { }
+        public Supplier(int id, string code, string name, string address, string addressExtra, string city, string zipCode, string province, string country, string contactName, string phonenumber, string reference)
+        {
+            Id = id;
+            Code = code;
+            Name = name;
+            Address = address;
+            AddressExtra = addressExtra;
+            City = city;
+            ZipCode = zipCode;
+            Province = province;
+            Country = country;
+            ContactName = contactName;
+            Phonenumber = phonenumber;
+            Reference = reference;
+        }
         public Supplier(string code, string name, string address, string addressExtra, string city, string zipCode, string province, string country, string contactName, string phonenumber, string reference)
         {
             Code = code;
