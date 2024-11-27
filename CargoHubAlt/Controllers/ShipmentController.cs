@@ -65,7 +65,7 @@ namespace CargoHub.Controllers
                 return BadRequest();
             }
             var orders = await _shipmentService.GetOrdersFromShipmentById(id);
-            if (orders == null)
+            if (orders.Count == 0)
             {
                 return NotFound();
             }
@@ -112,7 +112,8 @@ namespace CargoHub.Controllers
             return Ok();
         }
         [HttpPost("load/{path}")]
-        public async Task<IActionResult> LoadClient([FromRoute] string path){
+        public async Task<IActionResult> LoadClient([FromRoute] string path)
+        {
             await _shipmentService.LoadFromJson(path);
             return Ok();
         }
