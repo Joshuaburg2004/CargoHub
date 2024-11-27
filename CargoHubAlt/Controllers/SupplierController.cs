@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CargoHubAlt.Interfaces;
 using CargoHubAlt.Models;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace CargoHub.Controllers
 {
@@ -32,8 +33,8 @@ namespace CargoHub.Controllers
         [HttpGet("{id}/items")]
         public async Task<IActionResult> GetItemsForSupplier(int id)
         {
-            var items = await Suppliers.GetItemsfromSupplierById(id);
-            if (items == null)
+            List<Item>? items = await Suppliers.GetItemsfromSupplierById(id);
+            if (items == null || items.Count == 0)
             {
                 return NotFound($"no items found for supplier with ID {id}");
             }
@@ -52,6 +53,7 @@ namespace CargoHub.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSupplier(int id)
         {
+            if (id <= 0) return BadRequest("ID must be greater than 0");
             var supplier = await Suppliers.DeleteSupplier(id);
             if (supplier == null)
             {
@@ -62,6 +64,7 @@ namespace CargoHub.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSupplier(int id, [FromBody] Supplier supplier)
         {
+            if (id <= 0) return BadRequest("ID must be greater than 0");
             var oldSupplier = await Suppliers.UpdateSupplier(id, supplier);
             if (oldSupplier == null)
             {
@@ -70,7 +73,8 @@ namespace CargoHub.Controllers
             return Ok(oldSupplier);
         }
         [HttpPost("load/{path}")]
-        public async Task<IActionResult> LoadClient([FromRoute] string path){
+        public async Task<IActionResult> LoadClient([FromRoute] string path)
+        {
             await Suppliers.LoadFromJson(path);
             return Ok();
         }
