@@ -36,15 +36,16 @@ namespace CargoHubAlt.Controllers
             int? success = await this._inventoryService.CreateInventory(toAdd);
             if(success is null) return BadRequest("This is not an inventory");
             if(success == -1) return BadRequest("This inventory already exists");
+            if(success == -2) return BadRequest("This inventory id is invalid");
             return Created("api/v1/inventories", success);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutInventory([FromRoute] int id, [FromBody] Inventory? toupdateto)
         {
+            if(id <= 0) return BadRequest("This id is invalid");
             if (toupdateto is null) return BadRequest("This is not an inventory");
             Inventory? success = await this._inventoryService.UpdateInventory(id, toupdateto);
-            if (success is null) return BadRequest("This is not an inventory");
             // return Ok("");
 
 
