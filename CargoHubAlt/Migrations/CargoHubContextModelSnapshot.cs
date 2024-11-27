@@ -196,6 +196,7 @@ namespace CargoHubAlt.Migrations
             modelBuilder.Entity("CargoHubAlt.Models.ItemGroup", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CreatedAt")
@@ -222,6 +223,7 @@ namespace CargoHubAlt.Migrations
             modelBuilder.Entity("CargoHubAlt.Models.ItemLine", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CreatedAt")
@@ -248,6 +250,7 @@ namespace CargoHubAlt.Migrations
             modelBuilder.Entity("CargoHubAlt.Models.ItemType", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CreatedAt")

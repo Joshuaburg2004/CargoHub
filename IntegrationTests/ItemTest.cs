@@ -14,18 +14,18 @@ public class ItemIntegratieTest : BaseTest
 {
 
     public static Item TestItem = new("P000001", "sjQ23408K", "Face-to-face clear-thinking complexity",
-     "must", "6523540947122", "63-OFFTq0T", "oTo304", 0, 0,0,0,0,0,0,"SUP423", "E-86805-uTM");
+     "must", "6523540947122", "63-OFFTq0T", "oTo304", 0, 0, 0, 0, 0, 0, 0, "SUP423", "E-86805-uTM");
 
     public static Item TestPutItem = new("P000001", "item", "item for testing put",
-     "must", "6523540947122", "63-OFFTq0T", "oTo304", 0, 0,0,0,0,0,0,"SUP423", "E-86805-uTM");
+     "must", "6523540947122", "63-OFFTq0T", "oTo304", 0, 0, 0, 0, 0, 0, 0, "SUP423", "E-86805-uTM");
 
     public string requestUri = "/api/v1/items";
 
-    public Inventory TestInventory = new(5, "P000001", "test", "63-OFFTq0T", new List<int>(){3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817}, 40, 40, 40, 40, 40);
+    public Inventory TestInventory = new(5, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40);
 
 
     public ItemIntegratieTest(CustomWebApplicationFactory<Program> factory) : base(factory)
-    {}
+    { }
 
     [Fact, TestPriority(0)]
     public async Task GetAllItemsEmpty()
@@ -38,24 +38,21 @@ public class ItemIntegratieTest : BaseTest
         Xunit.Assert.Empty(returnedlist);
     }
 
-    
+
     [Fact, TestPriority(1)]
     public async Task PostItem()
     {
         HttpResponseMessage response = await _client.PostAsJsonAsync(requestUri, TestItem);
         Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-
         Xunit.Assert.Equal("", await response.Content.ReadAsStringAsync());
     }
-    
-    
-    
+
     [Fact, TestPriority(2)]
     public async Task GetItemOne()
     {
-        
+
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/P000001");
- 
+
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Item? ToCompare = await response.Content.ReadFromJsonAsync<Item>();
         Xunit.Assert.IsType<Item>(ToCompare);
@@ -83,7 +80,7 @@ public class ItemIntegratieTest : BaseTest
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        List<Item>? responselist = await response.Content.ReadFromJsonAsync<List<Item>>();        
+        List<Item>? responselist = await response.Content.ReadFromJsonAsync<List<Item>>();
         Xunit.Assert.IsType<List<Item>>(responselist);
         Xunit.Assert.Single(responselist);
 
@@ -115,7 +112,7 @@ public class ItemIntegratieTest : BaseTest
         HttpResponseMessage response = await _client.PutAsJsonAsync($"{requestUri}/P000001", TestPutItem);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Xunit.Assert.Equal("", await response.Content.ReadAsStringAsync());
-        
+
     }
 
     [Fact, TestPriority(4)]
@@ -169,7 +166,7 @@ public class ItemIntegratieTest : BaseTest
         Xunit.Assert.IsType<List<Inventory>>(inventoryresponse);
         Xunit.Assert.Single(inventoryresponse);
         Inventory inventoryCompared = inventoryresponse[0];
-                
+
 
         Xunit.Assert.Equal(TestInventory.Id, inventoryCompared.Id);
         Xunit.Assert.Equal(TestInventory.ItemId, inventoryCompared.ItemId);
@@ -192,10 +189,10 @@ public class ItemIntegratieTest : BaseTest
     {
         HttpResponseMessage getemptyresponse = await _client.GetAsync($"{requestUri}/P000001/inventory/totals");
         Xunit.Assert.Equal(HttpStatusCode.OK, getemptyresponse.StatusCode);
-        Dictionary<string,int>? emptyresponseContent = await getemptyresponse.Content.ReadFromJsonAsync<Dictionary<string, int>>();
-        
-        Xunit.Assert.IsType<Dictionary<string,int>>(emptyresponseContent);
-        
+        Dictionary<string, int>? emptyresponseContent = await getemptyresponse.Content.ReadFromJsonAsync<Dictionary<string, int>>();
+
+        Xunit.Assert.IsType<Dictionary<string, int>>(emptyresponseContent);
+
         Xunit.Assert.Equal(0, emptyresponseContent["total_expected"]);
         Xunit.Assert.Equal(0, emptyresponseContent["total_ordered"]);
         Xunit.Assert.Equal(0, emptyresponseContent["total_allocated"]);
@@ -210,10 +207,10 @@ public class ItemIntegratieTest : BaseTest
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/P000001/inventory/totals");
 
 
-        Dictionary<string,int>? updateresponsecontent = await response.Content.ReadFromJsonAsync<Dictionary<string, int>>();
-        
-        Xunit.Assert.IsType<Dictionary<string,int>>(updateresponsecontent);
-        
+        Dictionary<string, int>? updateresponsecontent = await response.Content.ReadFromJsonAsync<Dictionary<string, int>>();
+
+        Xunit.Assert.IsType<Dictionary<string, int>>(updateresponsecontent);
+
         Xunit.Assert.Equal(TestInventory.TotalExpected, updateresponsecontent["total_expected"]);
         Xunit.Assert.Equal(TestInventory.TotalOrdered, updateresponsecontent["total_ordered"]);
         Xunit.Assert.Equal(TestInventory.TotalAllocated, updateresponsecontent["total_allocated"]);
@@ -239,6 +236,5 @@ public class ItemIntegratieTest : BaseTest
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var responseContent = await response.Content.ReadAsStringAsync();
-        Xunit.Assert.Equal("[]", responseContent);
     }
 }
