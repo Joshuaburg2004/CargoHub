@@ -15,8 +15,8 @@ namespace IntegrationTests
     public class LocationTest : BaseTest
     {
         public static Location initialLoc = new(1, 1, "A.1.0", "new");
-        public static Location afterPutLoc = new(1,1, "B.2.1", "afterput");
-        
+        public static Location afterPutLoc = new(1, 1, "B.2.1", "afterput");
+
         public LocationTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
         [Fact, TestPriority(1)]
         public async Task GetAllLocations()
@@ -53,7 +53,7 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            
+
             Location? found = await response.Content.ReadFromJsonAsync<Location>();
 
             Xunit.Assert.IsType<Location>(found);
@@ -120,6 +120,34 @@ namespace IntegrationTests
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Xunit.Assert.Equal("[]", result);
+        }
+
+        [Fact, TestPriority(10)]
+        public async Task GetLocationIdNegative()
+        {
+            var requestUri = "/api/v1/locations/-1";
+            var response = await _client.GetAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.NotNull(result);
+            Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact, TestPriority(11)]
+        public async Task PutLocationIdNegative()
+        {
+            var requestUri = "/api/v1/locations/-1";
+            var response = await _client.PutAsJsonAsync(requestUri, afterPutLoc);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact, TestPriority(12)]
+        public async Task DeleteLocationIdNegative()
+        {
+            var requestUri = "/api/v1/locations/-1";
+            var response = await _client.DeleteAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }
