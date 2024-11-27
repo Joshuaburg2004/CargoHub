@@ -46,38 +46,11 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
 
-    - name: Execute integration tests
-      run: dotnet test --no-build
-
-    - name: Run tests with coverage
-      run: |
-        dotnet test --no-build --configuration Release \
-          --collect:"XPlat Code Coverage" \
-          --results-directory ./TestResults \
-          /p:CoverletOutputFormat=cobertura \
-          /p:CoverletOutput=./TestResults/coverage/
-
-    - name: Generate coverage report
-      run: |
-        dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator \
-          -reports:TestResults/coverage/coverage.cobertura.xml \
-          -targetdir:TestResults/CoverageReport \
-          -reporttypes:HtmlInline
-
-    - name: Extract coverage percentage
-      id: extract-coverage
-      run: |
-        COVERAGE=$(grep 'line-rate' TestResults/coverage/coverage.cobertura.xml | sed 's/.*line-rate="\([^"]*\)".*/\1/')
-        echo "Coverage: $COVERAGE"
-        echo "coverage=$COVERAGE" >> $GITHUB_ENV
-  
-   
 
 
   test:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     strategy:
       matrix:
         configuration: [Debug]
@@ -104,24 +77,17 @@ jobs:
 
 
       - name: Execute integration tests
-        run: dotnet test ${{env.IntegrationTest_Project_Path}}
+        run: dotnet test --nobuild
 
 
       - name: Run tests with coverage
         run: |
-          dotnet test --no-build --configuration Release \
-            --collect:"XPlat Code Coverage" \
-            --results-directory ./TestResults \
-            /p:CoverletOutputFormat=cobertura \
-            /p:CoverletOutput=./TestResults/coverage/
+          dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage" --results-directory ./TestResults /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/coverage/
   
       - name: Generate coverage report
         run: |
           dotnet tool install -g dotnet-reportgenerator-globaltool
-          reportgenerator \
-            -reports:TestResults/coverage/coverage.cobertura.xml \
-            -targetdir:TestResults/CoverageReport \
-            -reporttypes:HtmlInline
+          reportgenerator -reports:TestResults/coverage/coverage.cobertura.xml -targetdir:TestResults/CoverageReport -reporttypes:HtmlInline
   
       - name: Extract coverage percentage
         id: extract-coverage
