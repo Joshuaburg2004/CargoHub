@@ -95,6 +95,8 @@ public class InventoryIntegratieTest : BaseTest
     {
         HttpResponseMessage response = await _client.PutAsJsonAsync($"{requestUri}/55", _TestInventoryPut);
         Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        response = await _client.PutAsJsonAsync<Inventory>($"{requestUri}/1", null!);
+        Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
     [Fact, TestPriority(7)]
