@@ -20,7 +20,7 @@ namespace CargoHub.Controllers
         public async Task<IActionResult> GetOrders()
         {
             List<Order>? orders = await _orderservice.GetOrders();
-            if (orders == null)
+            if (orders == null || orders.Count == 0)
             {
                 _logger.LogInformation("No orders found");
                 return NotFound();
@@ -76,7 +76,7 @@ namespace CargoHub.Controllers
             else if (!await _orderservice.AddOrder(order))
             {
                 _logger.LogInformation("Order not added");
-                return BadRequest("Order not added");
+                return NotFound("Order not added");
             }
             _logger.LogInformation($"Order with id: {order.Id} added");
             return Created("", "");
@@ -93,7 +93,7 @@ namespace CargoHub.Controllers
             else if (!await _orderservice.UpdateOrder(order))
             {
                 _logger.LogInformation("Order not updated");
-                return BadRequest();
+                return NotFound();
             }
             _logger.LogInformation($"Order with id: {id} updated");
             return Ok();
@@ -110,7 +110,7 @@ namespace CargoHub.Controllers
             else if (!await _orderservice.UpdateOrderedItems(id, items))
             {
                 _logger.LogInformation("Items not updated");
-                return BadRequest();
+                return NotFound();
             }
             _logger.LogInformation($"Items for order with id: {id} updated");
             return Ok();
@@ -127,7 +127,7 @@ namespace CargoHub.Controllers
             else if (!await _orderservice.RemoveOrder(id))
             {
                 _logger.LogInformation("Order not removed");
-                return BadRequest();
+                return NotFound();
             }
             _logger.LogInformation($"Order with id: {id} removed");
             return Ok();
