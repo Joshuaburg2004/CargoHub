@@ -79,7 +79,7 @@ namespace CargoHub.Controllers
                 return BadRequest("Order not added");
             }
             _logger.LogInformation($"Order with id: {order.Id} added");
-            return Ok();
+            return Created("", "");
         }
 
         [HttpPut("{id}")]
