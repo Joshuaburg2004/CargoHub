@@ -25,6 +25,7 @@ namespace CargoHubAlt.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWarehousesById([FromRoute] int id)
         {
+            if (id <= 0) return BadRequest();
             var warehouse = await _warehouseservice.GetWarehouseById(id);
             if (warehouse == null)
                 return NotFound();
@@ -63,7 +64,8 @@ namespace CargoHubAlt.Controllers
             return Ok(locations);
         }
         [HttpPost("load/{path}")]
-        public async Task<IActionResult> LoadClient([FromRoute] string path){
+        public async Task<IActionResult> LoadClient([FromRoute] string path)
+        {
             await _warehouseservice.LoadFromJson(path);
             return Ok();
         }
