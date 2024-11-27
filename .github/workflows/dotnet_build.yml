@@ -77,7 +77,7 @@ jobs:
 
 
       - name: Execute integration tests
-        run: dotnet test --nobuild
+        run: dotnet test --no-build
 
 
       - name: Run tests with coverage
