@@ -57,9 +57,9 @@ public class InventoryIntegratieTest : BaseTest
         HttpResponseMessage newresponse = await _client.PostAsJsonAsync(requestUri, "");
         Xunit.Assert.Equal(HttpStatusCode.BadRequest, newresponse.StatusCode);
         Xunit.Assert.Contains("One or more validation errors occurred.", await newresponse.Content.ReadAsStringAsync());
-        HttpResponseMessage newresponses = await _client.PostAsJsonAsync(requestUri, new ItemGroup(15, "wrong", "stuff"));
+        HttpResponseMessage newresponses = await _client.PostAsJsonAsync<Inventory>(requestUri, null!);
         Xunit.Assert.Equal(HttpStatusCode.BadRequest, newresponses.StatusCode);
-        Xunit.Assert.Contains("One or more validation errors occurred.", await newresponses.Content.ReadAsStringAsync());
+        Xunit.Assert.Contains("This is not an inventory", await newresponses.Content.ReadAsStringAsync());
     }
 
     [Fact, TestPriority(4)]
