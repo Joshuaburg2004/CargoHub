@@ -34,7 +34,8 @@ namespace CargoHubAlt.Controllers
         {
             if (toAdd is null) return BadRequest("this is not an inventory");
             int? success = await this._inventoryService.CreateInventory(toAdd);
-
+            if(success is null) return BadRequest("This is not an inventory");
+            if(success == -1) return BadRequest("This inventory already exists");
             return Created("", "");
             // if (success is not null) return Ok(success);
             // else return BadRequest("something went wrong adding the inventory");

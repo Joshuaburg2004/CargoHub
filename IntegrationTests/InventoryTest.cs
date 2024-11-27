@@ -7,6 +7,7 @@ using Xunit;
 using System.Text;
 using CargoHubAlt.Models;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace IntegrationTests;
 
@@ -46,10 +47,21 @@ public class InventoryIntegratieTest : BaseTest
     public async Task CreateInventory()
     {
         HttpResponseMessage response = await _client.PostAsJsonAsync(requestUri, _TestInventory);
+        Xunit.Assert.NotNull(response);
         Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
-
     [Fact, TestPriority(3)]
+    public async Task CreateSadInventory()
+    {
+        HttpResponseMessage response = await _client.PostAsJsonAsync(requestUri, new Inventory(1, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40));
+        Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        response = await _client.PostAsJsonAsync(requestUri, "");
+        Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        response = await _client.PostAsJsonAsync(requestUri, new ItemGroup(15, "wrong", "stuff"));
+        Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact, TestPriority(4)]
     public async Task GetInventoryOne()
     {
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/1");
@@ -70,14 +82,14 @@ public class InventoryIntegratieTest : BaseTest
         Xunit.Assert.Equal(_TestInventory.TotalAvailable, inventoryCompared.TotalAvailable);
     }
 
-    [Fact, TestPriority(4)]
+    [Fact, TestPriority(5)]
     public async Task UpdateInventorys()
     {
         HttpResponseMessage response = await _client.PutAsJsonAsync($"{requestUri}/1", _TestInventoryPut);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact, TestPriority(5)]
+    [Fact, TestPriority(6)]
     public async Task GetUpdatedInventoryTest()
     {
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/1");
@@ -98,14 +110,14 @@ public class InventoryIntegratieTest : BaseTest
         Xunit.Assert.Equal(_TestInventoryPut.TotalAvailable, inventoryCompared.TotalAvailable);
     }
 
-    [Fact, TestPriority(6)]
+    [Fact, TestPriority(7)]
     public async Task DeleteInventory()
     {
         HttpResponseMessage response = await _client.DeleteAsync($"{requestUri}/1");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact, TestPriority(7)]
+    [Fact, TestPriority(8)]
     public async Task GetOneInventoryAfterDelete()
     {
         var response = await _client.GetAsync($"{requestUri}/1");
@@ -116,7 +128,7 @@ public class InventoryIntegratieTest : BaseTest
         // This is not intended behavior.
     }
 
-    [Fact, TestPriority(8)]
+    [Fact, TestPriority(9)]
     public async Task GetAllInventorysEmpty()
     {
         HttpResponseMessage response = await _client.GetAsync(requestUri);
