@@ -47,7 +47,7 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Execute integration tests
-      run: dotnet test ${{env.Test_Project_Path}}
+      run: dotnet test
 
 
 
