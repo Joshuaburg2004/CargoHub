@@ -25,6 +25,9 @@ namespace CargoHubAlt.Services
 
         public async Task<int?> CreateInventory(Inventory inventory)
         {
+            if(inventory is null){ return null;}
+            if(await GetOneInventory(inventory.Id) != null){ return -1;}
+            if(inventory.Id <= 0){ return -2;}
             inventory.CreatedAt = Inventory.GetTimeStamp();
             inventory.UpdatedAt = Inventory.GetTimeStamp();
             await this._cargoHubContext.Inventories.AddAsync(inventory);
