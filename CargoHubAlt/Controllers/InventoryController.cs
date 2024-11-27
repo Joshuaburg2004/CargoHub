@@ -44,6 +44,7 @@ namespace CargoHubAlt.Controllers
         {
             if (toupdateto is null) return BadRequest("This is not an inventory");
             Inventory? success = await this._inventoryService.UpdateInventory(id, toupdateto);
+            if (success is null) return BadRequest("This is not an inventory");
             // return Ok("");
 
 
