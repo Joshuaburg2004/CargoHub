@@ -46,7 +46,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
 
-      - name: Execute integration tests
+    - name: Execute integration tests
       run: dotnet test --nobuild
 
 
