@@ -59,7 +59,7 @@ jobs:
 
     steps:
       - name: Execute integration tests
-        run: dotnet test ${{env.IntegrationTest_Project_Path}}
+        run: dotnet test
 
 
       - name: Run tests with coverage
