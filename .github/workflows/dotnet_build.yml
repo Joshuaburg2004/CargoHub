@@ -17,7 +17,7 @@ jobs:
       matrix:
         configuration: [Debug]
 
-    runs-on: ubuntu-latest  # For a list of available runner types, refer to
+    runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     # setup environment variables
@@ -46,11 +46,8 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
 
-
-
     - name: Execute integration tests
       run: dotnet test --no-build
-
 
     - name: Run tests with coverage
       run: |
@@ -74,9 +71,8 @@ jobs:
         COVERAGE=$(grep 'line-rate' TestResults/coverage/coverage.cobertura.xml | sed 's/.*line-rate="\([^"]*\)".*/\1/')
         echo "Coverage: $COVERAGE"
         echo "coverage=$COVERAGE" >> $GITHUB_ENV
-
   
-
+   
 
 
   test:
@@ -88,19 +84,27 @@ jobs:
 
     env:
       Solution_Name: CargoHubAspNet.sln                        
-      Test_Project_Path: .\IntegrationTests\IntegrationTests.csproj               
-      Wap_Project_Directory: CargoHubAlt   
-      Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj                   
-
+      IntegrationTest_Project_Path: .\IntegrationTests\IntegrationTests.csproj  
+      UnitTest_Project_Path: NaN
 
 
     steps:
 
-
+    #updates the project to use the most recent version
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+  
+      # Install the .NET Core workload
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
 
       - name: Execute integration tests
-        run: dotnet test --no-build
+        run: dotnet test ${{env.IntegrationTest_Project_Path}}
 
 
       - name: Run tests with coverage
