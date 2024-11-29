@@ -167,5 +167,33 @@ namespace IntegrationTests
             Xunit.Assert.Equal("[]", result);
             // No data found, but Status Code is 200 OK => should be 404 Not Found
         }
+
+        [Fact, TestPriority(11)]
+        public async Task GetWarehouseIdNegative()
+        {
+            var requestUri = "/api/v1/warehouses/-1";
+            var response = await _client.GetAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.NotNull(result);
+            Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact, TestPriority(12)]
+        public async Task UpdateWarehouseIdNegative()
+        {
+            var requestUri = "/api/v1/warehouses/-1";
+            var response = await _client.PutAsJsonAsync(requestUri, _warehouseUpdate);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact, TestPriority(13)]
+        public async Task DeleteWarehouseIdNegative()
+        {
+            var requestUri = "/api/v1/warehouses/-1";
+            var response = await _client.DeleteAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
     }
 }
