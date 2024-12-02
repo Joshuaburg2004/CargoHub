@@ -27,16 +27,13 @@ namespace CargoHub.Controllers
             var item_type = await _itemsService.GetItemTypeById(id);
 
 
-// accoring to the original test
+            // accoring to the original test
             // if (item_type is null) return Ok("null");
             // return Ok(item_type);
 
 
-            // intended, but for tests using the other
             if (item_type is null) return NotFound("Item Type not found");
             else return Ok(item_type);
-
-
         }
 
 
@@ -45,7 +42,7 @@ namespace CargoHub.Controllers
         {
             if (id < 0) return BadRequest("invalid ID");
             IEnumerable<Item>? items = await _itemsService.GetItemsfromItemTypeById(id);
-            if (items is null) return NotFound("Item Type not found");
+            if (items is null || items.Count() == 0) return NotFound($"Item_line with ID: {id} not found");
             else return Ok(items);
         }
 
@@ -55,11 +52,11 @@ namespace CargoHub.Controllers
             if (itemtype is null) return BadRequest("this is not an item Type");
             int? success = await _itemsService.AddItemType(itemtype);
             if (success is null) return BadRequest("Item Type not added");
-            else return Created("", "");
+            else return Created("api/v1/item_types", itemtype.Id);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> putItemType([FromRoute] int id, [FromBody] ItemType itemtype)
+        public async Task<IActionResult> PutItemType([FromRoute] int id, [FromBody] ItemType itemtype)
         {
             if (id < 0) return BadRequest("invalid ID");
 
@@ -69,7 +66,7 @@ namespace CargoHub.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> deleteItemType([FromRoute] int id)
+        public async Task<IActionResult> DeleteItemType([FromRoute] int id)
         {
             if (id < 0) return BadRequest("invalid ID");
             var success = await _itemsService.DeleteItemType(id);
