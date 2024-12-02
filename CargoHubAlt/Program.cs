@@ -30,6 +30,11 @@ public class Program
     .WriteTo.Logger(lc => lc
         .Filter.ByIncludingOnly(evt => evt.Properties["SourceContext"].ToString().Contains("ClientController"))
         .WriteTo.File("Logs/ClientController.log"))
+        .Filter.ByIncludingOnly(evt => evt.Properties["SourceContext"].ToString().Contains("ShipmentController"))
+        .WriteTo.File("Logs/ShipmentController.log"))
+    .WriteTo.Logger(lc => lc
+        .Filter.ByIncludingOnly(evt => evt.Properties["SourceContext"].ToString().Contains("ItemController"))
+        .WriteTo.File("Logs/ItemController.log"))
     .CreateLogger();
 
         builder.Host.UseSerilog();

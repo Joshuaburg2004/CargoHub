@@ -14,7 +14,7 @@ namespace CargoHubAlt.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Item>> GetItems()
+        public async Task<List<Item>> GetItems()
         {
             return await this._context.Items.ToListAsync();
         }
@@ -23,7 +23,7 @@ namespace CargoHubAlt.Services
         {
             return await this._context.Items.FirstOrDefaultAsync(_ => _.Uid == id);
         }
-        public async Task<IEnumerable<Inventory>> GetInventoryByItem(string id)
+        public async Task<List<Inventory>> GetInventoryByItem(string id)
         {
             return await this._context.Inventories.Where(_ => _.ItemId == id).ToListAsync();
         }
@@ -106,21 +106,23 @@ namespace CargoHubAlt.Services
                 }
             }
         }
-        public async Task<string> SaveToDatabase(Item item){
-            if(item is null){
+        public async Task<string> SaveToDatabase(Item item)
+        {
+            if (item is null)
+            {
                 return "Please provide an item to add.";
             }
-            if(item.Code == null){item.Code = "N/A";}
-            if(item.Description == null){item.Description = "N/A";}
-            if(item.ShortDescription == null){item.ShortDescription = "N/A";}
-            if(item.UpcCode == null){item.UpcCode = "N/A";}
-            if(item.ModelNumber == null){item.ModelNumber = "N/A";}
-            if(item.CommodityCode == null){item.CommodityCode = "N/A";}
-            if(item.SupplierCode == null){item.SupplierCode = "N/A";}
-            if(item.SupplierPartNumber == null){item.SupplierPartNumber = "N/A";}
+            if (item.Code == null) { item.Code = "N/A"; }
+            if (item.Description == null) { item.Description = "N/A"; }
+            if (item.ShortDescription == null) { item.ShortDescription = "N/A"; }
+            if (item.UpcCode == null) { item.UpcCode = "N/A"; }
+            if (item.ModelNumber == null) { item.ModelNumber = "N/A"; }
+            if (item.CommodityCode == null) { item.CommodityCode = "N/A"; }
+            if (item.SupplierCode == null) { item.SupplierCode = "N/A"; }
+            if (item.SupplierPartNumber == null) { item.SupplierPartNumber = "N/A"; }
             await _context.Items.AddAsync(item);
             await _context.SaveChangesAsync();
-            return item.Uid;   
+            return item.Uid;
         }
     }
 }

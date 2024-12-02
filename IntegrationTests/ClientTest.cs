@@ -44,7 +44,6 @@ namespace IntegrationTests
             var requestUri = "/api/v1/clients";
             var response = await _client.PostAsJsonAsync(requestUri, _clientToAdd);
             var result = await response.Content.ReadAsStringAsync();
-            Console.Error.WriteLine(result);
             Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
         [Fact, TestPriority(4)]

@@ -86,7 +86,6 @@ namespace IntegrationTests
             var requestUri = "/api/v1/warehouses/1";
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
-            Console.Error.WriteLine(result);
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
