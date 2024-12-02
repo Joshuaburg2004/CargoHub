@@ -58,7 +58,7 @@ jobs:
       run: |
         COVERAGE_DIR=$(find ./TestResults -type d -name "*-*")
         mv "$COVERAGE_DIR/coverage.cobertura.xml" ./TestResults/coverageAction/coverage.cobertura.xml
-        rm -rf "$COVERAGE_DIR
+        rm -rf "$COVERAGE_DIR"
 
     - name: Generate coverage report
       run: |
