@@ -38,19 +38,42 @@ public class ItemIntegratieTest : BaseTest
         Xunit.Assert.Empty(returnedlist);
     }
 
-
     [Fact, TestPriority(1)]
+    public async Task GetOneItemEmpty()
+    {
+        HttpResponseMessage response = await _client.GetAsync($"{requestUri}/P000001");
+        Xunit.Assert.NotNull(response);
+        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+
+    [Fact, TestPriority(2)]
     public async Task PostItem()
     {
         HttpResponseMessage response = await _client.PostAsJsonAsync(requestUri, TestItem);
         Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        Xunit.Assert.Equal("", await response.Content.ReadAsStringAsync());
+        Xunit.Assert.Equal("P000001", await response.Content.ReadAsStringAsync());
     }
 
-    [Fact, TestPriority(2)]
+    [Fact, TestPriority(3)]
+    public async Task PostItemNull()
+    {
+        HttpResponseMessage response = await _client.PostAsJsonAsync<Item>(requestUri, null!);
+        Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Xunit.Assert.Equal("This is not an item", await response.Content.ReadAsStringAsync());
+    }
+
+    [Fact, TestPriority(4)]
+    public async Task PostItemExists()
+    {
+        HttpResponseMessage response = await _client.PostAsJsonAsync(requestUri, TestItem);
+        Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Xunit.Assert.Equal($"Item with Uid {TestItem.Uid} already exists", await response.Content.ReadAsStringAsync());
+    }
+
+    [Fact, TestPriority(5)]
     public async Task GetItemOne()
     {
-
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/P000001");
 
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -74,7 +97,7 @@ public class ItemIntegratieTest : BaseTest
         Xunit.Assert.Equal(TestItem.SupplierPartNumber, ToCompare.SupplierPartNumber);
     }
 
-    [Fact, TestPriority(2)]
+    [Fact, TestPriority(6)]
     public async Task GetAllItemsOne()
     {
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}");
@@ -106,16 +129,40 @@ public class ItemIntegratieTest : BaseTest
 
 
 
-    [Fact, TestPriority(3)]
+    [Fact, TestPriority(7)]
     public async Task UpdateItems()
     {
         HttpResponseMessage response = await _client.PutAsJsonAsync($"{requestUri}/P000001", TestPutItem);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Xunit.Assert.Equal("", await response.Content.ReadAsStringAsync());
-
+        var item = await response.Content.ReadFromJsonAsync<Item>();
+        Xunit.Assert.IsType<Item>(item);
+        Xunit.Assert.Equal(TestPutItem.Uid, item.Uid);
+        Xunit.Assert.Equal(TestPutItem.Code, item.Code);
+        Xunit.Assert.Equal(TestPutItem.Description, item.Description);
+        Xunit.Assert.Equal(TestPutItem.ShortDescription, item.ShortDescription);
+        Xunit.Assert.Equal(TestPutItem.UpcCode, item.UpcCode);
+        Xunit.Assert.Equal(TestPutItem.ModelNumber, item.ModelNumber);
+        Xunit.Assert.Equal(TestPutItem.CommodityCode, item.CommodityCode);
+        Xunit.Assert.Equal(TestPutItem.ItemLine, item.ItemLine);
+        Xunit.Assert.Equal(TestPutItem.ItemGroup, item.ItemGroup);
+        Xunit.Assert.Equal(TestPutItem.ItemType, item.ItemType);
+        Xunit.Assert.Equal(TestPutItem.UnitPurchaseQuantity, item.UnitPurchaseQuantity);
+        Xunit.Assert.Equal(TestPutItem.UnitOrderQuantity, item.UnitOrderQuantity);
+        Xunit.Assert.Equal(TestPutItem.PackOrderQuantity, item.PackOrderQuantity);
+        Xunit.Assert.Equal(TestPutItem.SupplierId, item.SupplierId);
+        Xunit.Assert.Equal(TestPutItem.SupplierCode, item.SupplierCode);
+        Xunit.Assert.Equal(TestPutItem.SupplierPartNumber, item.SupplierPartNumber);
     }
 
-    [Fact, TestPriority(4)]
+    [Fact, TestPriority(8)]
+    public async Task UpdateItemsNotFound()
+    {
+        HttpResponseMessage response = await _client.PutAsJsonAsync($"{requestUri}/NotFound", TestPutItem);
+        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        Xunit.Assert.Equal($"Item with UID NotFound not found", await response.Content.ReadAsStringAsync());
+    }
+
+    [Fact, TestPriority(9)]
     public async Task GetUpdatedItemTest()
     {
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/P000001");
@@ -142,13 +189,13 @@ public class ItemIntegratieTest : BaseTest
         Xunit.Assert.Equal(TestItem.SupplierPartNumber, ToCompare.SupplierPartNumber);
     }
 
-    [Fact, TestPriority(4)]
+    [Fact, TestPriority(10)]
     public async Task GetItemInventories()
     {
 
         HttpResponseMessage getemptyresponse = await _client.GetAsync($"{requestUri}/P000001/inventory");
-        Xunit.Assert.Equal(HttpStatusCode.OK, getemptyresponse.StatusCode);
-        Xunit.Assert.Equal("[]", await getemptyresponse.Content.ReadAsStringAsync());
+        Xunit.Assert.Equal(HttpStatusCode.NotFound, getemptyresponse.StatusCode);
+        Xunit.Assert.Equal("Inventory for item with UID P000001 not found", await getemptyresponse.Content.ReadAsStringAsync());
 
 
 
@@ -184,7 +231,7 @@ public class ItemIntegratieTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.OK, responsedelete.StatusCode);
     }
 
-    [Fact, TestPriority(5)]
+    [Fact, TestPriority(11)]
     public async Task GetItemInventoriesTotal()
     {
         HttpResponseMessage getemptyresponse = await _client.GetAsync($"{requestUri}/P000001/inventory/totals");
@@ -221,20 +268,64 @@ public class ItemIntegratieTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.OK, responsedelete.StatusCode);
     }
 
-    [Fact, TestPriority(6)]
+    [Fact, TestPriority(12)]
+    public async Task GetItemInventoriesNotFound()
+    {
+        HttpResponseMessage response = await _client.GetAsync($"{requestUri}/NotFound/inventory");
+        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact, TestPriority(12)]
     public async Task DeleteItem()
     {
         HttpResponseMessage response = await _client.DeleteAsync($"{requestUri}/P000001");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var responseContent = await response.Content.ReadAsStringAsync();
-        Xunit.Assert.Equal("", responseContent);
+        var responseContent = await response.Content.ReadFromJsonAsync<Item>();
+        
+        Xunit.Assert.IsType<Item>(responseContent);
+        Xunit.Assert.Equal(TestPutItem.Uid, responseContent.Uid);
+        Xunit.Assert.Equal(TestPutItem.Code, responseContent.Code);
+        Xunit.Assert.Equal(TestPutItem.Description, responseContent.Description);
+        Xunit.Assert.Equal(TestPutItem.ShortDescription, responseContent.ShortDescription);
+        Xunit.Assert.Equal(TestPutItem.UpcCode, responseContent.UpcCode);
+        Xunit.Assert.Equal(TestPutItem.ModelNumber, responseContent.ModelNumber);
+        Xunit.Assert.Equal(TestPutItem.CommodityCode, responseContent.CommodityCode);
+        Xunit.Assert.Equal(TestPutItem.ItemLine, responseContent.ItemLine);
+        Xunit.Assert.Equal(TestPutItem.ItemGroup, responseContent.ItemGroup);
+        Xunit.Assert.Equal(TestPutItem.ItemType, responseContent.ItemType);
+        Xunit.Assert.Equal(TestPutItem.UnitPurchaseQuantity, responseContent.UnitPurchaseQuantity);
+        Xunit.Assert.Equal(TestPutItem.UnitOrderQuantity, responseContent.UnitOrderQuantity);
+        Xunit.Assert.Equal(TestPutItem.PackOrderQuantity, responseContent.PackOrderQuantity);
+        Xunit.Assert.Equal(TestPutItem.SupplierId, responseContent.SupplierId);
+        Xunit.Assert.Equal(TestPutItem.SupplierCode, responseContent.SupplierCode);
+        Xunit.Assert.Equal(TestItem.SupplierPartNumber, responseContent.SupplierPartNumber);
     }
 
-    [Fact, TestPriority(7)]
+    [Fact, TestPriority(13)]
+    public async Task DeleteItemNotFound()
+    {
+        HttpResponseMessage response = await _client.DeleteAsync($"{requestUri}/P000001");
+        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        Xunit.Assert.Equal("Item with UID P000001 not found", responseContent);
+    }
+
+    [Fact, TestPriority(14)]
     public async Task GetItemEmpty()
     {
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var responseContent = await response.Content.ReadAsStringAsync();
+    }
+
+    [Fact, TestPriority(15)]
+    public async Task GetAllItemsEmptyAfterDelete()
+    {
+        HttpResponseMessage response = await _client.GetAsync(requestUri);
+        Xunit.Assert.NotNull(response);
+        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        List<Item>? returnedlist = JsonSerializer.Deserialize<List<Item>>(await response.Content.ReadAsStringAsync());
+        Xunit.Assert.IsType<List<Item>>(returnedlist);
+        Xunit.Assert.Empty(returnedlist);
     }
 }
