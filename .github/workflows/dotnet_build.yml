@@ -52,13 +52,9 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        dotnet test --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/coverage/
+        dotnet tool install --global coverlet.console
+        coverlet ./ --target "dotnet" --targetargs "test --no-build --nologo" --output "./TestResults/coverageAction" --format cobertura
 
-    - name: Move coverage file
-      run: |
-        COVERAGE_DIR=$(find ./TestResults -type d -name "*-*")
-        mv "$COVERAGE_DIR/coverage.cobertura.xml" ./TestResults/coverageAction/coverage.cobertura.xml
-        rm -rf "$COVERAGE_DIR"
 
     - name: Generate coverage report
       run: |
@@ -70,7 +66,11 @@ jobs:
       run: |
         COVERAGE=$(grep 'line-rate' TestResults/coverageAction/coverage.cobertura.xml | sed 's/.*line-rate="\([^"]*\)".*/\1/')
         echo "Coverage: $COVERAGE"
-        echo "coverage=$COVERAGE" >> $GITHUB_ENV   
+        echo "coverage=$COVERAGE" >> $GITHUB_ENV
+
+    - name: Display coverage percentage
+      run: |
+        echo "Test Coverage: $COVERAGE%"
 
 
   test:
