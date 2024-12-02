@@ -44,8 +44,10 @@ namespace CargoHubAlt.Services
             }
             return toReturn;
         }
-        public async Task<string?> AddItem(Item toAdd)
+        public async Task<string?> AddItem(Item? toAdd)
         {
+            if (toAdd is null) return null;
+            if (await GetItem(toAdd.Uid) != null) return "Existed";
             await this._context.Items.AddAsync(toAdd);
             if (await this._context.SaveChangesAsync() >= 1) return toAdd.Uid;
             else return null;
