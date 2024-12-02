@@ -28,6 +28,8 @@ public class Program
         .Filter.ByIncludingOnly(evt => evt.Properties["SourceContext"].ToString().Contains("TransferController"))
         .WriteTo.File("Logs/TransferController.log"))
     .WriteTo.Logger(lc => lc
+        .Filter.ByIncludingOnly(evt => evt.Properties["SourceContext"].ToString().Contains("ClientController"))
+        .WriteTo.File("Logs/ClientController.log"))
         .Filter.ByIncludingOnly(evt => evt.Properties["SourceContext"].ToString().Contains("ShipmentController"))
         .WriteTo.File("Logs/ShipmentController.log"))
     .WriteTo.Logger(lc => lc
