@@ -26,7 +26,7 @@ public class ItemLineTest : BaseTest
     {
         var requestUri = "/api/v1/item_lines";
         var response = await _client.PostAsJsonAsync(requestUri, _itemLineCreate);
-        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
 
     [Fact, TestPriority(1)]
