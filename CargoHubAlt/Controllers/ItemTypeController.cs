@@ -42,7 +42,7 @@ namespace CargoHub.Controllers
         {
             if (id < 0) return BadRequest("invalid ID");
             IEnumerable<Item>? items = await _itemsService.GetItemsfromItemTypeById(id);
-            if (items is null || items.Count() == 0) return NotFound($"Item_line with ID: {id} not found");
+            if (items is null || items.Count() == 0) return NotFound($"Item Type with ID: {id} not found");
             else return Ok(items);
         }
 
