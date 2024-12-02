@@ -13,7 +13,7 @@ namespace CargoHubAlt.Services
         {
             _cargoHubContext = context;
         }
-        public async Task<IEnumerable<Client>> GetAllClients()
+        public async Task<List<Client>> GetAllClients()
         {
             return await _cargoHubContext.Clients.ToListAsync();
         }
@@ -81,19 +81,21 @@ namespace CargoHubAlt.Services
                 }
             }
         }
-        public async Task<int> SaveToDatabase(Client client){
-            if(client is null){
+        public async Task<int> SaveToDatabase(Client client)
+        {
+            if (client is null)
+            {
                 return -1;
             }
-            if(client.Name == null){client.Name = "N/A";}
-            if(client.Address == null){client.Address = "N/A";}
-            if(client.City == null){client.City = "N/A";}
-            if(client.ZipCode == null){client.ZipCode = "N/A";}
-            if(client.Province == null){client.Province = "N/A";}
-            if(client.Country == null){client.Country = "N/A";}
-            if(client.ContactName == null){client.ContactName = "N/A";}
-            if(client.ContactPhone == null){client.ContactPhone = "N/A";}
-            if(client.ContactEmail == null){client.ContactEmail = "N/A";}
+            if (client.Name == null) { client.Name = "N/A"; }
+            if (client.Address == null) { client.Address = "N/A"; }
+            if (client.City == null) { client.City = "N/A"; }
+            if (client.ZipCode == null) { client.ZipCode = "N/A"; }
+            if (client.Province == null) { client.Province = "N/A"; }
+            if (client.Country == null) { client.Country = "N/A"; }
+            if (client.ContactName == null) { client.ContactName = "N/A"; }
+            if (client.ContactPhone == null) { client.ContactPhone = "N/A"; }
+            if (client.ContactEmail == null) { client.ContactEmail = "N/A"; }
             await _cargoHubContext.Clients.AddAsync(client);
             await _cargoHubContext.SaveChangesAsync();
             return client.Id;
