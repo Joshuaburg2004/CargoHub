@@ -25,7 +25,8 @@ jobs:
       Solution_Name: CargoHubAspNet.sln                        
       Test_Project_Path: .\IntegrationTests\IntegrationTests.csproj               
       Wap_Project_Directory: CargoHubAlt   
-      Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj                   
+      Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj
+      Test_Project_dll: ./IntegrationTests\bin\Debug\net8.0\CargoHubAlt.dll   
 
     #updates the project to use the most recent version
     steps:
@@ -53,8 +54,7 @@ jobs:
     - name: Run tests with coverage
       run: |
         dotnet tool install --global coverlet.console
-        coverlet ./ --target "dotnet" --targetargs "test --no-build --nologo" --output "./TestResults/coverageAction" --format cobertura
-
+        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "./TestResults/coverageAction/coverage" --format cobertura
 
     - name: Generate coverage report
       run: |
