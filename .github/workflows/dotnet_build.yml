@@ -26,7 +26,8 @@ jobs:
       Test_Project_Path: .\IntegrationTests\IntegrationTests.csproj               
       Wap_Project_Directory: CargoHubAlt   
       Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj
-      Test_Project_dll: ./IntegrationTests\bin\Debug\net8.0\CargoHubAlt.dll   
+      Test_Project_dll: .\IntegrationTests\bin\Debug\net8.0\CargoHubAlt.dll   
+      Coverage_Report_Folder:
 
     #updates the project to use the most recent version
     steps:
@@ -53,22 +54,19 @@ jobs:
 
     - name: Run tests with coverage
       run: |
+        mkdir ${{env.Coverage_Report_Folder}}
         dotnet tool install --global coverlet.console
-        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "./TestResults/coverageAction/coverage" --format cobertura
+        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}/coverage" --format cobertura
 
     - name: Generate coverage report
       run: |
         dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator -reports:TestResults/coverageAction/coverage.cobertura.xml -targetdir:TestResults/CoverageReport -reporttypes:HtmlInline
+        reportgenerator -reports: ${{env.Coverage_Report_Folder}}/coverage.cobertura.xml -targetdir: ${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
 
     - name: Extract coverage percentage
       id: extract-coverage
       run: |
-        echo "Test Coverage: $(grep 'line-rate' TestResults/coverageAction/coverage.cobertura.xml | sed 's/.*line-rate="\([^"]*\)".*/\1/')%"
-
-    - name: Display coverage percentage
-      run: |
-        echo "Test Coverage: $COVERAGE%"
+        echo "$(grep 'Line coverage' -h ${{env.Coverage_Report_Folder}}/Summary.txt | sed 's/.*line-rate="\([^"]*\)".*/\1/')"
 
 
   test:
@@ -97,6 +95,11 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+      
+      - name: Execute integration tests
+        run: dotnet test --no-build
+    
+      
 
 
 
