@@ -25,11 +25,11 @@ namespace CargoHubAlt.Controllers
         {
             ItemLine? toReturn = await this._itemsService.FindItemLine(id);
 
-            if (toReturn is null) return Ok("null");
-            else return Ok(toReturn);
-
-            // if (toReturn is null) return NotFound($"ID {id} not found");
+            // if (toReturn is null) return Ok("null");
             // else return Ok(toReturn);
+
+            if (toReturn is null) return NotFound($"ID {id} not found");
+            else return Ok(toReturn);
 
         }
 
@@ -45,9 +45,8 @@ namespace CargoHubAlt.Controllers
         {
             if (id < 0) return BadRequest("invalid id");
             var success = await this._itemsService.GetItemsfromItemLineById(id);
-            if (success is null) return Ok("null");
+            if (success is null || success.Count() == 0) return NotFound($"Item_line with ID: {id} not found");
             else return Ok(success);
-
         }
 
 
@@ -61,7 +60,7 @@ namespace CargoHubAlt.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> putItemLine([FromRoute] int id, [FromBody] ItemLine toupdateto)
+        public async Task<IActionResult> PutItemLine([FromRoute] int id, [FromBody] ItemLine toupdateto)
         {
 
             await _itemsService.UpdateItemLine(id, toupdateto);
@@ -71,7 +70,7 @@ namespace CargoHubAlt.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> deleteItemLine([FromRoute] int id)
+        public async Task<IActionResult> DeleteItemLine([FromRoute] int id)
         {
             ItemLine? success = await this._itemsService.DeleteItemLine(id);
 
