@@ -64,14 +64,7 @@ jobs:
     - name: Extract coverage percentage
       id: extract-coverage
       run: |
-        COVERAGE=$(grep 'line-rate' TestResults/coverageAction/coverage.cobertura.xml | sed 's/.*line-rate="\([^"]*\)".*/\1/')
-        echo "Coverage: $COVERAGE"
-        echo "coverage=$COVERAGE" >> $GITHUB_ENV
-
-    - name: Display coverage percentage
-      run: |
-        echo "Test Coverage: $COVERAGE%"
-
+        echo "Coverage: $(grep 'line-rate' TestResults/coverageAction/coverage.cobertura.xml | sed 's/.*line-rate="\([^"]*\)".*/\1/')"
 
   test:
     needs: build
