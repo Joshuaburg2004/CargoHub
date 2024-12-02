@@ -27,7 +27,7 @@ jobs:
       Wap_Project_Directory: CargoHubAlt   
       Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj
       Test_Project_dll: .\IntegrationTests\bin\Debug\net8.0\CargoHubAlt.dll   
-      Coverage_Report_Folder:
+      Coverage_Report_Folder: TestResults\coverageAction
 
     #updates the project to use the most recent version
     steps:
