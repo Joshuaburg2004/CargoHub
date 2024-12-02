@@ -27,6 +27,12 @@ public class Program
     .WriteTo.Logger(lc => lc
         .Filter.ByIncludingOnly(evt => evt.Properties["SourceContext"].ToString().Contains("TransferController"))
         .WriteTo.File("Logs/TransferController.log"))
+    .WriteTo.Logger(lc => lc
+        .Filter.ByIncludingOnly(evt => evt.Properties["SourceContext"].ToString().Contains("ShipmentController"))
+        .WriteTo.File("Logs/ShipmentController.log"))
+    .WriteTo.Logger(lc => lc
+        .Filter.ByIncludingOnly(evt => evt.Properties["SourceContext"].ToString().Contains("ItemController"))
+        .WriteTo.File("Logs/ItemController.log"))
     .CreateLogger();
 
         builder.Host.UseSerilog();
@@ -45,13 +51,14 @@ public class Program
         builder.Services.AddTransient<IOrderService, OrderService>();
         builder.Services.AddScoped<ApiKeyActionFilter>();
         builder.Services.AddControllers();
-        builder.Services.AddControllers(options => {
+        builder.Services.AddControllers(options =>
+        {
             options.Filters.AddService<ApiKeyActionFilter>();
         });
         builder.Services.AddDbContext<CargoHubContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         var app = builder.Build();
-        
+
 
         app.UseSerilogRequestLogging();
 
