@@ -55,17 +55,14 @@ namespace CargoHubAlt.Controllers
         {
             if (toAdd is null) return BadRequest("this is not an item Line");
             int? success = await this._itemsService.AddItemLine(toAdd);
-            if (success is not null) return Ok();
+            if (success is not null) return Created("api/v1/item_lines", toAdd.Id);
             else return BadRequest("something went wrong adding the item");
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutItemLine([FromRoute] int id, [FromBody] ItemLine toupdateto)
         {
-
             await _itemsService.UpdateItemLine(id, toupdateto);
-
-
             return Ok("");
         }
 
