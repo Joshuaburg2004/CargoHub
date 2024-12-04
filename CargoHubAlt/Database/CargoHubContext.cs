@@ -40,7 +40,8 @@ namespace CargoHubAlt.Database
                 a.Property<int>("Id");
                 a.HasKey("Id");
             });
-            modelBuilder.Entity<Warehouse>().OwnsOne(w => w.Contact, a => {
+            modelBuilder.Entity<Warehouse>().OwnsOne(w => w.Contact, a =>
+            {
                 a.Property<int>("WarehouseId");
                 a.HasKey("WarehouseId");
             });
