@@ -28,7 +28,8 @@ jobs:
       Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj
       Test_Project_dll: .\IntegrationTests\bin\Debug\net8.0\CargoHubAlt.dll   
       Coverage_Report_Folder: .\TestResults\coverageAction
-      Minimum_Code_Coverage: 80%
+      Minimum_Code_Coverage: 80
+      Code_Coverage_actual: 0
 
     #updates the project to use the most recent version
     steps:
@@ -57,21 +58,21 @@ jobs:
       run: |
         mkdir ${{env.Coverage_Report_Folder}}
         dotnet tool install --global coverlet.console
-        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}/coverage" --format cobertura
+        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}\coverage" --format cobertura
 
     - name: Generate coverage report
       run: |
         dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator -reports: ${{env.Coverage_Report_Folder}}/coverage.cobertura.xml -targetdir: ${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
+        reportgenerator -reports:${{env.Coverage_Report_Folder}}\coverage.cobertura.xml -targetdir:${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
 
     - name: Extract coverage percentage
       id: extract-coverage
       run: |
-        echo "$(grep 'Line coverage' -h ${{env.Coverage_Report_Folder}}/Summary.txt)"
+        echo "$(grep 'Line coverage' -h ${{env.Coverage_Report_Folder}}\Summary.txt)"
 
     - name: Fail if code coverage insufficient
       id: Coverage_test
-      if: $CodeCoverage <= ${{env.Minimum_Code_Coverage}}
+      if: ${{env.Code_Coverage_actual}} <= ${{env.Minimum_Code_Coverage}}
       run: exit 1
 
 
