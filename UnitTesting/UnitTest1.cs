@@ -1,42 +1,45 @@
-using Xunit;
-using CargoHubAlt.Services;
-using CargoHubAlt.Models;
-using CargoHubAlt.Interfaces;
-using CargoHubAlt.Controllers;
-using CargoHubAlt.Database;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Moq;
-
-namespace CargoHubUnitTests;
-
-public class NaamServiceUnitTest //verander hier de naam
+using Xunit;
+using CargoHubAlt.Models;
+using CargoHubAlt.Services;
+using CargoHubAlt.Database;
+public class UnitTest1
 {
-    public Mock<IClientService> mockClientService = new Mock<IClientService>();
-
     [Fact]
-    public async void Test1()
+    public void TestMethod()
     {
-        var mockClient = new Client
+        var options = new DbContextOptionsBuilder<CargoHubContext>()
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
+        using (var context = new CargoHubContext(options))
         {
-            Id = 1,
-            Name = "testname",
-            Address = "testaddress",
-            City = "testcity",
-            ZipCode = "testzipcode",
-            Province = "testprovince",
-            Country = "testcountry",
-            ContactName = "testcontactname",
-            ContactPhone = "testcontactphone",
-            ContactEmail = "testcontactemail",
-        };
+            context.Clients.Add(new Client
+            {
+                Id = 1,
+                Name = "Test Client",
+                Address = "123 Test St",
+                City = "Test City",
+                ZipCode = "12345",
+                Province = "Test Province",
+                Country = "Test Country",
+                ContactName = "Test Contact",
+                ContactPhone = "123-456-7890",
+                ContactEmail = "test@example.com"
+            });
+            context.SaveChanges();
+        }
 
-        mockClientService
-                .Setup(service => service.GetClient(It.IsAny<int>()))
-                .ReturnsAsync(mockClient);
 
-        var Client = new ClientService(mockClientService.Object);
-        var result = await Client.GetClient(1);
+        using (var context = new CargoHubContext(options))
+        {
+            var clients = context.Clients.ToList();
 
-        Assert.NotNull(result);
-        Assert.Equal(mockClient.Id, result.Id);
+            // Assert
+            Assert.Single(clients);
+            Assert.Equal("Test Client", clients[0].Name);
+        }
     }
 }
