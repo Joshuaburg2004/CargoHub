@@ -29,7 +29,7 @@ jobs:
       Test_Project_dll: .\IntegrationTests\bin\Debug\net8.0\CargoHubAlt.dll   
       Coverage_Report_Folder: .\TestResults\coverageAction
       Minimum_Code_Coverage: 80
-      Code_Coverage_actual: 0
+      Code_Coverage_actual: 24.1
 
     #updates the project to use the most recent version
     steps:
@@ -68,7 +68,12 @@ jobs:
     - name: Extract coverage percentage
       id: extract-coverage
       run: |
-        echo "$(grep 'Line coverage' -h ${{env.Coverage_Report_Folder}}\Summary.txt)"
+        ${{env.Code_Coverage_actual}} = "$(grep 'Line coverage' -w ${{env.Coverage_Report_Folder}}\Summary.txt)"
+        echo '${{env.Code_Coverage_actual}}'
+
+# grep 'Line coverage' -w .\TestResults\coverageAction\Summary.txt
+
+
 
     - name: Fail if code coverage insufficient
       id: Coverage_test
