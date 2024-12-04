@@ -68,12 +68,12 @@ jobs:
     - name: Extract coverage percentage
       id: extract-coverage
       run: |
-        echo "$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')"
-
+        echo "CODE_COVERAGE_ACTUAL="$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')"" >> $GITHUB_OUTPUT
+        
 
 
     - name: Fail if code coverage insufficient
       id: Coverage_test
-      if: ${{env.Code_Coverage_actual}} <= ${{env.Minimum_Code_Coverage}}
+      if: ${{steps.extract-coverage.outputs.CODE_COVERAGE_ACTUAL}} <= ${{env.Minimum_Code_Coverage}}
       run: exit 1
 
