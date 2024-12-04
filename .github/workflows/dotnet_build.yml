@@ -68,10 +68,7 @@ jobs:
     - name: Extract coverage percentage
       id: extract-coverage
       run: |
-        ${{env.Code_Coverage_actual}} = "$(grep 'Line coverage' -w ${{env.Coverage_Report_Folder}}\Summary.txt)"
-        echo '${{env.Code_Coverage_actual}}'
-
-# grep 'Line coverage' -w .\TestResults\coverageAction\Summary.txt
+        echo "$(grep -Po '(?<=Line\s+coverage:\s+)[0-9]+'  ${{env.Coverage_Report_Folder}}\Summary.txt)"
 
 
 
@@ -80,40 +77,3 @@ jobs:
       if: ${{env.Code_Coverage_actual}} <= ${{env.Minimum_Code_Coverage}}
       run: exit 1
 
-
-  test:
-    needs: build
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        configuration: [Debug]
-
-    env:
-      Solution_Name: CargoHubAspNet.sln                        
-      IntegrationTest_Project_Path: .\IntegrationTests\IntegrationTests.csproj  
-      UnitTest_Project_Path: NaN
-
-
-    steps:
-
-    #updates the project to use the most recent version
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-  
-      # Install the .NET Core workload
-      - name: Install .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-      
-      - name: Execute integration tests
-        run: dotnet test --no-build
-    
-      
-
-
-
-  
-   
