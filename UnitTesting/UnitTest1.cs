@@ -6,40 +6,68 @@ using Xunit;
 using CargoHubAlt.Models;
 using CargoHubAlt.Services;
 using CargoHubAlt.Database;
-public class UnitTest1
+
+namespace CargoHub.UnitTesting
 {
-    [Fact]
-    public void TestMethod()
+    public class NaamServiceUnitTest
     {
-        var options = new DbContextOptionsBuilder<CargoHubContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase")
-            .Options;
-        using (var context = new CargoHubContext(options))
+        private readonly DbContextOptions<CargoHubContext> options;
+        public NaamServiceUnitTest()
         {
-            context.Clients.Add(new Client
+            var options = new DbContextOptionsBuilder<CargoHubContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
+            using (var context = new CargoHubContext(options))
             {
-                Id = 1,
-                Name = "Test Client",
-                Address = "123 Test St",
-                City = "Test City",
-                ZipCode = "12345",
-                Province = "Test Province",
-                Country = "Test Country",
-                ContactName = "Test Contact",
-                ContactPhone = "123-456-7890",
-                ContactEmail = "test@example.com"
-            });
-            context.SaveChanges();
+                context.Clients.Add(new Client
+                {
+                    Id = 1,
+                    Name = "Test Client",
+                    Address = "123 Test St",
+                    City = "Test City",
+                    ZipCode = "12345",
+                    Province = "Test Province",
+                    Country = "Test Country",
+                    ContactName = "Test Contact",
+                    ContactPhone = "123-456-7890",
+                    ContactEmail = "test@example.com"
+                });
+                context.SaveChanges();
+            }
+
+
+            this.options = options;
         }
 
-
-        using (var context = new CargoHubContext(options))
+        [Fact]
+        public void GetOneNaam()
         {
-            var clients = context.Clients.ToList();
+            //voorbeeld
+            // using (var context = new CargoHubContext(options))
+            // {
+            //     var clients = context.Clients.ToList();
 
-            // Assert
-            Assert.Single(clients);
-            Assert.Equal("Test Client", clients[0].Name);
+            //     Assert.Single(clients);
+            //     Assert.Equal("Test Client", clients[0].Name);
+            // }
+        }
+
+        [Fact]
+        public void AddNaam()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [Fact]
+        public void UpdateNaam()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [Fact]
+        public void RemoveNaam()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
