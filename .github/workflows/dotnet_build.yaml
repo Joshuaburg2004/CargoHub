@@ -70,6 +70,8 @@ jobs:
       run: |
         echo CODE_COVERAGE_ACTUAL="$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')" >>$GITHUB_ENV
         echo $CODE_COVERAGE_ACTUAL
+        echo "RANDOM_COLOR=green" >> $GITHUB_ENV
+        echo $RANDOM_COLOR
 
 
     - name: Fail if code coverage insufficient
