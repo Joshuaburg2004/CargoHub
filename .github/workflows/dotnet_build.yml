@@ -65,25 +65,19 @@ jobs:
         dotnet tool install -g dotnet-reportgenerator-globaltool
         reportgenerator -reports:${{env.Coverage_Report_Folder}}\coverage.cobertura.xml -targetdir:${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
 
-
-# TO ensure the code is not somehow deprecated
-    - name: Set color
-      id: color-selector
-      run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
-    - name: Get color
-      env:
-        SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
-      run: echo "The selected color is $SELECTED_COLOR"
-
     - name: Extract coverage percentage
       id: extract-coverage
       run: |
-        echo "(CODE_COVERAGE_ACTUAL="$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')")" >> $GITHUB_OUTPUT
-
+        echo CODE_COVERAGE_ACTUAL="$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')" >>$GITHUB_ENV
+        echo $CODE_COVERAGE_ACTUAL
 
 
     - name: Fail if code coverage insufficient
       id: Coverage_test
-      if: ${{steps.extract-coverage.outputs.CODE_COVERAGE_ACTUAL}} <= ${{env.Minimum_Code_Coverage}}
-      run: exit 1
+      env: 
+        CODE_COVERAGE_ACTUAL: ${{steps.extract-coverage.outputs.CODE_COVERAGE_ACTUAL}}
+      if: ${{steps.extract-coverage.outputs.code}} <= ${{env.Minimum_Code_Coverage}}
+      run: |
+        echo $CODE_COVERAGE_ACTUAL
+        exit 1
 
