@@ -6,18 +6,18 @@ namespace CargoHubAlt.Database
     public class CargoHubContext : DbContext
     {
         public CargoHubContext(DbContextOptions<CargoHubContext> options) : base(options) { }
-        public DbSet<Client> Clients { get; set; }
-        public DbSet<Supplier> Suppliers { get; set; }
-        public DbSet<Warehouse> Warehouses { get; set; }
-        public DbSet<Shipment> Shipments { get; set; }
-        public DbSet<Transfer> Transfers { get; set; }
-        public DbSet<Item> Items { get; set; }
-        public DbSet<Location> Locations { get; set; }
-        public DbSet<ItemGroup> ItemGroups { get; set; }
-        public DbSet<ItemLine> ItemLines { get; set; }
-        public DbSet<Inventory> Inventories { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<ItemType> ItemTypes { get; set; }
+        public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<Warehouse> Warehouses { get; set; }
+        public virtual DbSet<Shipment> Shipments { get; set; }
+        public virtual DbSet<Transfer> Transfers { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<ItemGroup> ItemGroups { get; set; }
+        public virtual DbSet<ItemLine> ItemLines { get; set; }
+        public virtual DbSet<Inventory> Inventories { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<ItemType> ItemTypes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Order>().OwnsMany(o => o.Items, a =>
