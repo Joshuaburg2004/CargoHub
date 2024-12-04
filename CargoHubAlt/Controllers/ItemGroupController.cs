@@ -33,21 +33,13 @@ namespace CargoHubAlt.Controllers
 
         }
 
-        [HttpGet("batch")]
-        public async Task<IActionResult> getBatchItemGroup([FromQuery] int[] ids)
-        {
-            IEnumerable<ItemGroup?> found = await this._itemsService.FindManyItemGroup(ids);
-            return Ok(found);
-        }
-
         [HttpGet("{id}/items")]
         public async Task<IActionResult> GetItemsfromItemGroupById([FromRoute] int id)
         {
             if (id < 0) return BadRequest("invalid id");
             var success = await this._itemsService.GetItemsfromItemGroupById(id);
-            if (success is null) return Ok("null");
+            if (success is null || success.Count() == 0) return NotFound($"Item Group with ID: {id} not found");
             else return Ok(success);
-
         }
 
 
@@ -56,12 +48,12 @@ namespace CargoHubAlt.Controllers
         {
             if (toAdd is null) return BadRequest("this is not an item group");
             int? success = await this._itemsService.AddItemGroup(toAdd);
-            if (success is not null) return Ok(toAdd.Id);
+            if (success is not null) return Created("api/v1/item_groups", toAdd.Id);
             else return BadRequest();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> putItemGroup([FromRoute] int id, [FromBody] ItemGroup toupdateto)
+        public async Task<IActionResult> PutItemGroup([FromRoute] int id, [FromBody] ItemGroup toupdateto)
         {
 
             ItemGroup? success = await this._itemsService.UpdateItemGroup(id, toupdateto);
@@ -73,7 +65,7 @@ namespace CargoHubAlt.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> deleteItemgroup([FromRoute] int id)
+        public async Task<IActionResult> DeleteItemgroup([FromRoute] int id)
         {
 
             ItemGroup? success = await this._itemsService.DeleteItemGroup(id);
