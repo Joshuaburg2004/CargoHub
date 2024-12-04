@@ -68,7 +68,7 @@ jobs:
     - name: Extract coverage percentage
       id: extract-coverage
       run: |
-        echo "$(grep -Po '(?<=Line\s+coverage:\s+)[0-9]+'  ${{env.Coverage_Report_Folder}}\Summary.txt)"
+        echo "$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')"
 
 
 
