@@ -73,6 +73,7 @@ jobs:
       id: step_two
       run: |
         printf '%s\n' "$action_state" # This will output 'yellow'
+        echo "$action_state"
         echo "the value was used here"
 
 
@@ -81,7 +82,8 @@ jobs:
     - name: Extract coverage percentage
       id: extract_coverage
       run: |
-        echo CODE_COVERAGE_ACTUAL="$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')" >>$GITHUB_ENV
+        echo "$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')"
+        echo CODE_COVERAGE_ACTUAL="[double]$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')" >>$GITHUB_ENV
         echo $CODE_COVERAGE_ACTUAL
 
 
