@@ -7,7 +7,7 @@ using CargoHubAlt.Services.ServicesV1;
 namespace CargoHub.UnitTesting
 {
     [TestCaseOrderer("UnitTests.PriorityOrderer", "UnitTests")]
-    public class OrderServiceUnitTest
+    public class OrderServiceUnitTest : IDisposable
     {
         private readonly DbContextOptions<CargoHubContext> options;
         private readonly Order initOrder = new Order
@@ -41,12 +41,43 @@ namespace CargoHub.UnitTesting
         };
         private readonly Order orderToAdd = new Order
         {
-            Id = 1,
+            Id = 2,
             SourceId = 5,
             OrderDate = "2021-09-01",
             RequestDate = "2021-09-01",
             Reference = "New Test Order",
             ReferenceExtra = "New Test Order Extra",
+            OrderStatus = "Test Order Status",
+            Notes = "Test Order Notes",
+            ShippingNotes = "Test Shipping Notes",
+            PickingNotes = "Test Picking Notes",
+            WarehouseId = 1,
+            ShipTo = 0,
+            BillTo = 0,
+            ShipmentId = 5,
+            TotalAmount = 100.0,
+            TotalDiscount = 0.0,
+            TotalTax = 0.0,
+            TotalSurcharge = 0.0,
+            CreatedAt = "2021-09-01",
+            UpdatedAt = "2021-09-01",
+            Items = new List<OrderedItem>
+            {
+                new OrderedItem
+                {
+                    ItemId = "P000001",
+                    Amount = 55
+                }
+            }
+        };
+        private readonly Order orderToPut = new Order
+        {
+            Id = 1,
+            SourceId = 5,
+            OrderDate = "2021-09-01",
+            RequestDate = "2021-09-01",
+            Reference = "Updated Test Order",
+            ReferenceExtra = "Updated Test Order Extra",
             OrderStatus = "Test Order Status",
             Notes = "Test Order Notes",
             ShippingNotes = "Test Shipping Notes",
@@ -142,15 +173,75 @@ namespace CargoHub.UnitTesting
         }
 
         [TestPriority(2), Fact]
-        public void UpdateOrder()
+        public async void GetOrderedItems()
         {
-            throw new System.NotImplementedException();
+            using var context = new CargoHubContext(options);
+            var orderService = new OrderServiceV1(context);
+            var orderedItems = await orderService.GetOrderedItems(1);
+            Assert.NotNull(orderedItems);
+            Assert.Single(orderedItems);
+            Assert.Equal(initOrder.Items[0].ItemId, orderedItems[0].ItemId);
+            Assert.Equal(initOrder.Items[0].Amount, orderedItems[0].Amount);
         }
 
         [TestPriority(3), Fact]
-        public void RemoveOrder()
+        public async void UpdateOrder()
         {
-            throw new System.NotImplementedException();
+            using var context = new CargoHubContext(options);
+            var orderService = new OrderServiceV1(context);
+            var result = await orderService.UpdateOrder(orderToPut);
+            Assert.True(result);
+            var orders = context.Orders.ToList();
+            Assert.Single(orders);
+            Assert.Equal(orderToPut.Reference, orders[0].Reference);
+            Assert.Equal(orderToPut.ReferenceExtra, orders[0].ReferenceExtra);
+        }
+
+        [TestPriority(4), Fact]
+        public async void UpdateOrderedItems()
+        {
+            using var context = new CargoHubContext(options);
+            var orderService = new OrderServiceV1(context);
+            var orderedItems = new List<OrderedItem>
+            {
+                new OrderedItem
+                {
+                    ItemId = "P000002",
+                    Amount = 10
+                }
+            };
+            var result = await orderService.UpdateOrderedItems(1, orderedItems);
+            Assert.True(result);
+            var orders = context.Orders.ToList();
+            var items = orders[0].Items.ToList();
+            Assert.Single(items);
+            Assert.Equal(orderedItems[0].ItemId, items[0].ItemId);
+            Assert.Equal(orderedItems[0].Amount, items[0].Amount);
+        }
+
+        [TestPriority(5), Fact]
+        public async void RemoveOrder()
+        {
+            using (var context = new CargoHubContext(options))
+            {
+                var orderService = new OrderServiceV1(context);
+                var order = context.Orders.First();
+                await orderService.RemoveOrder(order.Id);
+            }
+
+            using (var context = new CargoHubContext(options))
+            {
+                var orders = context.Orders.ToList();
+
+                Assert.Empty(orders);
+            }
+        }
+        public void Dispose()
+        {
+            using (var context = new CargoHubContext(options))
+            {
+                context.Database.EnsureDeleted();
+            }
         }
     }
 }
