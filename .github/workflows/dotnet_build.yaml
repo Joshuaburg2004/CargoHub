@@ -64,30 +64,15 @@ jobs:
         dotnet tool install -g dotnet-reportgenerator-globaltool
         reportgenerator -reports:${{env.Coverage_Report_Folder}}\coverage.cobertura.xml -targetdir:${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
 
-    - name: Extract coverage percentage
+    - name: Extract coverage percentage and check if coverage is high enough
       id: extract_coverage
       run: |
-        echo CODE_COVERAGE_ACTUAL="$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')" >>$GITHUB_ENV
-        echo $CODE_COVERAGE_ACTUAL
-        echo "RANDOM_COLOR=green" >> $GITHUB_ENV
-        echo $RANDOM_COLOR
-
-
-    - name: Print if code coverage is higher than minimum
-      id: Print_coverage_success
-      env: 
-        CODE_COVERAGE_ACTUAL: ${{steps.extract_coverage.outputs.CODE_COVERAGE_ACTUAL}}
-      if: ${{steps.extract_coverage.outputs.code}} >= ${{env.Minimum_Code_Coverage}}
-      run: |
-        echo $CODE_COVERAGE_ACTUAL
-        echo "It worked!"
-
-    - name: Fail if code coverage insufficient
-      id: Coverage_test
-      env: 
-        CODE_COVERAGE_ACTUAL: ${{steps.extract_coverage.outputs.CODE_COVERAGE_ACTUAL}}
-      if: ${{steps.extract_coverage.outputs.code}} <= ${{env.Minimum_Code_Coverage}}
-      run: |
-        echo $CODE_COVERAGE_ACTUAL
-        exit 1
+        echo "Code coverage:"
+        echo "$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}')"        
+        if (echo "$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')" < ${{env.Minimum_Code_Coverage}}); then
+          echo "this code coverage is below the minimum required ${{env.Minimum_Code_Coverage}}%."
+          exit 1
+        else
+          echo "this code coverage is above the minimum required ${{env.Minimum_Code_Coverage}}"
+        fi          
 
