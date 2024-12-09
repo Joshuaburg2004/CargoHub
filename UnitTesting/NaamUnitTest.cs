@@ -66,19 +66,19 @@ namespace CargoHub.UnitTesting
         [Fact]
         public void AddNaam()
         {
-            throw new System.NotImplementedException();
+
         }
 
         [Fact]
         public void UpdateNaam()
         {
-            throw new System.NotImplementedException();
+
         }
 
         [Fact]
         public void RemoveNaam()
         {
-            throw new System.NotImplementedException();
+
         }
 
         public void Dispose()

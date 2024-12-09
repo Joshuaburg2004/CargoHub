@@ -88,15 +88,15 @@ namespace CargoHub.UnitTesting
                 var Warehouses = context.Warehouses.ToList();
 
                 Assert.Equal(2, Warehouses.Count);
-                Assert.Equal("Test Client 2", Warehouses[1].Name);
-                Assert.Equal("123 Test St", Warehouses[1].Address);
-                Assert.Equal("Test City", Warehouses[1].City);
+                Assert.Equal("Test Warehouse 2", Warehouses[1].Name);
+                Assert.Equal("123 Test St 2", Warehouses[1].Address);
+                Assert.Equal("Test City 2", Warehouses[1].City);
                 Assert.Equal("12345", Warehouses[1].Zip);
-                Assert.Equal("Test Province", Warehouses[1].Province);
-                Assert.Equal("Test Country", Warehouses[1].Country);
-                Assert.Equal("Test Contact", Warehouses[1].Contact.Name);
+                Assert.Equal("Test Province 2", Warehouses[1].Province);
+                Assert.Equal("Test Country 2", Warehouses[1].Country);
+                Assert.Equal("Test Contact 2", Warehouses[1].Contact.Name);
                 Assert.Equal("123-456-7890", Warehouses[1].Contact.Phone);
-                Assert.Equal("testcontact@hr.nl", Warehouses[1].Contact.Email);
+                Assert.Equal("testcontact2@hr.nl", Warehouses[1].Contact.Email);
             }
 
         }
@@ -117,7 +117,7 @@ namespace CargoHub.UnitTesting
                 var Warehouses = context.Warehouses.ToList();
 
                 Assert.Single(Warehouses);
-                Assert.Equal("Updated Client", Warehouses[0].Name);
+                Assert.Equal("Updated Warehouse", Warehouses[0].Name);
                 Assert.Equal("123 Test St", Warehouses[0].Address);
                 Assert.Equal("Test City", Warehouses[0].City);
                 Assert.Equal("12345", Warehouses[0].Zip);
@@ -125,7 +125,7 @@ namespace CargoHub.UnitTesting
                 Assert.Equal("Test Country", Warehouses[0].Country);
                 Assert.Equal("Test Contact", Warehouses[0].Contact.Name);
                 Assert.Equal("123-456-7890", Warehouses[0].Contact.Phone);
-                Assert.Equal("testemail@hr.nl", Warehouses[0].Contact.Email);
+                Assert.Equal("testcontact@hr.nl", Warehouses[0].Contact.Email);
             }
         }
 
