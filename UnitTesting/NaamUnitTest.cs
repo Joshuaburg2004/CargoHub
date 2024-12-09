@@ -9,6 +9,7 @@ using CargoHubAlt.Database;
 
 namespace CargoHub.UnitTesting
 {
+    [TestCaseOrderer("UnitTests.PriorityOrderer", "UnitTests")]
     public class NaamServiceUnitTest : IDisposable
     {
         private readonly DbContextOptions<CargoHubContext> options;
@@ -39,7 +40,7 @@ namespace CargoHub.UnitTesting
             this.options = options;
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public void GetOneNaam()
         {
             //voorbeeld
@@ -63,19 +64,19 @@ namespace CargoHub.UnitTesting
             // }
         }
 
-        [Fact]
+        [Fact, TestPriority(1)]
         public void AddNaam()
         {
 
         }
 
-        [Fact]
+        [Fact, TestPriority(2)]
         public void UpdateNaam()
         {
 
         }
 
-        [Fact]
+        [Fact, TestPriority(3)]
         public void RemoveNaam()
         {
 
