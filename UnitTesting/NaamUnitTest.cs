@@ -9,7 +9,7 @@ using CargoHubAlt.Database;
 
 namespace CargoHub.UnitTesting
 {
-    public class NaamServiceUnitTest
+    public class NaamServiceUnitTest : IDisposable
     {
         private readonly DbContextOptions<CargoHubContext> options;
         public NaamServiceUnitTest()
@@ -45,10 +45,21 @@ namespace CargoHub.UnitTesting
             //voorbeeld
             // using (var context = new CargoHubContext(options))
             // {
-            //     var clients = context.Clients.ToList();
+            //     var WarehouseService = new WarehouseServiceV1(context);
+            //     var Warehouses = await WarehouseService.GetAllWarehouses();
 
-            //     Assert.Single(clients);
-            //     Assert.Equal("Test Client", clients[0].Name);
+            //     Assert.NotNull(Warehouses);
+            //     Assert.Single(Warehouses);
+            //     Assert.Equal("Test Warehouse", Warehouses[0].Name);
+            //     Assert.Equal("Test Code", Warehouses[0].Code);
+            //     Assert.Equal("123 Test St", Warehouses[0].Address);
+            //     Assert.Equal("Test City", Warehouses[0].City);
+            //     Assert.Equal("12345", Warehouses[0].Zip);
+            //     Assert.Equal("Test Province", Warehouses[0].Province);
+            //     Assert.Equal("Test Country", Warehouses[0].Country);
+            //     Assert.Equal("Test Contact", Warehouses[0].Contact.Name);
+            //     Assert.Equal("123-456-7890", Warehouses[0].Contact.Phone);
+            //     Assert.Equal("testcontact@hr.nl", Warehouses[0].Contact.Email);
             // }
         }
 
@@ -68,6 +79,14 @@ namespace CargoHub.UnitTesting
         public void RemoveNaam()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            using (var context = new CargoHubContext(options))
+            {
+                context.Database.EnsureDeleted();
+            }
         }
     }
 }
