@@ -7,9 +7,11 @@ using CargoHubAlt.Models;
 using CargoHubAlt.Services;
 using CargoHubAlt.Database;
 using CargoHubAlt.Services.ServicesV1;
+using System;
 
 namespace CargoHub.UnitTesting
 {
+    [TestCaseOrderer("UnitTests.PriorityOrderer", "UnitTests")]
     public class WarehouseServiceUnitTest : IDisposable
     {
         private readonly DbContextOptions<CargoHubContext> options;
@@ -33,14 +35,20 @@ namespace CargoHub.UnitTesting
                     Contact = new Contact("Test Contact", "123-456-7890", "testcontact@hr.nl")
 
                 });
+                context.Locations.Add(new Location
+                {
+                    Id = 1,
+                    WarehouseId = 1,
+                    Code = "Test Code",
+                    Name = "Test Location",
+                });
                 context.SaveChanges();
             }
-
 
             this.options = options;
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async void GetOneWarehouse()
         {
             using (var context = new CargoHubContext(options))
@@ -63,7 +71,7 @@ namespace CargoHub.UnitTesting
             }
         }
 
-        [Fact]
+        [Fact, TestPriority(1)]
         public async void AddWarehouse()
         {
             using (var context = new CargoHubContext(options))
@@ -101,7 +109,7 @@ namespace CargoHub.UnitTesting
 
         }
 
-        [Fact]
+        [Fact, TestPriority(2)]
         public async void UpdateWarehouse()
         {
             using (var context = new CargoHubContext(options))
@@ -129,7 +137,23 @@ namespace CargoHub.UnitTesting
             }
         }
 
-        [Fact]
+        [Fact, TestPriority(3)]
+        public async void GetLocationsfromWarehouseById()
+        {
+            using (var context = new CargoHubContext(options))
+            {
+                var WarehouseService = new WarehouseServiceV1(context);
+                var Warehouse = context.Warehouses.First();
+                var Locations = await WarehouseService.GetLocationsfromWarehouseById(Warehouse.Id);
+
+                Assert.NotNull(Locations);
+                Assert.Equal(1, Locations[0].WarehouseId);
+                Assert.Equal("Test Location", Locations[0].Name);
+                Assert.Equal("Test Code", Locations[0].Code);
+            }
+        }
+
+        [Fact, TestPriority(4)]
         public async void RemoveWarehouse()
         {
             using (var context = new CargoHubContext(options))
