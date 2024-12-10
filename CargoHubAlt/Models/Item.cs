@@ -30,22 +30,22 @@ namespace CargoHubAlt.Models
 
         public Item(string uid, string code, string description, string shortDescription, string upcCode, string modelNumber, string commodityCode, int itemLine, int itemGroup, int itemType, int unitPurchaseQuantity, int unitOrderQuantity, int packOrderQuantity, int supplierId, string supplierCode, string supplierPartNumber)
         {
-            this.Uid = uid;
-            this.Code = code;
-            this.Description = description;
-            this.ShortDescription = shortDescription;
-            this.UpcCode = upcCode;
-            this.ModelNumber = modelNumber;
-            this.CommodityCode = commodityCode;
-            this.ItemLine = itemLine;
-            this.ItemGroup = itemGroup;
-            this.ItemType = itemType;
-            this.UnitPurchaseQuantity = unitPurchaseQuantity;
-            this.UnitOrderQuantity = unitOrderQuantity;
-            this.PackOrderQuantity = packOrderQuantity;
-            this.SupplierId = supplierId;
-            this.SupplierCode = supplierCode;
-            this.SupplierPartNumber = supplierPartNumber;
+            Uid = uid;
+            Code = code;
+            Description = description;
+            ShortDescription = shortDescription;
+            UpcCode = upcCode;
+            ModelNumber = modelNumber;
+            CommodityCode = commodityCode;
+            ItemLine = itemLine;
+            ItemGroup = itemGroup;
+            ItemType = itemType;
+            UnitPurchaseQuantity = unitPurchaseQuantity;
+            UnitOrderQuantity = unitOrderQuantity;
+            PackOrderQuantity = packOrderQuantity;
+            SupplierId = supplierId;
+            SupplierCode = supplierCode;
+            SupplierPartNumber = supplierPartNumber;
         }
     }
 }
