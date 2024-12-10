@@ -41,7 +41,7 @@ namespace CargoHub.UnitTesting
         }
 
         [Fact, TestPriority(0)]
-        public void GetOneNaam()
+        public async void GetOneNaam()
         {
             //voorbeeld
             // using (var context = new CargoHubContext(options))
@@ -65,19 +65,19 @@ namespace CargoHub.UnitTesting
         }
 
         [Fact, TestPriority(1)]
-        public void AddNaam()
+        public async void AddNaam()
         {
 
         }
 
         [Fact, TestPriority(2)]
-        public void UpdateNaam()
+        public async void UpdateNaam()
         {
 
         }
 
         [Fact, TestPriority(3)]
-        public void RemoveNaam()
+        public async void RemoveNaam()
         {
 
         }
