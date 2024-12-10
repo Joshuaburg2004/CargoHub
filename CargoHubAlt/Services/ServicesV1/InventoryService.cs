@@ -18,7 +18,7 @@ namespace CargoHubAlt.Services.ServicesV1
             return await this._cargoHubContext.Inventories.FirstOrDefaultAsync(inventory => inventory.Id == id);
         }
 
-        public async Task<IEnumerable<Inventory>> GetAllInventories()
+        public async Task<List<Inventory>> GetAllInventories()
         {
             return await this._cargoHubContext.Inventories.ToListAsync();
         }
