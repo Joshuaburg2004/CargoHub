@@ -6,7 +6,7 @@ namespace CargoHubAlt.Interfaces.InterfacesV1
     {
         Task<int?> CreateInventory(Inventory inventory);
         Task<Inventory?> GetOneInventory(int id);
-        Task<IEnumerable<Inventory>> GetAllInventories();
+        Task<List<Inventory>> GetAllInventories();
         Task<Inventory?> UpdateInventory(int id, Inventory inventory);
         Task<Inventory?> DeleteInventory(int id);
         public Task LoadFromJson(string path);
