@@ -73,7 +73,7 @@ jobs:
       Coverage_Report_Folder: .\TestResults\coverageAction
       Minimum_Code_Coverage: 80
     outputs:
-      CODE_COVERAGE_ACTUAL_OUTPUT: ${{ steps.extract_coverage.outputs.CODE_COVERAGE_ACTUAL }}
+      CODE_COVERAGE_ACTUAL_OUTPUT: ${{ steps.extract_coverage.outputs.CODE_COVERAGE_TRY }}
 
 
 
@@ -115,9 +115,9 @@ jobs:
     - name: Extract coverage percentage
       id: extract_coverage
       run: |
-        echo "CODE_COVERAGE_ACTUAL = $(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')" >> "$GITHUB_OUTPUT"
-        echo "CODE_COVERAGE_ACTUAL=$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')" >>"$GITHUB_ENV"
-        echo "$CODE_COVERAGE_ACTUAL"
+        echo "CODE_COVERAGE_TRY = $(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')" >> "$GITHUB_OUTPUT"
+        echo "CODE_COVERAGE_ACTUAL=$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt" >>"$GITHUB_ENV"
+        echo "$CODE_COVERAGE_ACTUAL this is annoying"
         echo "second line works"
 
 
