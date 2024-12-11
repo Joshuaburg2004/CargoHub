@@ -22,10 +22,10 @@ jobs:
     #updates the project to use the most recent version
     env:
       Solution_Name: CargoHubAspNet.sln
-      Test_Project_Path: .\IntegrationTests\IntegrationTests.csproj
-      Unit_Test_Project_Path: .\UnitTesting\MyUnitTestProject.csproj
+      Test_Project_Path: ./IntegrationTests/IntegrationTests.csproj
+      Unit_Test_Project_Path: ./UnitTesting/MyUnitTestProject.csproj
       Wap_Project_Directory: CargoHubAlt
-      Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj
+      Wap_Project_Path: ./CargoHubAlt/CargoHubAlt.csproj
 
     steps:
       - name: Checkout code
@@ -52,11 +52,11 @@ jobs:
     # setup environment variables
     env:
       Solution_Name: CargoHubAspNet.sln
-      Test_Project_Path: .\IntegrationTests\IntegrationTests.csproj
+      Test_Project_Path: ./IntegrationTests/IntegrationTests.csproj
       Wap_Project_Directory: CargoHubAlt
-      Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj
-      Test_Project_dll: .\IntegrationTests\bin\Debug\net8.0\CargoHubAlt.dll
-      Coverage_Report_Folder: .\TestResults\coverageAction
+      Wap_Project_Path: ./CargoHubAlt/CargoHubAlt.csproj
+      Test_Project_dll: ./IntegrationTests/bin/Debug/net8.0/CargoHubAlt.dll
+      Coverage_Report_Folder: ./TestResults/coverageAction
       Minimum_Code_Coverage: ${{vars.MINIMUMCODECOVERAGE}}
     
     steps:
@@ -64,12 +64,12 @@ jobs:
       run: |
         mkdir ${{env.Coverage_Report_Folder}}
         dotnet tool install --global coverlet.console
-        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}\coverage" --format cobertura --threshold ${{env.Minimum_Code_Coverage}} --threshold-type line
+        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}/coverage" --format cobertura --threshold ${{env.Minimum_Code_Coverage}} --threshold-type line
 
     - name: Generate coverage report
       run: |
         dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator -reports:${{env.Coverage_Report_Folder}}\coverage.cobertura.xml -targetdir:${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
+        reportgenerator -reports:${{env.Coverage_Report_Folder}}/coverage.cobertura.xml -targetdir:${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
   run-unit-tests:
     needs: build
     if: github.event_name == 'push' || github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development')
@@ -79,12 +79,12 @@ jobs:
     # setup environment variables
     env:
       Solution_Name: CargoHubAspNet.sln
-      Test_Project_Path: .\UnitTesting\MyUnitTestProject.csproj
+      Test_Project_Path: ./UnitTesting/MyUnitTestProject.csproj
       Wap_Project_Directory: CargoHubAlt
-      Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj
-      Test_Project_dll: UnitTesting\bin\Debug\net8.0\CargoHubAlt.dll
-      Coverage_Report_Folder: .\TestResults\coverageAction
-      Results_Directory: .\TestResults\unitTestResults
+      Wap_Project_Path: ./CargoHubAlt/CargoHubAlt.csproj
+      Test_Project_dll: UnitTesting/bin/Debug/net8.0/CargoHubAlt.dll
+      Coverage_Report_Folder: ./TestResults/coverageAction
+      Results_Directory: ./TestResults/unitTestResults
       Minimum_Code_Coverage: ${{vars.MINIMUMCODECOVERAGE}}
     
     steps:
@@ -95,9 +95,9 @@ jobs:
       run: |
         mkdir ${{env.Coverage_Report_Folder}}
         dotnet tool install --global coverlet.console
-        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}\coverage" --format cobertura --threshold ${{env.Minimum_Code_Coverage}} --threshold-type line
+        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}/coverage" --format cobertura --threshold ${{env.Minimum_Code_Coverage}} --threshold-type line
 
     - name: Generate coverage report
       run: |
         dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator -reports:${{env.Coverage_Report_Folder}}\coverage.cobertura.xml -targetdir:${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
+        reportgenerator -reports:${{env.Coverage_Report_Folder}}/coverage.cobertura.xml -targetdir:${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
