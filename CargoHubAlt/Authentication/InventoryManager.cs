@@ -1,6 +1,6 @@
 public class InventoryManager: User
 {
-    public InventoryManager(string ApiKey, string App): base(ApiKey, App,
+    public InventoryManager(string ApiKey, string App, int WarehouseID): base(ApiKey, App,
     new EndpointAccesses(
         Clients: new AccessLevel(Access.True, true, false, false, false),
         Inventories: new AccessLevel(Access.True, true, true, true, true),
@@ -15,5 +15,7 @@ public class InventoryManager: User
         Transfers: new AccessLevel(Access.True, true, true, true, true),
         Warehouses: new AccessLevel(Access.False, true, false, false, false)
     ))
-    {}
+    {
+        this.WarehouseID = WarehouseID;
+    }
 }
