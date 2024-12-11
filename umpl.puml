@@ -1,0 +1,288 @@
+@startuml GO Sharing Use Case Diagram
+
+    left to right direction
+
+    actor Admin
+    actor WarehouseManager
+    actor InventoryManager
+    actor FloorManager
+    actor Operative
+    actor Supervisor
+    actor Analyst
+    actor Logistics
+    actor Sales
+
+    rectangle "Crud Operations" {
+
+        usecase "Create Client" as UC_CreateClient
+        usecase "Read Client" as UC_ReadClient
+        usecase "Read One Client" as UC_ReadOneClient
+        usecase "Update Client" as UC_UpdateClient
+        usecase "Delete Client" as UC_DeleteClient
+
+        usecase "Create Order" as UC_CreateOrder
+        usecase "Read Order" as UC_ReadOrder
+        usecase "Read One Order" as UC_ReadOneOrder
+        usecase "Update Order" as UC_UpdateOrder
+        usecase "Delete Order" as UC_DeleteOrder
+
+        usecase "Create Inventory" as UC_CreateInventory
+        usecase "Read Inventory" as UC_ReadInventory
+        usecase "Read One Inventory" as UC_ReadOneInventory
+        usecase "Update Inventory" as UC_UpdateInventory
+        usecase "Delete Inventory" as UC_DeleteInventory
+
+        usecase "Create Shipment" as UC_CreateShipment
+        usecase "Read Shipment" as UC_ReadShipment
+        usecase "Read One Shipment" as UC_ReadOneShipment
+        usecase "Update Shipment" as UC_UpdateShipment
+        usecase "Delete Shipment" as UC_DeleteShipment
+
+        usecase "Create Supplier" as UC_CreateSupplier
+        usecase "Read Supplier" as UC_ReadSupplier
+        usecase "Read One Supplier" as UC_ReadOneSupplier
+        usecase "Update Supplier" as UC_UpdateSupplier
+        usecase "Delete Supplier" as UC_DeleteSupplier
+
+        usecase "Create Item" as UC_CreateItem
+        usecase "Read Item" as UC_ReadItem
+        usecase "Read One Item" as UC_ReadOneItem
+        usecase "Update Item" as UC_UpdateItem
+        usecase "Delete Item" as UC_DeleteItem
+
+        usecase "Create Warehouse" as UC_CreateWarehouse
+        usecase "Read Warehouse" as UC_ReadWarehouse
+        usecase "Read One Warehouse" as UC_ReadOneWarehouse
+        usecase "Update Warehouse" as UC_UpdateWarehouse
+        usecase "Delete Warehouse" as UC_DeleteWarehouse
+
+        usecase "Create Transfer" as UC_CreateTransfer
+        usecase "Read Transfer" as UC_ReadTransfer
+        usecase "Read One Transfer" as UC_ReadOneTransfer
+        usecase "Update Transfer" as UC_UpdateTransfer
+        usecase "Delete Transfer" as UC_DeleteTransfer
+
+        usecase "Create Location" as UC_CreateLocation
+        usecase "Read Location" as UC_ReadLocation
+        usecase "Read One Location" as UC_ReadOneLocation
+        usecase "Update Location" as UC_UpdateLocation
+        usecase "Delete Location" as UC_DeleteLocation
+
+        usecase "Create Item Type" as UC_CreateItemType
+        usecase "Read Item Type" as UC_ReadItemType
+        usecase "Read One Item Type" as UC_ReadOneItemType
+        usecase "Update Item Type" as UC_UpdateItemType
+        usecase "Delete Item Type" as UC_DeleteItemType
+
+        usecase "Create Item Line" as UC_CreateItemLine
+        usecase "Read Item Line" as UC_ReadItemLine
+        usecase "Read One Item Line" as UC_ReadOneItemLine
+        usecase "Update Item Line" as UC_UpdateItemLine
+        usecase "Delete Item Line" as UC_DeleteItemLine
+
+        usecase "Create Item Group" as UC_CreateItemGroup
+        usecase "Read Item Group" as UC_ReadItemGroup
+        usecase "Read One Item Group" as UC_ReadOneItemGroup
+        usecase "Update Item Group" as UC_UpdateItemGroup
+        usecase "Delete Item Group" as UC_DeleteItemGroup
+
+        Admin -- UC_ReadClient
+        Admin -- UC_ReadOneClient
+        Admin -- UC_CreateClient
+        Admin -- UC_UpdateClient
+        Admin -- UC_DeleteClient
+
+        Admin -- UC_ReadOrder
+        Admin -- UC_ReadOneOrder
+        Admin -- UC_CreateOrder
+        Admin -- UC_UpdateOrder
+        Admin -- UC_DeleteOrder
+
+        Admin -- UC_ReadInventory
+        Admin -- UC_ReadOneInventory
+        Admin -- UC_CreateInventory
+        Admin -- UC_UpdateInventory
+        Admin -- UC_DeleteInventory
+
+        Admin -- UC_ReadShipment
+        Admin -- UC_ReadOneShipment
+        Admin -- UC_CreateShipment
+        Admin -- UC_UpdateShipment
+        Admin -- UC_DeleteShipment
+
+        Admin -- UC_ReadSupplier
+        Admin -- UC_ReadOneSupplier
+        Admin -- UC_CreateSupplier
+        Admin -- UC_UpdateSupplier
+        Admin -- UC_DeleteSupplier
+
+        Admin -- UC_ReadItem
+        Admin -- UC_ReadOneItem
+        Admin -- UC_CreateItem
+        Admin -- UC_UpdateItem
+        Admin -- UC_DeleteItem
+
+        Admin -- UC_ReadWarehouse
+        Admin -- UC_ReadOneWarehouse
+        Admin -- UC_CreateWarehouse
+        Admin -- UC_UpdateWarehouse
+        Admin -- UC_DeleteWarehouse
+
+        Admin -- UC_ReadTransfer
+        Admin -- UC_ReadOneTransfer
+        Admin -- UC_CreateTransfer
+        Admin -- UC_UpdateTransfer
+        Admin -- UC_DeleteTransfer
+
+        Admin -- UC_ReadLocation
+        Admin -- UC_ReadOneLocation
+        Admin -- UC_CreateLocation
+        Admin -- UC_UpdateLocation
+        Admin -- UC_DeleteLocation
+
+        Admin -- UC_ReadItemType
+        Admin -- UC_ReadOneItemType
+        Admin -- UC_CreateItemType
+        Admin -- UC_UpdateItemType
+        Admin -- UC_DeleteItemType
+
+        Admin -- UC_ReadItemLine
+        Admin -- UC_ReadOneItemLine
+        Admin -- UC_CreateItemLine
+        Admin -- UC_UpdateItemLine
+        Admin -- UC_DeleteItemLine
+
+        Admin -- UC_ReadItemGroup
+        Admin -- UC_ReadOneItemGroup
+        Admin -- UC_CreateItemGroup
+        Admin -- UC_UpdateItemGroup
+        Admin -- UC_DeleteItemGroup
+
+        WarehouseManager -- UC_ReadClient
+        WarehouseManager -- UC_ReadOneClient
+        WarehouseManager -- UC_CreateClient
+        WarehouseManager -- UC_UpdateClient
+
+        WarehouseManager -- UC_ReadOrder
+        WarehouseManager -- UC_ReadOneOrder
+        WarehouseManager -- UC_CreateOrder
+        WarehouseManager -- UC_UpdateOrder
+        WarehouseManager -- UC_DeleteOrder
+
+        WarehouseManager -- UC_ReadInventory
+        WarehouseManager -- UC_ReadOneInventory
+        WarehouseManager -- UC_CreateInventory
+        WarehouseManager -- UC_UpdateInventory
+        WarehouseManager -- UC_DeleteInventory
+
+        WarehouseManager -- UC_ReadShipment
+        WarehouseManager -- UC_ReadOneShipment
+        WarehouseManager -- UC_CreateShipment
+        WarehouseManager -- UC_UpdateShipment
+        WarehouseManager -- UC_DeleteShipment
+
+        WarehouseManager -- UC_ReadSupplier
+        WarehouseManager -- UC_ReadOneSupplier
+        WarehouseManager -- UC_CreateSupplier
+        WarehouseManager -- UC_UpdateSupplier
+        WarehouseManager -- UC_DeleteSupplier
+
+        WarehouseManager -- UC_ReadItem
+        WarehouseManager -- UC_ReadOneItem
+        WarehouseManager -- UC_CreateItem
+        WarehouseManager -- UC_UpdateItem
+
+        WarehouseManager -- UC_ReadWarehouse
+        WarehouseManager -- UC_ReadOneWarehouse
+        WarehouseManager -- UC_CreateWarehouse
+
+        WarehouseManager -- UC_ReadTransfer
+        WarehouseManager -- UC_ReadOneTransfer
+        WarehouseManager -- UC_CreateTransfer
+        WarehouseManager -- UC_UpdateTransfer
+        WarehouseManager -- UC_DeleteTransfer
+
+        WarehouseManager -- UC_ReadLocation
+        WarehouseManager -- UC_ReadOneLocation
+        WarehouseManager -- UC_CreateLocation
+        WarehouseManager -- UC_UpdateLocation
+        WarehouseManager -- UC_DeleteLocation
+
+        WarehouseManager -- UC_ReadItemType
+        WarehouseManager -- UC_ReadOneItemType
+        WarehouseManager -- UC_CreateItemType
+        WarehouseManager -- UC_UpdateItemType
+
+        WarehouseManager -- UC_ReadItemLine
+        WarehouseManager -- UC_ReadOneItemLine
+        WarehouseManager -- UC_CreateItemLine
+        WarehouseManager -- UC_UpdateItemLine
+
+        InventoryManager -- UC_ReadClient
+        InventoryManager -- UC_ReadOneClient
+
+        InventoryManager -- UC_ReadOrder
+        InventoryManager -- UC_ReadOneOrder
+
+        InventoryManager -- UC_ReadInventory
+        InventoryManager -- UC_ReadOneInventory
+        InventoryManager -- UC_CreateInventory
+        InventoryManager -- UC_UpdateInventory
+        InventoryManager -- UC_DeleteInventory
+
+        InventoryManager -- UC_ReadShipment
+        InventoryManager -- UC_ReadOneShipment
+
+        InventoryManager -- UC_ReadSupplier
+        InventoryManager -- UC_ReadOneSupplier
+
+        InventoryManager -- UC_ReadItem
+        InventoryManager -- UC_ReadOneItem
+
+        InventoryManager -- UC_ReadOneWarehouse
+
+        InventoryManager -- UC_ReadTransfer
+        InventoryManager -- UC_ReadOneTransfer
+        InventoryManager -- UC_CreateTransfer
+        InventoryManager -- UC_UpdateTransfer
+        InventoryManager -- UC_DeleteTransfer
+
+        InventoryManager -- UC_ReadLocation 
+        InventoryManager -- UC_ReadOneLocation
+        InventoryManager -- UC_CreateLocation
+        InventoryManager -- UC_UpdateLocation
+        InventoryManager -- UC_DeleteLocation
+
+        InventoryManager -- UC_ReadItemType
+        InventoryManager -- UC_ReadOneItemType
+        InventoryManager -- UC_CreateItemType
+        InventoryManager -- UC_UpdateItemType
+
+        InventoryManager -- UC_ReadItemLine
+        InventoryManager -- UC_ReadOneItemLine
+        InventoryManager -- UC_CreateItemLine
+        InventoryManager -- UC_UpdateItemLine
+
+        InventoryManager -- UC_ReadItemGroup
+        InventoryManager -- UC_ReadOneItemGroup
+        InventoryManager -- UC_CreateItemGroup
+        InventoryManager -- UC_UpdateItemGroup
+
+        FloorManager -- UC_ReadClient
+        FloorManager -- UC_ReadOneClient
+
+        Analyst -- UC_ReadClient
+        Analyst -- UC_ReadOneClient
+
+        Logistics -- UC_ReadClient
+        Logistics -- UC_ReadOneClient
+        Logistics -- UC_CreateClient
+        Logistics -- UC_UpdateClient
+
+        Sales -- UC_ReadClient
+        Sales -- UC_ReadOneClient
+        Sales -- UC_CreateClient
+        Sales -- UC_UpdateClient
+    }
+
+@enduml
