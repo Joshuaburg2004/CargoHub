@@ -83,10 +83,10 @@ jobs:
     # setup environment variables
     env:
       Solution_Name: CargoHubAspNet.sln
-      Test_Project_Path: .\UnitTesting\MyUnitTestProject.csproj
+      Test_Project_Path: UnitTesting\MyUnitTestProject.csproj
       Wap_Project_Directory: CargoHubAlt
       Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj
-      Test_Project_dll: .\UnitTesting\bin\Debug\net8.0\CargoHubAlt.dll
+      Test_Project_dll: UnitTesting\bin\Debug\net8.0\CargoHubAlt.dll
       Coverage_Report_Folder: .\TestResults\coverageAction
       Minimum_Code_Coverage: ${{vars.MINIMUMCODECOVERAGE}}
     
