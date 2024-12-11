@@ -87,9 +87,9 @@ jobs:
       Minimum_Code_Coverage: ${{ vars.MINIMUMCODECOVERAGE }}
 
     steps:
-      # - name: Execute tests
-      #   run: |
-      #     dotnet test ${{ env.Test_Project_Path }} --configuration Debug --logger "trx;LogFileName=testresults.trx" --results-directory ${{ env.Results_Directory }}
+      - name: Execute tests
+        run: |
+          dotnet test ${{ env.Test_Project_Path }} --configuration Debug --logger "trx;LogFileName=testresults.trx" --results-directory ${{ env.Results_Directory }}
 
       - name: Run tests with coverage
         run: |
