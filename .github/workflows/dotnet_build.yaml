@@ -87,6 +87,17 @@ jobs:
       Minimum_Code_Coverage: ${{ vars.MINIMUMCODECOVERAGE }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.Solution_Name }}
+
       - name: Execute tests
         run: |
           dotnet test ${{ env.Test_Project_Path }} --configuration Debug --logger "trx;LogFileName=testresults.trx" --results-directory ${{ env.Results_Directory }}
