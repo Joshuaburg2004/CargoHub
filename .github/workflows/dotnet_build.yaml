@@ -7,7 +7,6 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "main", "development", "329-pipeline-test-opzetten" ]
   pull_request:
     branches: [ "main", "development" ]
 
@@ -48,8 +47,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-
-  run-tests:
+  run-integration-tests:
+    if: github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development')
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
@@ -62,8 +61,6 @@ jobs:
       Test_Project_dll: .\IntegrationTests\bin\Debug\net8.0\CargoHubAlt.dll
       Coverage_Report_Folder: .\TestResults\coverageAction
       Minimum_Code_Coverage: ${{vars.MINIMUMCODECOVERAGE}}
-    outputs:
-      CODE_COVERAGE_ACTUAL_OUTPUT: ${{ steps.extract_coverage.outputs.CODE_COVERAGE_TRY }}
     
     steps:
     - name: Execute integration tests
@@ -74,20 +71,39 @@ jobs:
       run: |
         mkdir ${{env.Coverage_Report_Folder}}
         dotnet tool install --global coverlet.console
-        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}\coverage" --format cobertura --threshold ${{env.Minimum_Code_Coverage}}
+        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}\coverage" --format cobertura --threshold ${{env.Minimum_Code_Coverage}} --threshold-type line
 
     - name: Generate coverage report
       run: |
         dotnet tool install -g dotnet-reportgenerator-globaltool
         reportgenerator -reports:${{env.Coverage_Report_Folder}}\coverage.cobertura.xml -targetdir:${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
+  run-unit-tests:
+    if: github.event_name == 'push'
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+    # setup environment variables
+    env:
+      Solution_Name: CargoHubAspNet.sln
+      Test_Project_Path: .\UnitTesting\MyUnitTestProject.csproj
+      Wap_Project_Directory: CargoHubAlt
+      Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj
+      Test_Project_dll: .\UnitTesting\bin\Debug\net8.0\CargoHubAlt.dll
+      Coverage_Report_Folder: .\TestResults\coverageAction
+      Minimum_Code_Coverage: ${{vars.MINIMUMCODECOVERAGE}}
+    
+    steps:
+    - name: Execute integration tests
+      run: dotnet test --no-build
 
 
-    - name: Extract coverage percentage
-      id: extract_coverage
+    - name: Run tests with coverage
       run: |
-        echo "::set-output name=CODE_COVERAGE_TRY::$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt | awk '{print $3}' | tr -d '%')" >> $GITHUB_OUTPUT
-        
-        echo "CODE_COVERAGE_ACTUAL=$(grep -w 'Line coverage:' ${{env.Coverage_Report_Folder}}\Summary.txt)" >> $GITHUB_ENV
-        printf '%s\n' "$CODE_COVERAGE_ACTUAL" # This will output 'Line coverage: percent'
-        echo "$CODE_COVERAGE_ACTUAL this is annoying"
-        echo "second line works"
+        mkdir ${{env.Coverage_Report_Folder}}
+        dotnet tool install --global coverlet.console
+        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}\coverage" --format cobertura --threshold ${{env.Minimum_Code_Coverage}} --threshold-type line
+
+    - name: Generate coverage report
+      run: |
+        dotnet tool install -g dotnet-reportgenerator-globaltool
+        reportgenerator -reports:${{env.Coverage_Report_Folder}}\coverage.cobertura.xml -targetdir:${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
