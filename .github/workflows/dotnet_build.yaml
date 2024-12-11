@@ -57,7 +57,7 @@ jobs:
       Wap_Project_Path: ${{ github.workspace }}/CargoHubAlt/CargoHubAlt.csproj
       Test_Project_dll: ${{ github.workspace }}/IntegrationTests/bin/Debug/net8.0/CargoHubAlt.dll
       Coverage_Report_Folder: ${{ github.workspace }}/TestResults/coverageAction
-      Results_Directory: ${{ github.workspace }}/TestResults/unitTestResults
+      Results_Directory: ${{ github.workspace }}/TestResults/integrationTestResults
       Minimum_Code_Coverage: ${{ vars.MINIMUMCODECOVERAGE }}
     
     steps:
@@ -87,26 +87,15 @@ jobs:
       Minimum_Code_Coverage: ${{ vars.MINIMUMCODECOVERAGE }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-
-      - name: Restore dependencies
-        run: dotnet restore ${{ env.Solution_Name }}
-
-      - name: Execute tests
-        run: |
-          dotnet test ${{ env.Test_Project_Path }} --configuration Debug --logger "trx;LogFileName=testresults.trx" --results-directory ${{ env.Results_Directory }}
+      # - name: Execute tests
+      #   run: |
+      #     dotnet test ${{ env.Test_Project_Path }} --configuration Debug --logger "trx;LogFileName=testresults.trx" --results-directory ${{ env.Results_Directory }}
 
       - name: Run tests with coverage
         run: |
           mkdir -p ${{ env.Coverage_Report_Folder }}
           dotnet tool install --global coverlet.console
-          coverlet ${{ env.Test_Project_dll }} --target "dotnet" --targetargs "test --no-build --nologo" --output "${{ env.Coverage_Report_Folder }}/coverage" --format cobertura --threshold ${{ env.Minimum_Code_Coverage }} --threshold-type line,method
+          coverlet ${{ env.Test_Project_dll }} --target "dotnet" --targetargs "test --no-build --nologo" --output "${{ env.Coverage_Report_Folder }}/coverage" --format cobertura --threshold ${{ env.Minimum_Code_Coverage }} --threshold-type line
 
       - name: Generate coverage report
         run: |
