@@ -23,6 +23,7 @@ jobs:
     env:
       Solution_Name: CargoHubAspNet.sln
       Test_Project_Path: .\IntegrationTests\IntegrationTests.csproj
+      Unit_Test_Project_Path: .\UnitTesting\MyUnitTestProject.csproj
       Wap_Project_Directory: CargoHubAlt
       Wap_Project_Path: .\CargoHubAlt\CargoHubAlt.csproj
 
@@ -43,6 +44,7 @@ jobs:
           dotnet build ${{ env.Solution_Name }} --configuration ${{ matrix.configuration }}
           dotnet build ${{ env.Test_Project_Path }} --configuration ${{ matrix.configuration }}
           dotnet build ${{ env.Wap_Project_Path }} --configuration ${{ matrix.configuration }}
+          dotnet build ${{ env.Unit_Test_Project_Path }} --configuration ${{ matrix.configuration }}
 
   run-integration-tests:
     needs: build
