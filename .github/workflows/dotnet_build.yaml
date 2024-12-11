@@ -16,7 +16,7 @@ jobs:
       matrix:
         configuration: [Debug]
 
-    runs-on: ubuntu  # For a list of available runner types, refer to
+    runs-on: ubuntu-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     #updates the project to use the most recent version
@@ -49,7 +49,7 @@ jobs:
   run-integration-tests:
     needs: build
     if: github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development')
-    runs-on: ubuntu  # For a list of available runner types, refer to
+    runs-on: ubuntu-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     # setup environment variables
@@ -76,7 +76,7 @@ jobs:
   run-unit-tests:
     needs: build
     if: github.event_name == 'push' || github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development')
-    runs-on: ubuntu  # For a list of available runner types, refer to
+    runs-on: ubuntu-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     # setup environment variables
