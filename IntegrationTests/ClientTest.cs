@@ -95,8 +95,8 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
 
             List<Order>? orders = await response2.Content.ReadFromJsonAsync<List<Order>>();
-
-            Xunit.Assert.NotNull(orders[0]);
+            Xunit.Assert.NotNull(orders);
+            Xunit.Assert.Single(orders);
             Xunit.Assert.Equal(_orderToAdd.Id, orders[0].Id);
             Xunit.Assert.Equal(_orderToAdd.SourceId, orders[0].SourceId);
             Xunit.Assert.Equal(_orderToAdd.OrderDate, orders[0].OrderDate);
@@ -116,7 +116,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(_orderToAdd.TotalTax, orders[0].TotalTax);
             Xunit.Assert.Equal(_orderToAdd.TotalSurcharge, orders[0].TotalSurcharge);
         }
-
+        
         [Fact, TestPriority(7)]
         public async Task PutClient()
         {
