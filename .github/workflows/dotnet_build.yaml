@@ -51,13 +51,14 @@ jobs:
 
     # setup environment variables
     env:
-      Solution_Name: CargoHubAspNet.sln
-      Test_Project_Path: ./IntegrationTests/IntegrationTests.csproj
-      Wap_Project_Directory: CargoHubAlt
-      Wap_Project_Path: ./CargoHubAlt/CargoHubAlt.csproj
-      Test_Project_dll: ./IntegrationTests/bin/Debug/net8.0/CargoHubAlt.dll
-      Coverage_Report_Folder: ./TestResults/coverageAction
-      Minimum_Code_Coverage: ${{vars.MINIMUMCODECOVERAGE}}
+      Solution_Name: ${{ github.workspace }}/CargoHubAspNet.sln
+      Test_Project_Path: ${{ github.workspace }}/IntegrationTests/IntegrationTests.csproj
+      Wap_Project_Directory: ${{ github.workspace }}/CargoHubAlt
+      Wap_Project_Path: ${{ github.workspace }}/CargoHubAlt/CargoHubAlt.csproj
+      Test_Project_dll: ${{ github.workspace }}/IntegrationTests/bin/Debug/net8.0/CargoHubAlt.dll
+      Coverage_Report_Folder: ${{ github.workspace }}/TestResults/coverageAction
+      Results_Directory: ${{ github.workspace }}/TestResults/unitTestResults
+      Minimum_Code_Coverage: ${{ vars.MINIMUMCODECOVERAGE }}
     
     steps:
     - name: Run tests with coverage
@@ -72,32 +73,42 @@ jobs:
         reportgenerator -reports:${{env.Coverage_Report_Folder}}/coverage.cobertura.xml -targetdir:${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
   run-unit-tests:
     needs: build
-    if: github.event_name == 'push' || github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development')
-    runs-on: ubuntu-latest  # For a list of available runner types, refer to
-                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development'))
+    runs-on: ubuntu-latest
 
-    # setup environment variables
     env:
-      Solution_Name: CargoHubAspNet.sln
-      Test_Project_Path: ./UnitTesting/MyUnitTestProject.csproj
-      Wap_Project_Directory: CargoHubAlt
-      Wap_Project_Path: ./CargoHubAlt/CargoHubAlt.csproj
-      Test_Project_dll: UnitTesting/bin/Debug/net8.0/CargoHubAlt.dll
-      Coverage_Report_Folder: ./TestResults/coverageAction
-      Results_Directory: ./TestResults/unitTestResults
-      Minimum_Code_Coverage: ${{vars.MINIMUMCODECOVERAGE}}
-    
-    steps:
-    - name: Execute tests
-      run: |
-        dotnet test ${{env.Test_Project_Path}} --configuration Debug --logger "trx;LogFileName=testresults.trx" --results-directory ${{env.Results_Directory}}
-    - name: Run tests with coverage
-      run: |
-        mkdir ${{env.Coverage_Report_Folder}}
-        dotnet tool install --global coverlet.console
-        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}/coverage" --format cobertura --threshold ${{env.Minimum_Code_Coverage}} --threshold-type line
+      Solution_Name: ${{ github.workspace }}/CargoHubAspNet.sln
+      Test_Project_Path: ${{ github.workspace }}/UnitTesting/MyUnitTestProject.csproj
+      Wap_Project_Directory: ${{ github.workspace }}/CargoHubAlt
+      Wap_Project_Path: ${{ github.workspace }}/CargoHubAlt/CargoHubAlt.csproj
+      Test_Project_dll: ${{ github.workspace }}/UnitTesting/bin/Debug/net8.0/CargoHubAlt.dll
+      Coverage_Report_Folder: ${{ github.workspace }}/TestResults/coverageAction
+      Results_Directory: ${{ github.workspace }}/TestResults/unitTestResults
+      Minimum_Code_Coverage: ${{ vars.MINIMUMCODECOVERAGE }}
 
-    - name: Generate coverage report
-      run: |
-        dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator -reports:${{env.Coverage_Report_Folder}}/coverage.cobertura.xml -targetdir:${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.Solution_Name }}
+
+      - name: Execute tests
+        run: |
+          dotnet test ${{ env.Test_Project_Path }} --configuration Debug --logger "trx;LogFileName=testresults.trx" --results-directory ${{ env.Results_Directory }}
+
+      - name: Run tests with coverage
+        run: |
+          mkdir -p ${{ env.Coverage_Report_Folder }}
+          dotnet tool install --global coverlet.console
+          coverlet ${{ env.Test_Project_dll }} --target "dotnet" --targetargs "test --no-build --nologo" --output "${{ env.Coverage_Report_Folder }}/coverage" --format cobertura --threshold ${{ env.Minimum_Code_Coverage }} --threshold-type line,method
+
+      - name: Generate coverage report
+        run: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          reportgenerator -reports:${{ env.Coverage_Report_Folder }}/coverage.cobertura.xml -targetdir:${{ env.Coverage_Report_Folder }} -reporttypes:TextSummary
