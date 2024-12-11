@@ -63,10 +63,6 @@ jobs:
       Minimum_Code_Coverage: ${{vars.MINIMUMCODECOVERAGE}}
     
     steps:
-    - name: Execute integration tests
-      run: dotnet test --no-build
-
-
     - name: Run tests with coverage
       run: |
         mkdir ${{env.Coverage_Report_Folder}}
@@ -93,10 +89,6 @@ jobs:
       Minimum_Code_Coverage: ${{vars.MINIMUMCODECOVERAGE}}
     
     steps:
-    - name: Execute integration tests
-      run: dotnet test --no-build
-
-
     - name: Run tests with coverage
       run: |
         mkdir ${{env.Coverage_Report_Folder}}
