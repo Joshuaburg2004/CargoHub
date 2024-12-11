@@ -12,51 +12,6 @@ on:
     branches: [ "main", "development" ]
 
 jobs:
-  testjob1:
-    runs-on: ubuntu-latest
-    # Map a step output to a job output
-    outputs:
-      output1: ${{ steps.step1.outputs.test }}
-      output2: ${{ steps.step2.outputs.test }}
-    steps:
-      - id: step1
-        run: echo "test=hello" >> "$GITHUB_OUTPUT"
-      - id: step2
-        run: echo "test=world" >> "$GITHUB_OUTPUT"
-
-
-  testtjob2:
-    runs-on: ubuntu-latest
-    needs: testjob1
-    steps:
-      - env:
-          OUTPUT1: ${{needs.testjob1.outputs.output1}}
-          OUTPUT2: ${{needs.testjob1.outputs.output2}}
-        run: echo "$OUTPUT1 $OUTPUT2"
-
-      - name: Set the value
-        id: step_one
-        run: |
-          echo "action_state=yellow" >> "$GITHUB_ENV"
-      - name: Use the value
-        id: step_two
-        run: |
-          printf '%s\n' "$action_state" # This will output 'yellow'
-
-
-      - name: Set environment variable
-        run: echo "MY_ENV_VAR=myValue" >> "$GITHUB_ENV"
-
-      - name: Use environment variable
-        run: |
-          echo "The value of MY_ENV_VAR is $MY_ENV_VAR"
-
-
-
-
-
-    
-
   build:
     strategy:
       matrix:
@@ -119,7 +74,7 @@ jobs:
       run: |
         mkdir ${{env.Coverage_Report_Folder}}
         dotnet tool install --global coverlet.console
-        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}\coverage" --format cobertura
+        coverlet ${{env.Test_Project_dll}}  --target "dotnet" --targetargs "test --no-build --nologo" --output "${{env.Coverage_Report_Folder}}\coverage" --format cobertura --threshold ${{env.Minimum_Code_Coverage}}
 
     - name: Generate coverage report
       run: |
@@ -137,31 +92,3 @@ jobs:
         printf '%s\n' "$CODE_COVERAGE_ACTUAL" # This will output 'Line coverage: percent'
         echo "$CODE_COVERAGE_ACTUAL this is annoying"
         echo "second line works"
-
-  extract_Coverage:
-    runs-on: ubuntu-latest
-    needs: build
-    env:
-      Coverage_Report_Folder: .\TestResults\coverageAction
-      Minimum_Code_Coverage: ${{vars.MINIMUMCODECOVERAGE}}
-      CODE_COVERAGE_ACTUAL: ${{ needs.build.outputs.CODE_COVERAGE_ACTUAL_OUTPUT }}
-
-    steps:
-
-    - name: Print if code coverage is higher than minimum
-      id: Print_coverage_success
-
-      if: $CODE_COVERAGE_ACTUAL >= ${{env.Minimum_Code_Coverage}}
-      run: |
-        echo $CODE_COVERAGE_ACTUAL
-        echo "code coverage is higher than ${{env.Minimum_Code_Coverage}}"
-
-
-    - name: Fail if code coverage insufficient
-      id: Coverage_test
-
-      if: ${{env.CODE_COVERAGE_ACTUAL}} <= ${{env.Minimum_Code_Coverage}}
-      run: |
-        echo ${{env.CODE_COVERAGE_ACTUAL}}
-        echo "code coverage is lower than ${{env.Minimum_Code_Coverage}}"
-        exit 1
