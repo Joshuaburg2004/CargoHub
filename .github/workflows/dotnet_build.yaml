@@ -48,6 +48,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
   run-integration-tests:
+    needs: build
     if: github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development')
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
@@ -74,6 +75,7 @@ jobs:
         dotnet tool install -g dotnet-reportgenerator-globaltool
         reportgenerator -reports:${{env.Coverage_Report_Folder}}\coverage.cobertura.xml -targetdir:${{env.Coverage_Report_Folder}} -reporttypes:TextSummary
   run-unit-tests:
+    needs: build
     if: github.event_name == 'push'
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
