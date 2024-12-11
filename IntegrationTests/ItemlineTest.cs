@@ -26,7 +26,7 @@ public class ItemLineTest : BaseTest
     {
         var requestUri = "/api/v1/item_lines";
         var response = await _client.PostAsJsonAsync(requestUri, _itemLineCreate);
-        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
 
     [Fact, TestPriority(1)]
@@ -37,7 +37,7 @@ public class ItemLineTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
 
-    [Fact, TestPriority(17)]
+    [Fact, TestPriority(2)]
     public async Task GetAllItemLinesOne()
     {
         var requestUri = "/api/v1/item_lines";
@@ -47,12 +47,13 @@ public class ItemLineTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         ItemLine[]? itemLines = await response.Content.ReadFromJsonAsync<ItemLine[]>();
+        Xunit.Assert.NotNull(itemLines);
         Xunit.Assert.Equal(_itemLineCreate.Id, itemLines[0].Id);
         Xunit.Assert.Equal(_itemLineCreate.Name, itemLines[0].Name);
         Xunit.Assert.Equal(_itemLineCreate.Description, itemLines[0].Description);
     }
 
-    [Fact, TestPriority(18)]
+    [Fact, TestPriority(3)]
     public async Task GetItemLine()
     {
         var requestUri = "/api/v1/item_lines/1";
@@ -62,12 +63,23 @@ public class ItemLineTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         ItemLine? itemLine = await response.Content.ReadFromJsonAsync<ItemLine>();
+        Xunit.Assert.NotNull(itemLine);
         Xunit.Assert.Equal(_itemLineCreate.Id, itemLine.Id);
         Xunit.Assert.Equal(_itemLineCreate.Name, itemLine.Name);
         Xunit.Assert.Equal(_itemLineCreate.Description, itemLine.Description);
     }
 
-    [Fact, TestPriority(19)]
+    [Fact, TestPriority(4)]
+    public async Task GetItemLineNotFound()
+    {
+        var requestUri = "/api/v1/item_lines/3";
+        var response = await _client.GetAsync(requestUri);
+        var result = await response.Content.ReadAsStringAsync();
+        Xunit.Assert.NotNull(response);
+        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact, TestPriority(5)]
     public async Task UpdateItemLine()
     {
         // Description is updated from "Never gonna give you up" to "Never gonna let you down"
@@ -77,7 +89,7 @@ public class ItemLineTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact, TestPriority(20)]
+    [Fact, TestPriority(6)]
     public async Task GetUpdatedItemLine()
     {
         var requestUri = "/api/v1/item_lines/1";
@@ -87,12 +99,21 @@ public class ItemLineTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         ItemLine? itemLine = await response.Content.ReadFromJsonAsync<ItemLine>();
+        Xunit.Assert.NotNull(itemLine);
         Xunit.Assert.Equal(_itemLinePut.Id, itemLine.Id);
         Xunit.Assert.Equal(_itemLinePut.Name, itemLine.Name);
         Xunit.Assert.Equal(_itemLinePut.Description, itemLine.Description);
     }
-
-    [Fact, TestPriority(21)]
+    [Fact, TestPriority(7)]
+    public async Task GetItemLineItemsNotFound()
+    {
+        var requestUri = "/api/v1/item_lines/3/items";
+        var response = await _client.GetAsync(requestUri);
+        var result = await response.Content.ReadAsStringAsync();
+        Xunit.Assert.NotNull(response);
+        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+    [Fact, TestPriority(8)]
     public async Task GetItemLineItems()
     {
         var requestUri = "/api/v1/item_lines/1/items";
@@ -102,6 +123,7 @@ public class ItemLineTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         Item[]? items = await response.Content.ReadFromJsonAsync<Item[]>();
+        Xunit.Assert.NotNull(items);
         Xunit.Assert.Equal(_item.Uid, items[0].Uid);
         Xunit.Assert.Equal(_item.Code, items[0].Code);
         Xunit.Assert.Equal(_item.Description, items[0].Description);
@@ -118,22 +140,18 @@ public class ItemLineTest : BaseTest
         Xunit.Assert.Equal(_item.SupplierId, items[0].SupplierId);
         Xunit.Assert.Equal(_item.SupplierCode, items[0].SupplierCode);
         Xunit.Assert.Equal(_item.SupplierPartNumber, items[0].SupplierPartNumber);
-
-
-
     }
 
-    [Fact, TestPriority(22)]
-    public async Task GetWrongItemLine()
+    [Fact, TestPriority(9)]
+    public async Task GetItemLineNotFoundAgain()
     {
         var requestUri = "/api/v1/item_lines/2";
         var response = await _client.GetAsync(requestUri);
         var result = await response.Content.ReadAsStringAsync();
-        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Xunit.Assert.Equal("null", result);
+        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-    [Fact, TestPriority(23)]
+    [Fact, TestPriority(10)]
     public async Task DeleteItemLine()
     {
         var requestUri = "/api/v1/item_lines/1";
@@ -143,7 +161,7 @@ public class ItemLineTest : BaseTest
         Xunit.Assert.Equal("", result);
     }
 
-    [Fact, TestPriority(24)]
+    [Fact, TestPriority(11)]
     public async Task GetItemLineEmpty()
     {
         var requestUri = "/api/v1/item_lines";
@@ -152,7 +170,7 @@ public class ItemLineTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact, TestPriority(25)]
+    [Fact, TestPriority(12)]
     public async Task DeleteItem()
     {
         var requestUri = "/api/v1/items/P000005";
