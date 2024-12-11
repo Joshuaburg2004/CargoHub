@@ -14,6 +14,7 @@ namespace IntegrationTests
     {
         private Supplier _newsupplier = new Supplier(1, "SUP0001", "Lee, Parks and Johnson", "5989 Sullivan Drives", "Apt. 996", "Port Anitaburgh", "91688", "Illinois", "Czech Republic", "Toni Barnett", "363.541.7282x36825", "LPaJ-SUP0001");
         private Supplier _supplierToPut = new Supplier(1, "SUP0001", "Bob, Parks and Johnson", "5989 Sullivan Drives", "Apt. 996", "Port Anitaburgh", "91688", "Illinois", "Czech Republic", "Toni Barnett", "363.541.7282x36825", "LPaJ-SUP0001");
+        private Item _item = new Item("P000001", "ITM0001", "Item 1", "Item 1", "UPC0001", "Model 1", "Commodity 1", 1, 1, 1, 1, 1, 1, 1, "SUP0001", "SUP0001-ITM0001");
         public SupplierTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
         [Fact, TestPriority(1)]
         public async Task GetAllSuppliers()
@@ -53,7 +54,7 @@ namespace IntegrationTests
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Supplier? supplier = await response.Content.ReadFromJsonAsync<Supplier>();
-            
+
             Xunit.Assert.NotNull(supplier);
             Xunit.Assert.Equal(_newsupplier.Id, supplier.Id);
             Xunit.Assert.Equal(_newsupplier.Code, supplier.Code);
@@ -67,8 +68,41 @@ namespace IntegrationTests
             Xunit.Assert.Equal(_newsupplier.ContactName, supplier.ContactName);
             Xunit.Assert.Equal(_newsupplier.Phonenumber, supplier.Phonenumber);
             Xunit.Assert.Equal(_newsupplier.Reference, supplier.Reference);
+        }
 
-            }
+        [Fact, TestPriority(5)]
+        public async Task GetItemsSupplier()
+        {
+            var itemrequestUri = "/api/v1/items";
+            var itemresponse = await _client.PostAsJsonAsync(itemrequestUri, _item);
+            var itemresult = await itemresponse.Content.ReadAsStringAsync();
+
+            var requestUri = "/api/v1/suppliers/1/items";
+            var response = await _client.GetAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.NotNull(result);
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            List<Item>? items = await response.Content.ReadFromJsonAsync<List<Item>>();
+            Xunit.Assert.NotNull(items);
+            Xunit.Assert.Equal(_item.Uid, items[0].Uid);
+            Xunit.Assert.Equal(_item.Code, items[0].Code);
+            Xunit.Assert.Equal(_item.Description, items[0].Description);
+            Xunit.Assert.Equal(_item.ShortDescription, items[0].ShortDescription);
+            Xunit.Assert.Equal(_item.UpcCode, items[0].UpcCode);
+            Xunit.Assert.Equal(_item.ModelNumber, items[0].ModelNumber);
+            Xunit.Assert.Equal(_item.CommodityCode, items[0].CommodityCode);
+            Xunit.Assert.Equal(_item.ItemLine, items[0].ItemLine);
+            Xunit.Assert.Equal(_item.ItemGroup, items[0].ItemGroup);
+            Xunit.Assert.Equal(_item.ItemType, items[0].ItemType);
+            Xunit.Assert.Equal(_item.UnitPurchaseQuantity, items[0].UnitPurchaseQuantity);
+            Xunit.Assert.Equal(_item.UnitOrderQuantity, items[0].UnitOrderQuantity);
+            Xunit.Assert.Equal(_item.PackOrderQuantity, items[0].PackOrderQuantity);
+            Xunit.Assert.Equal(_item.SupplierId, items[0].SupplierId);
+            Xunit.Assert.Equal(_item.SupplierCode, items[0].SupplierCode);
+            Xunit.Assert.Equal(_item.SupplierPartNumber, items[0].SupplierPartNumber);
+        }
+
         [Fact, TestPriority(5)]
         public async Task PutSupplier()
         {
@@ -130,6 +164,55 @@ namespace IntegrationTests
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Xunit.Assert.Equal("[]", result);
+        }
+
+        [Fact, TestPriority(10)]
+        public async Task GetItemsSupplierNotFound()
+        {
+            var itemrequestUri = "/api/v1/items/P000001";
+            var itemresponse = await _client.DeleteAsync(itemrequestUri);
+
+            var requestUri = "/api/v1/suppliers/1/items";
+            var response = await _client.GetAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.NotNull(result);
+            Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact, TestPriority(11)]
+        public async Task DeleteSupplierIdNegative()
+        {
+            var requestUri = "/api/v1/suppliers/-1";
+            var response = await _client.DeleteAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact, TestPriority(12)]
+        public async Task DeleteSupplierNotFound()
+        {
+            var requestUri = "/api/v1/suppliers/1";
+            var response = await _client.DeleteAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact, TestPriority(13)]
+        public async Task UpdateSupplierIdNegative()
+        {
+            var requestUri = "/api/v1/suppliers/-1";
+            var response = await _client.PutAsJsonAsync(requestUri, _supplierToPut);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact, TestPriority(14)]
+        public async Task UpdateSupplierNotFound()
+        {
+            var requestUri = "/api/v1/suppliers/1";
+            var response = await _client.PutAsJsonAsync(requestUri, _supplierToPut);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
     }
 }
