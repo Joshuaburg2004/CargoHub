@@ -51,7 +51,7 @@ namespace CargoHub.Controllers.ControllersV2
             return Created("Created supplier", newSupplier);
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSupplier(int id)
+        public async Task<IActionResult> DeleteSupplier([FromRoute] int id)
         {
             if (id <= 0) return BadRequest("ID must be greater than 0");
             var supplier = await Suppliers.DeleteSupplier(id);
