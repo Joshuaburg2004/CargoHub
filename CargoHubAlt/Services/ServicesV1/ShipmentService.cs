@@ -281,5 +281,34 @@ namespace CargoHubAlt.Services.ServicesV1
             await _context.SaveChangesAsync();
             return shipment.Id;
         }
+        public async Task<bool> CommitShipmentById(int id)
+        {
+            if(id <= 0)
+                return false;
+            var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == id);
+            if(shipment == null)
+                return false;
+            Order? order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == shipment.OrderId);
+            if(order == null)
+                return false;
+            if(shipment.ShipmentStatus == "Pending"){
+                shipment.ShipmentStatus = "Transit";
+                /* 
+                The following code needs to be confirmed, will be checked with PO if this is intention.
+                Question is: Should order have itself updated and should the locations be updated based on the order?
+                Source Id should be inventory too.
+                */
+                order.OrderStatus = "Transit";
+                return true;
+            }
+            else if(shipment.ShipmentStatus == "Transit"){
+                shipment.ShipmentStatus = "Delivered";
+                order.OrderStatus = "Delivered";
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
     }
 }
