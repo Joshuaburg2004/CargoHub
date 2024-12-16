@@ -1,4 +1,5 @@
-public class EndpointAccesses{
+public class EndpointAccesses
+{
     public AccessLevel Clients;
     public AccessLevel Inventories;
     public AccessLevel Items;
@@ -11,5 +12,6 @@ public class EndpointAccesses{
     public AccessLevel Suppliers;
     public AccessLevel Transfers;
     public AccessLevel Warehouses;
+    public AccessLevel Backup;
 
 }
