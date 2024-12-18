@@ -171,7 +171,7 @@ namespace CargoHub.Controllers.ControllersV1
             }
             await _shipmentService.CommitShipmentById(id);
             _logger.LogInformation($"Committed shipment with id:{id}");
-            return Ok();
+            return Ok("Committed the shipment with id:" + id);
 
         }
     }
