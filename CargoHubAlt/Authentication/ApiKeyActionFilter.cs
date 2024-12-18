@@ -30,10 +30,30 @@ public class ApiKeyActionFilter : Attribute, IAsyncActionFilter
             Console.WriteLine("api_key is invalid");
             return;
         }
-        var path = context.Request.Path.ToString()
-            .Replace("/api/v1/", "")
-            .Replace("/api/v2/", "")
-            .Split("/");
+
+
+        int statusCode = CheckAccess(context.Request.Path, user, context.Request.Method);
+        if (statusCode == 401)
+        {
+            context.Response.StatusCode = 401;
+            Console.WriteLine("Access denied");
+            return;
+        }
+        await next();
+        context.Response.StatusCode = statusCode;
+        return;
+    }
+
+
+    // returns StatusCode from the endpoint, the user and the method (get, set, put, delete) of the function.
+
+    public int CheckAccess(PathString endpoint, User user, string method)
+    {
+        var path = endpoint.ToString()
+        .Replace("/api/v1/", "")
+        .Replace("/api/v2/", "")
+        .Split("/");
+
         AccessLevel? access = path[0] switch
         {
             "clients" => user.EndpointAccess.Clients,
@@ -48,48 +68,21 @@ public class ApiKeyActionFilter : Attribute, IAsyncActionFilter
             "suppliers" => user.EndpointAccess.Suppliers,
             "transfers" => user.EndpointAccess.Transfers,
             "warehouses" => user.EndpointAccess.Warehouses,
+            "backup" => user.EndpointAccess.Backup,
             _ => null
         };
-        if (access == null)
+        if (access is null)
         {
-            context.Response.StatusCode = 404;
             Console.WriteLine("Endpoint not found");
-            return;
+            return 404;
         }
-        int statusCode = CheckAccess(access, context.Request.Method);
-        if (statusCode == 401)
+        return method switch
         {
-            context.Response.StatusCode = 401;
-            Console.WriteLine("Access denied");
-            return;
-        }
-        await next();
-        context.Response.StatusCode = statusCode;
-        return;
-    }
-    // returns StatusCode
-    public int CheckAccess(AccessLevel access, string method)
-    {
-        if (access.Full)
-        {
-            return 200;
-        }
-        if (method == "GET" && access.Get)
-        {
-            return 200;
-        }
-        if (method == "POST" && access.Post)
-        {
-            return 200;
-        }
-        if (method == "PUT" && access.Put)
-        {
-            return 200;
-        }
-        if (method == "DELETE" && access.Delete)
-        {
-            return 200;
-        }
-        return 401;
+            "GET" => access.Get ? 200:401,
+            "POST" => access.Post ? 200:401,
+            "PUT" => access.Put ? 200:401,
+            "DELETE" => access.Delete ? 200:401,
+            _ => 401
+        };
     }
 }
