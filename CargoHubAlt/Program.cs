@@ -65,6 +65,7 @@ public class Program
         builder.Services.AddTransient<ILocationServiceV2, LocationServiceV2>();
         builder.Services.AddTransient<ISupplierServiceV2, SuppliersV2>();
         builder.Services.AddTransient<IOrderServiceV2, OrderServiceV2>();
+        builder.Services.AddTransient<IBackupService, BackupService>();
 
         builder.Services.AddScoped<ApiKeyActionFilter>();
         builder.Services.AddControllers();
