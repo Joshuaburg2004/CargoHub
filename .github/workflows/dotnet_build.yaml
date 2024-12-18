@@ -68,7 +68,7 @@ jobs:
   
       - name: Build Docker image
         run: |
-          docker build -t dockerfile  .
+          docker build -t integrationtest  .
   
       - name: Run Docker container with SQLite
         run: |
