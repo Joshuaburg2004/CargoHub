@@ -16,7 +16,7 @@ namespace CargoHub.Controllers.ControllersV2
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet()]
         public async Task<IActionResult> GetOrders()
         {
             List<Order>? orders = await _orderservice.GetOrders();
@@ -45,6 +45,14 @@ namespace CargoHub.Controllers.ControllersV2
             }
             _logger.LogInformation($"Order found with id: {id}");
             return Ok(order);
+        }
+
+        [HttpGet("pending")]
+        public async Task<IActionResult> GetPending()
+        {
+            IEnumerable<Order>? ToReturn = await this._orderservice.GetIncomingOrders();
+            if (ToReturn is null) return NotFound("No undelivered Orders found");
+            return Ok(ToReturn);
         }
 
         [HttpGet("{id}/items")]
