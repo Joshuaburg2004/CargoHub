@@ -71,8 +71,12 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ${{ env.Solution_Name }}
 
+      - name: Build all projects
+        run: |
+          dotnet build ${{ env.Solution_Name }} --no-restore --configuration Debug
+
       - name: Start the application
-        run: dotnet run ${{ env.Wap_Project_Path }} --no-build
+        run: dotnet run ${{ env.Wap_Project_Path }}
 
       - name: Execute tests
         run: |
