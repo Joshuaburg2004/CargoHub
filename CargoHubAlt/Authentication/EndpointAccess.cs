@@ -14,7 +14,7 @@ public class EndpointAccesses
     public AccessLevel Warehouses;
     public AccessLevel Backup;
 
-    public EndpointAccesses(AccessLevel Clients, AccessLevel Inventories, AccessLevel Items, AccessLevel ItemTypes, AccessLevel ItemGroups, AccessLevel ItemLines, AccessLevel Locations, AccessLevel Orders, AccessLevel Shipments, AccessLevel Suppliers, AccessLevel Transfers, AccessLevel Warehouses)
+    public EndpointAccesses(AccessLevel Clients, AccessLevel Inventories, AccessLevel Items, AccessLevel ItemTypes, AccessLevel ItemGroups, AccessLevel ItemLines, AccessLevel Locations, AccessLevel Orders, AccessLevel Shipments, AccessLevel Suppliers, AccessLevel Transfers, AccessLevel Warehouses, AccessLevel Backup)
     {
         this.Clients = Clients;
         this.Inventories = Inventories;
@@ -27,7 +27,8 @@ public class EndpointAccesses
         this.Shipments = Shipments;
         this.Suppliers = Suppliers;
         this.Transfers = Transfers;
-        this.Warehouses = Warehouses;   
+        this.Warehouses = Warehouses;
+        this.Backup = Backup;
     }
 
 }

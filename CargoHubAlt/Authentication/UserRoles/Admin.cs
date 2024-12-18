@@ -13,7 +13,8 @@ public class Admin: User
         Shipments: new AccessLevel(Access.True, true, true, true, true),
         Suppliers: new AccessLevel(Access.True, true, true, true, true),
         Transfers: new AccessLevel(Access.True, true, true, true, true),
-        Warehouses: new AccessLevel(Access.True, true, true, true, true)
+        Warehouses: new AccessLevel(Access.True, true, true, true, true),
+        Backup: new AccessLevel(Access.True, true, true, true, true)
     ))
     {
     }
