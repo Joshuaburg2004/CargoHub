@@ -54,12 +54,12 @@ jobs:
     # setup environment variables
     env:
       Solution_Name: ${{ github.workspace }}/CargoHubAspNet.sln
-      Test_Project_Path: ${{ github.workspace }}IntegrationTests/IntegrationTests.csproj
+      Test_Project_Path: ${{ github.workspace }}/IntegrationTests/IntegrationTests.csproj
       Wap_Project_Directory: ${{ github.workspace }}/CargoHubAlt
       Wap_Project_Path: ${{ github.workspace }}/CargoHubAlt/CargoHubAlt.csproj
       Test_Project_dll: ${{ github.workspace }}/IntegrationTests/bin/Debug/net8.0/CargoHubAlt.dll
       Coverage_Report_Folder: ${{ github.workspace }}/TestResults/coverageAction
-      Results_Directory: ${{ github.workspace }}TestResults/integrationTestResults
+      Results_Directory: ${{ github.workspace }}/TestResults/integrationTestResults
       Minimum_Code_Coverage: ${{ vars.MINIMUMCODECOVERAGE }}
 
     steps:
@@ -73,6 +73,10 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore ${{ env.Solution_Name }}
+
+      - name: Check API Response
+        run: |
+          curl -X GET http://localhost:3000/api/v1/supplier --header "API_KEY: a1b2c3d4e5" -v      
 
       - name: Execute tests
         run: |
