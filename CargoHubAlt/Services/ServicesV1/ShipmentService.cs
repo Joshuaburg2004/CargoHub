@@ -299,6 +299,16 @@ namespace CargoHubAlt.Services.ServicesV1
                 Source Id should be inventory too.
                 */
                 order.OrderStatus = "Transit";
+                var inventory = await _context.Inventories.FirstOrDefaultAsync(x => x.Id == order.SourceId);
+                if(inventory == null)
+                    return false;
+                inventory.UpdatedAt = Base.GetTimeStamp();
+                inventory.TotalOnHand -= shipment.TotalPackageCount;
+                inventory.TotalAllocated += shipment.TotalPackageCount;
+                _context.Inventories.Update(inventory);
+                _context.Orders.Update(order);
+                _context.Shipments.Update(shipment);
+                await _context.SaveChangesAsync();
                 return true;
             }
             else if(shipment.ShipmentStatus == "Transit"){
