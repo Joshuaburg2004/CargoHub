@@ -76,7 +76,7 @@ jobs:
           dotnet build ${{ env.Solution_Name }} --no-restore --configuration Debug
 
       - name: Start the application
-        run: dotnet run ${{ env.Wap_Project_Path }}
+        run: dotnet run --project ${{ env.Wap_Project_Path }}
 
       - name: Execute tests
         run: |
