@@ -70,13 +70,19 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore ${{ env.Solution_Name }}
-
+      
       - name: Build all projects
         run: |
           dotnet build ${{ env.Solution_Name }} --no-restore --configuration Debug
-
+    
       - name: Start the application
-        run: dotnet run --project ${{ env.Wap_Project_Path }} --no-build &
+        run: dotnet run --project ${{ env.Wap_Project_Path }} &
+    
+      - name: Wait for application to be ready
+        run: |
+          for i in {1..30}; do
+            curl -s http://localhost:3000 && break || sleep 1;
+          done
 
       - name: Execute tests
         run: |
