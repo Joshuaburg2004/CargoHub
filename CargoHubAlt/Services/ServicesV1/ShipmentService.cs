@@ -3,6 +3,7 @@ using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV1;
 using System.Text.Json;
+using System.Transactions;
 
 namespace CargoHubAlt.Services.ServicesV1
 {
@@ -298,22 +299,61 @@ namespace CargoHubAlt.Services.ServicesV1
                 Question is: Should order have itself updated and should the locations be updated based on the order?
                 Source Id should be inventory too.
                 */
+                var transaction = _context.Database.BeginTransaction();
+                foreach(var shipmentItem in order.Items)
+                {
+                    var inventories = _context.Inventories.Where(x => x.ItemId == shipmentItem.ItemId);
+                    foreach (var inventory in inventories)
+                    {
+                        // assume the python code means to iterate over the locations, because as is the inventories dont end up being stored in one location but in several (with a list of locations per inventory)
+                        // needs to be checked with PO
+                        foreach (int ider in inventory.Locations)
+                        {
+                            if (ider == order.SourceId)
+                            {
+                                inventory.TotalOnHand -= shipmentItem.Amount;
+                                inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
+                                inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
+                                _context.Inventories.Update(inventory);
+                            }
+                        }
+                    }
+                }
                 order.OrderStatus = "Transit";
-                var inventory = await _context.Inventories.FirstOrDefaultAsync(x => x.Id == order.SourceId);
-                if(inventory == null)
-                    return false;
-                inventory.UpdatedAt = Base.GetTimeStamp();
-                inventory.TotalOnHand -= shipment.TotalPackageCount;
-                inventory.TotalAllocated += shipment.TotalPackageCount;
-                _context.Inventories.Update(inventory);
                 _context.Orders.Update(order);
                 _context.Shipments.Update(shipment);
                 await _context.SaveChangesAsync();
+                transaction.Commit();
                 return true;
             }
             else if(shipment.ShipmentStatus == "Transit"){
                 shipment.ShipmentStatus = "Delivered";
+                var transaction = _context.Database.BeginTransaction();
+                foreach(var shipmentItem in order.Items)
+                {
+                    var inventories = _context.Inventories.Where(x => x.ItemId == shipmentItem.ItemId);
+                    foreach (var inventory in inventories)
+                    {
+                        // assume the python code means to iterate over the locations, because as is the inventories dont end up being stored in one location but in several (with a list of locations per inventory)
+                        // needs to be checked with PO
+                        foreach (int ider in inventory.Locations)
+                        {
+                            if (ider == order.ShipTo)
+                            {
+                                inventory.TotalOnHand -= shipmentItem.Amount;
+                                inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
+                                inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
+                                _context.Inventories.Update(inventory);
+                            }
+                        }
+                    }
+                }
+
                 order.OrderStatus = "Delivered";
+                _context.Shipments.Update(shipment);
+                _context.Orders.Update(order);
+                await _context.SaveChangesAsync();
+                transaction.Commit();
                 return true;
             }
             else{
