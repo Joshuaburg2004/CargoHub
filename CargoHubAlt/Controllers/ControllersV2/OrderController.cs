@@ -48,9 +48,9 @@ namespace CargoHub.Controllers.ControllersV2
         }
 
         [HttpGet("pending")]
-        public async Task<IActionResult> GetPending()
+        public async Task<IActionResult> GetIncoming()
         {
-            IEnumerable<Order>? ToReturn = await this._orderservice.GetIncomingOrders();
+            IEnumerable<Order>? ToReturn = await this._orderservice.GetPendingOrders();
             if (ToReturn is null) return NotFound("No undelivered Orders found");
             return Ok(ToReturn);
         }

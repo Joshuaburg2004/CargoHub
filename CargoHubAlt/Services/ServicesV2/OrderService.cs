@@ -35,9 +35,9 @@ namespace CargoHubAlt.Services.ServicesV2
             return null;
         }
 
-        public async Task<IEnumerable<Order>?> GetIncomingOrders()
+        public async Task<IEnumerable<Order>?> GetPendingOrders()
         {
-            List<Order> orders = await _context.Orders.Where(_ => _.OrderStatus != "Delivered").ToListAsync();
+            List<Order> orders = await _context.Orders.Where(_ => _.OrderStatus == "Pending").ToListAsync();
             
             return orders;
         }
