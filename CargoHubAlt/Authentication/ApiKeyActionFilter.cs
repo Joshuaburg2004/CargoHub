@@ -68,6 +68,7 @@ public class ApiKeyActionFilter : Attribute, IAsyncActionFilter
             "suppliers" => user.EndpointAccess.Suppliers,
             "transfers" => user.EndpointAccess.Transfers,
             "warehouses" => user.EndpointAccess.Warehouses,
+            "backup" => user.EndpointAccess.Backup,
             _ => null
         };
         if (access is null)

@@ -11,15 +11,16 @@ public abstract class User{
     }
 }
 
-public enum UserRoles
-{
-    Admin,
-    Analyst,
-    FloorManager,
-    InventoryManager,
-    Logistics,
-    Operative,
-    Sales,
-    SuperVisor,
-    WarehouseManager
-}
+// for the controller were that to happen
+// public enum UserRoles
+// {
+//     Admin,
+//     Analyst,
+//     FloorManager,
+//     InventoryManager,
+//     Logistics,
+//     Operative,
+//     Sales,
+//     SuperVisor,
+//     WarehouseManager
+// }
