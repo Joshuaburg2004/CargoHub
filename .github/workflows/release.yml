@@ -1,19 +1,28 @@
-# .github/release.yml
+name: Release Drafter
 
-changelog:
-  exclude:
-    labels:
-      - ignore-for-release
-  categories:
-    - title: Breaking Changes
-      labels:
-        - breaking-change
-    - title: New Features
-      labels:
-        - enhancement
-    - title: Testing
-      labels:
-        - tests
-    - title: Other Changes
-      labels:
-        - "*"
+on:
+  push:
+    branches:
+      - main
+      - release-test
+    workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update-release-draft:
+    name: Update Release Draft
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: release-drafter/release-drafter@v6
+        with:
+          name: next
+          tag: next
+          version: next
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
