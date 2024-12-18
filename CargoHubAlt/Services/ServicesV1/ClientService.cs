@@ -13,9 +13,15 @@ namespace CargoHubAlt.Services.ServicesV1
         {
             _cargoHubContext = context;
         }
-        public async Task<List<Client>> GetAllClients()
+        public async Task<PaginatedList<Client>> GetAllClients(int pageIndex)
         {
-            return await _cargoHubContext.Clients.ToListAsync();
+            var clients = await _cargoHubContext.Clients
+                .OrderBy(c => c.Id)
+                .Skip((pageIndex - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+            int count = _cargoHubContext.Clients.Count();
+            return new PaginatedList<Client>(clients, pageIndex, (int)Math.Ceiling(count / 30.0));
         }
         public async Task<Client?> GetClient(int id)
         {
