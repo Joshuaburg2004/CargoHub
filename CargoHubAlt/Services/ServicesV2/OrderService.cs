@@ -35,6 +35,12 @@ namespace CargoHubAlt.Services.ServicesV2
             return null;
         }
 
+        public async Task<IEnumerable<Order>?> GetPendingOrders()
+        {
+            List<Order> orders = await _context.Orders.Where(_ => _.OrderStatus == "Pending").ToListAsync();
+            
+            return orders;
+        }
         public async Task<List<OrderedItem>?> GetOrderedItems(int orderId)
         {
             Order? order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == orderId);
@@ -169,5 +175,7 @@ namespace CargoHubAlt.Services.ServicesV2
             await _context.SaveChangesAsync();
             return order.Id;
         }
+
+
     }
 }
