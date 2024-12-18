@@ -72,7 +72,7 @@ jobs:
         run: dotnet restore ${{ env.Solution_Name }}
 
       - name: Start the application
-        run: dotnet run --project ${{ env.Wap_Project_Path }} --no-build
+        run: dotnet run ${{ env.Wap_Project_Path }} --no-build
 
       - name: Execute tests
         run: |
