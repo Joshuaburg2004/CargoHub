@@ -46,7 +46,7 @@ jobs:
 
   run-integration-tests:
     needs: build
-    if: github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development')
+    if: github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development') || github.event_name == 'push'
     runs-on:
       ubuntu-latest # For a list of available runner types, refer to
       # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
