@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Create Release
-        run: gh release create ${{ github.ref }} --generate-notes
+      - name: Release Drafter
+        uses: release-drafter/release-drafter@v6r
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
