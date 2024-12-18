@@ -13,7 +13,8 @@ public class Operative: User
         Shipments: new AccessLevel(Access.True, true, false, false, false),
         Suppliers: new AccessLevel(Access.False, true, false, false, false),
         Transfers: new AccessLevel(Access.True, true, true, true, false),
-        Warehouses: new AccessLevel(Access.False, true, false, false, false)
+        Warehouses: new AccessLevel(Access.False, true, false, false, false),
+        Backup: new AccessLevel(Access.False, false, false, false, false)
     ))
     {
         this.WarehouseID = WarehouseID;

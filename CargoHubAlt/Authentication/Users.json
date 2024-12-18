@@ -283,7 +283,298 @@
       },
       "Backup": {
         "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      }
+    }
+  },
+  {
+    "ApiKey": "p6q7r8s9t0",
+    "App": "InventoryManager",
+    "EndpointAccess": {
+      "Clients": {
+        "GetAll": 0,
         "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Inventories": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "Items": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "ItemTypes": {
+        "GetAll": 1,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": false
+      },
+      "ItemGroups": {
+        "GetAll": 1,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": false
+      },
+      "ItemLines": {
+        "GetAll": 1,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": false
+      },
+      "Locations": {
+        "GetAll": 2,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "Orders": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Shipments": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Suppliers": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Transfers": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "Warehouses": {
+        "GetAll": 1,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Backup": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      }
+    }
+  },
+  {
+    "ApiKey": "u1v2w3x4y5",
+    "App": "Logistics",
+    "EndpointAccess": {
+      "Clients": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": false
+      },
+      "Inventories": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": false
+      },
+      "Items": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": false,
+        "Delete": false
+      },
+      "ItemTypes": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "ItemGroups": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "ItemLines": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Locations": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Orders": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": false
+      },
+      "Shipments": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": false
+      },
+      "Suppliers": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": false
+      },
+      "Transfers": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Warehouses": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Backup": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      }
+    }
+  },
+  {
+    "ApiKey": "z6a7b8c9d0",
+    "App": "Supervisor",
+    "EndpointAccess": {
+      "Clients": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Inventories": {
+        "GetAll": 2,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Items": {
+        "GetAll": 2,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "ItemTypes": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "ItemGroups": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "ItemLines": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Locations": {
+        "GetAll": 2,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Orders": {
+        "GetAll": 2,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Shipments": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Suppliers": {
+        "GetAll": 1,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Transfers": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": false
+      },
+      "Warehouses": {
+        "GetAll": 1,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Backup": {
+        "GetAll": 1,
+        "Get": false,
         "Post": false,
         "Put": false,
         "Delete": false

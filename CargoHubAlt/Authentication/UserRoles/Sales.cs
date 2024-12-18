@@ -13,7 +13,8 @@ public class Sales: User
         Shipments: new AccessLevel(Access.True, true, false, false, false),
         Suppliers: new AccessLevel(Access.True, true, true, true, false),
         Transfers: new AccessLevel(Access.False, false, false, false, false),
-        Warehouses: new AccessLevel(Access.True, true, false, false, false)
+        Warehouses: new AccessLevel(Access.True, true, false, false, false),
+        Backup: new AccessLevel(Access.False, false, false, false, false)
     ))
     {}
 }

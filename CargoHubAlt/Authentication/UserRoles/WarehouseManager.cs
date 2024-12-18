@@ -13,7 +13,8 @@ public class WarehouseManager: User
         Shipments: new AccessLevel(Access.True, true, true, true, true),
         Suppliers: new AccessLevel(Access.True, true, true, true, true),
         Transfers: new AccessLevel(Access.True, true, true, true, true),
-        Warehouses: new AccessLevel(Access.True, true, true, false, false)
+        Warehouses: new AccessLevel(Access.True, true, true, false, false),
+        Backup: new AccessLevel(Access.False, false, false, false, false)
     ))
     {}
 }
