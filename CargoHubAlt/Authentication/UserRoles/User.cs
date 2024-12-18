@@ -10,3 +10,16 @@ public abstract class User{
         this.EndpointAccess = endpointAccess;
     }
 }
+
+public enum UserRoles
+{
+    Admin,
+    Analyst,
+    FloorManager,
+    InventoryManager,
+    Logistics,
+    Operative,
+    Sales,
+    SuperVisor,
+    WarehouseManager
+}
