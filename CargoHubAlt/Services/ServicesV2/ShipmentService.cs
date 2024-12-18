@@ -281,5 +281,83 @@ namespace CargoHubAlt.Services.ServicesV2
             await _context.SaveChangesAsync();
             return shipment.Id;
         }
+        public async Task<bool> CommitShipmentById(int id)
+        {
+            if(id <= 0)
+                return false;
+            var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == id);
+            if(shipment == null)
+                return false;
+            Order? order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == shipment.OrderId);
+            if(order == null)
+                return false;
+            if(shipment.ShipmentStatus == "Pending"){
+                shipment.ShipmentStatus = "Transit";
+                /* 
+                The following code needs to be confirmed, will be checked with PO if this is intention.
+                Question is: Should order have itself updated and should the locations be updated based on the order?
+                Source Id should be inventory too.
+                */
+                var transaction = _context.Database.BeginTransaction();
+                foreach(var shipmentItem in order.Items)
+                {
+                    var inventories = _context.Inventories.Where(x => x.ItemId == shipmentItem.ItemId);
+                    foreach (var inventory in inventories)
+                    {
+                        // assume the python code means to iterate over the locations, because as is the inventories dont end up being stored in one location but in several (with a list of locations per inventory)
+                        // needs to be checked with PO
+                        foreach (int ider in inventory.Locations)
+                        {
+                            if (ider == order.SourceId)
+                            {
+                                inventory.TotalOnHand -= shipmentItem.Amount;
+                                inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
+                                inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
+                                _context.Inventories.Update(inventory);
+                            }
+                        }
+                    }
+                }
+                order.OrderStatus = "Transit";
+                _context.Orders.Update(order);
+                _context.Shipments.Update(shipment);
+                await _context.SaveChangesAsync();
+                transaction.Commit();
+                return true;
+            }
+            else if(shipment.ShipmentStatus == "Transit"){
+                shipment.ShipmentStatus = "Delivered";
+                var transaction = _context.Database.BeginTransaction();
+                foreach(var shipmentItem in order.Items)
+                {
+                    var inventories = _context.Inventories.Where(x => x.ItemId == shipmentItem.ItemId);
+                    foreach (var inventory in inventories)
+                    {
+                        // assume the python code means to iterate over the locations, because as is the inventories dont end up being stored in one location but in several (with a list of locations per inventory)
+                        // needs to be checked with PO
+                        foreach (int ider in inventory.Locations)
+                        {
+                            if (ider == order.ShipTo)
+                            {
+                                inventory.TotalOnHand -= shipmentItem.Amount;
+                                inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
+                                inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
+                                _context.Inventories.Update(inventory);
+                            }
+                        }
+                    }
+                }
+
+                order.OrderStatus = "Delivered";
+                _context.Shipments.Update(shipment);
+                _context.Orders.Update(order);
+                await _context.SaveChangesAsync();
+                transaction.Commit();
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
     }
 }
