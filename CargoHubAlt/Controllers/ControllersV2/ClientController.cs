@@ -18,7 +18,7 @@ namespace CargoHubAlt.Controllers.ControllersV2
         [HttpGet()]
         public async Task<IActionResult> GetAllClients([FromQuery] int? pageIndex)
         {
-            List<Client>? clients = await Clients.GetAllClients(pageIndex);
+            List<Client> clients = await Clients.GetAllClients(pageIndex);
             _logger.LogInformation($"Found {clients.Count} clients");
             return Ok(clients);
         }

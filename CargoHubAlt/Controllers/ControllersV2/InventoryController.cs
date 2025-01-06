@@ -15,9 +15,10 @@ namespace CargoHubAlt.Controllers.ControllersV2
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetAllInventories()
+        public async Task<IActionResult> GetAllInventories([FromQuery] int? pageIndex)
         {
-            return Ok(await this._inventoryService.GetAllInventories());
+            IEnumerable<Inventory> Inventories = await this._inventoryService.GetAllInventories(pageIndex);
+            return Ok(Inventories);
         }
 
         [HttpGet("{id}")]
