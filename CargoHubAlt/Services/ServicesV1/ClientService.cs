@@ -13,15 +13,15 @@ namespace CargoHubAlt.Services.ServicesV1
         {
             _cargoHubContext = context;
         }
-        public async Task<PaginatedList<Client>> GetAllClients()
+        public async Task<List<Client>> GetAllClients()
         {
             var clients = await _cargoHubContext.Clients
                 .OrderBy(c => c.Id)
                 .ToListAsync();
             int count = _cargoHubContext.Clients.Count();
-            return new PaginatedList<Client>(clients, 0, (int)Math.Ceiling(count / 30.0));
+            return clients;
         }
-        public async Task<PaginatedList<Client>> GetAllClients(int? pageIndex)
+        public async Task<List<Client>> GetAllClients(int? pageIndex)
         {
             if(pageIndex == null)
             {
@@ -34,7 +34,7 @@ namespace CargoHubAlt.Services.ServicesV1
                 .Take(30)
                 .ToListAsync();
             int count = _cargoHubContext.Clients.Count();
-            return new PaginatedList<Client>(clients, page, (int)Math.Ceiling(count / 30.0));
+            return clients;
         }
         public async Task<Client?> GetClient(int id)
         {
