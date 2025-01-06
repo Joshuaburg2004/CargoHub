@@ -6,6 +6,7 @@ namespace CargoHubAlt.Interfaces.InterfacesV2
     {
         public Task<ItemType?> GetItemTypeById(int Id);
         public Task<IEnumerable<ItemType>> GetAllItemType();
+        public Task<IEnumerable<ItemType>> GetAllItemType(int? pageIndex);
         public Task<IEnumerable<Item>?> GetItemsfromItemTypeById(int Id);
         public Task<int?> AddItemType(ItemType itemline);
         public Task<ItemType?> UpdateItemType(int Id, ItemType itemline);
