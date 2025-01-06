@@ -6,9 +6,10 @@ namespace CargoHubAlt.Services.ServicesV2
     {
         public BackupService() { }
 
+        private string backupRoot = $"./Backups";
+
         public async Task<(bool, string)> CreateBackup()
         {
-            string backupRoot = $"./Backups";
 
             try
             {
@@ -19,7 +20,7 @@ namespace CargoHubAlt.Services.ServicesV2
                 }
 
                 // Create a new folder for the backup
-                string timestamp = DateTime.Now.ToString("dd-MM-yyyy_HH:mm:ss");
+                string timestamp = DateTime.Now.ToString("dd_MM_yyyy_HH-mm-ss");
                 string backupFolderPath = Path.Combine(backupRoot, timestamp);
                 Directory.CreateDirectory(backupFolderPath);
 
@@ -77,5 +78,98 @@ namespace CargoHubAlt.Services.ServicesV2
                 return (false, $"Error during logs backup: {ex}");
             }
         }
+        public async Task<(bool,string)> Uploadbackup(string backupFolderPath)
+        {
+            try
+            {
+                string folderfound = Path.Combine(this.backupRoot, backupFolderPath);
+                if (!Directory.Exists(folderfound))
+                    return (false, "folder does not exist");
+                string backuplogsfolder = Path.Combine(folderfound, "LogsBackup");
+                if (!Directory.Exists(backuplogsfolder))
+                {
+                    (bool success, string fail) = await this.uploadBackupLogs(backuplogsfolder);
+                }
+
+                return (true, "nothing happened");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error during logs backup: {ex}");
+            }
+        }
+
+
+        public async Task<(bool,string)> uploadBackupLogs(string backupFolderPath)
+        {
+            string baseLogsFolder = "./Logs";
+            string errorMessages = "";
+
+
+            if (!Directory.Exists(backupFolderPath))
+                return (false, "the back up folder searched for has no logsbackup");
+            bool clientlogsSuccess = false;
+            string clientlogname = "ClientController.log";
+
+            if (Path.Exists(Path.Combine(backupFolderPath, clientlogname)))
+            {
+                File.Copy(Path.Combine(backupFolderPath, clientlogname), Path.Combine(baseLogsFolder, clientlogname));
+                clientlogsSuccess = true;
+            }
+            else 
+            {
+                errorMessages += "the Client log folder does not exist;";
+            }
+
+            bool itemLogSuccess = false;
+            string itemLogName = "ItemController.log";
+
+            if (Path.Exists(Path.Combine(backupFolderPath, itemLogName)))
+            {
+                File.Copy(Path.Combine(backupFolderPath, itemLogName), Path.Combine(baseLogsFolder, itemLogName));
+                itemLogSuccess = true;
+            }
+            else 
+            {
+                errorMessages += "the Item log folder does not exist;";
+            }
+
+            bool OrderLogSuccess = false;
+            string OrderLogName = "OrderController.log";
+
+            if (Path.Exists(Path.Combine(backupFolderPath, OrderLogName)))
+            {
+                File.Copy(Path.Combine(backupFolderPath, OrderLogName), Path.Combine(baseLogsFolder, OrderLogName));
+                OrderLogSuccess = true;
+            }
+            else 
+            {
+                errorMessages += "the Order log folder does not exist;";
+            }
+
+            bool ShipmentLogSuccess = false;
+            string ShipmentLogName = "ShipmentController.log";
+
+            if (Path.Exists(Path.Combine(backupFolderPath, ShipmentLogName)))
+            {
+                File.Copy(Path.Combine(backupFolderPath, ShipmentLogName), Path.Combine(baseLogsFolder, ShipmentLogName));
+                ShipmentLogSuccess = true;
+            }
+            else 
+            {
+                errorMessages += "the Shipment log folder does not exist;";
+            }
+
+            if (clientlogsSuccess && itemLogSuccess && OrderLogSuccess && ShipmentLogSuccess)
+            {
+                return (true, errorMessages);
+            }
+
+            return (false, errorMessages);
+
+        }
+
     }
+
+
 }
