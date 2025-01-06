@@ -139,6 +139,11 @@ GET http://localhost:3000/api/v1/item_lines
 API_KEY: a1b2c3d4e5
 ###
 
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/item_lines?pageIndex=1
+API_KEY: a1b2c3d4e5
+###
+
 GET http://localhost:3000/api/v1/item_lines/1
 API_KEY: a1b2c3d4e5
 ###
