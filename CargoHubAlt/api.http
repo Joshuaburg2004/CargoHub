@@ -628,7 +628,11 @@ API_KEY: a1b2c3d4e5
 // this is everything for the transfers
 GET http://localhost:3000/api/v1/transfers
 API_KEY: a1b2c3d4e5
+###
 
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/transfers?pageIndex=1
+API_KEY: a1b2c3d4e5
 ###
 
 GET http://localhost:3000/api/v1/transfers/1
