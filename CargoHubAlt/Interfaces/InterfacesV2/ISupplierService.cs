@@ -6,6 +6,7 @@ namespace CargoHubAlt.Interfaces.InterfacesV2
     {
         public Task<Supplier?> GetSupplier(int Id);
         public Task<List<Supplier>> GetAllSuppliers();
+        public Task<List<Supplier>> GetAllSuppliers(int? pageIndex);
         public Task<List<Item>?> GetItemsfromSupplierById(int Id);
         public Task<int?> AddSupplier(Supplier supplier);
         public Task<Supplier?> UpdateSupplier(int Id, Supplier supplier);

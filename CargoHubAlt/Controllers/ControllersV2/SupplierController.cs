@@ -15,9 +15,9 @@ namespace CargoHub.Controllers.ControllersV2
             Suppliers = suppliers;
         }
         [HttpGet()]
-        public async Task<IActionResult> GetAllSuppliers()
+        public async Task<IActionResult> GetAllSuppliers([FromQuery] int? pageIndex)
         {
-            var suppliers = await Suppliers.GetAllSuppliers();
+            var suppliers = await Suppliers.GetAllSuppliers(pageIndex);
             return Ok(suppliers);
         }
         [HttpGet("{id}")]

@@ -17,6 +17,20 @@ namespace CargoHubAlt.Services.ServicesV2
         {
             return await cargoHubContext.Suppliers.ToListAsync();
         }
+        public async Task<List<Supplier>> GetAllSuppliers(int? pageIndex)
+        {
+            if(pageIndex == null)
+            {
+                return await GetAllSuppliers();
+            }
+            int page = (int)pageIndex;
+            var suppliers = await cargoHubContext.Suppliers
+                .OrderBy(s => s.Id)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+            return suppliers;
+        }
         public async Task<Supplier?> GetSupplier(int id)
         {
             return await cargoHubContext.Suppliers.FindAsync(id);
