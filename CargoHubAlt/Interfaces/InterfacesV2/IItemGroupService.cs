@@ -7,6 +7,7 @@ namespace CargoHubAlt.Interfaces.InterfacesV2
         public Task<ItemGroup?> FindItemGroup(int Id);
         public Task<IEnumerable<ItemGroup?>> FindManyItemGroup(IEnumerable<int> Ids);
         public Task<IEnumerable<ItemGroup>> GetAllItemGroup();
+        public Task<IEnumerable<ItemGroup>> GetAllItemGroup(int? pageIndex);
         public Task<IEnumerable<Item>?> GetItemsfromItemGroupById(int id);
 
         public Task<int?> AddItemGroup(ItemGroup toAdd);
