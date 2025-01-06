@@ -6,10 +6,10 @@ using CargoHubAlt.Interfaces.InterfacesV2;
 
 namespace CargoHubAlt.Services.ServicesV2
 {
-    public class SuppliersV2 : ISupplierServiceV2
+    public class SupplierServiceV2 : ISupplierServiceV2
     {
         private readonly CargoHubContext cargoHubContext;
-        public SuppliersV2(CargoHubContext context)
+        public SupplierServiceV2(CargoHubContext context)
         {
             cargoHubContext = context;
         }
