@@ -13,15 +13,28 @@ namespace CargoHubAlt.Services.ServicesV1
         {
             _cargoHubContext = context;
         }
-        public async Task<PaginatedList<Client>> GetAllClients(int pageIndex)
+        public async Task<PaginatedList<Client>> GetAllClients()
         {
             var clients = await _cargoHubContext.Clients
                 .OrderBy(c => c.Id)
-                .Skip((pageIndex - 1) * 30)
+                .ToListAsync();
+            int count = _cargoHubContext.Clients.Count();
+            return new PaginatedList<Client>(clients, 0, (int)Math.Ceiling(count / 30.0));
+        }
+        public async Task<PaginatedList<Client>> GetAllClients(int? pageIndex)
+        {
+            if(pageIndex == null)
+            {
+                return await GetAllClients();
+            }
+            int page = (int)pageIndex;
+            var clients = await _cargoHubContext.Clients
+                .OrderBy(c => c.Id)
+                .Skip((page - 1) * 30)
                 .Take(30)
                 .ToListAsync();
             int count = _cargoHubContext.Clients.Count();
-            return new PaginatedList<Client>(clients, pageIndex, (int)Math.Ceiling(count / 30.0));
+            return new PaginatedList<Client>(clients, page, (int)Math.Ceiling(count / 30.0));
         }
         public async Task<Client?> GetClient(int id)
         {
