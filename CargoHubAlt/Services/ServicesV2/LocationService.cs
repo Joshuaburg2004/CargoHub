@@ -15,6 +15,16 @@ namespace CargoHubAlt.Services.ServicesV2
         }
 
         public async Task<List<Location>> GetAllLocations() => await _context.Locations.ToListAsync();
+        public async Task<List<Location>> GetAllLocations(int? pageIndex)
+        {
+            if (pageIndex == null) return await GetAllLocations();
+            int page = (int)pageIndex;
+            return await _context.Locations
+                .OrderBy(c => c.Id)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+        }
 
         public async Task<Location?> GetOneLocation(int id) => await _context.Locations.FirstOrDefaultAsync(x => x.Id == id);
 
