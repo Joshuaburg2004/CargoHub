@@ -15,26 +15,7 @@ namespace CargoHubAlt.Services.ServicesV1
         }
         public async Task<List<Client>> GetAllClients()
         {
-            var clients = await _cargoHubContext.Clients
-                .OrderBy(c => c.Id)
-                .ToListAsync();
-            int count = _cargoHubContext.Clients.Count();
-            return clients;
-        }
-        public async Task<List<Client>> GetAllClients(int? pageIndex)
-        {
-            if(pageIndex == null)
-            {
-                return await GetAllClients();
-            }
-            int page = (int)pageIndex;
-            var clients = await _cargoHubContext.Clients
-                .OrderBy(c => c.Id)
-                .Skip((page - 1) * 30)
-                .Take(30)
-                .ToListAsync();
-            int count = _cargoHubContext.Clients.Count();
-            return clients;
+            return await _cargoHubContext.Clients.ToListAsync();
         }
         public async Task<Client?> GetClient(int id)
         {
