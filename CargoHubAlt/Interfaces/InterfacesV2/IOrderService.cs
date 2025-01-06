@@ -5,6 +5,7 @@ namespace CargoHubAlt.Interfaces.InterfacesV2
     public interface IOrderServiceV2
     {
         public Task<List<Order>?> GetOrders();
+        public Task<List<Order>?> GetOrders(int? pageIndex);
         public Task<Order?> GetOrder(int orderId);
         public Task<IEnumerable<Order>?> GetPendingOrders();
         public Task<List<OrderedItem>?> GetOrderedItems(int orderId);

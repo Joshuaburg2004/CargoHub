@@ -17,9 +17,9 @@ namespace CargoHub.Controllers.ControllersV2
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetOrders()
+        public async Task<IActionResult> GetOrders([FromQuery] int? pageIndex)
         {
-            List<Order>? orders = await _orderservice.GetOrders();
+            List<Order>? orders = await _orderservice.GetOrders(pageIndex);
             if (orders == null || orders.Count == 0)
             {
                 _logger.LogInformation("No orders found");
