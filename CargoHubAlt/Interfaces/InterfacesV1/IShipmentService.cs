@@ -14,5 +14,6 @@ namespace CargoHubAlt.Interfaces.InterfacesV1
         public Task<Shipment?> UpdateItemsInShipment(int id, List<ShipmentItem> items);
         public Task UpdateOrdersInShipment(int id, List<int> orders);
         public Task LoadFromJson(string path);
+        public Task<bool> CommitShipmentById(int id);
     }
 }

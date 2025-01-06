@@ -161,5 +161,17 @@ namespace CargoHub.Controllers.ControllersV1
             await _shipmentService.LoadFromJson(path);
             return Ok();
         }
+        [HttpPut("{id}/commit")]
+        public async Task<IActionResult> Commit([FromRoute] int id)
+        {
+            if (id <= 0)
+            {
+                _logger.LogInformation("Invalid id");
+                return BadRequest();
+            }
+            await _shipmentService.CommitShipmentById(id);
+            _logger.LogInformation($"Committed shipment with id:{id}");
+            return Ok($"Committed the shipment with id:{id}");
+        }
     }
 }
