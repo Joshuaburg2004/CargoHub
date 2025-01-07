@@ -2,9 +2,9 @@ using static Abstracta.JmeterDsl.JmeterDsl;
 
 namespace PerformanceTests
 {
-    public class SupplierPerformanceTest : BaseTest
+    public class ItemTypePerformanceTest : BaseTest
     {
-        public string requestUri = $"{RequestUri}/api/v1/suppliers";
+        public string requestUri = $"{RequestUri}/api/v1/item_types";
         [Fact]
         public void GetAllPerformanceTest()
         {
@@ -13,7 +13,7 @@ namespace PerformanceTests
                     HttpSampler(requestUri).Method(HttpMethod.Get.Method).Header("API_KEY", API_KEY)
                 ),
                 //this is just to log details of each request stats
-                JtlWriter("supplier.jtls")
+                JtlWriter("itemtype.jtls")
             // .WriteAllFields() for more information
 
             ).Run();
@@ -28,7 +28,7 @@ namespace PerformanceTests
                     HttpSampler(requestUri).Method(HttpMethod.Get.Method).Header("API_KEY", API_KEY).Param("id", "1")
                 ),
                 //this is just to log details of each request stats
-                JtlWriter("supplier.jtls")
+                JtlWriter("itemtype.jtls")
             // .WriteAllFields() for more information
 
             ).Run();
@@ -36,14 +36,14 @@ namespace PerformanceTests
         }
 
         [Fact]
-        public void GetSupplierItems10Users2RequestsPerformanceTest()
+        public void GetItems10Users2RequestsPerformanceTest()
         {
             var stats = TestPlan(
                 ThreadGroup(10, 2,
                     HttpSampler($"{requestUri}/1/items").Method(HttpMethod.Get.Method).Header("API_KEY", API_KEY)
                 ),
                 //this is just to log details of each request stats
-                JtlWriter("supplier.jtls")
+                JtlWriter("itemtype.jtls")
             // .WriteAllFields() for more information
 
             ).Run();
