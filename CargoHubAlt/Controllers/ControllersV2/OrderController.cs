@@ -22,10 +22,8 @@ namespace CargoHub.Controllers.ControllersV2
             List<Order>? orders = await _orderservice.GetOrders();
             if (orders == null || orders.Count == 0)
             {
-                _logger.LogInformation("No orders found");
                 return NotFound();
             }
-            _logger.LogInformation($"Found {orders.Count} orders");
             return Ok(orders);
         }
 
@@ -34,16 +32,13 @@ namespace CargoHub.Controllers.ControllersV2
         {
             if (id <= 0)
             {
-                _logger.LogInformation("Invalid id");
                 return BadRequest();
             }
             Order? order = await _orderservice.GetOrder(id);
             if (order == null)
             {
-                _logger.LogInformation($"No order found with id: {id}");
                 return NotFound();
             }
-            _logger.LogInformation($"Order found with id: {id}");
             return Ok(order);
         }
 
@@ -60,16 +55,13 @@ namespace CargoHub.Controllers.ControllersV2
         {
             if (id <= 0)
             {
-                _logger.LogInformation("Invalid id");
                 return BadRequest();
             }
             List<OrderedItem>? items = await _orderservice.GetOrderedItems(id);
             if (items == null)
             {
-                _logger.LogInformation($"No items found for order with id: {id}");
                 return NotFound();
             }
-            _logger.LogInformation($"Items found for order with id: {id}");
             return Ok(items);
         }
 
@@ -78,12 +70,10 @@ namespace CargoHub.Controllers.ControllersV2
         {
             if (order == null)
             {
-                _logger.LogInformation("Order is null");
                 return BadRequest("Order is null");
             }
             else if (!await _orderservice.AddOrder(order))
             {
-                _logger.LogInformation("Order not added");
                 return NotFound("Order not added");
             }
             _logger.LogInformation($"Order with id: {order.Id} added");
@@ -95,15 +85,10 @@ namespace CargoHub.Controllers.ControllersV2
         {
             if (id <= 0 || order == null)
             {
-                _logger.LogInformation("Invalid id or order");
                 return BadRequest();
             }
-            else if (!await _orderservice.UpdateOrder(order))
-            {
-                _logger.LogInformation("Order not updated");
-                return NotFound();
-            }
-            _logger.LogInformation($"Order with id: {id} updated");
+            string result = await _orderservice.UpdateOrder(order);
+            _logger.LogInformation($"Order with id: {id} updated, changed fields: {result}");
             return Ok();
         }
 
@@ -112,15 +97,10 @@ namespace CargoHub.Controllers.ControllersV2
         {
             if (id <= 0 || items == null)
             {
-                _logger.LogInformation("Invalid id or items");
                 return BadRequest();
             }
-            else if (!await _orderservice.UpdateOrderedItems(id, items))
-            {
-                _logger.LogInformation("Items not updated");
-                return NotFound();
-            }
-            _logger.LogInformation($"Items for order with id: {id} updated");
+            string ChangedFields = await _orderservice.UpdateOrderedItems(id, items);
+            _logger.LogInformation($"Items for order with id: {id} updated, changed fields: {ChangedFields}");
             return Ok();
         }
 
@@ -129,12 +109,10 @@ namespace CargoHub.Controllers.ControllersV2
         {
             if (id <= 0)
             {
-                _logger.LogInformation("Invalid id");
                 return BadRequest();
             }
             else if (!await _orderservice.RemoveOrder(id))
             {
-                _logger.LogInformation("Order not removed");
                 return NotFound();
             }
             _logger.LogInformation($"Order with id: {id} removed");
@@ -144,7 +122,6 @@ namespace CargoHub.Controllers.ControllersV2
         public async Task<IActionResult> LoadClient([FromRoute] string path)
         {
             await _orderservice.LoadFromJson(path);
-            _logger.LogInformation($"Orders loaded from json path: {path}");
             return Ok();
         }
     }
