@@ -159,7 +159,6 @@ namespace IntegrationTests
             var requesterUri = "/api/v1/inventories";
             var responses = await _client.PostAsJsonAsync(requesterUri, new Inventory(10689, "P010689", "Seamless national success", "vzC00315i", new List<int>() { 10054, 18554, 16916, 4855, 23812, 23319, 23080, 317410054, 18554, 16916, 4855, 23812, 23319, 23080, 3174 }, 191, 0, 26, 0, 165));
             var resulter = await responses.Content.ReadAsStringAsync();
-            Console.Error.WriteLine(resulter);
             Xunit.Assert.Equal(HttpStatusCode.Created, responses.StatusCode);
             var requestUri = "/api/v1/shipments/1/items";
             var response = await _client.PutAsJsonAsync(requestUri, _itemPutted);
