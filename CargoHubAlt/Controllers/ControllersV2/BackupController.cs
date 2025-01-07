@@ -20,5 +20,13 @@ namespace CargoHubAlt.Controllers.ControllersV2
             var succes = await _backupService.CreateBackup();
             return Ok(succes.Item2);
         }
+
+        [HttpPost("{toUpload}")]
+        public async Task<IActionResult> uploadBackup([FromRoute] string toUpload)
+        {
+            var succes = await _backupService.UploadBackupFull(toUpload);
+            if (succes.Item1 == false) return BadRequest(succes.Item2);
+            return Ok(succes.Item2);
+        }
     }
 }
