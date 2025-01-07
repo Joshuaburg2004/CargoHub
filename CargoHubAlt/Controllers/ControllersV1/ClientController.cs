@@ -52,18 +52,20 @@ namespace CargoHubAlt.Controllers.ControllersV1
         [HttpPost()]
         public async Task<IActionResult> AddClient([FromBody] Client client)
         {
+            var apiKey = Request.Headers["api_key"];
             if (client == null)
             {
                 return BadRequest("Client cannot be null.");
             }
             await Clients.AddClient(client);
-            _logger.LogInformation($"Created new client with id:{client.Id}");
+            _logger.LogInformation($"Created new client with id:{client.Id}, ApiKey: {apiKey}");
             return Created("Created client:", client);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateClient([FromRoute] int id, [FromBody] Client client)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id < 0)
             {
                 return BadRequest("ID cannot be smaller than 0.");
@@ -73,18 +75,19 @@ namespace CargoHubAlt.Controllers.ControllersV1
                 return BadRequest("Client cannot be null.");
             }
             var changedFields = await Clients.UpdateClient(id, client);
-            _logger.LogInformation($"Updated client with id:{id}, changed fields: {changedFields}");
+            _logger.LogInformation($"Updated client with id:{id}, changed fields: {changedFields}, ApiKey: {apiKey}");
             return Ok();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClient([FromRoute] int id)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id < 0)
             {
                 return BadRequest("ID cannot be smaller than 0.");
             }
             await Clients.RemoveClient(id);
-            _logger.LogInformation($"Deleted client with id:{id}");
+            _logger.LogInformation($"Deleted client with id:{id}, ApiKey: {apiKey}");
             return Ok();
         }
         [HttpPost("load/{path}")]

@@ -60,6 +60,7 @@ namespace CargoHub.Controllers.ControllersV1
         [HttpPost]
         public async Task<IActionResult> AddOrder([FromBody] Order order)
         {
+            var apiKey = Request.Headers["api_key"];
             if (order == null)
             {
                 return BadRequest("Order is null");
@@ -68,37 +69,40 @@ namespace CargoHub.Controllers.ControllersV1
             {
                 return NotFound("Order not added");
             }
-            _logger.LogInformation($"Order with id: {order.Id} added");
+            _logger.LogInformation($"Order with id: {order.Id} added, Api_key: {apiKey}");
             return Created("", "");
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateOrder([FromRoute] int id, [FromBody] Order order)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0 || order == null)
             {
                 return BadRequest();
             }
             var result = await _orderservice.UpdateOrder(order);
-            _logger.LogInformation($"Order with id: {id} updated, changed fields: {result}");
+            _logger.LogInformation($"Order with id: {id} updated, changed fields: {result}, Api_key: {apiKey}");
             return Ok();
         }
 
         [HttpPut("{id}/items")]
         public async Task<IActionResult> UpdateOrderedItems([FromRoute] int id, [FromBody] List<OrderedItem> items)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0 || items == null)
             {
                 return BadRequest();
             }
             string ChangedFields = await _orderservice.UpdateOrderedItems(id, items);
-            _logger.LogInformation($"Items for order with id: {id} updated, changed fields: {ChangedFields}");
+            _logger.LogInformation($"Items for order with id: {id} updated, changed fields: {ChangedFields}, Api_key: {apiKey}");
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveOrder([FromRoute] int id)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0)
             {
                 return BadRequest();
@@ -107,7 +111,7 @@ namespace CargoHub.Controllers.ControllersV1
             {
                 return NotFound();
             }
-            _logger.LogInformation($"Order with id: {id} removed");
+            _logger.LogInformation($"Order with id: {id} removed, Api_key: {apiKey}");
             return Ok();
         }
         [HttpPost("load/{path}")]

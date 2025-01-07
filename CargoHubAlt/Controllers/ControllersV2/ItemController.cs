@@ -38,6 +38,7 @@ namespace CargoHubAlt.Controllers.ControllersV2
         [HttpPost()]
         public async Task<IActionResult> AddItem([FromBody] Item? item)
         {
+            var apiKey = Request.Headers["api_key"];
             if (item is null)
             {
                 return BadRequest("This is not an item");
@@ -52,33 +53,35 @@ namespace CargoHubAlt.Controllers.ControllersV2
             {
                 return BadRequest($"Item with Uid {item.Uid} already exists");
             }
-            _logger.LogInformation($"Item with Uid {item.Uid} added");
+            _logger.LogInformation($"Item with Uid {item.Uid} added, Apikey: {apiKey}");
             return Created("api/v1/items", toReturn);
         }
 
         [HttpDelete("{toRemove}")]
         public async Task<IActionResult> RemoveItem([FromRoute] string toRemove)
         {
+            var apiKey = Request.Headers["api_key"];
             Item? toReturn = await this._itemsService.RemoveItem(toRemove);
 
             if (toReturn is null)
             {
                 return NotFound($"Item with UID {toRemove} not found");
             }
-            _logger.LogInformation($"Item with UID {toRemove} removed");
+            _logger.LogInformation($"Item with UID {toRemove} removed, Apikey: {apiKey}");
             return Ok(toReturn);
         }
 
         [HttpPut("{toUpdate}")]
         public async Task<IActionResult> UpdateItem([FromRoute] string toUpdate, [FromBody] Item UpdateTo)
         {
+            var apiKey = Request.Headers["api_key"];
             string? ChangedFields = await this._itemsService.UpdateItem(toUpdate, UpdateTo);
 
             if (ChangedFields is null)
             {
                 return NotFound($"Item with UID {toUpdate} not found");
             }
-            _logger.LogInformation($"Item with UID {toUpdate} updated, changed fields: {ChangedFields}");
+            _logger.LogInformation($"Item with UID {toUpdate} updated, changed fields: {ChangedFields}, Apikey: {apiKey}");
             return Ok(ChangedFields);
         }
         [HttpGet("{id}/inventory")]

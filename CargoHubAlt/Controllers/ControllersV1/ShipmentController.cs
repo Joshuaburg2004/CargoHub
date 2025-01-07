@@ -56,7 +56,6 @@ namespace CargoHub.Controllers.ControllersV1
             {
                 return NotFound();
             }
-            if (items.Count == 1) _logger.LogInformation($"Found {items.Count} item in shipment with id:{id}");
             return Ok(items);
         }
 
@@ -82,60 +81,65 @@ namespace CargoHub.Controllers.ControllersV1
         [HttpPost]
         public async Task<IActionResult> AddShipment([FromBody] Shipment shipment)
         {
+            var apiKey = Request.Headers["api_key"];
             if (shipment is null)
             {
                 return BadRequest();
             }
             await _shipmentService.AddShipment(shipment);
-            _logger.LogInformation($"Created new shipment with id:{shipment.Id}");
+            _logger.LogInformation($"Created new shipment with id:{shipment.Id}, Apikey: {apiKey}");
             return Created("Created Shipment", shipment);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateShipment([FromRoute] int id, [FromBody] Shipment shipment)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0 || shipment is null)
             {
                 return BadRequest();
             }
             await _shipmentService.UpdateShipment(id, shipment);
-            _logger.LogInformation($"Updated shipment with id:{id}");
+            _logger.LogInformation($"Updated shipment with id:{id}, Apikey: {apiKey}");
             return Ok();
         }
 
         [HttpPut("{id}/items")]
         public async Task<IActionResult> UpdateItemsInShipment([FromRoute] int id, [FromBody] List<ShipmentItem> items)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0 || items == null)
             {
                 return BadRequest();
             }
             await _shipmentService.UpdateItemsInShipment(id, items);
-            _logger.LogInformation($"Updated items in shipment with id:{id}");
+            _logger.LogInformation($"Updated items in shipment with id:{id}, Apikey: {apiKey}");
             return Ok();
         }
 
         [HttpPut("{id}/orders")]
         public async Task<IActionResult> UpdateOrdersInShipment([FromRoute] int id, [FromBody] List<int> orders)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0 || orders == null)
             {
                 return BadRequest();
             }
             await _shipmentService.UpdateOrdersInShipment(id, orders);
-            _logger.LogInformation($"Updated orders in shipment with id:{id}");
+            _logger.LogInformation($"Updated orders in shipment with id:{id}, Apikey: {apiKey}");
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteShipment([FromRoute] int id)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0)
             {
                 return BadRequest();
             }
             await _shipmentService.DeleteShipment(id);
-            _logger.LogInformation($"Deleted shipment with id:{id}");
+            _logger.LogInformation($"Deleted shipment with id:{id}, Apikey: {apiKey}");
             return Ok();
         }
         [HttpPost("load/{path}")]
