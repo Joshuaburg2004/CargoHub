@@ -29,25 +29,63 @@ namespace CargoHubAlt.Services.ServicesV1
             await _cargoHubContext.SaveChangesAsync();
             return client.Id;
         }
-        public async Task<Client?> UpdateClient(int id, Client client)
+        public async Task<string?> UpdateClient(int id, Client client)
         {
             Client? origClient = await GetClient(id);
+            string changedFields = "";
             if (origClient == null)
             {
-                return origClient;
+                return null;
             }
-            origClient.Name = client.Name;
-            origClient.Address = client.Address;
-            origClient.City = client.City;
-            origClient.ZipCode = client.ZipCode;
-            origClient.Province = client.Province;
-            origClient.Country = client.Country;
-            origClient.ContactName = client.ContactName;
-            origClient.ContactPhone = client.ContactPhone;
-            origClient.ContactEmail = client.ContactEmail;
+            if (client.Name != null)
+            {
+                origClient.Name = client.Name;
+                changedFields += $"Name: {client.Name}, ";
+            }
+            if (client.Address != null)
+            {
+                origClient.Address = client.Address;
+                changedFields += $"Address: {client.Address}, ";
+            }
+            if (client.City != null)
+            {
+                origClient.City = client.City;
+                changedFields += $"City: {client.City}, ";
+            }
+            if (client.ZipCode != null)
+            {
+                origClient.ZipCode = client.ZipCode;
+                changedFields += $"ZipCode: {client.ZipCode}, ";
+            }
+            if (client.Province != null)
+            {
+                origClient.Province = client.Province;
+                changedFields += $"Province: {client.Province}, ";
+            }
+            if (client.Country != null)
+            {
+                origClient.Country = client.Country;
+                changedFields += $"Country: {client.Country}, ";
+            }
+            if (client.ContactName != null)
+            {
+                origClient.ContactName = client.ContactName;
+                changedFields += $"ContactName: {client.ContactName}, ";
+            }
+            if (client.ContactPhone != null)
+            {
+                origClient.ContactPhone = client.ContactPhone;
+                changedFields += $"ContactPhone: {client.ContactPhone}, ";
+            }
+            if (client.ContactEmail != null)
+            {
+                origClient.ContactEmail = client.ContactEmail;
+                changedFields += $"ContactEmail: {client.ContactEmail}, ";
+            }
+
             origClient.UpdatedAt = Base.GetTimeStamp();
             await _cargoHubContext.SaveChangesAsync();
-            return origClient;
+            return changedFields;
         }
         public async Task<Client?> RemoveClient(int id)
         {
