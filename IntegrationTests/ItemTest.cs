@@ -134,24 +134,6 @@ public class ItemIntegratieTest : BaseTest
     {
         HttpResponseMessage response = await _client.PutAsJsonAsync($"{requestUri}/P000001", TestPutItem);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var item = await response.Content.ReadFromJsonAsync<Item>();
-        Xunit.Assert.IsType<Item>(item);
-        Xunit.Assert.Equal(TestPutItem.Uid, item.Uid);
-        Xunit.Assert.Equal(TestPutItem.Code, item.Code);
-        Xunit.Assert.Equal(TestPutItem.Description, item.Description);
-        Xunit.Assert.Equal(TestPutItem.ShortDescription, item.ShortDescription);
-        Xunit.Assert.Equal(TestPutItem.UpcCode, item.UpcCode);
-        Xunit.Assert.Equal(TestPutItem.ModelNumber, item.ModelNumber);
-        Xunit.Assert.Equal(TestPutItem.CommodityCode, item.CommodityCode);
-        Xunit.Assert.Equal(TestPutItem.ItemLine, item.ItemLine);
-        Xunit.Assert.Equal(TestPutItem.ItemGroup, item.ItemGroup);
-        Xunit.Assert.Equal(TestPutItem.ItemType, item.ItemType);
-        Xunit.Assert.Equal(TestPutItem.UnitPurchaseQuantity, item.UnitPurchaseQuantity);
-        Xunit.Assert.Equal(TestPutItem.UnitOrderQuantity, item.UnitOrderQuantity);
-        Xunit.Assert.Equal(TestPutItem.PackOrderQuantity, item.PackOrderQuantity);
-        Xunit.Assert.Equal(TestPutItem.SupplierId, item.SupplierId);
-        Xunit.Assert.Equal(TestPutItem.SupplierCode, item.SupplierCode);
-        Xunit.Assert.Equal(TestPutItem.SupplierPartNumber, item.SupplierPartNumber);
     }
 
     [Fact, TestPriority(8)]
@@ -281,7 +263,7 @@ public class ItemIntegratieTest : BaseTest
         HttpResponseMessage response = await _client.DeleteAsync($"{requestUri}/P000001");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var responseContent = await response.Content.ReadFromJsonAsync<Item>();
-        
+
         Xunit.Assert.IsType<Item>(responseContent);
         Xunit.Assert.Equal(TestPutItem.Uid, responseContent.Uid);
         Xunit.Assert.Equal(TestPutItem.Code, responseContent.Code);

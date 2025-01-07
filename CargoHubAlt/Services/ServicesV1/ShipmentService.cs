@@ -244,11 +244,8 @@ namespace CargoHubAlt.Services.ServicesV1
             }
 
             // Update items in shipment
-            if (shipment.Items == null)
-            {
-                shipment.Items = items;
-                ChangedFields += $"Items, {items}";
-            }
+            shipment.Items = items;
+            ChangedFields += $"Items, {items}";
 
             _context.Shipments.Update(shipment);
             await _context.SaveChangesAsync();

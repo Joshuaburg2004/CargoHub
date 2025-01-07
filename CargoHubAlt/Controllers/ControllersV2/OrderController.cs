@@ -90,6 +90,10 @@ namespace CargoHub.Controllers.ControllersV2
                 return BadRequest();
             }
             string result = await _orderservice.UpdateOrder(order);
+            if (result == null)
+            {
+                return NotFound();
+            }
             _logger.LogInformation($"Order with id: {id} updated, changed fields: {result}, Apikey: {apiKey}");
             return Ok();
         }
@@ -103,6 +107,10 @@ namespace CargoHub.Controllers.ControllersV2
                 return BadRequest();
             }
             string ChangedFields = await _orderservice.UpdateOrderedItems(id, items);
+            if (ChangedFields == null)
+            {
+                return NotFound();
+            }
             _logger.LogInformation($"Items for order with id: {id} updated, changed fields: {ChangedFields}, Apikey: {apiKey}");
             return Ok();
         }
