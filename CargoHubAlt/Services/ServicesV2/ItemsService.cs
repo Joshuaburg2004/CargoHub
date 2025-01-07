@@ -19,6 +19,21 @@ namespace CargoHubAlt.Services.ServicesV2
             return await this._context.Items.ToListAsync();
         }
 
+        public async Task<List<Item>> GetItems(int? pageIndex)
+        {
+            if(pageIndex == null)
+            {
+                return await GetItems();
+            }
+            int page = (int)pageIndex;
+            var Items = await _context.Items
+                .OrderBy(c => c.Uid)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+            return Items;
+        }
+
         public async Task<Item?> GetItem(string id)
         {
             return await this._context.Items.FirstOrDefaultAsync(_ => _.Uid == id);

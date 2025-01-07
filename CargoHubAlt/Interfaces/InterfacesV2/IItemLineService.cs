@@ -7,6 +7,7 @@ namespace CargoHubAlt.Interfaces.InterfacesV2
         public Task<ItemLine?> FindItemLine(int Id);
         public Task<IEnumerable<ItemLine?>> FindManyItemLine(IEnumerable<int> Ids);
         public Task<IEnumerable<ItemLine>> GetAllItemLine();
+        public Task<IEnumerable<ItemLine>> GetAllItemLine(int? pageIndex);
         public Task<IEnumerable<Item>?> GetItemsfromItemLineById(int id);
         public Task<int?> AddItemLine(ItemLine toAdd);
         public Task<ItemLine?> UpdateItemLine(int Id, ItemLine toUpdate);

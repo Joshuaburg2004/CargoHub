@@ -36,6 +36,20 @@ namespace CargoHubAlt.Services.ServicesV2
             return await this._cargoHubContext.ItemGroups.ToListAsync();
         }
 
+        public async Task<IEnumerable<ItemGroup>> GetAllItemGroup(int? pageIndex)
+        {
+            if (pageIndex == null)
+            {
+                return await GetAllItemGroup();
+            }
+            int page = (int)pageIndex;
+            return await this._cargoHubContext.ItemGroups
+                .OrderBy(c => c.Id)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Item>?> GetItemsfromItemGroupById(int id)
         {
             if (id < 0) return null;

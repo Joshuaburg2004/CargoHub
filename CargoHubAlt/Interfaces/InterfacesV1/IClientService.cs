@@ -1,8 +1,8 @@
 using CargoHubAlt.Models;
 
-namespace CargoHubAlt.Interfaces.InterfacesV2
+namespace CargoHubAlt.Interfaces.InterfacesV1
 {
-    public interface IClientServiceV2
+    public interface IClientServiceV1
     {
         public Task<List<Client>> GetAllClients();
         public Task<Client?> GetClient(int id);

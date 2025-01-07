@@ -6,6 +6,7 @@ namespace CargoHubAlt.Interfaces.InterfacesV2
     {
         public Task<Shipment?> GetShipment(int Id);
         public Task<List<Shipment>?> GetAllShipments();
+        public Task<List<Shipment>?> GetAllShipments(int? pageIndex);
         public Task<List<ShipmentItem>?> GetItemsfromShipmentById(int Id);
         public Task<List<int>?> GetOrdersFromShipmentById(int id);
         public Task<int?> AddShipment(Shipment shipment);
