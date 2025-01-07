@@ -37,47 +37,51 @@ namespace CargoHubAlt.Services.ServicesV2
             {
                 return null;
             }
-            if (client.Name != null)
+            if (origClient == null)
+            {
+                return null;
+            }
+            if (client.Name != origClient.Name)
             {
                 origClient.Name = client.Name;
                 changedFields += $"Name: {client.Name}, ";
             }
-            if (client.Address != null)
+            if (client.Address != origClient.Address)
             {
                 origClient.Address = client.Address;
                 changedFields += $"Address: {client.Address}, ";
             }
-            if (client.City != null)
+            if (client.City != origClient.City)
             {
                 origClient.City = client.City;
                 changedFields += $"City: {client.City}, ";
             }
-            if (client.ZipCode != null)
+            if (client.ZipCode != origClient.ZipCode)
             {
                 origClient.ZipCode = client.ZipCode;
                 changedFields += $"ZipCode: {client.ZipCode}, ";
             }
-            if (client.Province != null)
+            if (client.Province != origClient.Province)
             {
                 origClient.Province = client.Province;
                 changedFields += $"Province: {client.Province}, ";
             }
-            if (client.Country != null)
+            if (client.Country != origClient.Country)
             {
                 origClient.Country = client.Country;
                 changedFields += $"Country: {client.Country}, ";
             }
-            if (client.ContactName != null)
+            if (client.ContactName != origClient.ContactName)
             {
                 origClient.ContactName = client.ContactName;
                 changedFields += $"ContactName: {client.ContactName}, ";
             }
-            if (client.ContactPhone != null)
+            if (client.ContactPhone != origClient.ContactPhone)
             {
                 origClient.ContactPhone = client.ContactPhone;
                 changedFields += $"ContactPhone: {client.ContactPhone}, ";
             }
-            if (client.ContactEmail != null)
+            if (client.ContactEmail != origClient.ContactEmail)
             {
                 origClient.ContactEmail = client.ContactEmail;
                 changedFields += $"ContactEmail: {client.ContactEmail}, ";

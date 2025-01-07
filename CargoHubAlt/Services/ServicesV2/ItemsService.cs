@@ -58,15 +58,86 @@ namespace CargoHubAlt.Services.ServicesV2
             Item? found = await this._context.Items.FindAsync(toUpdate);
             var ChangedFields = "";
             if (found is null) return null;
-            if (UpdateTo.Uid != null) { found.Uid = UpdateTo.Uid; ChangedFields += "Uid, "; }
-            if (UpdateTo.Code != null) { found.Code = UpdateTo.Code; ChangedFields += "Code, "; }
-            if (UpdateTo.Description != null) { found.Description = UpdateTo.Description; ChangedFields += "Description, "; }
-            if (UpdateTo.ShortDescription != null) { found.ShortDescription = UpdateTo.ShortDescription; ChangedFields += "ShortDescription, "; }
-            if (UpdateTo.UpcCode != null) { found.UpcCode = UpdateTo.UpcCode; ChangedFields += "UpcCode, "; }
-            if (UpdateTo.ModelNumber != null) { found.ModelNumber = UpdateTo.ModelNumber; ChangedFields += "ModelNumber, "; }
-            if (UpdateTo.CommodityCode != null) { found.CommodityCode = UpdateTo.CommodityCode; ChangedFields += "CommodityCode, "; }
-            if (UpdateTo.SupplierCode != null) { found.SupplierCode = UpdateTo.SupplierCode; ChangedFields += "SupplierCode, "; }
-            if (UpdateTo.SupplierPartNumber != null) { found.SupplierPartNumber = UpdateTo.SupplierPartNumber; ChangedFields += "SupplierPartNumber, "; }
+            if (UpdateTo.Uid != found.Uid)
+            {
+                found.Uid = UpdateTo.Uid;
+                ChangedFields += $"Uid, {found.Uid}, ";
+            }
+            if (UpdateTo.Code != found.Code)
+            {
+                found.Code = UpdateTo.Code;
+                ChangedFields += $"Code, {found.Code}, ";
+            }
+            if (UpdateTo.Description != found.Description)
+            {
+                found.Description = UpdateTo.Description;
+                ChangedFields += $"Description, {found.Description}, ";
+            }
+            if (UpdateTo.ShortDescription != found.ShortDescription)
+            {
+                found.ShortDescription = UpdateTo.ShortDescription;
+                ChangedFields += $"ShortDescription, {found.ShortDescription}, ";
+            }
+            if (UpdateTo.UpcCode != found.UpcCode)
+            {
+                found.UpcCode = UpdateTo.UpcCode;
+                ChangedFields += $"UpcCode, {found.UpcCode}, ";
+            }
+            if (UpdateTo.ModelNumber != found.ModelNumber)
+            {
+                found.ModelNumber = UpdateTo.ModelNumber;
+                ChangedFields += $"ModelNumber, {found.ModelNumber}, ";
+            }
+            if (UpdateTo.CommodityCode != found.CommodityCode)
+            {
+                found.CommodityCode = UpdateTo.CommodityCode;
+                ChangedFields += $"CommodityCode, {found.CommodityCode}, ";
+            }
+            if (UpdateTo.ItemLine != found.ItemLine)
+            {
+                found.ItemLine = UpdateTo.ItemLine;
+                ChangedFields += $"ItemLine, {found.ItemLine}, ";
+            }
+            if (UpdateTo.ItemGroup != found.ItemGroup)
+            {
+                found.ItemGroup = UpdateTo.ItemGroup;
+                ChangedFields += $"ItemGroup, {found.ItemGroup}, ";
+            }
+            if (UpdateTo.ItemType != found.ItemType)
+            {
+                found.ItemType = UpdateTo.ItemType;
+                ChangedFields += $"ItemType, {found.ItemType}, ";
+            }
+            if (UpdateTo.UnitPurchaseQuantity != found.UnitPurchaseQuantity)
+            {
+                found.UnitPurchaseQuantity = UpdateTo.UnitPurchaseQuantity;
+                ChangedFields += $"UnitPurchaseQuantity, {found.UnitPurchaseQuantity}, ";
+            }
+            if (UpdateTo.UnitOrderQuantity != found.UnitOrderQuantity)
+            {
+                found.UnitOrderQuantity = UpdateTo.UnitOrderQuantity;
+                ChangedFields += $"UnitOrderQuantity, {found.UnitOrderQuantity}, ";
+            }
+            if (UpdateTo.PackOrderQuantity != found.PackOrderQuantity)
+            {
+                found.PackOrderQuantity = UpdateTo.PackOrderQuantity;
+                ChangedFields += $"PackOrderQuantity, {found.PackOrderQuantity}, ";
+            }
+            if (UpdateTo.SupplierId != found.SupplierId)
+            {
+                found.SupplierId = UpdateTo.SupplierId;
+                ChangedFields += $"SupplierId, {found.SupplierId}, ";
+            }
+            if (UpdateTo.SupplierCode != found.SupplierCode)
+            {
+                found.SupplierCode = UpdateTo.SupplierCode;
+                ChangedFields += $"SupplierCode, {found.SupplierCode}, ";
+            }
+            if (UpdateTo.SupplierPartNumber != found.SupplierPartNumber)
+            {
+                found.SupplierPartNumber = UpdateTo.SupplierPartNumber;
+                ChangedFields += $"SupplierPartNumber, {found.SupplierPartNumber}, ";
+            }
             found.UpdatedAt = UpdateTo.UpdatedAt;
 
 

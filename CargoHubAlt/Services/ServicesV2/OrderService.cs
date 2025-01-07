@@ -84,43 +84,43 @@ namespace CargoHubAlt.Services.ServicesV2
             // update Order
             if (oldOrder.OrderDate != order.OrderDate)
             {
-                ChangedFields += "OrderDate, ";
                 oldOrder.OrderDate = order.OrderDate;
+                ChangedFields += $"OrderDate: {order.OrderDate}, ";
             }
             if (oldOrder.OrderStatus != order.OrderStatus)
             {
-                ChangedFields += "OrderStatus, ";
                 oldOrder.OrderStatus = order.OrderStatus;
+                ChangedFields += $"OrderStatus: {order.OrderStatus}, ";
             }
             if (oldOrder.RequestDate != order.RequestDate)
             {
-                ChangedFields += "RequestDate, ";
                 oldOrder.RequestDate = order.RequestDate;
+                ChangedFields += $"RequestDate: {order.RequestDate}, ";
             }
             if (oldOrder.Reference != order.Reference)
             {
-                ChangedFields += "Reference, ";
                 oldOrder.Reference = order.Reference;
+                ChangedFields += $"Reference: {order.Reference}, ";
             }
             if (oldOrder.ReferenceExtra != order.ReferenceExtra)
             {
-                ChangedFields += "ReferenceExtra, ";
                 oldOrder.ReferenceExtra = order.ReferenceExtra;
+                ChangedFields += $"ReferenceExtra: {order.ReferenceExtra}, ";
             }
             if (oldOrder.Notes != order.Notes)
             {
-                ChangedFields += "Notes, ";
                 oldOrder.Notes = order.Notes;
+                ChangedFields += $"Notes: {order.Notes}, ";
             }
             if (oldOrder.ShippingNotes != order.ShippingNotes)
             {
-                ChangedFields += "ShippingNotes, ";
                 oldOrder.ShippingNotes = order.ShippingNotes;
+                ChangedFields += $"ShippingNotes: {order.ShippingNotes}, ";
             }
             if (oldOrder.PickingNotes != order.PickingNotes)
             {
-                ChangedFields += "PickingNotes, ";
                 oldOrder.PickingNotes = order.PickingNotes;
+                ChangedFields += $"PickingNotes: {order.PickingNotes}, ";
             }
             oldOrder.UpdatedAt = Base.GetTimeStamp();
             oldOrder.Items = order.Items;
