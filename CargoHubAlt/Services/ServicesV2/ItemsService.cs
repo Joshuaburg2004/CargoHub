@@ -53,30 +53,24 @@ namespace CargoHubAlt.Services.ServicesV2
             else return null;
         }
 
-        public async Task<Item?> UpdateItem(string toUpdate, Item UpdateTo)
+        public async Task<string?> UpdateItem(string toUpdate, Item UpdateTo)
         {
             Item? found = await this._context.Items.FindAsync(toUpdate);
+            var ChangedFields = "";
             if (found is null) return null;
-            found.Uid = UpdateTo.Uid;
-            found.Code = UpdateTo.Code;
-            found.Description = UpdateTo.Description;
-            found.ShortDescription = UpdateTo.ShortDescription;
-            found.UpcCode = UpdateTo.UpcCode;
-            found.ModelNumber = UpdateTo.ModelNumber;
-            found.CommodityCode = UpdateTo.CommodityCode;
-            found.ItemLine = UpdateTo.ItemLine;
-            found.ItemGroup = UpdateTo.ItemGroup;
-            found.ItemType = UpdateTo.ItemType;
-            found.UnitPurchaseQuantity = UpdateTo.UnitPurchaseQuantity;
-            found.UnitOrderQuantity = UpdateTo.UnitOrderQuantity;
-            found.PackOrderQuantity = UpdateTo.PackOrderQuantity;
-            found.SupplierId = UpdateTo.SupplierId;
-            found.SupplierCode = UpdateTo.SupplierCode;
-            found.SupplierPartNumber = UpdateTo.SupplierPartNumber;
+            if (UpdateTo.Uid != null) { found.Uid = UpdateTo.Uid; ChangedFields += "Uid, "; }
+            if (UpdateTo.Code != null) { found.Code = UpdateTo.Code; ChangedFields += "Code, "; }
+            if (UpdateTo.Description != null) { found.Description = UpdateTo.Description; ChangedFields += "Description, "; }
+            if (UpdateTo.ShortDescription != null) { found.ShortDescription = UpdateTo.ShortDescription; ChangedFields += "ShortDescription, "; }
+            if (UpdateTo.UpcCode != null) { found.UpcCode = UpdateTo.UpcCode; ChangedFields += "UpcCode, "; }
+            if (UpdateTo.ModelNumber != null) { found.ModelNumber = UpdateTo.ModelNumber; ChangedFields += "ModelNumber, "; }
+            if (UpdateTo.CommodityCode != null) { found.CommodityCode = UpdateTo.CommodityCode; ChangedFields += "CommodityCode, "; }
+            if (UpdateTo.SupplierCode != null) { found.SupplierCode = UpdateTo.SupplierCode; ChangedFields += "SupplierCode, "; }
+            if (UpdateTo.SupplierPartNumber != null) { found.SupplierPartNumber = UpdateTo.SupplierPartNumber; ChangedFields += "SupplierPartNumber, "; }
             found.UpdatedAt = UpdateTo.UpdatedAt;
 
 
-            if (await this._context.SaveChangesAsync() >= 1) return found;
+            if (await this._context.SaveChangesAsync() >= 1) return ChangedFields;
             else return null;
         }
 
