@@ -78,20 +78,34 @@ namespace CargoHubAlt.Services.ServicesV2
                 return (false, $"Error during logs backup: {ex}");
             }
         }
-        public async Task<(bool,string)> Uploadbackup(string backupFolderPath)
+        public async Task<(bool,string)> UploadBackupFull(string backupFolderPath)
         {
             try
             {
                 string folderfound = Path.Combine(this.backupRoot, backupFolderPath);
                 if (!Directory.Exists(folderfound))
-                    return (false, "folder does not exist");
-                string backuplogsfolder = Path.Combine(folderfound, "LogsBackup");
-                if (!Directory.Exists(backuplogsfolder))
+                    return (false, "backup folder does not exist");
+
+                // string backuplogsfolder = Path.Combine(folderfound, "LogsBackup");
+                // (bool success, string fail) logsuccess = (false, "logs folder inside backupdatabase not found;" );
+                // if (Directory.Exists(backuplogsfolder))
+                // {
+                //     logsuccess = await this.uploadBackupLogs(backuplogsfolder);
+                // }
+                // else return (false, "no backuplogs found");
+
+                string backupdatabase = Path.Combine(folderfound, "CargoHubDatabaseBackup.db");
+                (bool success, string fail) databasesuccess = (false, "backup database file not found");
+                if (File.Exists(backupdatabase))
                 {
-                    (bool success, string fail) = await this.uploadBackupLogs(backuplogsfolder);
+                    databasesuccess = uploadBackupDatabase(folderfound);
                 }
 
-                return (true, "nothing happened");
+                if (databasesuccess.success == true)
+                {
+                    return (true, "successfully uploaded the backup");
+                } 
+                return (false, databasesuccess.fail);
             }
             catch (Exception ex)
             {
@@ -100,20 +114,47 @@ namespace CargoHubAlt.Services.ServicesV2
         }
 
 
-        public async Task<(bool,string)> uploadBackupLogs(string backupFolderPath)
+        private (bool, string) uploadBackupDatabase(string backupFolderPath)
+        {
+
+            string errorMessages = "";
+            if (!Directory.Exists(backupFolderPath))
+                return (false, $"the back up folder searched for has no database, searched for {backupFolderPath}");
+            string databaseBackupString = "CargoHubDatabaseBackup.db";
+            string databaseName = "CargoHubDatabase.db";
+
+            if (File.Exists(Path.Combine(backupFolderPath, databaseBackupString)))
+            {
+                if (File.Exists($"./{databaseName}"))
+                {
+                    File.Delete($"./{databaseName}");
+                }
+                File.Copy(Path.Combine(backupFolderPath, databaseBackupString), $"./{databaseName}");
+                return (true, errorMessages);
+            }
+            
+            return (false, "backup folder database does not exist;");
+
+        }
+
+
+
+        private async Task<(bool,string)> uploadBackupLogs(string backupFolderPath)
         {
             string baseLogsFolder = "./Logs";
             string errorMessages = "";
 
 
             if (!Directory.Exists(backupFolderPath))
-                return (false, "the back up folder searched for has no logsbackup");
+                return (false, $"the back up folder searched for has no logsbackup, searched for {backupFolderPath}");
             bool clientlogsSuccess = false;
-            string clientlogname = "ClientController.log";
+            string clientLogname = "ClientController.log";
+            string ClientBaseLogs = Path.Combine(baseLogsFolder, clientLogname);
+            string clientBackupLogs = Path.Combine(backupFolderPath, clientLogname);
 
-            if (Path.Exists(Path.Combine(backupFolderPath, clientlogname)))
+            if (Path.Exists(clientBackupLogs))
             {
-                File.Copy(Path.Combine(backupFolderPath, clientlogname), Path.Combine(baseLogsFolder, clientlogname));
+                await File.WriteAllLinesAsync(ClientBaseLogs, await File.ReadAllLinesAsync(clientBackupLogs)); 
                 clientlogsSuccess = true;
             }
             else 
@@ -121,26 +162,31 @@ namespace CargoHubAlt.Services.ServicesV2
                 errorMessages += "the Client log folder does not exist;";
             }
 
-            bool itemLogSuccess = false;
-            string itemLogName = "ItemController.log";
+            bool ItemlogsSuccess = false;
+            string ItemLogname = "ItemController.log";
+            string ItemBaseLogs = Path.Combine(baseLogsFolder, ItemLogname);
+            string ItemBackupLogs = Path.Combine(backupFolderPath, ItemLogname);
 
-            if (Path.Exists(Path.Combine(backupFolderPath, itemLogName)))
+            if (Path.Exists(ItemBackupLogs))
             {
-                File.Copy(Path.Combine(backupFolderPath, itemLogName), Path.Combine(baseLogsFolder, itemLogName));
-                itemLogSuccess = true;
+                await File.WriteAllLinesAsync(ItemBaseLogs, await File.ReadAllLinesAsync(ItemBackupLogs)); 
+                ItemlogsSuccess = true;
             }
             else 
             {
                 errorMessages += "the Item log folder does not exist;";
             }
 
-            bool OrderLogSuccess = false;
-            string OrderLogName = "OrderController.log";
 
-            if (Path.Exists(Path.Combine(backupFolderPath, OrderLogName)))
+            bool OrderlogsSuccess = false;
+            string OrderLogname = "OrderController.log";
+            string OrderBaseLogs = Path.Combine(baseLogsFolder, OrderLogname);
+            string OrderBackupLogs = Path.Combine(backupFolderPath, OrderLogname);
+
+            if (Path.Exists(OrderBackupLogs))
             {
-                File.Copy(Path.Combine(backupFolderPath, OrderLogName), Path.Combine(baseLogsFolder, OrderLogName));
-                OrderLogSuccess = true;
+                await File.WriteAllLinesAsync(OrderBaseLogs, await File.ReadAllLinesAsync(OrderBackupLogs)); 
+                OrderlogsSuccess = true;
             }
             else 
             {
@@ -148,11 +194,13 @@ namespace CargoHubAlt.Services.ServicesV2
             }
 
             bool ShipmentLogSuccess = false;
-            string ShipmentLogName = "ShipmentController.log";
+            string ShipmentLogname = "ShipmentController.log";
+            string ShipmentBaseLogs = Path.Combine(baseLogsFolder, ShipmentLogname);
+            string ShipmentBackupLogs = Path.Combine(backupFolderPath, ShipmentLogname);
 
-            if (Path.Exists(Path.Combine(backupFolderPath, ShipmentLogName)))
+            if (Path.Exists(ShipmentBackupLogs))
             {
-                File.Copy(Path.Combine(backupFolderPath, ShipmentLogName), Path.Combine(baseLogsFolder, ShipmentLogName));
+                await File.WriteAllLinesAsync(ShipmentBaseLogs, await File.ReadAllLinesAsync(ShipmentBackupLogs)); 
                 ShipmentLogSuccess = true;
             }
             else 
@@ -160,7 +208,7 @@ namespace CargoHubAlt.Services.ServicesV2
                 errorMessages += "the Shipment log folder does not exist;";
             }
 
-            if (clientlogsSuccess && itemLogSuccess && OrderLogSuccess && ShipmentLogSuccess)
+            if (clientlogsSuccess && ItemlogsSuccess && OrderlogsSuccess && ShipmentLogSuccess)
             {
                 return (true, errorMessages);
             }
