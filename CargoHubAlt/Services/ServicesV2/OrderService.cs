@@ -22,7 +22,21 @@ namespace CargoHubAlt.Services.ServicesV2
                 return orders;
             }
             return null;
+        }
 
+        public async Task<List<Order>?> GetOrders(int? pageIndex)
+        {
+            if(pageIndex == null)
+            {
+                return await GetOrders();
+            }
+            int page = (int)pageIndex;
+            var orders = await _context.Orders
+                .OrderBy(c => c.Id)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+            return orders;
         }
 
         public async Task<Order?> GetOrder(int orderId)

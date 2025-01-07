@@ -17,9 +17,10 @@ namespace CargoHubAlt.Controllers.ControllersV2
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllItems()
+        public async Task<IActionResult> GetAllItems([FromQuery] int? pageIndex)
         {
-            List<Item> found = await this._itemsService.GetItems();
+            List<Item> found = await this._itemsService.GetItems(pageIndex);
+            _logger.LogInformation($"Found {found.Count} Items");
             return Ok(found);
         }
 

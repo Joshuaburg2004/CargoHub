@@ -23,6 +23,20 @@ namespace CargoHubAlt.Services.ServicesV2
             return await this._cargoHubContext.Inventories.ToListAsync();
         }
 
+        public async Task<IEnumerable<Inventory>> GetAllInventories(int? pageIndex)
+        {
+            if (pageIndex == null)
+            {
+                return await GetAllInventories();
+            }
+            int page = (int)pageIndex;
+            return await this._cargoHubContext.Inventories
+                .OrderBy(inventory => inventory.Id)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+        }
+
         public async Task<int?> CreateInventory(Inventory inventory)
         {
             if (inventory is null) { return null; }

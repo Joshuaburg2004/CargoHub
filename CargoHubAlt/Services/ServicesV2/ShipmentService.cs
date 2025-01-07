@@ -28,6 +28,21 @@ namespace CargoHubAlt.Services.ServicesV2
             }
         }
 
+        public async Task<List<Shipment>?> GetAllShipments(int? pageIndex)
+        {
+            if(pageIndex == null)
+            {
+                return await GetAllShipments();
+            }
+            int page = (int)pageIndex;
+            var shipments = await _context.Shipments
+                .OrderBy(c => c.Id)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+            return shipments;
+        }
+
         public async Task<Shipment?> GetShipment(int id)
         {
             Shipment? shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == id);

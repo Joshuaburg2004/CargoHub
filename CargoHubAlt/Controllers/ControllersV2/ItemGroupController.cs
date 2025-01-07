@@ -15,9 +15,9 @@ namespace CargoHubAlt.Controllers.ControllersV2
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetAllItemGroups()
+        public async Task<IActionResult> GetAllItemGroups([FromQuery] int? pageIndex)
         {
-            return Ok(await this._itemsService.GetAllItemGroup());
+            return Ok(await this._itemsService.GetAllItemGroup(pageIndex));
         }
 
         [HttpGet("{id}")]

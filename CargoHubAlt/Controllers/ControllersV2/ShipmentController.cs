@@ -19,9 +19,9 @@ namespace CargoHub.Controllers.ControllersV2
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetShipments()
+        public async Task<IActionResult> GetShipments([FromQuery] int? pageIndex)
         {
-            var shipments = await _shipmentService.GetAllShipments();
+            var shipments = await _shipmentService.GetAllShipments(pageIndex);
             if (shipments == null)
             {
                 return NotFound();
