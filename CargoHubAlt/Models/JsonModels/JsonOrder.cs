@@ -22,7 +22,6 @@ namespace CargoHubAlt.JsonModels{
         public double total_discount { get; set; }
         public double total_tax { get; set; }
         public double total_surcharge { get; set; }
-
         public string created_at { get; set; } = GetTimeStamp();
         public string updated_at { get; set; } = GetTimeStamp();
 
@@ -50,5 +49,17 @@ namespace CargoHubAlt.JsonModels{
                 UpdatedAt = updated_at
             };
         }
+        
     }
+    public class JsonOrderedItem{
+        public string? item_id { get; set; }
+        public int amount { get; set; }
+        public OrderedItem ToOrderedItem(){
+            return new OrderedItem(){
+                ItemId = item_id,
+                Amount = amount
+            };
+        }
+    }
+    
 }
