@@ -18,10 +18,12 @@ namespace CargoHubAlt.Models
         public int TotalOrdered { get; set; }
         public int TotalAllocated { get; set; }
         public int TotalAvailable { get; set; }
+        public int? LowStockThreshold { get; set; }
+        public bool? IsLowStock { get; set; }
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
         public Inventory() { }
-        public Inventory(int id, string itemId, string description, string itemReference, List<int> locations, int totalOnHand, int totalExpected, int totalOrdered, int totalAllocated, int totalAvailable)
+        public Inventory(int id, string itemId, string description, string itemReference, List<int> locations, int totalOnHand, int totalExpected, int totalOrdered, int totalAllocated, int totalAvailable, int lowStockThreshold)
         {
             Id = id;
             ItemId = itemId;
@@ -33,8 +35,10 @@ namespace CargoHubAlt.Models
             TotalOrdered = totalOrdered;
             TotalAllocated = totalAllocated;
             TotalAvailable = totalAvailable;
+            LowStockThreshold = lowStockThreshold;
+            IsLowStock = LowStockThreshold.HasValue ? TotalOnHand <= LowStockThreshold : false;
         }
-        public Inventory(string itemId, string description, string itemReference, List<int> locations, int totalOnHand, int totalExpected, int totalOrdered, int totalAllocated, int totalAvailable)
+        public Inventory(string itemId, string description, string itemReference, List<int> locations, int totalOnHand, int totalExpected, int totalOrdered, int totalAllocated, int totalAvailable, int lowStockThreshold)
         {
             ItemId = itemId;
             Description = description;
@@ -45,6 +49,8 @@ namespace CargoHubAlt.Models
             TotalOrdered = totalOrdered;
             TotalAllocated = totalAllocated;
             TotalAvailable = totalAvailable;
+            LowStockThreshold = lowStockThreshold;
+            IsLowStock = LowStockThreshold.HasValue ? TotalOnHand <= LowStockThreshold : false;
         }
     }
 }

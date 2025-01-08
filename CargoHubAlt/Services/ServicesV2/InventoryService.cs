@@ -63,6 +63,8 @@ namespace CargoHubAlt.Services.ServicesV2
             found.TotalOrdered = inventory.TotalOrdered;
             found.TotalAllocated = inventory.TotalAllocated;
             found.TotalAvailable = inventory.TotalAvailable;
+            found.LowStockThreshold = inventory.LowStockThreshold;
+            found.IsLowStock = inventory.LowStockThreshold.HasValue ? inventory.TotalOnHand <= inventory.LowStockThreshold : false;
             found.UpdatedAt = Inventory.GetTimeStamp();
             this._cargoHubContext.Inventories.Update(found);
             await this._cargoHubContext.SaveChangesAsync();
@@ -77,6 +79,24 @@ namespace CargoHubAlt.Services.ServicesV2
             if (await this._cargoHubContext.SaveChangesAsync() >= 1) return found;
             else return null;
         }
+
+        // Returns products with TotalOnHand ≤ customThreshold, or all low-stock products if no threshold is given.
+        public async Task<IEnumerable<Inventory>> GetLowStock(int? customThreshold = null)
+        {
+            if (!customThreshold.HasValue)
+            {
+                return await _cargoHubContext.Inventories
+                    .Where(inventory => inventory.IsLowStock == true)
+                    .ToListAsync();
+            }
+            else
+            {
+                return await _cargoHubContext.Inventories
+                    .Where(inventory => inventory.TotalOnHand <= customThreshold.Value)
+                    .ToListAsync();
+            }
+        }
+
         public async Task LoadFromJson(string path)
         {
             path = "data/" + path;

@@ -21,7 +21,7 @@ public class ItemIntegratieTest : BaseTest
 
     public string requestUri = "/api/v1/items";
 
-    public Inventory TestInventory = new(5, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40);
+    public Inventory TestInventory = new(5, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40, 10);
 
 
     public ItemIntegratieTest(CustomWebApplicationFactory<Program> factory) : base(factory)
@@ -185,17 +185,14 @@ public class ItemIntegratieTest : BaseTest
 
         Xunit.Assert.Equal(HttpStatusCode.Created, postInventoryResponse.StatusCode);
 
-
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/P000001/inventory");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         List<Inventory>? inventoryresponse = await response.Content.ReadFromJsonAsync<List<Inventory>>();
 
-
         Xunit.Assert.IsType<List<Inventory>>(inventoryresponse);
         Xunit.Assert.Single(inventoryresponse);
         Inventory inventoryCompared = inventoryresponse[0];
-
 
         Xunit.Assert.Equal(TestInventory.Id, inventoryCompared.Id);
         Xunit.Assert.Equal(TestInventory.ItemId, inventoryCompared.ItemId);
