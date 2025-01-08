@@ -1,13 +1,13 @@
 # Use the official .NET SDK image
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy all project files from the IntegrationTests directory to the container
-COPY ./IntegrationTests ./
+# Copy all project files to the container
+COPY . .
 
-# Copy the Authentication folder from CargoHubAlt to the container
+# Ensure the Authentication folder and users.json are copied into the container
 COPY ./CargoHubAlt/Authentication /app/Authentication/
 
 # Restore dependencies
