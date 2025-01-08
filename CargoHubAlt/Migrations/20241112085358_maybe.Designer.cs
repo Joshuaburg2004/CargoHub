@@ -11,7 +11,7 @@ namespace CargoHubAlt.Migrations
 {
     [DbContext(typeof(CargoHubContext))]
     [Migration("20241112085358_maybe")]
-    partial class maybe
+    partial class Maybe
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

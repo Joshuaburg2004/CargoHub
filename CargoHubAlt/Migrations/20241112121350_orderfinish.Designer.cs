@@ -11,7 +11,7 @@ namespace CargoHubAlt.Migrations
 {
     [DbContext(typeof(CargoHubContext))]
     [Migration("20241112121350_orderfinish")]
-    partial class orderfinish
+    partial class Orderfinish
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
