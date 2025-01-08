@@ -6,7 +6,14 @@ GET http://localhost:3000/api/v1/clients
 API_KEY: a1b2c3d4e5
 ###
 
+
+
 GET http://localhost:3000/api/v2/clients
+API_KEY: a1b2c3d4e5
+###
+
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/clients?pageIndex=1
 API_KEY: a1b2c3d4e5
 ###
 
@@ -57,6 +64,11 @@ GET http://localhost:3000/api/v1/inventories
 API_KEY: a1b2c3d4e5
 ###
 
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/inventories?pageIndex=1
+API_KEY: a1b2c3d4e5
+###
+
 
 GET http://localhost:3000/api/v1/inventories/1
 API_KEY: a1b2c3d4e5
@@ -82,6 +94,12 @@ API_KEY: a1b2c3d4e5
 ###
 
 GET http://localhost:3000/api/v1/item_groups
+API_KEY: a1b2c3d4e5
+###
+
+
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/item_groups?pageIndex=1
 API_KEY: a1b2c3d4e5
 ###
 
@@ -118,6 +136,11 @@ Content-Type: application/json
 
 //this is the item lines part
 GET http://localhost:3000/api/v1/item_lines
+API_KEY: a1b2c3d4e5
+###
+
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/item_lines?pageIndex=1
 API_KEY: a1b2c3d4e5
 ###
 
@@ -158,6 +181,11 @@ GET http://localhost:3000/api/v1/item_types
 API_KEY: a1b2c3d4e5
 ###
 
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/item_types?pageIndex=1
+API_KEY: a1b2c3d4e5
+###
+
 GET http://localhost:3000/api/v1/item_types/1
 API_KEY: a1b2c3d4e5
 ###
@@ -190,6 +218,11 @@ Content-Type: application/json
 //this starts the items requests
 
 GET http://localhost:3000/api/v1/items
+API_KEY: a1b2c3d4e5
+###
+
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/items?pageIndex=1
 API_KEY: a1b2c3d4e5
 ###
 
@@ -267,6 +300,11 @@ GET http://localhost:3000/api/v1/locations
 API_KEY: a1b2c3d4e5
 ###
 
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/locations?pageIndex=1
+API_KEY: a1b2c3d4e5
+###
+
 GET http://localhost:3000/api/v1/locations/1
 API_KEY: a1b2c3d4e5
 ###
@@ -305,6 +343,11 @@ API_KEY: a1b2c3d4e5
 // this starts the orders requests
 
 GET http://localhost:3000/api/v1/orders
+API_KEY: a1b2c3d4e5
+###
+
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/orders?pageIndex=1
 API_KEY: a1b2c3d4e5
 ###
 
@@ -400,6 +443,11 @@ API_KEY: a1b2c3d4e5
 
 //this starts the shipment requests
 GET   http://localhost:3000/api/v1/shipments
+API_KEY: a1b2c3d4e5
+###
+
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/shipments?pageIndex=1
 API_KEY: a1b2c3d4e5
 ###
 
@@ -538,8 +586,13 @@ API_KEY: a1b2c3d4e5
 
 GET http://localhost:3000/api/v1/suppliers
 API_KEY: a1b2c3d4e5
-
 ###
+
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/suppliers?pageIndex=1
+API_KEY: a1b2c3d4e5
+###
+
 
 GET http://localhost:3000/api/v1/suppliers/1
 API_KEY: a1b2c3d4e5
@@ -575,7 +628,11 @@ API_KEY: a1b2c3d4e5
 // this is everything for the transfers
 GET http://localhost:3000/api/v1/transfers
 API_KEY: a1b2c3d4e5
+###
 
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/transfers?pageIndex=1
+API_KEY: a1b2c3d4e5
 ###
 
 GET http://localhost:3000/api/v1/transfers/1
@@ -642,7 +699,11 @@ API_KEY: a1b2c3d4e5
 // this is everything for the warehouses
 GET http://localhost:3000/api/v1/warehouses
 API_KEY: a1b2c3d4e5
+###
 
+// usage of pagination, specific to V2
+GET http://localhost:3000/api/v2/warehouses?pageIndex=1
+API_KEY: a1b2c3d4e5
 ###
 
 GET http://localhost:3000/api/v1/warehouses/1

@@ -5,7 +5,7 @@
 namespace CargoHubAlt.Migrations
 {
     /// <inheritdoc />
-    public partial class maybe : Migration
+    public partial class Maybe : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

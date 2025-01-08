@@ -88,10 +88,11 @@ namespace IntegrationTests
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
 
-            Transfer res = await response.Content.ReadFromJsonAsync<Transfer>();
+            Transfer? res = await response.Content.ReadFromJsonAsync<Transfer>();
 
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.NotNull(res);
 
             Xunit.Assert.Equal(testtransfer.Id, res.Id);
             Xunit.Assert.Equal(testtransfer.Reference, res.Reference);
@@ -111,7 +112,8 @@ namespace IntegrationTests
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            List<TransferItem> res = await response.Content.ReadFromJsonAsync<List<TransferItem>>();
+            List<TransferItem>? res = await response.Content.ReadFromJsonAsync<List<TransferItem>>();
+            Xunit.Assert.NotNull(res);
 
             Xunit.Assert.Equal(testtransfer.Items[0].ItemId, res[0].ItemId);
             Xunit.Assert.Equal(testtransfer.Items[0].Amount, res[0].Amount);
@@ -126,7 +128,8 @@ namespace IntegrationTests
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            List<Transfer> res = await response.Content.ReadFromJsonAsync<List<Transfer>>();
+            List<Transfer>? res = await response.Content.ReadFromJsonAsync<List<Transfer>>();
+            Xunit.Assert.NotNull(res);
 
             Xunit.Assert.Equal(testtransfer.Id, res[0].Id);
             Xunit.Assert.Equal(testtransfer.Reference, res[0].Reference);
@@ -161,7 +164,7 @@ namespace IntegrationTests
             var response = await _client.DeleteAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
 
-            Transfer res = await response.Content.ReadFromJsonAsync<Transfer>();
+            Transfer? res = await response.Content.ReadFromJsonAsync<Transfer>();
 
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }

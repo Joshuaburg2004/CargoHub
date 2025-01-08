@@ -16,9 +16,9 @@ namespace CargoHub.Controllers.ControllersV2
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetAllLocations()
+        public async Task<IActionResult> GetAllLocations([FromQuery] int? pageIndex)
         {
-            return Ok(await _locationservice.GetAllLocations());
+            return Ok(await _locationservice.GetAllLocations(pageIndex));
         }
 
         [HttpGet("{id}")]

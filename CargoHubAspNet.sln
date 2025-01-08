@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CargoHubAlt", "CargoHubAlt\CargoHubAlt.csproj", "{F4BF6BFA-E882-44E3-AC45-914EEB546E41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "integrationtests\IntegrationTests.csproj", "{8A762C80-71C5-40FA-97D6-CE3D32922FFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{8A762C80-71C5-40FA-97D6-CE3D32922FFA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyUnitTestProject", "UnitTesting\MyUnitTestProject.csproj", "{C68781D4-1D40-43F1-AFD3-2B2F27EE7433}"
 EndProject

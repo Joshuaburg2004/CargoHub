@@ -5,7 +5,7 @@
 namespace CargoHubAlt.Migrations
 {
     /// <inheritdoc />
-    public partial class itemline : Migration
+    public partial class Itemline : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

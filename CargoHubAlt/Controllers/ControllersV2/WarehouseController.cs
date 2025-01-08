@@ -16,9 +16,9 @@ namespace CargoHubAlt.Controllers.ControllersV2
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetAllWarehouses()
+        public async Task<IActionResult> GetAllWarehouses([FromQuery] int? pageIndex)
         {
-            var warhouses = await _warehouseservice.GetAllWarehouses();
+            var warhouses = await _warehouseservice.GetAllWarehouses(pageIndex);
             return Ok(warhouses);
         }
 

@@ -38,19 +38,18 @@ namespace CargoHubAlt.Services.ServicesV2
                     // Create the ZIP file from the source directory
                     ZipFile.CreateFromDirectory(backupFolderPath, zipFilePath);
 
-                    Console.WriteLine($"ZIP file created successfully at: {zipFilePath}");
                 }
                 catch (Exception ex)
                 {
-                    return (false, $"An error occurred: {ex.Message}");
+                    return await Task.FromResult((false, $"An error occurred: {ex.Message}"));
                 }
 
                 string successstring = $"backup created successfully at {backupFolderPath}, Zipfile created successfully at {zipFilePath}";
-                return (true, successstring);
+                return await Task.FromResult((true, successstring));
             }
             catch (Exception ex)
             {
-                return (false, $"Error during backup: {ex}");
+                return await Task.FromResult((false, $"Error during backup: {ex}"));
             }
         }
 
@@ -62,15 +61,15 @@ namespace CargoHubAlt.Services.ServicesV2
             {
                 if (!File.Exists(source))
                 {
-                    return (false, "No database found to backup");
+                    return await Task.FromResult((false, "No database found to backup"));
                 }
                 string destinationFilePath = Path.Combine(backupFolderPath, "CargoHubDatabaseBackup.db");
                 File.Copy(source, destinationFilePath);
-                return (true, $"Backup saved at: {destinationFilePath}");
+                return await Task.FromResult((true, $"Backup saved at: {destinationFilePath}"));
             }
             catch (Exception ex)
             {
-                return (false, $"Error during database backup: {ex}");
+                return await Task.FromResult((false, $"Error during database backup: {ex}"));
             }
         }
 
@@ -82,7 +81,7 @@ namespace CargoHubAlt.Services.ServicesV2
             {
                 if (!Directory.Exists(source))
                 {
-                    return (false, "No logs found to backup");
+                    return await Task.FromResult((false, "No logs found to backup"));
                 }
                 string destinationFilePath = Path.Combine(backupFolderPath, "LogsBackup");
                 Directory.CreateDirectory(destinationFilePath);
@@ -90,11 +89,11 @@ namespace CargoHubAlt.Services.ServicesV2
                 {
                     File.Copy(file, Path.Combine(destinationFilePath, Path.GetFileName(file)));
                 }
-                return (true, $"Logs backup saved at: {destinationFilePath}");
+                return await Task.FromResult((true, $"Logs backup saved at: {destinationFilePath}"));
             }
             catch (Exception ex)
             {
-                return (false, $"Error during logs backup: {ex}");
+                return await Task.FromResult((false, $"Error during logs backup: {ex}"));
             }
         }
         public async Task<(bool,string)> UploadBackupFull(string backupFolderPath)

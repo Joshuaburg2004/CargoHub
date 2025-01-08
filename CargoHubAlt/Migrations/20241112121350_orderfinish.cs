@@ -5,7 +5,7 @@
 namespace CargoHubAlt.Migrations
 {
     /// <inheritdoc />
-    public partial class orderfinish : Migration
+    public partial class Orderfinish : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

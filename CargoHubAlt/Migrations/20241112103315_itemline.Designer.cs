@@ -11,7 +11,7 @@ namespace CargoHubAlt.Migrations
 {
     [DbContext(typeof(CargoHubContext))]
     [Migration("20241112103315_itemline")]
-    partial class itemline
+    partial class Itemline
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -86,6 +86,9 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool?>("IsLowStock")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ItemId")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -97,6 +100,9 @@ namespace CargoHubAlt.Migrations
                     b.Property<string>("Locations")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("LowStockThreshold")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("TotalAllocated")
                         .HasColumnType("INTEGER");

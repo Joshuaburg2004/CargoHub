@@ -61,7 +61,7 @@ namespace CargoHub.UnitTesting
         {
             using (var context = new CargoHubContext(options))
             {
-                var SupplierService = new SuppliersV1(context);
+                var SupplierService = new SupplierServiceV1(context);
                 var suppliers = await SupplierService.GetAllSuppliers();
 
                 Assert.Equal(2, suppliers.Count);
@@ -84,7 +84,7 @@ namespace CargoHub.UnitTesting
         {
             using (var context = new CargoHubContext(options))
             {
-                var SupplierService = new SuppliersV1(context);
+                var SupplierService = new SupplierServiceV1(context);
                 var supplier = await SupplierService.GetSupplier(1);
 
                 Assert.NotNull(supplier);
@@ -107,7 +107,7 @@ namespace CargoHub.UnitTesting
         {
             using (var context = new CargoHubContext(options))
             {
-                var SupplierService = new SuppliersV1(context);
+                var SupplierService = new SupplierServiceV1(context);
                 var supplier = new Supplier
                 {
                     Id = 3,
@@ -150,7 +150,7 @@ namespace CargoHub.UnitTesting
         {
             using (var context = new CargoHubContext(options))
             {
-                var SupplierService = new SuppliersV1(context);
+                var SupplierService = new SupplierServiceV1(context);
                 var Supplier = context.Suppliers.First();
                 Supplier.ContactName = "new contact name";
                 await SupplierService.UpdateSupplier(Supplier.Id, Supplier);
@@ -179,7 +179,7 @@ namespace CargoHub.UnitTesting
         {
             using (var context = new CargoHubContext(options))
             {
-                var SupplierService = new SuppliersV1(context);
+                var SupplierService = new SupplierServiceV1(context);
                 var Supplier = context.Suppliers.First();
                 await SupplierService.DeleteSupplier(Supplier.Id);
                 var Suppliertwo = context.Suppliers.First();
