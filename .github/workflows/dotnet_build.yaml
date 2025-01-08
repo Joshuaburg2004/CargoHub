@@ -70,15 +70,15 @@ jobs:
     - name: Create Data directory
       run: mkdir -p ${{ github.workspace }}/Data
 
-    # Initialize SQLite Database
-    - name: Initialize SQLite Database
-      run: |
-        if [ ! -f "${{ github.workspace }}/Data/your-database.db" ]; then
-          echo "Creating SQLite database..."
-          sqlite3 ${{ github.workspace }}/Data/your-database.db "VACUUM;"
-        else
-          echo "Database file already exists."
-        fi
+    # # Initialize SQLite Database
+    # - name: Initialize SQLite Database
+    #   run: |
+    #     if [ ! -f "${{ github.workspace }}/Data/your-database.db" ]; then
+    #       echo "Creating SQLite database..."
+    #       sqlite3 ${{ github.workspace }}/Data/your-database.db "VACUUM;"
+    #     else
+    #       echo "Database file already exists."
+    #     fi
 
     - name: Build Docker image
       run: |
