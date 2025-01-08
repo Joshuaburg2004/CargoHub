@@ -60,70 +60,44 @@ jobs:
       Minimum_Code_Coverage: ${{ vars.MINIMUMCODECOVERAGE }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Setup Docker
-        uses: docker/setup-buildx-action@v2
+    - name: Setup Docker
+      uses: docker/setup-buildx-action@v2
 
-      # Step to verify the Data directory
-      - name: Check Data directory
-        run: ls ${{ github.workspace }}/Data
+    # Step to create the Data directory if it doesn't exist
+    - name: Create Data directory
+      run: mkdir -p ${{ github.workspace }}/Data
 
-      # Optional: Debug contents of the Data directory
-      - name: Inspect Data directory contents
-        run: |
-          echo "Contents of Data directory:"
-          ls -l ${{ github.workspace }}/Data
+    # Optional: Debugging step to verify Data directory exists
+    - name: Check Data directory
+      run: ls ${{ github.workspace }}/Data
 
-      # Step to initialize SQLite database (if required)
-      - name: Initialize SQLite Database
-        run: |
-          if [ -f "${{ github.workspace }}/Data/your-database.db" ]; then
-            echo "Database file exists."
-          else
-            echo "Creating SQLite database..."
-            sqlite3 ${{ github.workspace }}/Data/your-database.db "VACUUM;"
-          fi
+    # Initialize SQLite Database
+    - name: Initialize SQLite Database
+      run: |
+        if [ ! -f "${{ github.workspace }}/Data/your-database.db" ]; then
+          echo "Creating SQLite database..."
+          sqlite3 ${{ github.workspace }}/Data/your-database.db "VACUUM;"
+        else
+          echo "Database file already exists."
+        fi
 
-      # Step to build the Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t integrationtest .
+    - name: Build Docker image
+      run: |
+        docker build -t integrationtest .
 
-      # Debugging: Verify Docker image was built
-      - name: List Docker images
-        run: docker images
-
-      # Run integration tests in Docker container
-      - name: Run Docker container with SQLite
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}/TestResults:/testresults \
-            -v ${{ github.workspace }}/Data:/app/Data \
-            -e Solution_Name=/app/CargoHubAspNet.sln \
-            -e Test_Project_Path=/app/IntegrationTests/IntegrationTests.csproj \
-            integrationtest \
-            dotnet test /app/IntegrationTests/IntegrationTests.csproj \
-            --results-directory /testresults --verbosity detailed
-
-      # Optional: Inspect test results after execution
-      - name: Inspect Test Results
-        run: |
-          echo "Test results:"
-          ls ${{ github.workspace }}/TestResults
-          cat ${{ github.workspace }}/TestResults/*.trx || echo "No test results found."
-
-      - name: Run tests with coverage
-        run: |
-          mkdir -p ${{ env.Coverage_Report_Folder }}
-          dotnet tool install --global coverlet.console
-          coverlet ${{ env.Test_Project_dll }} --target "dotnet" --targetargs "test ${{ env.Test_Project_Path }} --no-build --nologo" --output "${{ env.Coverage_Report_Folder }}/coverage" --format cobertura --exclude=\"${{env.Wap_Project_Directory}}/Authentication\"
-
-      - name: Generate coverage report
-        run: |
-          dotnet tool install -g dotnet-reportgenerator-globaltool
-          reportgenerator -reports:${{ env.Coverage_Report_Folder }}/coverage.cobertura.xml -targetdir:${{ env.Coverage_Report_Folder }} -reporttypes:TextSummary
+    - name: Run Docker container with SQLite
+      run: |
+        docker run --rm \
+          -v ${{ github.workspace }}/TestResults:/testresults \
+          -v ${{ github.workspace }}/Data:/app/Data \
+          -e Solution_Name=/app/CargoHubAspNet.sln \
+          -e Test_Project_Path=/app/IntegrationTests/IntegrationTests.csproj \
+          integrationtest \
+          dotnet test /app/IntegrationTests/IntegrationTests.csproj \
+          --results-directory /testresults --verbosity detailed
 
   run-unit-tests:
     needs: build
