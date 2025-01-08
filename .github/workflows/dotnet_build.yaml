@@ -67,18 +67,8 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     # Step to create the Data directory if it doesn't exist
-    - name: Create Data directory
-      run: mkdir -p ${{ github.workspace }}/Data
-
-    # # Initialize SQLite Database
-    # - name: Initialize SQLite Database
-    #   run: |
-    #     if [ ! -f "${{ github.workspace }}/Data/your-database.db" ]; then
-    #       echo "Creating SQLite database..."
-    #       sqlite3 ${{ github.workspace }}/Data/your-database.db "VACUUM;"
-    #     else
-    #       echo "Database file already exists."
-    #     fi
+    # - name: Create Data directory
+    #   run: mkdir -p ${{ github.workspace }}/Data
 
     - name: Build Docker image
       run: |
