@@ -96,11 +96,8 @@ namespace IntegrationTests
 
             List<Order>? orders = await response2.Content.ReadFromJsonAsync<List<Order>>();
             Xunit.Assert.NotNull(orders);
-<<<<<<< HEAD
             Xunit.Assert.Single(orders);
-=======
             Xunit.Assert.NotNull(orders[0]);
->>>>>>> 9a60ad0a2953ce9b982dc91fc966bc6227ad6b88
             Xunit.Assert.Equal(_orderToAdd.Id, orders[0].Id);
             Xunit.Assert.Equal(_orderToAdd.SourceId, orders[0].SourceId);
             Xunit.Assert.Equal(_orderToAdd.OrderDate, orders[0].OrderDate);
