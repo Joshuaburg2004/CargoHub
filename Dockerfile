@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Ensure the Authentication folder and users.json are copied into the container
-COPY ./CargoHubAlt/Authentication /app/Authentication/
+COPY ./CargoHubAlt/Authentication/ /app/Authentication/
 
 # Restore dependencies
 RUN dotnet restore

@@ -15,11 +15,11 @@ public static class ApiKeyOptions
             Formatting = Newtonsoft.Json.Formatting.Indented
 
         });
-        File.WriteAllText(Path.Join(Directory.GetCurrentDirectory(), "Authentication/users.json"), json);
+        File.WriteAllText(Path.Join(Directory.GetCurrentDirectory(), "Authentication/Users.json"), json);
     }
     private static List<User> ReadJsonUsers()
     {
-        var FilePath = Path.Combine(Directory.GetCurrentDirectory(), "Authentication", "users.json");
+        var FilePath = Path.Combine(Directory.GetCurrentDirectory(), "Authentication", "Users.json");
         var json = File.ReadAllText(FilePath);
         var users = Newtonsoft.Json.JsonConvert.DeserializeObject<List<User>>(json);
         return users ?? new List<User>();
