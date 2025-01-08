@@ -20,7 +20,7 @@ namespace IntegrationTests
         private List<int> _orderPutted = new List<int>() { 3 };
         private OrderedItem _itemAddedToOrder = new OrderedItem() { ItemId = "P010669", Amount = 16 };
 
-        public ShipmentTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
+        public ShipmentTest() { }
         [Fact, TestPriority(1)]
         public async Task GetAllShipments()
         {

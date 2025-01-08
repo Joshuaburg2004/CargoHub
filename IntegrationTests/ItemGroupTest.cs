@@ -18,8 +18,7 @@ public class ItemGroupTest : BaseTest
     private ItemGroup _itemGroupPut = new ItemGroup(1, "Laptop", "Never gonna let you down");
     private Item _item = new Item("P000005", "Laptop", "Never gonna give you up", "Never gonna", "123456789", "123456789", "123456789", 1, 1, 1, 1, 1, 1, 1, "123456789", "123456789");
 
-    public ItemGroupTest(CustomWebApplicationFactory<Program> factory) : base(factory)
-    { }
+    public ItemGroupTest() { }
 
     [Fact, TestPriority(0)]
     public async Task CreateItemGroup()
