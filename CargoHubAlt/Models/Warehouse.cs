@@ -9,17 +9,17 @@ namespace CargoHubAlt.Models
     public class Warehouse : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string? Code { get; set; }
-        public string? Name { get; set; }
-        public string? Address { get; set; }
-        public string? Zip { get; set; }
-        public string? City { get; set; }
-        public string? Province { get; set; }
-        public string? Country { get; set; }
+        public required int Id { get; set; }
+        public required string Code { get; set; }
+        public required string Name { get; set; }
+        public required string Address { get; set; }
+        public required string Zip { get; set; }
+        public required string City { get; set; }
+        public required string Province { get; set; }
+        public required string Country { get; set; }
         public required Contact Contact { get; set; }
-        public string? CreatedAt { get; set; } = Base.GetTimeStamp();
-        public string? UpdatedAt { get; set; } = Base.GetTimeStamp();
+        public required string CreatedAt { get; set; } = Base.GetTimeStamp();
+        public required string UpdatedAt { get; set; } = Base.GetTimeStamp();
         public Warehouse() { }
 
         public Warehouse(int id, string code, string name, string address, string zip, string city, string province, string country, Contact contact)

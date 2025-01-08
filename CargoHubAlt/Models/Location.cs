@@ -9,12 +9,12 @@ namespace CargoHubAlt.Models
     public class Location : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public int WarehouseId { get; set; }
-        public string Code { get; set; }
-        public string Name { get; set; }
-        public string CreatedAt { get; set; } = GetTimeStamp();
-        public string UpdatedAt { get; set; } = GetTimeStamp();
+        public required int Id { get; set; }
+        public required int WarehouseId { get; set; }
+        public required string Code { get; set; }
+        public required string Name { get; set; }
+        public required string CreatedAt { get; set; } = GetTimeStamp();
+        public required string UpdatedAt { get; set; } = GetTimeStamp();
         public Location() { }
         public Location(int id, int warehouseId, string code, string name)
         {

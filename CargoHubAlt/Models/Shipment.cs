@@ -9,25 +9,25 @@ namespace CargoHubAlt.Models
     public class Shipment
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public int OrderId { get; set; } // maybe this should be a list of order ids
-        public int SourceId { get; set; }
-        public string? OrderDate { get; set; }
-        public string? RequestDate { get; set; }
-        public string? ShipmentDate { get; set; }
-        public string? ShipmentType { get; set; }
-        public string? ShipmentStatus { get; set; }
-        public string? Notes { get; set; }
-        public string? CarrierCode { get; set; }
-        public string? CarrierDescription { get; set; }
-        public string? ServiceCode { get; set; }
-        public string? PaymentType { get; set; }
-        public string? TransferMode { get; set; }
-        public int TotalPackageCount { get; set; }
-        public double TotalPackageWeight { get; set; }
-        public string? CreatedAt { get; set; } = Base.GetTimeStamp();
-        public string? UpdatedAt { get; set; } = Base.GetTimeStamp();
-        public List<ShipmentItem> Items { get; set; } = new();
+        public required int Id { get; set; }
+        public required int OrderId { get; set; } // maybe this should be a list of order ids
+        public required int SourceId { get; set; }
+        public required string? OrderDate { get; set; }
+        public required string? RequestDate { get; set; }
+        public required string? ShipmentDate { get; set; }
+        public required string? ShipmentType { get; set; }
+        public required string? ShipmentStatus { get; set; }
+        public required string? Notes { get; set; }
+        public required string? CarrierCode { get; set; }
+        public required string? CarrierDescription { get; set; }
+        public required string? ServiceCode { get; set; }
+        public required string? PaymentType { get; set; }
+        public required string? TransferMode { get; set; }
+        public required int TotalPackageCount { get; set; }
+        public required double TotalPackageWeight { get; set; }
+        public required string? CreatedAt { get; set; } = Base.GetTimeStamp();
+        public required string? UpdatedAt { get; set; } = Base.GetTimeStamp();
+        public required List<ShipmentItem> Items { get; set; } = new();
 
         public Shipment() { }
         public Shipment(int id, int order_id, int source_id, string order_date, string request_date, string shipment_date, string shipment_type, string shipment_status, string notes, string carrier_code, string carrier_description, string service_code, string payment_type, string transfer_mode, int total_package_count, double total_package_weight, List<ShipmentItem> items)

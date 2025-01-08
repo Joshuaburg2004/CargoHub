@@ -26,11 +26,11 @@ namespace CargoHubAlt.Services.ServicesV2
                 // Create the backup files
                 await CreateBackupDatabase(backupFolderPath);
                 await CreateBackupLogs(backupFolderPath);
-                return (true, "Backup created successfully at: " + backupFolderPath);
+                return await Task.FromResult((true, "Backup created successfully at: " + backupFolderPath));
             }
             catch (Exception ex)
             {
-                return (false, $"Error during backup: {ex}");
+                return await Task.FromResult((false, $"Error during backup: {ex}"));
             }
         }
 
@@ -42,15 +42,15 @@ namespace CargoHubAlt.Services.ServicesV2
             {
                 if (!File.Exists(source))
                 {
-                    return (false, "No database found to backup");
+                    return await Task.FromResult((false, "No database found to backup"));
                 }
                 string destinationFilePath = Path.Combine(backupFolderPath, "CargoHubDatabaseBackup.db");
                 File.Copy(source, destinationFilePath);
-                return (true, $"Backup saved at: {destinationFilePath}");
+                return await Task.FromResult((true, $"Backup saved at: {destinationFilePath}"));
             }
             catch (Exception ex)
             {
-                return (false, $"Error during database backup: {ex}");
+                return await Task.FromResult((false, $"Error during database backup: {ex}"));
             }
         }
 
@@ -70,11 +70,11 @@ namespace CargoHubAlt.Services.ServicesV2
                 {
                     File.Copy(file, Path.Combine(destinationFilePath, Path.GetFileName(file)));
                 }
-                return (true, $"Logs backup saved at: {destinationFilePath}");
+                return await Task.FromResult((true, $"Logs backup saved at: {destinationFilePath}"));
             }
             catch (Exception ex)
             {
-                return (false, $"Error during logs backup: {ex}");
+                return await Task.FromResult((false, $"Error during logs backup: {ex}"));
             }
         }
     }
