@@ -12,13 +12,13 @@ using System.Net.Http;
 using Xunit;
 
 [ExcludeFromCodeCoverage]
-public class BaseTest
+public class BaseTest : IClassFixture<CustomWebApplicationFactory<Program>>
 {
     protected readonly HttpClient _client;
 
-    public BaseTest()
+    public BaseTest(CustomWebApplicationFactory<Program> factory)
     {
-        _client = new HttpClient();
+        _client = factory.CreateClient();
         _client.BaseAddress = new Uri("http://localhost:3000");
         _client.DefaultRequestHeaders.Add("API_KEY", "a1b2c3d4e5");
     }

@@ -24,7 +24,7 @@ public class ItemIntegratieTest : BaseTest
     public Inventory TestInventory = new(5, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40, 10);
 
 
-    public ItemIntegratieTest() { }
+    public ItemIntegratieTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
 
     [Fact, TestPriority(0)]
     public async Task GetAllItemsEmpty()

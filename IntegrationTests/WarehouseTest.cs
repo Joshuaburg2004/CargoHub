@@ -38,7 +38,7 @@ namespace IntegrationTests
             Contact = new Contact("Fem Keijzer", "(078) 0013363", "blamore@example.net")
         };
 
-        public WarehouseTest() { }
+        public WarehouseTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
 
         [Fact, TestPriority(1)]
         public async Task GetAllWarehouses()

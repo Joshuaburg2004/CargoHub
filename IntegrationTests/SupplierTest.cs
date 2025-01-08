@@ -15,8 +15,7 @@ namespace IntegrationTests
         private Supplier _newsupplier = new Supplier(1, "SUP0001", "Lee, Parks and Johnson", "5989 Sullivan Drives", "Apt. 996", "Port Anitaburgh", "91688", "Illinois", "Czech Republic", "Toni Barnett", "363.541.7282x36825", "LPaJ-SUP0001");
         private Supplier _supplierToPut = new Supplier(1, "SUP0001", "Bob, Parks and Johnson", "5989 Sullivan Drives", "Apt. 996", "Port Anitaburgh", "91688", "Illinois", "Czech Republic", "Toni Barnett", "363.541.7282x36825", "LPaJ-SUP0001");
         private Item _item = new Item("P000001", "ITM0001", "Item 1", "Item 1", "UPC0001", "Model 1", "Commodity 1", 1, 1, 1, 1, 1, 1, 1, "SUP0001", "SUP0001-ITM0001");
-        public SupplierTest() { }
-
+        public SupplierTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
         [Fact, TestPriority(1)]
         public async Task GetAllSuppliers()
         {
