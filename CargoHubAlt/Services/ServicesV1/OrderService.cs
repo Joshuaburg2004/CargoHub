@@ -65,57 +65,87 @@ namespace CargoHubAlt.Services.ServicesV1
             return false;
         }
 
-        public async Task<bool> UpdateOrder(Order order)
+        public async Task<string> UpdateOrder(Order order)
         {
             // checks before updating Order
             Order? oldOrder = await _context.Orders.FirstOrDefaultAsync(x => x.Id == order.Id);
+            string ChangedFields = "";
             if (oldOrder == null)
             {
-                return false;
+                return "Order not found";
             }
 
             // update Order
-            oldOrder.SourceId = order.SourceId;
-            oldOrder.Reference = order.Reference;
-            oldOrder.ReferenceExtra = order.ReferenceExtra;
-            oldOrder.OrderStatus = order.OrderStatus;
-            oldOrder.Notes = order.Notes;
-            oldOrder.ShippingNotes = order.ShippingNotes;
-            oldOrder.PickingNotes = order.PickingNotes;
-            oldOrder.WarehouseId = order.WarehouseId;
-            oldOrder.ShipTo = order.ShipTo;
-            oldOrder.BillTo = order.BillTo;
-            oldOrder.ShipmentId = order.ShipmentId;
-            oldOrder.TotalAmount = order.TotalAmount;
-            oldOrder.TotalDiscount = order.TotalDiscount;
-            oldOrder.TotalTax = order.TotalTax;
-            oldOrder.TotalSurcharge = order.TotalSurcharge;
-            oldOrder.CreatedAt = order.CreatedAt;
+            if (oldOrder.OrderDate != order.OrderDate)
+            {
+                oldOrder.OrderDate = order.OrderDate;
+                ChangedFields += $"OrderDate: {order.OrderDate}, ";
+            }
+            if (oldOrder.OrderStatus != order.OrderStatus)
+            {
+                oldOrder.OrderStatus = order.OrderStatus;
+                ChangedFields += $"OrderStatus: {order.OrderStatus}, ";
+            }
+            if (oldOrder.RequestDate != order.RequestDate)
+            {
+                oldOrder.RequestDate = order.RequestDate;
+                ChangedFields += $"RequestDate: {order.RequestDate}, ";
+            }
+            if (oldOrder.Reference != order.Reference)
+            {
+                oldOrder.Reference = order.Reference;
+                ChangedFields += $"Reference: {order.Reference}, ";
+            }
+            if (oldOrder.ReferenceExtra != order.ReferenceExtra)
+            {
+                oldOrder.ReferenceExtra = order.ReferenceExtra;
+                ChangedFields += $"ReferenceExtra: {order.ReferenceExtra}, ";
+            }
+            if (oldOrder.Notes != order.Notes)
+            {
+                oldOrder.Notes = order.Notes;
+                ChangedFields += $"Notes: {order.Notes}, ";
+            }
+            if (oldOrder.ShippingNotes != order.ShippingNotes)
+            {
+                oldOrder.ShippingNotes = order.ShippingNotes;
+                ChangedFields += $"ShippingNotes: {order.ShippingNotes}, ";
+            }
+            if (oldOrder.PickingNotes != order.PickingNotes)
+            {
+                oldOrder.PickingNotes = order.PickingNotes;
+                ChangedFields += $"PickingNotes: {order.PickingNotes}, ";
+            }
             oldOrder.UpdatedAt = Base.GetTimeStamp();
             oldOrder.Items = order.Items;
 
             _context.Orders.Update(oldOrder);
             if (await _context.SaveChangesAsync() >= 0)
-                return true;
-            return false;
+                return ChangedFields;
+            return "No fields changed";
         }
 
-        public async Task<bool> UpdateOrderedItems(int orderId, List<OrderedItem> items)
+        public async Task<string> UpdateOrderedItems(int orderId, List<OrderedItem> items)
         {
             // checks before updating OrderedItems
             Order? order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == orderId);
+            string ChangedFields = "";
             if (order == null)
             {
-                return false;
+                return "Order not found";
             }
 
             // update OrderedItems
-            order.Items = items;
+            if (order.Items != items)
+            {
+                order.Items = items;
+                ChangedFields += "Items, ";
+            }
 
             _context.Orders.Update(order);
             if (await _context.SaveChangesAsync() >= 0)
-                return true;
-            return false;
+                return ChangedFields;
+            return "No fields changed";
         }
 
         public async Task<bool> RemoveOrder(int id)

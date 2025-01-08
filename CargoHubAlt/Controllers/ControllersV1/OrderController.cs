@@ -22,10 +22,8 @@ namespace CargoHub.Controllers.ControllersV1
             List<Order>? orders = await _orderservice.GetOrders();
             if (orders == null || orders.Count == 0)
             {
-                _logger.LogInformation("No orders found");
                 return NotFound();
             }
-            _logger.LogInformation($"Found {orders.Count} orders");
             return Ok(orders);
         }
 
@@ -34,16 +32,13 @@ namespace CargoHub.Controllers.ControllersV1
         {
             if (id <= 0)
             {
-                _logger.LogInformation("Invalid id");
                 return BadRequest();
             }
             Order? order = await _orderservice.GetOrder(id);
             if (order == null)
             {
-                _logger.LogInformation($"No order found with id: {id}");
                 return NotFound();
             }
-            _logger.LogInformation($"Order found with id: {id}");
             return Ok(order);
         }
 
@@ -52,84 +47,79 @@ namespace CargoHub.Controllers.ControllersV1
         {
             if (id <= 0)
             {
-                _logger.LogInformation("Invalid id");
                 return BadRequest();
             }
             List<OrderedItem>? items = await _orderservice.GetOrderedItems(id);
             if (items == null)
             {
-                _logger.LogInformation($"No items found for order with id: {id}");
                 return NotFound();
             }
-            _logger.LogInformation($"Items found for order with id: {id}");
             return Ok(items);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddOrder([FromBody] Order order)
         {
+            var apiKey = Request.Headers["api_key"];
             if (order == null)
             {
-                _logger.LogInformation("Order is null");
                 return BadRequest("Order is null");
             }
             else if (!await _orderservice.AddOrder(order))
             {
-                _logger.LogInformation("Order not added");
                 return NotFound("Order not added");
             }
-            _logger.LogInformation($"Order with id: {order.Id} added");
+            _logger.LogInformation($"Order with id: {order.Id} added, Api_key: {apiKey}");
             return Created("", "");
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateOrder([FromRoute] int id, [FromBody] Order order)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0 || order == null)
             {
-                _logger.LogInformation("Invalid id or order");
                 return BadRequest();
             }
-            else if (!await _orderservice.UpdateOrder(order))
+            var result = await _orderservice.UpdateOrder(order);
+            if (result == null)
             {
-                _logger.LogInformation("Order not updated");
                 return NotFound();
             }
-            _logger.LogInformation($"Order with id: {id} updated");
+            _logger.LogInformation($"Order with id: {id} updated, changed fields: {result}, Api_key: {apiKey}");
             return Ok();
         }
 
         [HttpPut("{id}/items")]
         public async Task<IActionResult> UpdateOrderedItems([FromRoute] int id, [FromBody] List<OrderedItem> items)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0 || items == null)
             {
-                _logger.LogInformation("Invalid id or items");
                 return BadRequest();
             }
-            else if (!await _orderservice.UpdateOrderedItems(id, items))
+            string ChangedFields = await _orderservice.UpdateOrderedItems(id, items);
+            if (ChangedFields == null)
             {
-                _logger.LogInformation("Items not updated");
                 return NotFound();
             }
-            _logger.LogInformation($"Items for order with id: {id} updated");
+            _logger.LogInformation($"Items for order with id: {id} updated, changed fields: {ChangedFields}, Api_key: {apiKey}");
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveOrder([FromRoute] int id)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0)
             {
-                _logger.LogInformation("Invalid id");
                 return BadRequest();
             }
             else if (!await _orderservice.RemoveOrder(id))
             {
-                _logger.LogInformation("Order not removed");
                 return NotFound();
             }
-            _logger.LogInformation($"Order with id: {id} removed");
+            _logger.LogInformation($"Order with id: {id} removed, Api_key: {apiKey}");
             return Ok();
         }
         [HttpPost("load/{path}")]

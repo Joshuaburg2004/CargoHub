@@ -19,15 +19,13 @@ namespace CargoHub.Controllers.ControllersV2
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetShipments()
+        public async Task<IActionResult> GetShipments([FromQuery] int? pageIndex)
         {
-            var shipments = await _shipmentService.GetAllShipments();
+            var shipments = await _shipmentService.GetAllShipments(pageIndex);
             if (shipments == null)
             {
-                _logger.LogInformation("No shipments found");
                 return NotFound();
             }
-            _logger.LogInformation($"Found {shipments.Count} shipments");
             return Ok(shipments);
         }
 
@@ -36,16 +34,13 @@ namespace CargoHub.Controllers.ControllersV2
         {
             if (id <= 0)
             {
-                _logger.LogInformation("Invalid id");
                 return BadRequest();
             }
             var shipment = await _shipmentService.GetShipment(id);
             if (shipment == null)
             {
-                _logger.LogInformation($"Shipment with id:{id} not found");
                 return NotFound();
             }
-            _logger.LogInformation($"Shipment with id:{id} found");
             return Ok(shipment);
         }
 
@@ -54,17 +49,13 @@ namespace CargoHub.Controllers.ControllersV2
         {
             if (id <= 0)
             {
-                _logger.LogInformation("Invalid id");
                 return BadRequest();
             }
             var items = await _shipmentService.GetItemsfromShipmentById(id);
             if (items == null)
             {
-                _logger.LogInformation($"No items found in shipment with id:{id}");
                 return NotFound();
             }
-            if (items.Count == 1) _logger.LogInformation($"Found {items.Count} item in shipment with id:{id}");
-            _logger.LogInformation($"Found {items.Count} items in shipment with id:{id}");
             return Ok(items);
         }
 
@@ -73,86 +64,82 @@ namespace CargoHub.Controllers.ControllersV2
         {
             if (id <= 0)
             {
-                _logger.LogInformation("Invalid id");
                 return BadRequest();
             }
             var orders = await _shipmentService.GetOrdersFromShipmentById(id);
             if (orders == null)
             {
-                _logger.LogInformation($"No orders found in shipment with id:{id}");
                 return NotFound();
             }
             if (orders.Count == 0)
             {
-                _logger.LogInformation($"No orders found in shipment with id:{id}");
                 return NotFound();
             }
-            _logger.LogInformation($"Found {orders.Count} orders in shipment with id:{id}");
             return Ok(orders);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddShipment([FromBody] Shipment shipment)
         {
+            var apiKey = Request.Headers["api_key"];
             if (shipment is null)
             {
-                _logger.LogInformation("Invalid shipment");
                 return BadRequest();
             }
             await _shipmentService.AddShipment(shipment);
-            _logger.LogInformation($"Created new shipment with id:{shipment.Id}");
+            _logger.LogInformation($"Created new shipment with id:{shipment.Id}, ApiKey:{apiKey}");
             return Created("Created Shipment", shipment);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateShipment([FromRoute] int id, [FromBody] Shipment shipment)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0 || shipment is null)
             {
-                _logger.LogInformation("Invalid id or shipment");
                 return BadRequest();
             }
             await _shipmentService.UpdateShipment(id, shipment);
-            _logger.LogInformation($"Updated shipment with id:{id}");
+            _logger.LogInformation($"Updated shipment with id:{id}, ApiKey:{apiKey}");
             return Ok();
         }
 
         [HttpPut("{id}/items")]
         public async Task<IActionResult> UpdateItemsInShipment([FromRoute] int id, [FromBody] List<ShipmentItem> items)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0 || items == null)
             {
-                _logger.LogInformation("Invalid id or items");
                 return BadRequest();
             }
             await _shipmentService.UpdateItemsInShipment(id, items);
-            _logger.LogInformation($"Updated items in shipment with id:{id}");
+            _logger.LogInformation($"Updated items in shipment with id:{id}, ApiKey:{apiKey}");
             return Ok();
         }
 
         [HttpPut("{id}/orders")]
         public async Task<IActionResult> UpdateOrdersInShipment([FromRoute] int id, [FromBody] List<int> orders)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0 || orders == null)
             {
-                _logger.LogInformation("Invalid id or orders");
                 return BadRequest();
             }
             await _shipmentService.UpdateOrdersInShipment(id, orders);
-            _logger.LogInformation($"Updated orders in shipment with id:{id}");
+            _logger.LogInformation($"Updated orders in shipment with id:{id}, ApiKey:{apiKey}");
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteShipment([FromRoute] int id)
         {
+            var apiKey = Request.Headers["api_key"];
             if (id <= 0)
             {
-                _logger.LogInformation("Invalid id");
                 return BadRequest();
             }
             await _shipmentService.DeleteShipment(id);
-            _logger.LogInformation($"Deleted shipment with id:{id}");
+            _logger.LogInformation($"Deleted shipment with id:{id}, ApiKey:{apiKey}");
             return Ok();
         }
         [HttpPost("load/{path}")]
@@ -160,6 +147,16 @@ namespace CargoHub.Controllers.ControllersV2
         {
             await _shipmentService.LoadFromJson(path);
             return Ok();
+        }
+        [HttpPut("{id}/commit")]
+        public async Task<IActionResult> Commit([FromRoute] int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+            await _shipmentService.CommitShipmentById(id);
+            return Ok($"Committed the shipment with id:{id}");
         }
     }
 }

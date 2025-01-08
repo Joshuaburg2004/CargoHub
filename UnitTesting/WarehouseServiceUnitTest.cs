@@ -58,6 +58,7 @@ namespace CargoHub.UnitTesting
 
                 Assert.NotNull(Warehouses);
                 Assert.Single(Warehouses);
+                Assert.NotNull(Warehouses[0].Contact);
                 Assert.Equal("Test Warehouse", Warehouses[0].Name);
                 Assert.Equal("Test Code", Warehouses[0].Code);
                 Assert.Equal("123 Test St", Warehouses[0].Address);

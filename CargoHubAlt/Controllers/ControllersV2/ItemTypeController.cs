@@ -15,9 +15,9 @@ namespace CargoHub.Controllers.ControllersV2
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetAllItemTypes()
+        public async Task<IActionResult> GetAllItemTypes([FromQuery] int? pageIndex)
         {
-            return Ok(await _itemsService.GetAllItemType());
+            return Ok(await _itemsService.GetAllItemType(pageIndex));
         }
 
         [HttpGet("{id}")]

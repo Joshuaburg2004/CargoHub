@@ -44,6 +44,21 @@ namespace CargoHubAlt.Services.ServicesV2
             return await _cargoHubContext.ItemLines.ToListAsync();
         }
 
+        public async Task<IEnumerable<ItemLine>> GetAllItemLine(int? pageIndex)
+        {
+            if (pageIndex == null)
+            {
+                return await GetAllItemLine();
+            }
+            int page = (int)pageIndex;
+            var itemLines = await _cargoHubContext.ItemLines
+                .OrderBy(c => c.Id)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+            return itemLines;
+        }
+
         public async Task<int?> AddItemLine(ItemLine linetype)
         {
             await _cargoHubContext.ItemLines.AddAsync(linetype);

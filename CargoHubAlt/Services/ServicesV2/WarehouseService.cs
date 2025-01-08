@@ -16,6 +16,17 @@ namespace CargoHubAlt.Services.ServicesV2
         }
 
         public async Task<List<Warehouse>?> GetAllWarehouses() => await _context.Warehouses.ToListAsync();
+        public async Task<List<Warehouse>?> GetAllWarehouses(int? pageIndex)
+        {
+            if (pageIndex == null)
+                return await GetAllWarehouses();
+            int page = (int)pageIndex;
+            return await _context.Warehouses
+                .OrderBy(w => w.Id)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+        }
 
         public async Task<Warehouse?> GetWarehouseById(int id) => await _context.Warehouses.FirstOrDefaultAsync(_ => _.Id == id);
 

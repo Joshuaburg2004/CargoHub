@@ -8,16 +8,19 @@ namespace CargoHubAlt.Controllers.ControllersV2
     [Route("api/v2/Inventories")]
     public class InventoryControllerV2 : Controller
     {
+        private readonly ILogger<InventoryControllerV2> _logger;
         readonly IInventoryServiceV2 _inventoryService;
-        public InventoryControllerV2(IInventoryServiceV2 inventorysservice)
+        public InventoryControllerV2(IInventoryServiceV2 inventorysservice, ILogger<InventoryControllerV2> logger)
         {
+            this._logger = logger;
             this._inventoryService = inventorysservice;
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetAllInventories()
+        public async Task<IActionResult> GetAllInventories([FromQuery] int? pageIndex)
         {
-            return Ok(await this._inventoryService.GetAllInventories());
+            IEnumerable<Inventory> Inventories = await this._inventoryService.GetAllInventories(pageIndex);
+            return Ok(Inventories);
         }
 
         [HttpGet("{id}")]
@@ -45,12 +48,12 @@ namespace CargoHubAlt.Controllers.ControllersV2
         {
             if (id <= 0) return BadRequest("This id is invalid");
             if (toupdateto is null) return BadRequest("This is not an inventory");
-            Inventory? success = await this._inventoryService.UpdateInventory(id, toupdateto);
+            Inventory? inventory = await this._inventoryService.UpdateInventory(id, toupdateto);
             // return Ok("");
 
+            if (inventory is null) return NotFound($"Id not Found: {id}");
 
-            if (success is null) return NotFound($"Id not Found: {id}");
-            return Ok(success);
+            return Ok(inventory);
         }
 
         [HttpDelete("{id}")]
@@ -63,6 +66,17 @@ namespace CargoHubAlt.Controllers.ControllersV2
             if (success is null) return NotFound($"ID not found: {id}");
             else return Ok(success);
         }
+
+        [HttpGet("lowstock")]
+        public async Task<IActionResult> GetLowStock([FromQuery] int? threshold)
+        {
+            var inventories = threshold.HasValue
+                ? await _inventoryService.GetLowStock(threshold.Value)
+                : await _inventoryService.GetLowStock();
+
+            return Ok(inventories);
+        }
+
         [HttpPost("load/{path}")]
         public async Task<IActionResult> LoadLocations([FromRoute] string path)
         {

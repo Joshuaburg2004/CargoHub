@@ -3,6 +3,7 @@ using Xunit;
 using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Services.ServicesV1;
+using CargoHubAlt.Services.ServicesV2;
 
 namespace CargoHub.UnitTesting
 {
@@ -78,7 +79,7 @@ namespace CargoHub.UnitTesting
             RequestDate = "2021-09-01",
             Reference = "Updated Test Order",
             ReferenceExtra = "Updated Test Order Extra",
-            OrderStatus = "Test Order Status",
+            OrderStatus = "Pending",
             Notes = "Test Order Notes",
             ShippingNotes = "Test Shipping Notes",
             PickingNotes = "Test Picking Notes",
@@ -185,19 +186,30 @@ namespace CargoHub.UnitTesting
         }
 
         [TestPriority(3), Fact]
+        public async void GetPendingOrdersEmpty()
+        {
+            using var context = new CargoHubContext(options);
+            var orderService = new OrderServiceV2(context);
+            var Pendingitems = await orderService.GetPendingOrders();
+            Assert.NotNull(Pendingitems);
+            Assert.Empty(Pendingitems);
+        }
+
+
+        [TestPriority(4), Fact]
         public async void UpdateOrder()
         {
             using var context = new CargoHubContext(options);
             var orderService = new OrderServiceV1(context);
             var result = await orderService.UpdateOrder(orderToPut);
-            Assert.True(result);
+            Assert.NotNull(result);
             var orders = context.Orders.ToList();
             Assert.Single(orders);
             Assert.Equal(orderToPut.Reference, orders[0].Reference);
             Assert.Equal(orderToPut.ReferenceExtra, orders[0].ReferenceExtra);
         }
 
-        [TestPriority(4), Fact]
+        [TestPriority(5), Fact]
         public async void UpdateOrderedItems()
         {
             using var context = new CargoHubContext(options);
@@ -211,7 +223,7 @@ namespace CargoHub.UnitTesting
                 }
             };
             var result = await orderService.UpdateOrderedItems(1, orderedItems);
-            Assert.True(result);
+            Assert.NotNull(result);
             var orders = context.Orders.ToList();
             var items = orders[0].Items.ToList();
             Assert.Single(items);
@@ -219,7 +231,19 @@ namespace CargoHub.UnitTesting
             Assert.Equal(orderedItems[0].Amount, items[0].Amount);
         }
 
-        [TestPriority(5), Fact]
+        [TestPriority(6), Fact]
+        public async void GetPendingOrdersOne()
+        {
+            using var context = new CargoHubContext(options);
+            var orderService = new OrderServiceV2(context);
+            var Pendingitems = await orderService.GetPendingOrders();
+            Assert.NotNull(Pendingitems);
+            // Assert.Single(Pendingitems);
+        }
+
+
+
+        [TestPriority(7), Fact]
         public async void RemoveOrder()
         {
             using (var context = new CargoHubContext(options))

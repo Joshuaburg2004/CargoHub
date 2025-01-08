@@ -5,6 +5,7 @@ namespace CargoHubAlt.Interfaces.InterfacesV2
     public interface ITransferServiceV2
     {
         public Task<List<Transfer>> GetTransfers();
+        public Task<List<Transfer>> GetTransfers(int? pageIndex);
         public Task<Transfer?> GetTransferById(int transfer_id);
         public Task<List<TransferItem>?> GetItemsInTransfer(int transfer_id);
         public Task<int?> AddTransfer(Transfer transfer);

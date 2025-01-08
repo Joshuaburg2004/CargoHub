@@ -16,10 +16,10 @@ namespace CargoHub.Controllers.ControllersV2
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetTransfers()
+        public async Task<IActionResult> GetTransfers([FromQuery] int? pageIndex)
         {
-            List<Transfer>? transfers = await _transferservice.GetTransfers();
-            if (transfers == null || transfers.Count == 0) return NotFound();
+            List<Transfer>? transfers = await _transferservice.GetTransfers(pageIndex);
+            if (transfers == null) return NotFound();
 
             return Ok(transfers);
         }

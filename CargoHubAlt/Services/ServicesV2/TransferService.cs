@@ -16,6 +16,16 @@ namespace CargoHubAlt.Services.ServicesV2
         }
 
         public async Task<List<Transfer>> GetTransfers() => await _context.Transfers.ToListAsync();
+        public async Task<List<Transfer>> GetTransfers(int? pageIndex)
+        {
+            if (pageIndex == null) return await GetTransfers();
+            int page = (int)pageIndex;
+            return await _context.Transfers
+                .OrderBy(x => x.Id)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+        }
 
         public async Task<Transfer?> GetTransferById(int id) => await _context.Transfers.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -134,8 +144,6 @@ namespace CargoHubAlt.Services.ServicesV2
             }
             if (transfer.Reference == null) { transfer.Reference = "N/A"; }
             if (transfer.TransferStatus == null) { transfer.TransferStatus = "N/A"; }
-            if (transfer.TransferFrom == null) { transfer.TransferFrom = 0; }
-            if (transfer.TransferTo == null) { transfer.TransferTo = 0; }
             await _context.Transfers.AddAsync(transfer);
             await _context.SaveChangesAsync();
             return transfer.Id;

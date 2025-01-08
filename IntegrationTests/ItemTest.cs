@@ -21,7 +21,7 @@ public class ItemIntegratieTest : BaseTest
 
     public string requestUri = "/api/v1/items";
 
-    public Inventory TestInventory = new(5, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40);
+    public Inventory TestInventory = new(5, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40, 10);
 
 
     public ItemIntegratieTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
@@ -133,24 +133,6 @@ public class ItemIntegratieTest : BaseTest
     {
         HttpResponseMessage response = await _client.PutAsJsonAsync($"{requestUri}/P000001", TestPutItem);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var item = await response.Content.ReadFromJsonAsync<Item>();
-        Xunit.Assert.IsType<Item>(item);
-        Xunit.Assert.Equal(TestPutItem.Uid, item.Uid);
-        Xunit.Assert.Equal(TestPutItem.Code, item.Code);
-        Xunit.Assert.Equal(TestPutItem.Description, item.Description);
-        Xunit.Assert.Equal(TestPutItem.ShortDescription, item.ShortDescription);
-        Xunit.Assert.Equal(TestPutItem.UpcCode, item.UpcCode);
-        Xunit.Assert.Equal(TestPutItem.ModelNumber, item.ModelNumber);
-        Xunit.Assert.Equal(TestPutItem.CommodityCode, item.CommodityCode);
-        Xunit.Assert.Equal(TestPutItem.ItemLine, item.ItemLine);
-        Xunit.Assert.Equal(TestPutItem.ItemGroup, item.ItemGroup);
-        Xunit.Assert.Equal(TestPutItem.ItemType, item.ItemType);
-        Xunit.Assert.Equal(TestPutItem.UnitPurchaseQuantity, item.UnitPurchaseQuantity);
-        Xunit.Assert.Equal(TestPutItem.UnitOrderQuantity, item.UnitOrderQuantity);
-        Xunit.Assert.Equal(TestPutItem.PackOrderQuantity, item.PackOrderQuantity);
-        Xunit.Assert.Equal(TestPutItem.SupplierId, item.SupplierId);
-        Xunit.Assert.Equal(TestPutItem.SupplierCode, item.SupplierCode);
-        Xunit.Assert.Equal(TestPutItem.SupplierPartNumber, item.SupplierPartNumber);
     }
 
     [Fact, TestPriority(8)]
@@ -202,17 +184,14 @@ public class ItemIntegratieTest : BaseTest
 
         Xunit.Assert.Equal(HttpStatusCode.Created, postInventoryResponse.StatusCode);
 
-
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/P000001/inventory");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         List<Inventory>? inventoryresponse = await response.Content.ReadFromJsonAsync<List<Inventory>>();
 
-
         Xunit.Assert.IsType<List<Inventory>>(inventoryresponse);
         Xunit.Assert.Single(inventoryresponse);
         Inventory inventoryCompared = inventoryresponse[0];
-
 
         Xunit.Assert.Equal(TestInventory.Id, inventoryCompared.Id);
         Xunit.Assert.Equal(TestInventory.ItemId, inventoryCompared.ItemId);

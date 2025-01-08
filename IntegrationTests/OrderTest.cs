@@ -43,7 +43,7 @@ namespace IntegrationTests
             RequestDate = "1983-09-30T19:06:08Z",
             Reference = "ORD00003",
             ReferenceExtra = "Vergeven kamer goed enkele wiel tussen.",
-            OrderStatus = "Delivered",
+            OrderStatus = "Pending",
             Notes = "Zeil hoeveel onze map",
             ShippingNotes = "Ontvangen schoon voorzichtig instrument ster vijver kunnen raam.",
             PickingNotes = "Grof geven politie suiker bodem zuid.",
@@ -98,7 +98,7 @@ namespace IntegrationTests
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            List<Order> orders = await response.Content.ReadFromJsonAsync<List<Order>>();
+            List<Order>? orders = await response.Content.ReadFromJsonAsync<List<Order>>();
 
             Xunit.Assert.NotNull(orders);
             Xunit.Assert.Equal(neworder.Id, orders[0].Id);
@@ -131,7 +131,7 @@ namespace IntegrationTests
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            Order order = await response.Content.ReadFromJsonAsync<Order>();
+            Order? order = await response.Content.ReadFromJsonAsync<Order>();
 
             Xunit.Assert.NotNull(order);
             Xunit.Assert.Equal(neworder.Id, order.Id);
@@ -166,6 +166,17 @@ namespace IntegrationTests
 
         }
         [Fact, TestPriority(7)]
+        public async Task GetPendingOrdersEmpty()
+        {
+            var requestUri = "/api/v2/orders/pending";
+            var response = await _client.GetAsync(requestUri);
+            var result = await response.Content.ReadAsStringAsync();
+            Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Xunit.Assert.Equal("No undelivered Orders found", result);
+
+        }
+
+        [Fact, TestPriority(8)]
         public async Task PutOrder()
         {
             var requestUri = "/api/v1/orders/1";
@@ -173,7 +184,7 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-        [Fact, TestPriority(8)]
+        [Fact, TestPriority(9)]
         public async Task GetOneOrderAfterPutting()
         {
             var requestUri = "/api/v1/orders/1";
@@ -182,7 +193,7 @@ namespace IntegrationTests
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            Order order = await response.Content.ReadFromJsonAsync<Order>();
+            Order? order = await response.Content.ReadFromJsonAsync<Order>();
 
             Xunit.Assert.NotNull(order);
             Xunit.Assert.Equal(updatedorder.Id, order.Id);
@@ -204,8 +215,40 @@ namespace IntegrationTests
             Xunit.Assert.Equal(updatedorder.TotalTax, order.TotalTax);
             Xunit.Assert.Equal(updatedorder.TotalSurcharge, order.TotalSurcharge);
         }
+        [Fact, TestPriority(10)]
+        public async Task GetUndeliveredOrdersOne()
+        {
+            var requestUri = "/api/v2/orders/pending";
+            var response = await _client.GetAsync(requestUri);
+            var result = await response.Content.ReadFromJsonAsync<IEnumerable<Order>>();
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.NotNull(result);
+            Xunit.Assert.Single(result);
 
-        [Fact, TestPriority(9)]
+            var order = result.FirstOrDefault();
+            Xunit.Assert.NotNull(order);
+            Xunit.Assert.Equal(updatedorder.Id, order.Id);
+            Xunit.Assert.Equal(updatedorder.SourceId, order.SourceId);
+            Xunit.Assert.Equal(updatedorder.OrderDate, order.OrderDate);
+            Xunit.Assert.Equal(updatedorder.RequestDate, order.RequestDate);
+            Xunit.Assert.Equal(updatedorder.Reference, order.Reference);
+            Xunit.Assert.Equal(updatedorder.ReferenceExtra, order.ReferenceExtra);
+            Xunit.Assert.Equal(updatedorder.OrderStatus, order.OrderStatus);
+            Xunit.Assert.Equal(updatedorder.Notes, order.Notes);
+            Xunit.Assert.Equal(updatedorder.ShippingNotes, order.ShippingNotes);
+            Xunit.Assert.Equal(updatedorder.PickingNotes, order.PickingNotes);
+            Xunit.Assert.Equal(updatedorder.WarehouseId, order.WarehouseId);
+            Xunit.Assert.Equal(updatedorder.ShipTo, order.ShipTo);
+            Xunit.Assert.Equal(updatedorder.BillTo, order.BillTo);
+            Xunit.Assert.Equal(updatedorder.ShipmentId, order.ShipmentId);
+            Xunit.Assert.Equal(updatedorder.TotalAmount, order.TotalAmount);
+            Xunit.Assert.Equal(updatedorder.TotalDiscount, order.TotalDiscount);
+            Xunit.Assert.Equal(updatedorder.TotalTax, order.TotalTax);
+            Xunit.Assert.Equal(updatedorder.TotalSurcharge, order.TotalSurcharge);
+        }
+
+
+        [Fact, TestPriority(11)]
         public async Task PutOrderItems()
         {
             var requestUri = "/api/v1/orders/1/items";
@@ -216,7 +259,7 @@ namespace IntegrationTests
             // Because I turned on debug within the python code, the inventories do not exist.
             // Makes sense, but it is not the expected behavior.
         }
-        [Fact, TestPriority(10)]
+        [Fact, TestPriority(12)]
         public async Task GetItemsFromOrderAfterPutting()
         {
             var requestUri = "/api/v1/orders/1/items";
@@ -226,7 +269,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Xunit.Assert.Contains("[{\"itemId\":\"P010689\",\"amount\":20}]", result);
         }
-        [Fact, TestPriority(11)]
+        [Fact, TestPriority(13)]
         public async Task DeleteOrder()
         {
             var requestUri = "/api/v1/orders/1";
@@ -234,7 +277,7 @@ namespace IntegrationTests
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-        [Fact, TestPriority(12)]
+        [Fact, TestPriority(14)]
         public async Task GetOneOrderAfterDelete()
         {
             var requestUri = "/api/v1/orders/1";
@@ -245,7 +288,7 @@ namespace IntegrationTests
             // It should absolutely be either 400 bad request or 404 not found, but it is 200 OK.
             // This is not intended behavior.
         }
-        [Fact, TestPriority(13)]
+        [Fact, TestPriority(15)]
         public async Task GetAllOrdersAfterDelete()
         {
             var requestUri = "/api/v1/orders";
@@ -255,7 +298,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
-        [Fact, TestPriority(14)]
+        [Fact, TestPriority(16)]
         public async Task GetOrderIdNegative()
         {
             var requestUri = "/api/v1/orders/-1";
@@ -265,7 +308,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        [Fact, TestPriority(15)]
+        [Fact, TestPriority(17)]
         public async Task GetOrderItemsIdNegative()
         {
             var requestUri = "/api/v1/orders/-1/items";
@@ -275,7 +318,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        [Fact, TestPriority(16)]
+        [Fact, TestPriority(18)]
         public async Task GetorderItemsNotFound()
         {
             var requestUri = "/api/v1/orders/1/items";
@@ -285,7 +328,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
-        [Fact, TestPriority(17)]
+        [Fact, TestPriority(19)]
         public async Task PutOrderNotFound()
         {
             var requestUri = "/api/v1/orders/1";
@@ -294,7 +337,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
-        [Fact, TestPriority(18)]
+        [Fact, TestPriority(20)]
         public async Task PutOrderItemsNotFound()
         {
             var requestUri = "/api/v1/orders/1/items";
@@ -303,7 +346,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
-        [Fact, TestPriority(19)]
+        [Fact, TestPriority(21)]
         public async Task DeleteOrderNotFound()
         {
             var requestUri = "/api/v1/orders/1";
@@ -312,7 +355,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
-        [Fact, TestPriority(20)]
+        [Fact, TestPriority(22)]
         public async Task UpdateOrderIdNegative()
         {
             var requestUri = "/api/v1/orders/-1";
@@ -321,7 +364,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        [Fact, TestPriority(21)]
+        [Fact, TestPriority(23)]
         public async Task UpdateOrderItemsIdNegative()
         {
             var requestUri = "/api/v1/orders/-1/items";
@@ -330,7 +373,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        [Fact, TestPriority(22)]
+        [Fact, TestPriority(24)]
         public async Task DeleteOrderIdNegative()
         {
             var requestUri = "/api/v1/orders/-1";

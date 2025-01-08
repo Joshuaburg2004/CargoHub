@@ -16,9 +16,9 @@ public class InventoryIntegratieTest : BaseTest
 {
     public string requestUri = "/api/v1/inventories";
 
-    private Inventory _TestInventory = new(1, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40);
+    private Inventory _TestInventory = new(1, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40, 10);
 
-    private Inventory _TestInventoryPut = new(1, "P000001", "test", "hopeful", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 60, 60, 60, 60, 60);
+    private Inventory _TestInventoryPut = new(1, "P000001", "test", "hopeful", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 60, 60, 60, 60, 60, 10);
 
     public InventoryIntegratieTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
 
@@ -73,7 +73,7 @@ public class InventoryIntegratieTest : BaseTest
     [Fact, TestPriority(6)]
     public async Task CreateInventoryNegative()
     {
-        HttpResponseMessage newresponses = await _client.PostAsJsonAsync<Inventory>(requestUri, new Inventory(-1, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40));
+        HttpResponseMessage newresponses = await _client.PostAsJsonAsync<Inventory>(requestUri, new Inventory(-1, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40, 10));
         Xunit.Assert.Equal(HttpStatusCode.BadRequest, newresponses.StatusCode);
         Xunit.Assert.Contains("This inventory id is invalid", await newresponses.Content.ReadAsStringAsync());
     }
