@@ -123,7 +123,7 @@ namespace CargoHubAlt.Services.ServicesV1
                 foreach (JsonTransfer jsonTransfer in transfers)
                 {
                     Transfer transfer = jsonTransfer.ToTransfer();
-                    transfer.Items = jsonTransfer.items.Select(item => item.ToTransferItem);
+                    transfer.Items = jsonTransfer.items.Select(item => item.ToTransferItem()).ToList();
                     await SaveToDatabase(transfer);
                 }
                 await _context.SaveChangesAsync();
