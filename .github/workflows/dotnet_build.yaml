@@ -44,47 +44,6 @@ jobs:
         run: |
           dotnet build ${{ env.Solution_Name }} --no-restore --configuration ${{ matrix.configuration }}
 
-  run-integration-tests:
-    needs: build
-    if: github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development') || github.event_name == 'push'
-    runs-on: ubuntu-latest
-
-    env:
-      Solution_Name: ${{ github.workspace }}/CargoHubAspNet.sln
-      Test_Project_Path: ${{ github.workspace }}/IntegrationTests/IntegrationTests.csproj
-      Wap_Project_Directory: ${{ github.workspace }}/CargoHubAlt
-      Wap_Project_Path: ${{ github.workspace }}/CargoHubAlt/CargoHubAlt.csproj
-      Test_Project_dll: ${{ github.workspace }}/IntegrationTests/bin/Debug/net8.0/CargoHubAlt.dll
-      Coverage_Report_Folder: ${{ github.workspace }}/TestResults/coverageAction
-      Results_Directory: ${{ github.workspace }}/TestResults/integrationTestResults
-      Minimum_Code_Coverage: ${{ vars.MINIMUMCODECOVERAGE }}
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Setup Docker
-      uses: docker/setup-buildx-action@v2
-
-    # Step to create the Data directory if it doesn't exist
-    # - name: Create Data directory
-    #   run: mkdir -p ${{ github.workspace }}/Data
-
-    - name: Build Docker image
-      run: |
-        docker build -t integrationtest .
-
-    - name: Run Docker container with SQLite
-      run: |
-        docker run --rm \
-          -v ${{ github.workspace }}/TestResults:/testresults \
-          -v ${{ github.workspace }}/Data:/app/Data \
-          -e Solution_Name=/app/CargoHubAspNet.sln \
-          -e Test_Project_Path=/app/IntegrationTests/IntegrationTests.csproj \
-          integrationtest \
-          dotnet test /app/IntegrationTests/IntegrationTests.csproj \
-          --results-directory /testresults --verbosity detailed
-
   run-unit-tests:
     needs: build
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development'))
@@ -126,6 +85,43 @@ jobs:
         run: |
           dotnet tool install -g dotnet-reportgenerator-globaltool
           reportgenerator -reports:${{ env.Coverage_Report_Folder }}/coverage.cobertura.xml -targetdir:${{ env.Coverage_Report_Folder }} -reporttypes:TextSummary
+
+  run-integration-tests:
+    needs: build
+    if: github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development') || github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    env:
+      Solution_Name: ${{ github.workspace }}/CargoHubAspNet.sln
+      Test_Project_Path: ${{ github.workspace }}/IntegrationTests/IntegrationTests.csproj
+      Wap_Project_Directory: ${{ github.workspace }}/CargoHubAlt
+      Wap_Project_Path: ${{ github.workspace }}/CargoHubAlt/CargoHubAlt.csproj
+      Test_Project_dll: ${{ github.workspace }}/IntegrationTests/bin/Debug/net8.0/CargoHubAlt.dll
+      Coverage_Report_Folder: ${{ github.workspace }}/TestResults/coverageAction
+      Results_Directory: ${{ github.workspace }}/TestResults/integrationTestResults
+      Minimum_Code_Coverage: ${{ vars.MINIMUMCODECOVERAGE }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Docker
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build Docker image
+      run: |
+        docker build -t integrationtest .
+
+    - name: Run Docker container
+      run: |
+        docker run --rm \
+          # -v ${{ github.workspace }}/TestResults:/testresults \
+          # -v ${{ github.workspace }}/Data:/app/Data \
+          -e Solution_Name=/app/CargoHubAspNet.sln \
+          -e Test_Project_Path=/app/IntegrationTests/IntegrationTests.csproj \
+          integrationtest \
+          dotnet test /app/IntegrationTests/IntegrationTests.csproj \
+          --results-directory /testresults --verbosity detailed
 
   # deploy:
   #   if: github.ref == 'refs/head/main'
