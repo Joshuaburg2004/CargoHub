@@ -79,7 +79,7 @@ namespace CargoHubAlt.Services.ServicesV2
                     await SaveToDatabase(location);
                 }
                 await _context.SaveChangesAsync();
-                transaction.Commit();
+                await transaction.CommitAsync();
             }
         }
         public async Task<int> SaveToDatabase(Location location)
