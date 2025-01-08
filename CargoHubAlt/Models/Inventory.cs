@@ -18,7 +18,7 @@ namespace CargoHubAlt.Models
         public int TotalOrdered { get; set; }
         public int TotalAllocated { get; set; }
         public int TotalAvailable { get; set; }
-        public int LowStockThreshold { get; set; }
+        public int? LowStockThreshold { get; set; }
         public bool? IsLowStock { get; set; }
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
@@ -36,7 +36,7 @@ namespace CargoHubAlt.Models
             TotalAllocated = totalAllocated;
             TotalAvailable = totalAvailable;
             LowStockThreshold = lowStockThreshold;
-            IsLowStock = TotalOnHand <= LowStockThreshold;
+            IsLowStock = LowStockThreshold.HasValue ? TotalOnHand <= LowStockThreshold : false;
         }
         public Inventory(string itemId, string description, string itemReference, List<int> locations, int totalOnHand, int totalExpected, int totalOrdered, int totalAllocated, int totalAvailable, int lowStockThreshold)
         {
@@ -50,7 +50,7 @@ namespace CargoHubAlt.Models
             TotalAllocated = totalAllocated;
             TotalAvailable = totalAvailable;
             LowStockThreshold = lowStockThreshold;
-            IsLowStock = TotalOnHand <= LowStockThreshold;
+            IsLowStock = LowStockThreshold.HasValue ? TotalOnHand <= LowStockThreshold : false;
         }
     }
 }
