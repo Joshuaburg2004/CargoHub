@@ -98,7 +98,7 @@ namespace IntegrationTests
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            List<Order> orders = await response.Content.ReadFromJsonAsync<List<Order>>();
+            List<Order>? orders = await response.Content.ReadFromJsonAsync<List<Order>>();
 
             Xunit.Assert.NotNull(orders);
             Xunit.Assert.Equal(neworder.Id, orders[0].Id);
@@ -131,7 +131,7 @@ namespace IntegrationTests
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            Order order = await response.Content.ReadFromJsonAsync<Order>();
+            Order? order = await response.Content.ReadFromJsonAsync<Order>();
 
             Xunit.Assert.NotNull(order);
             Xunit.Assert.Equal(neworder.Id, order.Id);
@@ -193,7 +193,7 @@ namespace IntegrationTests
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            Order order = await response.Content.ReadFromJsonAsync<Order>();
+            Order? order = await response.Content.ReadFromJsonAsync<Order>();
 
             Xunit.Assert.NotNull(order);
             Xunit.Assert.Equal(updatedorder.Id, order.Id);
