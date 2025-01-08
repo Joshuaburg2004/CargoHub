@@ -96,8 +96,14 @@ jobs:
           -e Solution_Name=/app/CargoHubAspNet.sln \
           -e Test_Project_Path=/app/IntegrationTests/IntegrationTests.csproj \
           integrationtest \
-          dotnet test /app/IntegrationTests/IntegrationTests.csproj \
-          --results-directory /testresults --verbosity detailed
+          bash -c "
+            # Initialize the database (migrate, create schema, etc.)
+            dotnet ef database update --project /app/CargoHubAspNet/CargoHubAspNet.csproj --configuration Release && \
+            
+            # Run the integration tests
+            dotnet test /app/IntegrationTests/IntegrationTests.csproj --results-directory /testresults --verbosity detailed
+          "
+      
 
   run-unit-tests:
     needs: build
