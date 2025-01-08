@@ -25,8 +25,8 @@ namespace CargoHubAlt.Models
         public string? TransferMode { get; set; }
         public int TotalPackageCount { get; set; }
         public double TotalPackageWeight { get; set; }
-        public string? CreatedAt { get; set; } = Base.GetTimeStamp();
-        public string? UpdatedAt { get; set; } = Base.GetTimeStamp();
+        public string CreatedAt { get; set; } = Base.GetTimeStamp();
+        public string UpdatedAt { get; set; } = Base.GetTimeStamp();
         public List<ShipmentItem> Items { get; set; } = new();
 
         public Shipment() { }

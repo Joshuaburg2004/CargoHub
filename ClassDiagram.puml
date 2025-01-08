@@ -1,0 +1,608 @@
+@startuml ClassDiagram
+
+skinparam titleFontSize 30
+skinparam class {
+    BackgroundColor lightblue
+    BorderColor darkblue
+    BorderThickness 2
+    ArrowColor Black
+    FontSize 14
+    FontName Arial
+    FontColor Black
+}
+skinparam zoom 0.8
+
+title CargoHub Class Diagram
+
+left to right direction
+
+' Models
+class Base {
+    + GetTimeStamp() : string
+}
+
+class Client {
+    + Id : int
+    + Name : string
+    + Address : string
+    + City : string
+    + ZipCode : string
+    + Province : string
+    + Country : string
+    + ContactName : string
+    + ContactPhone : string
+    + ContactEmail : string
+    + CreatedAt : string
+    + UpdatedAt : string
+}
+
+class Inventory {
+    + Id : int
+    + ItemId : string
+    + Description : string
+    + ItemReference : string
+    + Locations : List<int>
+    + TotalOnHand : int
+    + TotalExpected : int
+    + TotalOrdered : int
+    + TotalAllocated : int
+    + TotalAvailable : int
+    + CreatedAt : string
+    + UpdatedAt : string
+}
+
+class Item {
+    + Uid : string
+    + Code : string
+    + Description : string
+    + ShortDescription : string
+    + UpcCode : string
+    + ModelNumber : string 
+    + CommodityCode : string
+    + ItemLine : int
+    + ItemGroup : int
+    + ItemType : int
+    + UnitPurchaseQuantity : int
+    + UnitOrderQuantity : int
+    + PackOrderQuantity : int
+    + SupplierId : int
+    + SupplierCode : string
+    + SupplierPartNumber : string
+    + CreatedAt : string
+    + UpdatedAt : string
+}
+
+class ItemGroup {
+    + Id : int
+    + Name : string
+    + Description : string
+    + CreatedAt : string
+    + UpdatedAt : string
+}
+
+class ItemLine {
+    + Id : int
+    + Name : string
+    + Description : string
+    + CreatedAt : string
+    + UpdatedAt : string
+}
+
+class ItemType {
+    + Id : int
+    + Name : string
+    + Description : string
+    + CreatedAt : string
+    + UpdatedAt : string
+}
+
+class Location {
+    + Id : int
+    + WarehouseId : int
+    + Code : string
+    + Name : string
+    + CreatedAt : string
+    + UpdatedAt : string
+}
+
+class Order {
+    + Id : int
+    + SourceId : int
+    + OrderDate : string
+    + RequestDate : string
+    + Reference : string
+    + ReferenceExtra : string
+    + OrderStatus : string
+    + Notes : string
+    + ShippingNotes : string
+    + PickingNotes : string
+    + WarehouseId : int
+    + ShipTo : int
+    + BillTo : int
+    + ShipmentId : int
+    + TotalAmount : double
+    + TotalDiscount : double
+    + TotalTax : double
+    + TotalSurcharge : double
+    + CreatedAt : string
+    + UpdatedAt : string
+    + Items : List<OrderedItem>
+}
+
+class OrderedItem {
+    + ItemId : string
+    + Amount : int
+}
+
+class Shipment {
+    + Id : int
+    + OrderId : int
+    + SourceId : int
+    + OrderDate : string
+    + RequestDate : string
+    + ShipmentDate : string
+    + ShipmentType : string
+    + ShipmentStatus : string
+    + Notes : string
+    + CarrierCode : string
+    + CarrierDescription : string
+    + ServiceCode : string
+    + PaymentType : string
+    + TransferMode : string
+    + TotalPackageCount : int
+    + TotalPackageWeight : double
+    + CreatedAt : string
+    + UpdatedAt : string
+    + Items : List<ShipmentItem>
+}
+
+class ShipmentItem {
+    + ItemId : string
+    + Amount : int
+}
+
+class Supplier {
+    + Id : int
+    + Code : string
+    + Name : string
+    + Address : string
+    + AddressExtra : string
+    + City : string
+    + ZipCode : string
+    + Province : string
+    + Country : string
+    + ContactName : string
+    + Phonenumber : string
+    + Reference : string
+    + CreatedAt : string
+    + UpdatedAt : string
+}
+
+class Transfer {
+    + Id : int
+    + Reference : string
+    + TransferFrom : int
+    + TransferTo : int
+    + TransferStatus : string
+    + CreatedAt : string
+    + UpdatedAt : string
+    + Items : List<TransferItem>
+}
+
+class TransferItem {
+    + ItemId : string
+    + Amount : int
+}
+
+class Warehouse {
+    + Id : int
+    + Code : string
+    + Name : string
+    + Address : string
+    + ZipCode : string
+    + City : string
+    + Province : string
+    + Country : string
+    + ContactName : string
+    + ContactPhone : string
+    + ContactEmail : string
+    + CreatedAt : string
+    + UpdatedAt : string
+}
+
+class Contact { 
+    + Name : string
+    + Phone : string
+    + Email : string
+}
+
+' Interfaces
+interface IClientService {
+    + GetAllClients() : Task<List<Client>>
+    + GetClient(id: int) : Task<Client>
+    + AddClient(client: Client) : Task<int?>
+    + UpdateClient(id: int, client: Client) : Task<Client?>
+    + RemoveClient(id: int) : Task<Client?>
+    + GetOrdersByClient(id: int) : Task<List<Order>>
+    + LoadFromJson(path: string) : Task
+}
+
+interface IInventoryService {
+    + GetOneInventory(id: int) : Task<Inventory?>
+    + GetAllInventories() : Task<IEnumerable<Inventory>>
+    + CreateInventory(inventory: Inventory) : Task<int?>
+    + UpdateInventory(id: int, inventory: Inventory) : Task<Inventory?>
+    + DeleteInventory(id: int) : Task<Inventory?>
+    + LoadFromJson(path: string) : Task
+}
+
+interface IItemsService {
+    + GetItem(id: string) : Task<Item?>
+    + GetItems() : Task<List<Item>>
+    + GetInventoryByItem(id: string) : Task<List<Inventory>>
+    + GetInventoryTotalsByItem(id: string) : Task<Dictionary<string, int>>
+    + AddItem(item: Item) : Task<string?>
+    + UpdateItem(toUpdate: string, UpdateTo: Item) : Task<Item?>
+    + RemoveItem(toRemove string) : Task<Item?>
+    + LoadFromJson(path: string) : Task
+}
+
+interface IItemGroupService {
+    + FindItemGroup(id: int) : Task<ItemGroup?>
+    + FindManyItemGroup(ids: IEnumerable<int>) : Task<IEnumerable<ItemGroup?>>
+    + GetAllItemGroup() : Task<IEnumerable<ItemGroup>>
+    + GetItemsfromItemGroupById(id: int) : Task<IEnumerable<Item>?>
+    + AddItemGroup(toAdd: ItemGroup) : Task<int?>
+    + UpdateItemGroup(id: int, toUpdate: ItemGroup) : Task<ItemGroup?>
+    + DeleteItemGroup(id: int) : Task<ItemGroup?>
+    + LoadFromJson(path: string) : Task
+}
+
+interface IItemLineService {
+    + FindItemLine(id: int) : Task<ItemLine?>
+    + FindManyItemLine(ids: IEnumerable<int>) : Task<IEnumerable<ItemLine?>>
+    + GetAllItemLine() : Task<IEnumerable<ItemLine>>
+    + GetItemsfromItemLineById(id: int) : Task<IEnumerable<Item>?>
+    + AddItemLine(toAdd: ItemLine) : Task<int?>
+    + UpdateItemLine(id: int, toUpdate: ItemLine) : Task<ItemLine?>
+    + DeleteItemLine(id: int) : Task<ItemLine?>
+    + LoadFromJson(path: string) : Task
+}
+
+interface IItemTypeService {
+    + GetItemTypeById(id: int) : Task<ItemType?>
+    + GetAllItemType() : Task<IEnumerable<ItemType>>
+    + GetItemsfromItemTypeById(id: int) : Task<IEnumerable<Item>?>
+    + AddItemType(itemType: ItemType) : Task<int?>
+    + UpdateItemType(id: int, itemType: ItemType) : Task<ItemType?>
+    + DeleteItemType(id: int) : Task<ItemType?>
+    + LoadFromJson(path: string) : Task
+}
+
+interface ILocationService {
+    + GetOneLocation(id: int) : Task<Location?>
+    + GetAllLocations() : Task<List<Location>>
+    + AddLocation(toAdd: Location) : Task<int?>
+    + UpdateLocation(id: int, toUpdate: Location) : Task<Location?>
+    + DeleteLocation(id: int) : Task<Location?>
+    + LoadFromJson(path: string) : Task
+}
+
+interface IOrderService {
+    + GetOrders() : Task<List<Order>?>
+    + GetOrder(orderId: int) : Task<Order?>
+    + GetOrderedItems(orderId: int) : Task<List<OrderedItem>?>
+    + AddOrder(order: Order) : Task<bool>
+    + UpdateOrder(order: Order) : Task<bool>
+    + UpdateOrderedItems(orderId: int, items: List<OrderedItem>) : Task<bool>
+    + RemoveOrder(orderId: int) : Task<bool>
+    + LoadFromJson(path: string) : Task
+}
+
+interface IShipmentService {
+    + GetShipment(id: int) : Task<Shipment?>
+    + GetAllShipments() : Task<List<Shipment>?>
+    + GetItemsfromShipmentById(id: int) : Task<List<ShipmentItem>?>
+    + GetOrdersFromShipmentById(id: int) : Task<List<int>?>
+    + AddShipment(shipment: Shipment) : Task<int?>
+    + UpdateShipment(shipmentId: int, shipment: Shipment) : Task<Shipment?>
+    + DeleteShipment(id: int) : Task<Shipment?>
+    + UpdateItemsInShipment(id: int, items: List<ShipmentItem>) : Task<Shipment?>
+    + UpdateOrdersInShipment(id: int, orders: List<int>) : Task
+    + LoadFromJson(path: string) : Task
+}
+
+interface ISupplierService {
+    + GetSupplier(id: int) : Task<Supplier?>
+    + GetAllSuppliers() : Task<List<Supplier>>
+    + GetItemsfromSupplierById(id: int) : Task<List<Item>?>
+    + AddSupplier(supplier: Supplier) : Task<int?>
+    + UpdateSupplier(id: int, supplier: Supplier) : Task<Supplier?>
+    + DeleteSupplier(id: int) : Task<Supplier?>
+    + LoadFromJson(path: string) : Task
+}
+
+interface ITransferService {
+    + GetTransfers() : Task<List<Transfer>>
+    + GetTransferById(transfer_id: int) : Task<Transfer?>
+    + GetItemsInTransfer(transfer_id: int) : Task<List<TransferItem>?>
+    + AddTransfer(transfer: Transfer) : Task<int?>
+    + UpdateTransfer(Transfer_id: int, transfer: Transfer) : Task<Transfer?>
+    + RemoveTransfer(transfer_id: int) : Task<Transfer?>
+    + CommitTransferById(transfer_id: int) : Task<bool>
+    + LoadFromJson(path: string) : Task
+}
+
+interface IWarehouseService {
+    + GetWarehouseById(id: int) : Task<Warehouse?>
+    + GetAllWarehouses() : Task<List<Warehouse>?>
+    + GetLocationsfromWarehouseById(id: int) : Task<List<Location>?>
+    + AddWarehouse(warehouse: Warehouse) : Task<int?>
+    + UpdateWarehouse(id: int, warehouse: Warehouse) : Task<Warehouse?>
+    + DeleteWarehouse(id: int) : Task<Warehouse?>
+    + LoadFromJson(path: string) : Task
+}
+
+' Services
+class ClientService {
+    - _cargoHubContext : CargoHubContext
+    + SaveToDatabase(client: Client) : int
+}
+
+class InventoryService {
+    - _cargoHubContext : CargoHubContext
+    + SaveToDatabase(inventory: Inventory) : int
+}
+
+class ItemsService {
+    - _cargoHubContext : CargoHubContext
+    + SaveToDatabase(inventory: Inventory) : int
+}
+
+class ItemGroupService {
+    - _cargoHubContext : CargoHubContext
+    + SaveToDatabase(inventory: Inventory) : int
+}
+
+class ItemLineService {
+    - _cargoHubContext : CargoHubContext
+    + SaveToDatabase(inventory: Inventory) : int
+}
+
+class ItemTypeService {
+    - _cargoHubContext : CargoHubContext
+    + SaveToDatabase(inventory: Inventory) : int
+}
+
+class LocationService {
+    - _cargoHubContext : CargoHubContext
+    + SaveToDatabase(inventory: Inventory) : int
+}
+
+class OrderService {
+    - _cargoHubContext : CargoHubContext
+    + SaveToDatabase(inventory: Inventory) : int
+}
+
+class ShipmentService {
+    - _cargoHubContext : CargoHubContext
+    + SaveToDatabase(inventory: Inventory) : int
+}
+
+class SupplierService {
+    - _cargoHubContext : CargoHubContext
+    + SaveToDatabase(inventory: Inventory) : int
+}
+
+class TransferService {
+    - _cargoHubContext : CargoHubContext
+    + SaveToDatabase(inventory: Inventory) : int
+}
+
+class WarehouseService {
+    - _cargoHubContext : CargoHubContext
+    + SaveToDatabase(inventory: Inventory) : int
+}
+
+' Controllers
+class ClientController {
+    - _logger : ILogger<ClientController>
+    + Clients : IClientService
+    + GetAllClients() : Task<IActionResult>
+    + GetOneClient(id: int) : Task<IActionResult>
+    + GetOrdersByClient(id: int) : Task<IActionResult>
+    + AddClient(client: Client) : Task<IActionResult>
+    + UpdateClient(id: int, client: Client) : Task<IActionResult>
+    + DeleteClient(id: int) : Task<IActionResult>
+    + LoadClient(path: string) : Task<IActionResult>
+}
+
+class InventoryController {
+    - _inventorieService : IInventoryService
+    + GetAllInventories() : Task<IActionResult>
+    + GetOneInventory(id: int) : Task<IActionResult>
+    + AddInventory(toAdd: Inventory) : Task<IActionResult>
+    + PutInventory(id: int, toupdateto: Inventory) : Task<IActionResult>
+    + DeleteInventory(id: int) : Task<IActionResult>
+    + LoadInventory(path: string) : Task<IActionResult>
+}
+
+class ItemController {
+    - _logger : ILogger<ItemController>
+    - _itemsService : IItemsService
+    + GetAllItems() : Task<IActionResult>
+    + GetItem(id: string) : Task<IActionResult>
+    + AddItem(item: Item) : Task<IActionResult>
+    + RemoveItem(toRemove: string) : Task<IActionResult>
+    + UpdateItem(toUpdate: string, UpdateTo: Item) : Task<IActionResult>
+    + GetInventoryByItem(id: string) : Task<IActionResult>
+    + GetInventoryTotalsByItem(id: string) : Task<IActionResult>
+}
+
+class ItemGroupController {
+    - _itemsService : IItemGroupService
+    + GetAllItemGroups() : Task<IActionResult>
+    + GetOneItemGroup(id: int) : Task<IActionResult>
+    + GetItemsfromItemGroupById(id: int) : Task<IActionResult>  
+    + AddItemGroup(toAdd: ItemGroup) : Task<IActionResult>
+    + PutItemGroup(id: int, toupdateto: ItemGroup) : Task<IActionResult>
+    + DeleteItemGroup(id: int) : Task<IActionResult>
+    + LoadLocations(path: string) : Task<IActionResult>
+}
+
+class ItemLineController {
+    - _itemsService : IItemLineService
+    + GetAllItemLines() : Task<IActionResult>
+    + GetOneItemLine(id: int) : Task<IActionResult>
+    + GetBatchItemLine(ids: IEnumerable<int>) : Task<IActionResult>
+    + GetItemsfromItemLineById(id: int) : Task<IActionResult>
+    + AddItemLine(toAdd: ItemLine) : Task<IActionResult>
+    + PutItemLine(id: int, toupdateto: ItemLine) : Task<IActionResult>
+    + DeleteItemLine(id: int) : Task<IActionResult>
+    + LoadLocations(path: string) : Task<IActionResult>
+}
+
+class ItemTypeController {
+    - _itemsService : IItemTypeService
+    + GetAllItemTypes() : Task<IActionResult>
+    + GetItemTypeById(id: int) : Task<IActionResult>
+    + GetItemsfromItemTypeById(id: int) : Task<IActionResult>
+    + AddItemType(itemType: ItemType) : Task<IActionResult>
+    + PutItemType(id: int, itemtype: ItemType) : Task<IActionResult>
+    + DeleteItemType(id: int) : Task<IActionResult>
+    + LoadLocations(path: string) : Task<IActionResult>
+}
+
+class LocationController {
+    - _locationService : ILocationService
+    + GetAllLocations() : Task<IActionResult>
+    + GetOneLocation(id: int) : Task<IActionResult>
+    + PostLocation(toAdd: Location) : Task<IActionResult>
+    + UpdateLocation(id: int, toUpdate: Location) : Task<IActionResult>
+    + DeleteLocation(id: int) : Task<IActionResult>
+    + LoadClient(path: string) : Task<IActionResult>
+}
+
+class OrderController {
+    - _logger : ILogger<OrderController>
+    - _orderService : IOrderService
+    + GetOrders() : Task<IActionResult>
+    + GetOrder(orderId: int) : Task<IActionResult>
+    + GetOrderedItems(orderId: int) : Task<IActionResult>
+    + AddOrder(order: Order) : Task<IActionResult>
+    + UpdateOrder(id: int, order: Order) : Task<IActionResult>
+    + UpdateOrderedItems(orderId: int, items: List<OrderedItem>) : Task<IActionResult>
+    + RemoveOrder(orderId: int) : Task<IActionResult>
+    + LoadClient(path: string) : Task<IActionResult>
+}
+
+class ShipmentController {
+    - _logger : ILogger<ShipmentController>
+    - _shipmentService : IShipmentService
+    + GetShipments() : Task<IActionResult>
+    + GetShipmentById(id: int) : Task<IActionResult>
+    + GetItemsInShipment(id: int) : Task<IActionResult>
+    + GetOrderInShipment(id: int) : Task<IActionResult>
+    + AddShipment(shipment: Shipment) : Task<IActionResult>
+    + UpdateShipment(id: int, shipment: Shipment) : Task<IActionResult>
+    + UpdateItemsInShipment(id: int, items: List<ShipmentItem>) : Task<IActionResult>
+    + UpdateOrdersInShipment(id: int, orders: List<int>) : Task<IActionResult>
+    + DeleteShipment(id: int) : Task<IActionResult>
+    + LoadClient(path: string) : Task<IActionResult>
+}
+
+class SupplierController {
+    - Suppliers : ISupplierService
+    + GetAllSuppliers() : Task<IActionResult>
+    + GetSupplier(id: int) : Task<IActionResult>
+    + GetItemsfromSupplier(id: int) : Task<IActionResult>
+    + CreateSupplier(supplier: Supplier) : Task<IActionResult>
+    + DeleteSupplier(id: int) : Task<IActionResult>
+    + UpdateSupplier(id: int, supplier: Supplier) : Task<IActionResult>
+    + LoadClient(path: string) : Task<IActionResult>
+}
+
+class TransferController {
+    - _transferService : ITransferService
+    + GetTransfers() : Task<IActionResult>
+    + GetTransferById(id: int) : Task<IActionResult>
+    + GetItemsInTransfer(id: int) : Task<IActionResult>
+    + AddTransfer(transfer: Transfer) : Task<IActionResult>
+    + RemoveTransfer(id: int) : Task<IActionResult>
+    + CommitTransfer(id: int) : Task<IActionResult>
+    + UpdateTransfer(id: int, transfer: Transfer) : Task<IActionResult>
+    + LoadClient(path: string) : Task<IActionResult>
+}
+
+class WarehouseController {
+    - _warehouseService : IWarehouseService
+    + GetAllWarehouses() : Task<IActionResult>
+    + GetWarehouseById(id: int) : Task<IActionResult>
+    + AddWarehouse(newwarehouse: Warehouse) : Task<IActionResult>
+    + UpdateWarehouse(id: int, warehouse: Warehouse) : Task<IActionResult>
+    + DeleteWarehouse(id: int) : Task<IActionResult>
+    + GetLocationsByWarehouse(id: int) : Task<IActionResult>
+    + LoadClient(path: string) : Task<IActionResult>
+}
+
+' Relationships
+together {
+ClientService <.. Client
+ClientController --> IClientService
+ClientService --> IClientService
+
+InventoryService <.. Inventory
+InventoryController --> IInventoryService
+InventoryService --> IInventoryService
+
+ItemsService <.. Item
+ItemController --> IItemsService
+ItemsService --> IItemsService
+}
+
+together {
+ItemGroupService <.. ItemGroup
+ItemGroupController --> IItemGroupService
+ItemGroupService --> IItemGroupService
+
+ItemLineService <.. ItemLine
+ItemLineController --> IItemLineService
+ItemLineService --> IItemLineService
+
+ItemTypeService <.. ItemType
+ItemTypeController --> IItemTypeService
+ItemTypeService --> IItemTypeService
+}
+
+together {
+LocationService <.. Location
+LocationController --> ILocationService
+LocationService --> ILocationService
+
+OrderService <.. Order
+OrderController --> IOrderService
+OrderService --> IOrderService
+Order "1" *-- "1..*" OrderedItem : contains >
+
+ShipmentService <.. Shipment
+ShipmentController --> IShipmentService
+ShipmentService --> IShipmentService
+Shipment "1" *-- "1..*" ShipmentItem : contains >
+}
+
+together {
+SupplierService <.. Supplier
+SupplierController --> ISupplierService
+SupplierService --> ISupplierService
+
+TransferService <.. Transfer
+TransferController --> ITransferService
+TransferService --> ITransferService
+Transfer "1" *-- "1..*" TransferItem : contains >
+
+WarehouseService <.. Warehouse
+WarehouseController --> IWarehouseService
+WarehouseService --> IWarehouseService
+Warehouse "1" *-- "1..*" Contact : contains >
+}
+@enduml

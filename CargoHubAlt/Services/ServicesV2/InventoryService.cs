@@ -23,6 +23,20 @@ namespace CargoHubAlt.Services.ServicesV2
             return await this._cargoHubContext.Inventories.ToListAsync();
         }
 
+        public async Task<IEnumerable<Inventory>> GetAllInventories(int? pageIndex)
+        {
+            if (pageIndex == null)
+            {
+                return await GetAllInventories();
+            }
+            int page = (int)pageIndex;
+            return await this._cargoHubContext.Inventories
+                .OrderBy(inventory => inventory.Id)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+        }
+
         public async Task<int?> CreateInventory(Inventory inventory)
         {
             if (inventory is null) { return null; }
@@ -49,6 +63,8 @@ namespace CargoHubAlt.Services.ServicesV2
             found.TotalOrdered = inventory.TotalOrdered;
             found.TotalAllocated = inventory.TotalAllocated;
             found.TotalAvailable = inventory.TotalAvailable;
+            found.LowStockThreshold = inventory.LowStockThreshold;
+            found.IsLowStock = inventory.TotalOnHand <= inventory.LowStockThreshold;
             found.UpdatedAt = Inventory.GetTimeStamp();
             this._cargoHubContext.Inventories.Update(found);
             await this._cargoHubContext.SaveChangesAsync();
@@ -63,6 +79,24 @@ namespace CargoHubAlt.Services.ServicesV2
             if (await this._cargoHubContext.SaveChangesAsync() >= 1) return found;
             else return null;
         }
+
+        // Returns products with TotalOnHand ≤ customThreshold, or all low-stock products if no threshold is given.
+        public async Task<IEnumerable<Inventory>> GetLowStock(int? customThreshold = null)
+        {
+            if (!customThreshold.HasValue)
+            {
+                return await _cargoHubContext.Inventories
+                    .Where(inventory => inventory.IsLowStock == true)
+                    .ToListAsync();
+            }
+            else
+            {
+                return await _cargoHubContext.Inventories
+                    .Where(inventory => inventory.TotalOnHand <= customThreshold.Value)
+                    .ToListAsync();
+            }
+        }
+
         public async Task LoadFromJson(string path)
         {
             path = "data/" + path;

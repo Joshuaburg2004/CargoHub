@@ -15,9 +15,9 @@ namespace CargoHub.Controllers.ControllersV2
             Suppliers = suppliers;
         }
         [HttpGet()]
-        public async Task<IActionResult> GetAllSuppliers()
+        public async Task<IActionResult> GetAllSuppliers([FromQuery] int? pageIndex)
         {
-            var suppliers = await Suppliers.GetAllSuppliers();
+            var suppliers = await Suppliers.GetAllSuppliers(pageIndex);
             return Ok(suppliers);
         }
         [HttpGet("{id}")]
@@ -51,7 +51,7 @@ namespace CargoHub.Controllers.ControllersV2
             return Created("Created supplier", newSupplier);
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSupplier(int id)
+        public async Task<IActionResult> DeleteSupplier([FromRoute] int id)
         {
             if (id <= 0) return BadRequest("ID must be greater than 0");
             var supplier = await Suppliers.DeleteSupplier(id);

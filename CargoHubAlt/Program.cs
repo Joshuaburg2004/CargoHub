@@ -50,7 +50,7 @@ public class Program
         builder.Services.AddTransient<IShipmentServiceV1, ShipmentServiceV1>();
         builder.Services.AddTransient<ITransferServiceV1, TransferServiceV1>();
         builder.Services.AddTransient<ILocationServiceV1, LocationServiceV1>();
-        builder.Services.AddTransient<ISupplierServiceV1, SuppliersV1>();
+        builder.Services.AddTransient<ISupplierServiceV1, SupplierServiceV1>();
         builder.Services.AddTransient<IOrderServiceV1, OrderServiceV1>();
         // V2
         builder.Services.AddTransient<IClientServiceV2, ClientServiceV2>();
@@ -63,8 +63,9 @@ public class Program
         builder.Services.AddTransient<IShipmentServiceV2, ShipmentServiceV2>();
         builder.Services.AddTransient<ITransferServiceV2, TransferServiceV2>();
         builder.Services.AddTransient<ILocationServiceV2, LocationServiceV2>();
-        builder.Services.AddTransient<ISupplierServiceV2, SuppliersV2>();
+        builder.Services.AddTransient<ISupplierServiceV2, SupplierServiceV2>();
         builder.Services.AddTransient<IOrderServiceV2, OrderServiceV2>();
+        builder.Services.AddTransient<IBackupService, BackupService>();
 
         builder.Services.AddScoped<ApiKeyActionFilter>();
         builder.Services.AddControllers();

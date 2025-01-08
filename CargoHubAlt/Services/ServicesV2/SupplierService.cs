@@ -6,16 +6,30 @@ using CargoHubAlt.Interfaces.InterfacesV2;
 
 namespace CargoHubAlt.Services.ServicesV2
 {
-    public class SuppliersV2 : ISupplierServiceV2
+    public class SupplierServiceV2 : ISupplierServiceV2
     {
         private readonly CargoHubContext cargoHubContext;
-        public SuppliersV2(CargoHubContext context)
+        public SupplierServiceV2(CargoHubContext context)
         {
             cargoHubContext = context;
         }
         public async Task<List<Supplier>> GetAllSuppliers()
         {
             return await cargoHubContext.Suppliers.ToListAsync();
+        }
+        public async Task<List<Supplier>> GetAllSuppliers(int? pageIndex)
+        {
+            if(pageIndex == null)
+            {
+                return await GetAllSuppliers();
+            }
+            int page = (int)pageIndex;
+            var suppliers = await cargoHubContext.Suppliers
+                .OrderBy(s => s.Id)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+            return suppliers;
         }
         public async Task<Supplier?> GetSupplier(int id)
         {

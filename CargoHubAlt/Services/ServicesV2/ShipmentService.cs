@@ -28,6 +28,21 @@ namespace CargoHubAlt.Services.ServicesV2
             }
         }
 
+        public async Task<List<Shipment>?> GetAllShipments(int? pageIndex)
+        {
+            if(pageIndex == null)
+            {
+                return await GetAllShipments();
+            }
+            int page = (int)pageIndex;
+            var shipments = await _context.Shipments
+                .OrderBy(c => c.Id)
+                .Skip((page - 1) * 30)
+                .Take(30)
+                .ToListAsync();
+            return shipments;
+        }
+
         public async Task<Shipment?> GetShipment(int id)
         {
             Shipment? shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == id);
@@ -78,45 +93,102 @@ namespace CargoHubAlt.Services.ServicesV2
             return shipment.Id;
         }
 
-        public async Task<Shipment?> UpdateShipment(int shipmentid, Shipment shipment)
+        public async Task<string?> UpdateShipment(int shipmentid, Shipment shipment)
         {
             // Checks before updating a shipment
             Shipment? oldShipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == shipment.Id);
+            string ChangedFields = "";
             if (oldShipment == null)
             {
                 return null;
             }
 
             // Update shipment
-            oldShipment.OrderId = shipment.OrderId;
-            oldShipment.SourceId = shipment.SourceId;
-            oldShipment.OrderDate = shipment.OrderDate;
-            oldShipment.RequestDate = shipment.RequestDate;
-            oldShipment.ShipmentDate = shipment.ShipmentDate;
-            oldShipment.ShipmentType = shipment.ShipmentType;
-            oldShipment.ShipmentStatus = shipment.ShipmentStatus;
-            oldShipment.Notes = shipment.Notes;
-            oldShipment.CarrierCode = shipment.CarrierCode;
-            oldShipment.CarrierDescription = shipment.CarrierDescription;
-            oldShipment.ServiceCode = shipment.ServiceCode;
-            oldShipment.PaymentType = shipment.PaymentType;
-            oldShipment.TransferMode = shipment.TransferMode;
-            oldShipment.TotalPackageCount = shipment.TotalPackageCount;
-            oldShipment.TotalPackageWeight = shipment.TotalPackageWeight;
-            oldShipment.CreatedAt = shipment.CreatedAt;
+            if (oldShipment.OrderId != shipment.OrderId)
+            {
+                oldShipment.OrderId = shipment.OrderId;
+                ChangedFields += $"OrderId, {shipment.OrderId}, ";
+            }
+            if (oldShipment.OrderDate != shipment.OrderDate)
+            {
+                oldShipment.OrderDate = shipment.OrderDate;
+                ChangedFields += $"OrderDate, {shipment.OrderDate}, ";
+            }
+            if (oldShipment.RequestDate != shipment.RequestDate)
+            {
+                oldShipment.RequestDate = shipment.RequestDate;
+                ChangedFields += $"RequestDate, {shipment.RequestDate}, ";
+            }
+            if (oldShipment.ShipmentDate != shipment.ShipmentDate)
+            {
+                oldShipment.ShipmentDate = shipment.ShipmentDate;
+                ChangedFields += $"ShipmentDate, {shipment.ShipmentDate}, ";
+            }
+            if (oldShipment.ShipmentType != shipment.ShipmentType)
+            {
+                oldShipment.ShipmentType = shipment.ShipmentType;
+                ChangedFields += $"ShipmentType, {shipment.ShipmentType}, ";
+            }
+            if (oldShipment.ShipmentStatus != shipment.ShipmentStatus)
+            {
+                oldShipment.ShipmentStatus = shipment.ShipmentStatus;
+                ChangedFields += $"ShipmentStatus, {shipment.ShipmentStatus}, ";
+            }
+            if (oldShipment.Notes != shipment.Notes)
+            {
+                oldShipment.Notes = shipment.Notes;
+                ChangedFields += $"Notes, {shipment.Notes}, ";
+            }
+            if (oldShipment.CarrierCode != shipment.CarrierCode)
+            {
+                oldShipment.CarrierCode = shipment.CarrierCode;
+                ChangedFields += $"CarrierCode, {shipment.CarrierCode}, ";
+            }
+            if (oldShipment.CarrierDescription != shipment.CarrierDescription)
+            {
+                oldShipment.CarrierDescription = shipment.CarrierDescription;
+                ChangedFields += $"CarrierDescription, {shipment.CarrierDescription}, ";
+            }
+            if (oldShipment.ServiceCode != shipment.ServiceCode)
+            {
+                oldShipment.ServiceCode = shipment.ServiceCode;
+                ChangedFields += $"ServiceCode, {shipment.ServiceCode}, ";
+            }
+            if (oldShipment.PaymentType != shipment.PaymentType)
+            {
+                oldShipment.PaymentType = shipment.PaymentType;
+                ChangedFields += $"PaymentType, {shipment.PaymentType}, ";
+            }
+            if (oldShipment.TransferMode != shipment.TransferMode)
+            {
+                oldShipment.TransferMode = shipment.TransferMode;
+                ChangedFields += $"TransferMode, {shipment.TransferMode}, ";
+            }
+            if (oldShipment.TotalPackageCount != shipment.TotalPackageCount)
+            {
+                oldShipment.TotalPackageCount = shipment.TotalPackageCount;
+                ChangedFields += $"TotalPackageCount, {shipment.TotalPackageCount}, ";
+            }
+            if (oldShipment.TotalPackageWeight != shipment.TotalPackageWeight)
+            {
+                oldShipment.TotalPackageWeight = shipment.TotalPackageWeight;
+                ChangedFields += $"TotalPackageWeight, {shipment.TotalPackageWeight}, ";
+            }
+
             oldShipment.UpdatedAt = DateTime.Now.ToString();
             oldShipment.Items = shipment.Items;
 
             _context.Shipments.Update(oldShipment);
             await _context.SaveChangesAsync();
 
-            return oldShipment;
+            return ChangedFields;
         }
 
-        public async Task<Shipment?> UpdateItemsInShipment(int id, List<ShipmentItem> items)
+        public async Task<string?> UpdateItemsInShipment(int id, List<ShipmentItem> items)
         {
             // Checks before updating items in a shipment
             var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == id);
+            string ChangedFields = "";
             if (shipment == null)
             {
                 return null;
@@ -187,11 +259,13 @@ namespace CargoHubAlt.Services.ServicesV2
 
             // Update items in shipment
             shipment.Items = items;
+            ChangedFields += $"Items, {items}";
+
 
             _context.Shipments.Update(shipment);
             await _context.SaveChangesAsync();
 
-            return shipment;
+            return ChangedFields;
         }
 
         public async Task UpdateOrdersInShipment(int id, List<int> orders)
@@ -280,6 +354,87 @@ namespace CargoHubAlt.Services.ServicesV2
             await _context.Shipments.AddAsync(shipment);
             await _context.SaveChangesAsync();
             return shipment.Id;
+        }
+        public async Task<bool> CommitShipmentById(int id)
+        {
+            if (id <= 0)
+                return false;
+            var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == id);
+            if (shipment == null)
+                return false;
+            Order? order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == shipment.OrderId);
+            if (order == null)
+                return false;
+            if (shipment.ShipmentStatus == "Pending")
+            {
+                shipment.ShipmentStatus = "Transit";
+                /* 
+                The following code needs to be confirmed, will be checked with PO if this is intention.
+                Question is: Should order have itself updated and should the locations be updated based on the order?
+                Source Id should be inventory too.
+                */
+                var transaction = _context.Database.BeginTransaction();
+                foreach (var shipmentItem in order.Items)
+                {
+                    var inventories = _context.Inventories.Where(x => x.ItemId == shipmentItem.ItemId);
+                    foreach (var inventory in inventories)
+                    {
+                        // assume the python code means to iterate over the locations, because as is the inventories dont end up being stored in one location but in several (with a list of locations per inventory)
+                        // needs to be checked with PO
+                        foreach (int ider in inventory.Locations)
+                        {
+                            if (ider == order.SourceId)
+                            {
+                                inventory.TotalOnHand -= shipmentItem.Amount;
+                                inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
+                                inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
+                                _context.Inventories.Update(inventory);
+                            }
+                        }
+                    }
+                }
+                order.OrderStatus = "Transit";
+                _context.Orders.Update(order);
+                _context.Shipments.Update(shipment);
+                await _context.SaveChangesAsync();
+                transaction.Commit();
+                return true;
+            }
+            else if (shipment.ShipmentStatus == "Transit")
+            {
+                shipment.ShipmentStatus = "Delivered";
+                var transaction = _context.Database.BeginTransaction();
+                foreach (var shipmentItem in order.Items)
+                {
+                    var inventories = _context.Inventories.Where(x => x.ItemId == shipmentItem.ItemId);
+                    foreach (var inventory in inventories)
+                    {
+                        // assume the python code means to iterate over the locations, because as is the inventories dont end up being stored in one location but in several (with a list of locations per inventory)
+                        // needs to be checked with PO
+                        foreach (int ider in inventory.Locations)
+                        {
+                            if (ider == order.ShipTo)
+                            {
+                                inventory.TotalOnHand -= shipmentItem.Amount;
+                                inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
+                                inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
+                                _context.Inventories.Update(inventory);
+                            }
+                        }
+                    }
+                }
+
+                order.OrderStatus = "Delivered";
+                _context.Shipments.Update(shipment);
+                _context.Orders.Update(order);
+                await _context.SaveChangesAsync();
+                transaction.Commit();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
