@@ -17,7 +17,7 @@ namespace CargoHubAlt.Models
         public string? City { get; set; }
         public string? Province { get; set; }
         public string? Country { get; set; }
-        public Contact? Contact { get; set; }
+        public Contact Contact { get; set; } = new Contact("", "", "");
         public string CreatedAt { get; set; } = Base.GetTimeStamp();
         public string UpdatedAt { get; set; } = Base.GetTimeStamp();
         public Warehouse() { }
