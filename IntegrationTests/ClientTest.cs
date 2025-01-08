@@ -95,7 +95,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
 
             List<Order>? orders = await response2.Content.ReadFromJsonAsync<List<Order>>();
-
+            Xunit.Assert.NotNull(orders);
             Xunit.Assert.NotNull(orders[0]);
             Xunit.Assert.Equal(_orderToAdd.Id, orders[0].Id);
             Xunit.Assert.Equal(_orderToAdd.SourceId, orders[0].SourceId);

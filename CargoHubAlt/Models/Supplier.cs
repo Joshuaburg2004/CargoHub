@@ -8,20 +8,20 @@ namespace CargoHubAlt.Models
     public class Supplier : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public required int Id { get; set; }
-        public required string Code { get; set; }
-        public required string Name { get; set; }
-        public required string Address { get; set; }
-        public required string AddressExtra { get; set; }
-        public required string City { get; set; }
-        public required string ZipCode { get; set; }
-        public required string Province { get; set; }
-        public required string Country { get; set; }
-        public required string ContactName { get; set; }
-        public required string Phonenumber { get; set; }
-        public required string Reference { get; set; }
-        public required string CreatedAt { get; set; } = GetTimeStamp();
-        public required string UpdatedAt { get; set; } = GetTimeStamp();
+        public int Id { get; set; }
+        public string? Code { get; set; }
+        public string? Name { get; set; }
+        public string? Address { get; set; }
+        public string? AddressExtra { get; set; }
+        public string? City { get; set; }
+        public string? ZipCode { get; set; }
+        public string? Province { get; set; }
+        public string? Country { get; set; }
+        public string? ContactName { get; set; }
+        public string? Phonenumber { get; set; }
+        public string? Reference { get; set; }
+        public string CreatedAt { get; set; } = GetTimeStamp();
+        public string UpdatedAt { get; set; } = GetTimeStamp();
         public Supplier() { }
         public Supplier(int id, string code, string name, string address, string addressExtra, string city, string zipCode, string province, string country, string contactName, string phonenumber, string reference)
         {

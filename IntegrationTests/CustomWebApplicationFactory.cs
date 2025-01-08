@@ -30,7 +30,7 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
             using (var scope = sp.CreateScope())
             {
                 var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<CargoHubContext>();
+                var db = scopedServices.GetService<CargoHubContext>();
 
                 // Reset database state
                 db.Database.EnsureDeleted(); // Verwijdert de database

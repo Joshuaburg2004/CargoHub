@@ -8,18 +8,18 @@ namespace CargoHubAlt.Models
     public class Client : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public required int Id { get; set; }
-        public required string Name { get; set; }
-        public required string Address { get; set; }
-        public required string City { get; set; }
-        public required string ZipCode { get; set; }
-        public required string Province { get; set; }
-        public required string Country { get; set; }
-        public required string ContactName { get; set; }
-        public required string ContactPhone { get; set; }
-        public required string ContactEmail { get; set; }
-        public required string CreatedAt { get; set; } = GetTimeStamp();
-        public required string UpdatedAt { get; set; } = GetTimeStamp();
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public string? Address { get; set; }
+        public string? City { get; set; }
+        public string? ZipCode { get; set; }
+        public string? Province { get; set; }
+        public string? Country { get; set; }
+        public string? ContactName { get; set; }
+        public string? ContactPhone { get; set; }
+        public string? ContactEmail { get; set; }
+        public string CreatedAt { get; set; } = GetTimeStamp();
+        public string UpdatedAt { get; set; } = GetTimeStamp();
         public Client() { }
         public Client(int id, string name, string address, string city, string zipCode, string province, string country, string contactName, string contactPhone, string contactEmail)
         {

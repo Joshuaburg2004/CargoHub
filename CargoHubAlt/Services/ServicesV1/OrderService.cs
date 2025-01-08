@@ -72,7 +72,7 @@ namespace CargoHubAlt.Services.ServicesV1
             string ChangedFields = "";
             if (oldOrder == null)
             {
-                return null;
+                return "Order not found";
             }
 
             // update Order
@@ -122,7 +122,7 @@ namespace CargoHubAlt.Services.ServicesV1
             _context.Orders.Update(oldOrder);
             if (await _context.SaveChangesAsync() >= 0)
                 return ChangedFields;
-            return null;
+            return "No fields changed";
         }
 
         public async Task<string> UpdateOrderedItems(int orderId, List<OrderedItem> items)
@@ -132,7 +132,7 @@ namespace CargoHubAlt.Services.ServicesV1
             string ChangedFields = "";
             if (order == null)
             {
-                return null;
+                return "Order not found";
             }
 
             // update OrderedItems
@@ -145,7 +145,7 @@ namespace CargoHubAlt.Services.ServicesV1
             _context.Orders.Update(order);
             if (await _context.SaveChangesAsync() >= 0)
                 return ChangedFields;
-            return null;
+            return "No fields changed";
         }
 
         public async Task<bool> RemoveOrder(int id)

@@ -9,26 +9,26 @@ namespace CargoHubAlt.Models
     public class Order : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public required int Id { get; set; }
-        public required int SourceId { get; set; }
-        public required string? OrderDate { get; set; }
-        public required string? RequestDate { get; set; }
-        public required string? Reference { get; set; }
-        public required string? ReferenceExtra { get; set; }
-        public required string? OrderStatus { get; set; }
-        public required string? Notes { get; set; }
-        public required string? ShippingNotes { get; set; }
-        public required string? PickingNotes { get; set; }
-        public required int WarehouseId { get; set; }
-        public required int ShipTo { get; set; }
-        public required int BillTo { get; set; }
-        public required int ShipmentId { get; set; }
-        public required double TotalAmount { get; set; }
-        public required double TotalDiscount { get; set; }
-        public required double TotalTax { get; set; }
-        public required double TotalSurcharge { get; set; }
-        public required string CreatedAt { get; set; } = GetTimeStamp();
-        public required string UpdatedAt { get; set; } = GetTimeStamp();
+        public int Id { get; set; }
+        public int SourceId { get; set; }
+        public string? OrderDate { get; set; }
+        public string? RequestDate { get; set; }
+        public string? Reference { get; set; }
+        public string? ReferenceExtra { get; set; }
+        public string? OrderStatus { get; set; }
+        public string? Notes { get; set; }
+        public string? ShippingNotes { get; set; }
+        public string? PickingNotes { get; set; }
+        public int WarehouseId { get; set; }
+        public int ShipTo { get; set; }
+        public int BillTo { get; set; }
+        public int ShipmentId { get; set; }
+        public double TotalAmount { get; set; }
+        public double TotalDiscount { get; set; }
+        public double TotalTax { get; set; }
+        public double TotalSurcharge { get; set; }
+        public string CreatedAt { get; set; } = GetTimeStamp();
+        public string UpdatedAt { get; set; } = GetTimeStamp();
         public List<OrderedItem> Items { get; set; } = new List<OrderedItem>();
 
         public Order() { }
