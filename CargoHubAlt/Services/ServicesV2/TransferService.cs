@@ -144,8 +144,6 @@ namespace CargoHubAlt.Services.ServicesV2
             }
             if (transfer.Reference == null) { transfer.Reference = "N/A"; }
             if (transfer.TransferStatus == null) { transfer.TransferStatus = "N/A"; }
-            if (transfer.TransferFrom == null) { transfer.TransferFrom = 0; }
-            if (transfer.TransferTo == null) { transfer.TransferTo = 0; }
             await _context.Transfers.AddAsync(transfer);
             await _context.SaveChangesAsync();
             return transfer.Id;

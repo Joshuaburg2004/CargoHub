@@ -64,7 +64,7 @@ namespace CargoHubAlt.Services.ServicesV2
             found.TotalAllocated = inventory.TotalAllocated;
             found.TotalAvailable = inventory.TotalAvailable;
             found.LowStockThreshold = inventory.LowStockThreshold;
-            found.IsLowStock = inventory.LowStockThreshold.HasValue ? inventory.TotalOnHand <= inventory.LowStockThreshold : false;
+            found.IsLowStock = inventory.TotalOnHand <= inventory.LowStockThreshold;
             found.UpdatedAt = Inventory.GetTimeStamp();
             this._cargoHubContext.Inventories.Update(found);
             await this._cargoHubContext.SaveChangesAsync();

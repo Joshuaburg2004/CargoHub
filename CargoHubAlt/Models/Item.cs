@@ -9,12 +9,12 @@ namespace CargoHubAlt.Models
     public class Item : Base
     {
         public string Uid { get; set; }
-        public string Code { get; set; }
-        public string Description { get; set; }
-        public string ShortDescription { get; set; }
-        public string UpcCode { get; set; }
-        public string ModelNumber { get; set; }
-        public string CommodityCode { get; set; }
+        public string? Code { get; set; }
+        public string? Description { get; set; }
+        public string? ShortDescription { get; set; }
+        public string? UpcCode { get; set; }
+        public string? ModelNumber { get; set; }
+        public string? CommodityCode { get; set; }
         public int ItemLine { get; set; }
         public int ItemGroup { get; set; }
         public int ItemType { get; set; }
@@ -22,8 +22,8 @@ namespace CargoHubAlt.Models
         public int UnitOrderQuantity { get; set; }
         public int PackOrderQuantity { get; set; }
         public int SupplierId { get; set; }
-        public string SupplierCode { get; set; }
-        public string SupplierPartNumber { get; set; }
+        public string? SupplierCode { get; set; }
+        public string? SupplierPartNumber { get; set; }
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
 
