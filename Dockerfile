@@ -15,5 +15,8 @@ RUN dotnet restore
 # Build the test project
 RUN dotnet build --no-restore --configuration Debug
 
+# Create a directory for test results
+RUN mkdir /testresults
+
 # Run the tests
 CMD ["dotnet", "test", "/app/IntegrationTests/IntegrationTests.csproj", "--no-build", "--logger:trx", "--results-directory", "/testresults"]

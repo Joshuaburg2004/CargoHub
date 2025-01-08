@@ -18,8 +18,15 @@ public class BaseTest : IClassFixture<CustomWebApplicationFactory<Program>>
 
     public BaseTest(CustomWebApplicationFactory<Program> factory)
     {
-        _client = factory.CreateClient();
-        _client.BaseAddress = new Uri("http://localhost:3000");
-        _client.DefaultRequestHeaders.Add("API_KEY", "a1b2c3d4e5");
+        try
+        {
+            _client = factory.CreateClient();
+            _client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("BASE_URL") ?? "http://localhost:3000");
+            _client.DefaultRequestHeaders.Add("API_KEY", "a1b2c3d4e5");
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Failed to initialize HttpClient for tests.", ex);
+        }
     }
 }
