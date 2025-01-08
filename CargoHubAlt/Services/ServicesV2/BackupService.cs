@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using CargoHubAlt.Interfaces.InterfacesV2;
 
 namespace CargoHubAlt.Services.ServicesV2
@@ -27,7 +28,25 @@ namespace CargoHubAlt.Services.ServicesV2
                 // Create the backup files
                 await CreateBackupDatabase(backupFolderPath);
                 await CreateBackupLogs(backupFolderPath);
-                return await Task.FromResult((true, "Backup created successfully at: " + backupFolderPath));
+
+                string downloadsfolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
+                
+                string zipFilePath = Path.Combine(downloadsfolder, $"Cargohub_backup_{timestamp}.zip");
+                
+                try
+                {
+                    // Create the ZIP file from the source directory
+                    ZipFile.CreateFromDirectory(backupFolderPath, zipFilePath);
+
+                    Console.WriteLine($"ZIP file created successfully at: {zipFilePath}");
+                }
+                catch (Exception ex)
+                {
+                    return (false, $"An error occurred: {ex.Message}");
+                }
+
+                string successstring = $"backup created successfully at {backupFolderPath}, Zipfile created successfully at {zipFilePath}";
+                return (true, successstring);
             }
             catch (Exception ex)
             {
@@ -98,7 +117,7 @@ namespace CargoHubAlt.Services.ServicesV2
                 (bool success, string fail) databasesuccess = (false, "backup database file not found");
                 if (File.Exists(backupdatabase))
                 {
-                    databasesuccess = uploadBackupDatabase(folderfound);
+                    databasesuccess = await Task.FromResult(uploadBackupDatabase(folderfound));
                 }
 
                 if (databasesuccess.success == true)
@@ -139,83 +158,83 @@ namespace CargoHubAlt.Services.ServicesV2
 
 
 
-        private async Task<(bool,string)> uploadBackupLogs(string backupFolderPath)
-        {
-            string baseLogsFolder = "./Logs";
-            string errorMessages = "";
+        // private async Task<(bool,string)> uploadBackupLogs(string backupFolderPath)
+        // {
+        //     string baseLogsFolder = "./Logs";
+        //     string errorMessages = "";
 
 
-            if (!Directory.Exists(backupFolderPath))
-                return (false, $"the back up folder searched for has no logsbackup, searched for {backupFolderPath}");
-            bool clientlogsSuccess = false;
-            string clientLogname = "ClientController.log";
-            string ClientBaseLogs = Path.Combine(baseLogsFolder, clientLogname);
-            string clientBackupLogs = Path.Combine(backupFolderPath, clientLogname);
+        //     if (!Directory.Exists(backupFolderPath))
+        //         return (false, $"the back up folder searched for has no logsbackup, searched for {backupFolderPath}");
+        //     bool clientlogsSuccess = false;
+        //     string clientLogname = "ClientController.log";
+        //     string ClientBaseLogs = Path.Combine(baseLogsFolder, clientLogname);
+        //     string clientBackupLogs = Path.Combine(backupFolderPath, clientLogname);
 
-            if (Path.Exists(clientBackupLogs))
-            {
-                await File.WriteAllLinesAsync(ClientBaseLogs, await File.ReadAllLinesAsync(clientBackupLogs)); 
-                clientlogsSuccess = true;
-            }
-            else 
-            {
-                errorMessages += "the Client log folder does not exist;";
-            }
+        //     if (Path.Exists(clientBackupLogs))
+        //     {
+        //         await File.WriteAllLinesAsync(ClientBaseLogs, await File.ReadAllLinesAsync(clientBackupLogs)); 
+        //         clientlogsSuccess = true;
+        //     }
+        //     else 
+        //     {
+        //         errorMessages += "the Client log folder does not exist;";
+        //     }
 
-            bool ItemlogsSuccess = false;
-            string ItemLogname = "ItemController.log";
-            string ItemBaseLogs = Path.Combine(baseLogsFolder, ItemLogname);
-            string ItemBackupLogs = Path.Combine(backupFolderPath, ItemLogname);
+        //     bool ItemlogsSuccess = false;
+        //     string ItemLogname = "ItemController.log";
+        //     string ItemBaseLogs = Path.Combine(baseLogsFolder, ItemLogname);
+        //     string ItemBackupLogs = Path.Combine(backupFolderPath, ItemLogname);
 
-            if (Path.Exists(ItemBackupLogs))
-            {
-                await File.WriteAllLinesAsync(ItemBaseLogs, await File.ReadAllLinesAsync(ItemBackupLogs)); 
-                ItemlogsSuccess = true;
-            }
-            else 
-            {
-                errorMessages += "the Item log folder does not exist;";
-            }
+        //     if (Path.Exists(ItemBackupLogs))
+        //     {
+        //         await File.WriteAllLinesAsync(ItemBaseLogs, await File.ReadAllLinesAsync(ItemBackupLogs)); 
+        //         ItemlogsSuccess = true;
+        //     }
+        //     else 
+        //     {
+        //         errorMessages += "the Item log folder does not exist;";
+        //     }
 
 
-            bool OrderlogsSuccess = false;
-            string OrderLogname = "OrderController.log";
-            string OrderBaseLogs = Path.Combine(baseLogsFolder, OrderLogname);
-            string OrderBackupLogs = Path.Combine(backupFolderPath, OrderLogname);
+        //     bool OrderlogsSuccess = false;
+        //     string OrderLogname = "OrderController.log";
+        //     string OrderBaseLogs = Path.Combine(baseLogsFolder, OrderLogname);
+        //     string OrderBackupLogs = Path.Combine(backupFolderPath, OrderLogname);
 
-            if (Path.Exists(OrderBackupLogs))
-            {
-                await File.WriteAllLinesAsync(OrderBaseLogs, await File.ReadAllLinesAsync(OrderBackupLogs)); 
-                OrderlogsSuccess = true;
-            }
-            else 
-            {
-                errorMessages += "the Order log folder does not exist;";
-            }
+        //     if (Path.Exists(OrderBackupLogs))
+        //     {
+        //         await File.WriteAllLinesAsync(OrderBaseLogs, await File.ReadAllLinesAsync(OrderBackupLogs)); 
+        //         OrderlogsSuccess = true;
+        //     }
+        //     else 
+        //     {
+        //         errorMessages += "the Order log folder does not exist;";
+        //     }
 
-            bool ShipmentLogSuccess = false;
-            string ShipmentLogname = "ShipmentController.log";
-            string ShipmentBaseLogs = Path.Combine(baseLogsFolder, ShipmentLogname);
-            string ShipmentBackupLogs = Path.Combine(backupFolderPath, ShipmentLogname);
+        //     bool ShipmentLogSuccess = false;
+        //     string ShipmentLogname = "ShipmentController.log";
+        //     string ShipmentBaseLogs = Path.Combine(baseLogsFolder, ShipmentLogname);
+        //     string ShipmentBackupLogs = Path.Combine(backupFolderPath, ShipmentLogname);
 
-            if (Path.Exists(ShipmentBackupLogs))
-            {
-                await File.WriteAllLinesAsync(ShipmentBaseLogs, await File.ReadAllLinesAsync(ShipmentBackupLogs)); 
-                ShipmentLogSuccess = true;
-            }
-            else 
-            {
-                errorMessages += "the Shipment log folder does not exist;";
-            }
+        //     if (Path.Exists(ShipmentBackupLogs))
+        //     {
+        //         await File.WriteAllLinesAsync(ShipmentBaseLogs, await File.ReadAllLinesAsync(ShipmentBackupLogs)); 
+        //         ShipmentLogSuccess = true;
+        //     }
+        //     else 
+        //     {
+        //         errorMessages += "the Shipment log folder does not exist;";
+        //     }
 
-            if (clientlogsSuccess && ItemlogsSuccess && OrderlogsSuccess && ShipmentLogSuccess)
-            {
-                return (true, errorMessages);
-            }
+        //     if (clientlogsSuccess && ItemlogsSuccess && OrderlogsSuccess && ShipmentLogSuccess)
+        //     {
+        //         return (true, errorMessages);
+        //     }
 
-            return (false, errorMessages);
+        //     return (false, errorMessages);
 
-        }
+        // }
 
     }
 
