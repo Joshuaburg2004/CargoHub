@@ -24,6 +24,7 @@ namespace CargoHubAlt.JsonModels{
         public double total_surcharge { get; set; }
         public string created_at { get; set; } = GetTimeStamp();
         public string updated_at { get; set; } = GetTimeStamp();
+        public List<JsonOrderedItem> Items { get; set; } = new();
 
         public Order ToOrder(){
             return new Order(){

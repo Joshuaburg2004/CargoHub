@@ -179,6 +179,7 @@ namespace CargoHubAlt.Services.ServicesV1
                 foreach (JsonOrder jsonOrder in orders)
                 {
                     Order order = jsonOrder.ToOrder();
+                    order.Items = jsonOrder.Items.Select(x => x.ToOrderedItem()).ToList();
                     await SaveToDatabase(order);
                 }
                 await _context.SaveChangesAsync();
