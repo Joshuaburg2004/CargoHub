@@ -9,8 +9,8 @@ COPY . .
 # COPY ./CargoHubAlt /app/CargoHubAlt
 # COPY ./IntegrationTests /app/IntegrationTests
 
-# Ensure the Authentication folder with users.json is copied as well
-COPY ./Authentication /app/IntegrationTests/bin/Debug/net8.0/Authentication/
+# Ensure the Authentication folder is copied as well
+COPY ./CargoHubAlt/Authentication /app/IntegrationTests/bin/Debug/net8.0/Authentication/
 
 # Restore dependencies
 RUN dotnet restore
