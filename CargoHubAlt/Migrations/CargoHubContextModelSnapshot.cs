@@ -298,6 +298,9 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("PickingOrderId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("UpdatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -306,6 +309,8 @@ namespace CargoHubAlt.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PickingOrderId");
 
                     b.ToTable("Locations");
                 });
@@ -378,6 +383,25 @@ namespace CargoHubAlt.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("CargoHubAlt.Models.PickingOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedAt")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedAt")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PickingOrders");
                 });
 
             modelBuilder.Entity("CargoHubAlt.Models.Shipment", b =>
@@ -572,6 +596,13 @@ namespace CargoHubAlt.Migrations
                     b.ToTable("Warehouses");
                 });
 
+            modelBuilder.Entity("CargoHubAlt.Models.Location", b =>
+                {
+                    b.HasOne("CargoHubAlt.Models.PickingOrder", null)
+                        .WithMany("Route")
+                        .HasForeignKey("PickingOrderId");
+                });
+
             modelBuilder.Entity("CargoHubAlt.Models.Order", b =>
                 {
                     b.OwnsMany("CargoHubAlt.Models.OrderedItem", "Items", b1 =>
@@ -691,6 +722,11 @@ namespace CargoHubAlt.Migrations
 
                     b.Navigation("Contact")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CargoHubAlt.Models.PickingOrder", b =>
+                {
+                    b.Navigation("Route");
                 });
 #pragma warning restore 612, 618
         }
