@@ -94,7 +94,7 @@ namespace CargoHubAlt.Services.ServicesV1
                     await SaveToDatabase(itemLine);
                 }
                 await _cargoHubContext.SaveChangesAsync();
-                transaction.Commit();
+                await transaction.CommitAsync();
             }
         }
         public async Task<int> SaveToDatabase(ItemLine itemLine)

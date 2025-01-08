@@ -170,7 +170,7 @@ namespace CargoHubAlt.Services.ServicesV2
             else return null;
         }
 
-                public async Task LoadFromJson(string path)
+        public async Task LoadFromJson(string path)
         {
             path = "data/" + path;
             if (File.Exists(path))
@@ -188,7 +188,7 @@ namespace CargoHubAlt.Services.ServicesV2
                     await SaveToDatabase(item);
                 }
                 await _context.SaveChangesAsync();
-                transaction.Commit();
+                await transaction.CommitAsync();
             }
         }
         public async Task<string> SaveToDatabase(Item item)

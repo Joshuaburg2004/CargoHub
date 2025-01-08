@@ -3,6 +3,7 @@ using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV1;
 using System.Text.Json;
+using CargoHubAlt.JsonModels;
 
 namespace CargoHubAlt.Services.ServicesV1
 {
@@ -169,15 +170,19 @@ namespace CargoHubAlt.Services.ServicesV1
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<Order>? orders = JsonSerializer.Deserialize<List<Order>>(json);
+                List<JsonOrder>? orders = JsonSerializer.Deserialize<List<JsonOrder>>(json);
                 if (orders == null)
                 {
                     return;
                 }
-                foreach (Order order in orders)
+                var transaction = _context.Database.BeginTransaction();
+                foreach (JsonOrder jsonOrder in orders)
                 {
+                    Order order = jsonOrder.ToOrder();
                     await SaveToDatabase(order);
                 }
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
             }
         }
         public async Task<int> SaveToDatabase(Order order)
@@ -196,7 +201,6 @@ namespace CargoHubAlt.Services.ServicesV1
             if (order.PickingNotes == null) { order.PickingNotes = "N/A"; }
 
             await _context.Orders.AddAsync(order);
-            await _context.SaveChangesAsync();
             return order.Id;
         }
     }
