@@ -70,10 +70,6 @@ jobs:
     - name: Create Data directory
       run: mkdir -p ${{ github.workspace }}/Data
 
-    # Optional: Debugging step to verify Data directory exists
-    - name: Check Data directory
-      run: ls ${{ github.workspace }}/Data
-
     # Initialize SQLite Database
     - name: Initialize SQLite Database
       run: |
