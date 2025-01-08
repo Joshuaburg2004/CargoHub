@@ -16,7 +16,7 @@ namespace IntegrationTests
         private Client _clientToPut = new Client(1, "Raymond Inc JR", "1296 Daniel Road Apt. 349", "Pierceview", "28301", "Colorado", "United States", "Bryan Clark", "242.732.3483x2573", "test@hr.nl");
         private Client _clientToAddNegative = new Client(-1, "Raymond Inc", "1296 Daniel Road Apt. 349", "Pierceview", "28301", "Colorado", "United States", "Bryan Clark", "242.732.3483x2573", "test@hr.nl");
         private Order _orderToAdd = new Order(1, 1, "2021-10-10", "2021-10-10", "123", "123", "Ordered", "Notes", "ShippingNotes", "PickingNotes", 1, 1, 1, 1, 100.0, 10.0, 5.0, 2.0, null);
-        public ClientTest() { }
+        public ClientTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
         [Fact, TestPriority(1)]
         public async Task GetAllClients()
         {

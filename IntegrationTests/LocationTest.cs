@@ -17,7 +17,7 @@ namespace IntegrationTests
         public static Location initialLoc = new(1, 1, "A.1.0", "new");
         public static Location afterPutLoc = new(1, 1, "B.2.1", "afterput");
 
-        public LocationTest() { }
+        public LocationTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
         [Fact, TestPriority(1)]
         public async Task GetAllLocations()
         {

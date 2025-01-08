@@ -20,7 +20,7 @@ public class InventoryIntegratieTest : BaseTest
 
     private Inventory _TestInventoryPut = new(1, "P000001", "test", "hopeful", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 60, 60, 60, 60, 60);
 
-    public InventoryIntegratieTest() { }
+    public InventoryIntegratieTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
 
     [Fact, TestPriority(0)]
     public async Task GetAllInventoriesEmpty()
