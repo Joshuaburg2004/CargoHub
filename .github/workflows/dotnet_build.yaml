@@ -115,8 +115,8 @@ jobs:
     - name: Run Docker container
       run: |
         docker run --rm \
-          # -v ${{ github.workspace }}/TestResults:/testresults \
-          # -v ${{ github.workspace }}/Data:/app/Data \
+          -v ${{ github.workspace }}/TestResults:/testresults \
+          -v ${{ github.workspace }}/Data:/app/Data \
           -e Solution_Name=/app/CargoHubAspNet.sln \
           -e Test_Project_Path=/app/IntegrationTests/IntegrationTests.csproj \
           integrationtest \
