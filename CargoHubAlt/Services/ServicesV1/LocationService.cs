@@ -3,6 +3,7 @@ using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV1;
 using System.Text.Json;
+using CargoHubAlt.JsonModels;
 
 namespace CargoHubAlt.Services.ServicesV1
 {
@@ -56,15 +57,19 @@ namespace CargoHubAlt.Services.ServicesV1
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<Location>? locations = JsonSerializer.Deserialize<List<Location>>(json);
+                List<JsonLocation>? locations = JsonSerializer.Deserialize<List<JsonLocation>>(json);
                 if (locations == null)
                 {
                     return;
                 }
-                foreach (Location location in locations)
+                var transaction = _context.Database.BeginTransaction();
+                foreach (JsonLocation jsonLocation in locations)
                 {
+                    Location location = jsonLocation.ToLocation();
                     await SaveToDatabase(location);
                 }
+                await _context.SaveChangesAsync();
+                transaction.Commit();
             }
         }
         public async Task<int> SaveToDatabase(Location location)
@@ -76,7 +81,6 @@ namespace CargoHubAlt.Services.ServicesV1
             if (location.Name == null) { location.Name = "N/A"; }
             if (location.Code == null) { location.Code = "N/A"; }
             await _context.Locations.AddAsync(location);
-            await _context.SaveChangesAsync();
             return location.Id;
         }
     }
