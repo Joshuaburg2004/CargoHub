@@ -190,7 +190,7 @@ namespace IntegrationTests
         public async Task AddClientNull()
         {
             var requestUri = "/api/v1/clients";
-            var response = await _client.PostAsJsonAsync(requestUri, new { });
+            var response = await _client.PostAsJsonAsync<Client?>(requestUri, null);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -210,7 +210,7 @@ namespace IntegrationTests
         public async Task UpdateClientNull()
         {
             var requestUri = "/api/v1/clients/1";
-            var response = await _client.PutAsJsonAsync(requestUri, new { });
+            var response = await _client.PutAsJsonAsync<Client?>(requestUri, null);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
