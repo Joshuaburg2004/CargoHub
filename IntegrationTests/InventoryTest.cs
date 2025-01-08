@@ -20,7 +20,7 @@ public class InventoryIntegratieTest : BaseTest
 
     private Inventory _TestInventoryPut = new(1, "P000001", "test", "hopeful", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 60, 60, 60, 60, 60);
 
-    public InventoryIntegratieTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
+    public InventoryIntegratieTest() { }
 
     [Fact, TestPriority(0)]
     public async Task GetAllInventoriesEmpty()
@@ -147,7 +147,7 @@ public class InventoryIntegratieTest : BaseTest
         Xunit.Assert.Equal(_TestInventoryPut.TotalAvailable, inventoryCompared.TotalAvailable);
     }
     [Fact, TestPriority(13)]
-    public async Task GetUpdatedInventoryTestNotFound() 
+    public async Task GetUpdatedInventoryTestNotFound()
     {
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}/55");
         Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);

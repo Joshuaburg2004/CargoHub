@@ -58,7 +58,7 @@ namespace IntegrationTests
             Items = new System.Collections.Generic.List<OrderedItem> { new OrderedItem { ItemId = "P010689", Amount = 16 } }
         };
 
-        public OrderTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
+        public OrderTest() { }
         [Fact, TestPriority(1)]
         public async Task GetAllOrders()
         {

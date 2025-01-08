@@ -24,8 +24,7 @@ public class ItemIntegratieTest : BaseTest
     public Inventory TestInventory = new(5, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40);
 
 
-    public ItemIntegratieTest(CustomWebApplicationFactory<Program> factory) : base(factory)
-    { }
+    public ItemIntegratieTest() { }
 
     [Fact, TestPriority(0)]
     public async Task GetAllItemsEmpty()
@@ -281,7 +280,7 @@ public class ItemIntegratieTest : BaseTest
         HttpResponseMessage response = await _client.DeleteAsync($"{requestUri}/P000001");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var responseContent = await response.Content.ReadFromJsonAsync<Item>();
-        
+
         Xunit.Assert.IsType<Item>(responseContent);
         Xunit.Assert.Equal(TestPutItem.Uid, responseContent.Uid);
         Xunit.Assert.Equal(TestPutItem.Code, responseContent.Code);

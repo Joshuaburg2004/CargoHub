@@ -40,7 +40,7 @@ namespace IntegrationTests
             }
         };
 
-        public TransferTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
+        public TransferTest() { }
 
         [Fact, TestPriority(1)]
         public async Task GetAllTransfersEmpty()
