@@ -3,6 +3,7 @@ using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV1;
 using System.Text.Json;
+using CargoHubAlt.JsonModels;
 
 namespace CargoHubAlt.Services.ServicesV1
 {
@@ -69,15 +70,19 @@ namespace CargoHubAlt.Services.ServicesV1
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<Inventory>? inventorys = JsonSerializer.Deserialize<List<Inventory>>(json);
+                List<JsonInventory>? inventorys = JsonSerializer.Deserialize<List<JsonInventory>>(json);
                 if (inventorys == null)
                 {
                     return;
                 }
-                foreach (Inventory inventory in inventorys)
+                var transaction = _cargoHubContext.Database.BeginTransaction();
+                foreach (JsonInventory jsonInventory in inventorys)
                 {
+                    Inventory inventory = jsonInventory.ToInventory();
                     await SaveToDatabase(inventory);
                 }
+                await _cargoHubContext.SaveChangesAsync();
+                await transaction.CommitAsync();
             }
         }
         public async Task<int> SaveToDatabase(Inventory inventory)
@@ -90,7 +95,6 @@ namespace CargoHubAlt.Services.ServicesV1
             if (inventory.Description == null) { inventory.Description = "N/A"; }
             if (inventory.ItemReference == null) { inventory.ItemReference = "N/A"; }
             await _cargoHubContext.Inventories.AddAsync(inventory);
-            await _cargoHubContext.SaveChangesAsync();
             return inventory.Id;
         }
     }
