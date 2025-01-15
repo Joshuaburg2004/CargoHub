@@ -137,9 +137,10 @@ namespace CargoHubAlt.Services.ServicesV2
         public async Task<bool> CompletePickingOrder(int pickingOrderId)
         {
             PickingOrder? pickingOrder = await _context.PickingOrders.FirstOrDefaultAsync(x => x.Id == pickingOrderId);
-            if (pickingOrder != null)
+            if (pickingOrder != null && !pickingOrder.IsCompleted)
             {
                 pickingOrder.IsCompleted = true;
+                pickingOrder.UpdatedAt = PickingOrder.GetTimeStamp();
                 await _context.SaveChangesAsync();
                 return true;
             }
