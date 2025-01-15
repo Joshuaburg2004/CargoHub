@@ -10,6 +10,7 @@ namespace CargoHubAlt.Interfaces.InterfacesV2
         Task<IEnumerable<Inventory>> GetAllInventories(int? pageIndex);
         Task<Inventory?> UpdateInventory(int id, Inventory inventory);
         Task<Inventory?> DeleteInventory(int id);
+        Task DisperseAllInventoriesOverLocations();
         Task<IEnumerable<Inventory>> GetLowStock(int? customThreshold = null);
         public Task LoadFromJson(string path);
     }
