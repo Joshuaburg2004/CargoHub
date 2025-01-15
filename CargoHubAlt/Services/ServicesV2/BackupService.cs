@@ -27,7 +27,7 @@ namespace CargoHubAlt.Services.ServicesV2
 
                 // Create the backup files
                 await CreateBackupDatabase(backupFolderPath);
-                await CreateBackupLogs(backupFolderPath);
+                // await CreateBackupLogs(backupFolderPath);
 
                 string downloadsfolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
                 
@@ -53,6 +53,8 @@ namespace CargoHubAlt.Services.ServicesV2
             }
         }
 
+
+//this copies the database into a given folder into the directory of the string
         private async Task<(bool, string)> CreateBackupDatabase(string backupFolderPath)
         {
             string source = "./CargoHubDatabase.db";
@@ -73,6 +75,7 @@ namespace CargoHubAlt.Services.ServicesV2
             }
         }
 
+// this copies the logs we currently have into the directory of the string
         private async Task<(bool, string)> CreateBackupLogs(string backupFolderPath)
         {
             string source = "./Logs";
