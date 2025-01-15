@@ -24,7 +24,7 @@ jobs:
     env:
       Solution_Name: CargoHubAspNet.sln
       Test_Project_Path: ./IntegrationTests/IntegrationTests.csproj
-      Unit_Test_Project_Path: ./UnitTesting/UnitTestsV1/MyUnitTestProject.csproj
+      Unit_Test_Project_Path: ./UnitTesting/UnitTestsV1/MyUnitTestProjectV1.csproj
       Wap_Project_Directory: CargoHubAlt
       Wap_Project_Path: ./CargoHubAlt/CargoHubAlt.csproj
 
@@ -51,7 +51,7 @@ jobs:
 
     env:
       Solution_Name: ${{ github.workspace }}/CargoHubAspNet.sln
-      Test_Project_Path: ${{ github.workspace }}/UnitTesting/UnitTestsV1/MyUnitTestProject.csproj
+      Test_Project_Path: ${{ github.workspace }}/UnitTesting/UnitTestsV1/MyUnitTestProjectV1.csproj
       Wap_Project_Directory: ${{ github.workspace }}/CargoHubAlt
       Wap_Project_Path: ${{ github.workspace }}/CargoHubAlt/CargoHubAlt.csproj
       Test_Project_dll: ${{ github.workspace }}/UnitTesting/UnitTestsV1/bin/Debug/net8.0/CargoHubAlt.dll
