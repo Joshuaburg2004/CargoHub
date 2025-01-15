@@ -10,6 +10,8 @@ namespace CargoHubAlt.Interfaces.InterfacesV2
         public Task<int?> AddLocation(Location toAdd);
         public Task<Location?> UpdateLocation(int id, Location toUpdate);
         public Task<Location?> DeleteLocation(int id);
+        public Task DisperseAllInventoriesOverLocations();
+
         public Task LoadFromJson(string path);
     }
 }

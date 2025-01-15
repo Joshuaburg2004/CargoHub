@@ -13,6 +13,7 @@ namespace CargoHubAlt.Models
         public int WarehouseId { get; set; }
         public string? Code { get; set; }
         public string? Name { get; set; }
+        public List<LocalInventory> localInventories { get; set; } = new List<LocalInventory>();
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
         public Location() { }
@@ -29,5 +30,9 @@ namespace CargoHubAlt.Models
             Code = code;
             Name = name;
         }
+    }
+    public class LocalInventory { 
+        public int InventoryId { get; set; }
+        public int Amount { get; set;}
     }
 }

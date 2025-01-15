@@ -571,6 +571,36 @@ namespace CargoHubAlt.Migrations
                     b.ToTable("Warehouses");
                 });
 
+            modelBuilder.Entity("CargoHubAlt.Models.Location", b =>
+                {
+                    b.OwnsMany("CargoHubAlt.Models.LocalInventory", "localInventories", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<int>("Amount")
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<int>("InventoryId")
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<int>("LocationId")
+                                .HasColumnType("INTEGER");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("LocationId");
+
+                            b1.ToTable("LocalInventory");
+
+                            b1.WithOwner()
+                                .HasForeignKey("LocationId");
+                        });
+
+                    b.Navigation("localInventories");
+                });
+
             modelBuilder.Entity("CargoHubAlt.Models.Order", b =>
                 {
                     b.OwnsMany("CargoHubAlt.Models.OrderedItem", "Items", b1 =>

@@ -93,7 +93,7 @@ namespace CargoHubAlt.Services.ServicesV2
             else
             {
                 return await _cargoHubContext.Inventories
-                    .Where(inventory => inventory.TotalOnHand <= customThreshold.Value)
+                    .Where(inventory => inventory.TotalAvailable <= customThreshold.Value)
                     .ToListAsync();
             }
         }
