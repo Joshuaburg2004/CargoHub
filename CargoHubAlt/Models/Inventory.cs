@@ -36,7 +36,7 @@ namespace CargoHubAlt.Models
             TotalAllocated = totalAllocated;
             TotalAvailable = totalAvailable;
             LowStockThreshold = lowStockThreshold;
-            IsLowStock = LowStockThreshold.HasValue ? TotalOnHand <= LowStockThreshold : false;
+            IsLowStock = LowStockThreshold.HasValue ? totalAvailable <= LowStockThreshold : false;
         }
         public Inventory(string itemId, string description, string itemReference, List<int> locations, int totalOnHand, int totalExpected, int totalOrdered, int totalAllocated, int totalAvailable, int lowStockThreshold)
         {
@@ -50,7 +50,7 @@ namespace CargoHubAlt.Models
             TotalAllocated = totalAllocated;
             TotalAvailable = totalAvailable;
             LowStockThreshold = lowStockThreshold;
-            IsLowStock = LowStockThreshold.HasValue ? TotalOnHand <= LowStockThreshold : false;
+            IsLowStock = LowStockThreshold.HasValue ? totalAvailable <= LowStockThreshold : false;
         }
     }
 }
