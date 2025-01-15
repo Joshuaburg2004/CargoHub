@@ -69,6 +69,9 @@ namespace CargoHubAlt.Services.ServicesV2
                 List<Location> locations = inventory.Locations.Select(x => 
                     _context.Locations.Where(l => l.Id == x).First()
                 ).ToList();
+                if(locations.Count == 0){
+                    continue;
+                }
                 int amount = inventory.TotalAvailable / locations.Count;
                 foreach (Location location in locations) {
                     if(location.localInventories == null){
@@ -77,6 +80,7 @@ namespace CargoHubAlt.Services.ServicesV2
                     location.localInventories.Add(new LocalInventory { InventoryId = inventory.Id, Amount = amount });
                 }
                 _context.Locations.UpdateRange(locations);
+                await _context.SaveChangesAsync();
             }
         }   
              
