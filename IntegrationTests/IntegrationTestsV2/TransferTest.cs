@@ -49,7 +49,8 @@ namespace IntegrationTests
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
-            Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Xunit.Assert.Equal("[]", result);
         }
 
         [Fact, TestPriority(2)]
