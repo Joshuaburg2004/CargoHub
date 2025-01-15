@@ -93,6 +93,13 @@
         "Post": true,
         "Put": true,
         "Delete": true
+      },
+      "Analytics": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
       }
     }
   },
@@ -190,6 +197,13 @@
         "Post": false,
         "Put": false,
         "Delete": false
+      },
+      "Analytics": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
       }
     }
   },
@@ -282,6 +296,13 @@
         "Delete": false
       },
       "Backup": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Analytics": {
         "GetAll": 1,
         "Get": false,
         "Post": false,
@@ -384,6 +405,13 @@
         "Post": false,
         "Put": false,
         "Delete": false
+      },
+      "Analytics": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
       }
     }
   },
@@ -476,6 +504,13 @@
         "Delete": false
       },
       "Backup": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Analytics": {
         "GetAll": 1,
         "Get": false,
         "Post": false,
@@ -578,6 +613,13 @@
         "Post": false,
         "Put": false,
         "Delete": false
+      },
+      "Analytics": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
       }
     }
   },
@@ -670,6 +712,13 @@
         "Delete": false
       },
       "Backup": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Analytics": {
         "GetAll": 1,
         "Get": false,
         "Post": false,
@@ -772,6 +821,13 @@
         "Post": false,
         "Put": false,
         "Delete": false
+      },
+      "Analytics": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
       }
     }
   },
@@ -864,6 +920,13 @@
         "Delete": false
       },
       "Backup": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "Analytics": {
         "GetAll": 1,
         "Get": false,
         "Post": false,

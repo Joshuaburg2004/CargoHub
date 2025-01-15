@@ -13,8 +13,9 @@ public class EndpointAccesses
     public AccessLevel Transfers;
     public AccessLevel Warehouses;
     public AccessLevel Backup;
+    public AccessLevel Analytics;
 
-    public EndpointAccesses(AccessLevel Clients, AccessLevel Inventories, AccessLevel Items, AccessLevel ItemTypes, AccessLevel ItemGroups, AccessLevel ItemLines, AccessLevel Locations, AccessLevel Orders, AccessLevel Shipments, AccessLevel Suppliers, AccessLevel Transfers, AccessLevel Warehouses, AccessLevel Backup)
+    public EndpointAccesses(AccessLevel Clients, AccessLevel Inventories, AccessLevel Items, AccessLevel ItemTypes, AccessLevel ItemGroups, AccessLevel ItemLines, AccessLevel Locations, AccessLevel Orders, AccessLevel Shipments, AccessLevel Suppliers, AccessLevel Transfers, AccessLevel Warehouses, AccessLevel Backup, AccessLevel? Analytics = null)
     {
         this.Clients = Clients;
         this.Inventories = Inventories;
@@ -29,6 +30,7 @@ public class EndpointAccesses
         this.Transfers = Transfers;
         this.Warehouses = Warehouses;
         this.Backup = Backup;
+        this.Analytics = Analytics ?? new AccessLevel(Access.False, false, false, false, false);
     }
 
 }
