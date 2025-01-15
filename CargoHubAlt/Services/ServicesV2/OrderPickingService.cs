@@ -27,6 +27,13 @@ namespace CargoHubAlt.Services.ServicesV2
 
         public async Task<bool> CreatePickingOrders(List<OrderedItem> order, int orderId)
         {
+            // Check if the order is already picked
+            List<PickingOrder> pickingOrders = await GetPickingOrdersForOrder(orderId);
+            if (pickingOrders.Count > 0)
+            {
+                return false;
+            }
+
             // Create a dictionary of location id's per item
             Dictionary<string, List<LocationWithStock>> locations = new Dictionary<string, List<LocationWithStock>>();
             foreach (OrderedItem item in order)
@@ -104,7 +111,7 @@ namespace CargoHubAlt.Services.ServicesV2
             // Create a picking order for each selected warehouse
             foreach (int warehouseId in selectedWarehouses)
             {
-                List<Location> route = new List<Location>();
+                List<string> route = new List<string>();
                 foreach (var kvp in locations)
                 {
                     string itemId = kvp.Key;
@@ -112,12 +119,13 @@ namespace CargoHubAlt.Services.ServicesV2
                     {
                         if (locationWithStock.Location.WarehouseId == warehouseId)
                         {
-                            route.Add(locationWithStock.Location);
+                            route.Add(locationWithStock.Location.Code!);
                         }
                     }
                 }
 
                 PickingOrder pickingOrder = new PickingOrder(orderId, warehouseId, route);
+                pickingOrder.Route.Sort();
                 await _context.PickingOrders.AddAsync(pickingOrder);
             }
 
@@ -136,6 +144,13 @@ namespace CargoHubAlt.Services.ServicesV2
                 return true;
             }
             return false;
+        }
+
+        public async Task<bool> ClearTable()
+        {
+            _context.PickingOrders.RemoveRange(_context.PickingOrders);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

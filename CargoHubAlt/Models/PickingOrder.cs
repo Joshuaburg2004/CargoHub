@@ -12,13 +12,13 @@ namespace CargoHubAlt.Models
         public int Id { get; set; }
         public int OrderId { get; set; }
         public int WarehouseId { get; set; }
-        public List<Location> Route { get; set; }
+        public List<string> Route { get; set; } = new List<string>();
         public bool IsCompleted { get; set; } = false;
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
 
         public PickingOrder() { }
-        public PickingOrder(int orderId, int warehouseId, List<Location> route)
+        public PickingOrder(int orderId, int warehouseId, List<string> route)
         {
             OrderId = orderId;
             WarehouseId = warehouseId;

@@ -92,5 +92,18 @@ namespace CargoHub.Controllers.ControllersV2
 
             return Ok(pickingorder);
         }
+
+        [HttpPost("clear")]
+        public async Task<IActionResult> ClearPickingOrders()
+        {
+            bool pickingorders = await _orderPickingService.ClearTable();
+
+            if (!pickingorders)
+            {
+                return BadRequest("Picking orders could not be cleared.");
+            }
+
+            return Ok(pickingorders);
+        }
     }
 }

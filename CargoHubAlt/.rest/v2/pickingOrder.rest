@@ -1,7 +1,19 @@
-POST http://localhost:3000/api/v2/pickingorder/3
+POST http://localhost:3000/api/v2/pickingorder/1
 API_KEY: a1b2c3d4e5
-Content-Type: application/json
+###
 
-{
-}
+GET http://localhost:3000/api/v2/pickingorder/warehouse/1
+API_KEY: a1b2c3d4e5
+###
+
+GET http://localhost:3000/api/v2/pickingorder/order/1
+API_KEY: a1b2c3d4e5
+###
+
+PUT http://localhost:3000/api/v2/pickingorder/7
+API_KEY: a1b2c3d4e5
+###
+
+POST http://localhost:3000/api/v2/pickingorder/clear
+API_KEY: a1b2c3d4e5
 ###
