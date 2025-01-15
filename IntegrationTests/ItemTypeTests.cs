@@ -18,8 +18,7 @@ public class ItemTypeTest : BaseTest
     private ItemType _itemTypePut = new ItemType(1, "Laptop", "Never gonna let you down");
     private Item _item = new Item("P000005", "Laptop", "Never gonna give you up", "Never gonna", "123456789", "123456789", "123456789", 1, 1, 1, 1, 1, 1, 1, "123456789", "123456789");
 
-    public ItemTypeTest(CustomWebApplicationFactory<Program> factory) : base(factory)
-    { }
+    public ItemTypeTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
 
     [Fact, TestPriority(0)]
     public async Task CreateItemType()

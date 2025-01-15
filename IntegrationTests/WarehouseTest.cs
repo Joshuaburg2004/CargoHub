@@ -90,6 +90,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             Warehouse? warehouse = await response.Content.ReadFromJsonAsync<Warehouse>();
+            Xunit.Assert.NotNull(warehouse);
             Xunit.Assert.Equal(_warehouseCreate.Id, warehouse.Id);
             Xunit.Assert.Equal(_warehouseCreate.Code, warehouse.Code);
             Xunit.Assert.Equal(_warehouseCreate.Name, warehouse.Name);
@@ -123,6 +124,7 @@ namespace IntegrationTests
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             Warehouse? warehouse = await response.Content.ReadFromJsonAsync<Warehouse>();
+            Xunit.Assert.NotNull(warehouse);
             Xunit.Assert.Equal(_warehouseUpdate.Id, warehouse.Id);
             Xunit.Assert.Equal(_warehouseUpdate.Code, warehouse.Code);
             Xunit.Assert.Equal(_warehouseUpdate.Name, warehouse.Name);

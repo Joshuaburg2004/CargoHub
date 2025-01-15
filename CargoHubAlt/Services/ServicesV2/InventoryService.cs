@@ -3,6 +3,7 @@ using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV2;
 using System.Text.Json;
+using CargoHubAlt.JsonModels;
 
 namespace CargoHubAlt.Services.ServicesV2
 {
@@ -64,7 +65,7 @@ namespace CargoHubAlt.Services.ServicesV2
             found.TotalAllocated = inventory.TotalAllocated;
             found.TotalAvailable = inventory.TotalAvailable;
             found.LowStockThreshold = inventory.LowStockThreshold;
-            found.IsLowStock = inventory.LowStockThreshold.HasValue ? inventory.TotalOnHand <= inventory.LowStockThreshold : false;
+            found.IsLowStock = inventory.TotalOnHand <= inventory.LowStockThreshold;
             found.UpdatedAt = Inventory.GetTimeStamp();
             this._cargoHubContext.Inventories.Update(found);
             await this._cargoHubContext.SaveChangesAsync();
@@ -97,21 +98,25 @@ namespace CargoHubAlt.Services.ServicesV2
             }
         }
 
-        public async Task LoadFromJson(string path)
+public async Task LoadFromJson(string path)
         {
             path = "data/" + path;
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<Inventory>? inventorys = JsonSerializer.Deserialize<List<Inventory>>(json);
+                List<JsonInventory>? inventorys = JsonSerializer.Deserialize<List<JsonInventory>>(json);
                 if (inventorys == null)
                 {
                     return;
                 }
-                foreach (Inventory inventory in inventorys)
+                var transaction = _cargoHubContext.Database.BeginTransaction();
+                foreach (JsonInventory jsonInventory in inventorys)
                 {
+                    Inventory inventory = jsonInventory.ToInventory();
                     await SaveToDatabase(inventory);
                 }
+                await _cargoHubContext.SaveChangesAsync();
+                await transaction.CommitAsync();
             }
         }
         public async Task<int> SaveToDatabase(Inventory inventory)
@@ -124,7 +129,6 @@ namespace CargoHubAlt.Services.ServicesV2
             if (inventory.Description == null) { inventory.Description = "N/A"; }
             if (inventory.ItemReference == null) { inventory.ItemReference = "N/A"; }
             await _cargoHubContext.Inventories.AddAsync(inventory);
-            await _cargoHubContext.SaveChangesAsync();
             return inventory.Id;
         }
     }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV1;
+using CargoHubAlt.JsonModels;
 
 namespace CargoHubAlt.Services.ServicesV1
 {
@@ -73,15 +74,19 @@ namespace CargoHubAlt.Services.ServicesV1
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<Supplier>? suppliers = JsonSerializer.Deserialize<List<Supplier>>(json);
+                List<JsonSupplier>? suppliers = JsonSerializer.Deserialize<List<JsonSupplier>>(json);
                 if (suppliers == null)
                 {
                     return;
                 }
-                foreach (Supplier supplier in suppliers)
+                var transaction = cargoHubContext.Database.BeginTransaction();
+                foreach (JsonSupplier jsonSupplier in suppliers)
                 {
+                    Supplier supplier = jsonSupplier.ToSupplier();
                     await SaveToDatabase(supplier);
                 }
+                await cargoHubContext.SaveChangesAsync();
+                await transaction.CommitAsync();
             }
         }
         public async Task<int> SaveToDatabase(Supplier supplier)
@@ -102,7 +107,6 @@ namespace CargoHubAlt.Services.ServicesV1
             if (supplier.Phonenumber == null) { supplier.Phonenumber = "N/A"; }
             if (supplier.Reference == null) { supplier.Reference = "N/A"; }
             await cargoHubContext.Suppliers.AddAsync(supplier);
-            await cargoHubContext.SaveChangesAsync();
             return supplier.Id;
         }
     }

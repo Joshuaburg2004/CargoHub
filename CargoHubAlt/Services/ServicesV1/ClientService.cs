@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using CargoHubAlt.Models;
+using CargoHubAlt.JsonModels;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV1;
 
@@ -108,15 +109,19 @@ namespace CargoHubAlt.Services.ServicesV1
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<Client>? clients = JsonSerializer.Deserialize<List<Client>>(json);
+                List<JsonClient>? clients = JsonSerializer.Deserialize<List<JsonClient>>(json);
                 if (clients == null)
                 {
                     return;
                 }
-                foreach (Client client in clients)
+                var transaction = _cargoHubContext.Database.BeginTransaction();
+                foreach (JsonClient jsonClient in clients)
                 {
+                    Client client = jsonClient.ToClient();
                     await SaveToDatabase(client);
                 }
+                await _cargoHubContext.SaveChangesAsync();
+                await transaction.CommitAsync();
             }
         }
         public async Task<int> SaveToDatabase(Client client)
@@ -135,7 +140,6 @@ namespace CargoHubAlt.Services.ServicesV1
             if (client.ContactPhone == null) { client.ContactPhone = "N/A"; }
             if (client.ContactEmail == null) { client.ContactEmail = "N/A"; }
             await _cargoHubContext.Clients.AddAsync(client);
-            await _cargoHubContext.SaveChangesAsync();
             return client.Id;
         }
     }
