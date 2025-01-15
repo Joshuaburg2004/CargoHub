@@ -14,7 +14,8 @@ namespace IntegrationTests;
 
 public class ItemGroupTest : BaseTest
 {
-    var requestUri = "/api/v1/item_groups";
+    public string requestUri = "/api/v1/item_groups";
+    public string requestUriItem = "/api/v1/items";
     private ItemGroup _itemGroupCreate = new ItemGroup(1, "Laptop", "Never gonna give you up");
     private ItemGroup _itemGroupPut = new ItemGroup(1, "Laptop", "Never gonna let you down");
     private Item _item = new Item("P000005", "Laptop", "Never gonna give you up", "Never gonna", "123456789", "123456789", "123456789", 1, 1, 1, 1, 1, 1, 1, "123456789", "123456789");
@@ -31,7 +32,7 @@ public class ItemGroupTest : BaseTest
     [Fact, TestPriority(1)]
     public async Task CreateItem()
     {
-        var response = await _client.PostAsJsonAsync($"{requestUri}/items", _item);
+        var response = await _client.PostAsJsonAsync(requestUriItem, _item);
         Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
 
