@@ -14,7 +14,7 @@ namespace IntegrationTests;
 [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
 public class InventoryIntegratieTest : BaseTest
 {
-    public string requestUri = "/api/v1/inventories";
+    public string requestUri = "/api/v2/inventories";
 
     private Inventory _TestInventory = new(1, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40, 10);
 

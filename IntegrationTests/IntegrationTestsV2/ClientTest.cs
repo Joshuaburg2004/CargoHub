@@ -12,6 +12,7 @@ namespace IntegrationTests
     [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
     public class ClientTest : BaseTest
     {
+        public string requestUri = "/api/v2/clients";
         private Client _clientToAdd = new Client(1, "Raymond Inc", "1296 Daniel Road Apt. 349", "Pierceview", "28301", "Colorado", "United States", "Bryan Clark", "242.732.3483x2573", "test@hr.nl");
         private Client _clientToPut = new Client(1, "Raymond Inc JR", "1296 Daniel Road Apt. 349", "Pierceview", "28301", "Colorado", "United States", "Bryan Clark", "242.732.3483x2573", "test@hr.nl");
         private Client _clientToAddNegative = new Client(-1, "Raymond Inc", "1296 Daniel Road Apt. 349", "Pierceview", "28301", "Colorado", "United States", "Bryan Clark", "242.732.3483x2573", "test@hr.nl");
@@ -20,7 +21,6 @@ namespace IntegrationTests
         [Fact, TestPriority(1)]
         public async Task GetAllClients()
         {
-            var requestUri = "/api/v2/clients";
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
@@ -30,8 +30,7 @@ namespace IntegrationTests
         [Fact, TestPriority(2)]
         public async Task GetOneclientBeforeAdding()
         {
-            var requestUri = "/api/v2/clients/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
@@ -41,7 +40,6 @@ namespace IntegrationTests
         [Fact, TestPriority(3)]
         public async Task CreateClient()
         {
-            var requestUri = "/api/v2/clients";
             var response = await _client.PostAsJsonAsync(requestUri, _clientToAdd);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -49,8 +47,7 @@ namespace IntegrationTests
         [Fact, TestPriority(4)]
         public async Task GetOneClientAfterAdding()
         {
-            var requestUri = "/api/v2/clients/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -71,8 +68,7 @@ namespace IntegrationTests
         [Fact, TestPriority(5)]
         public async Task GetOrdersByClientNotFound()
         {
-            var requestUri = "/api/v2/clients/1/orders";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1/orders");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -81,14 +77,12 @@ namespace IntegrationTests
         [Fact, TestPriority(6)]
         public async Task GetOrderByClient()
         {
-            var requestUri = "/api/v2/orders";
-            var response = await _client.PostAsJsonAsync(requestUri, _orderToAdd);
+            var response = await _client.PostAsJsonAsync($"{requestUri}/orders", _orderToAdd);
             var result = await response.Content.ReadAsStringAsync();
 
             Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
-            var requestUri2 = "/api/v2/clients/1/orders";
-            var response2 = await _client.GetAsync(requestUri2);
+            var response2 = await _client.GetAsync($"{requestUri}/1/orders");
             var result2 = await response2.Content.ReadAsStringAsync();
 
             Xunit.Assert.NotNull(result2);
@@ -121,16 +115,14 @@ namespace IntegrationTests
         [Fact, TestPriority(7)]
         public async Task PutClient()
         {
-            var requestUri = "/api/v2/clients/1";
-            var response = await _client.PutAsJsonAsync(requestUri, _clientToPut);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/1", _clientToPut);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact, TestPriority(8)]
         public async Task GetOneClientAfterPutting()
         {
-            var requestUri = "/api/v2/clients/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -150,16 +142,14 @@ namespace IntegrationTests
         [Fact, TestPriority(9)]
         public async Task DeleteClient()
         {
-            var requestUri = "/api/v2/clients/1";
-            var response = await _client.DeleteAsync(requestUri);
+            var response = await _client.DeleteAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact, TestPriority(10)]
         public async Task GetOneClientAfterDelete()
         {
-            var requestUri = "/api/v2/clients/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
@@ -167,7 +157,6 @@ namespace IntegrationTests
         [Fact, TestPriority(11)]
         public async Task GetAllClientsAfterDelete()
         {
-            var requestUri = "/api/v2/clients";
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
@@ -178,8 +167,7 @@ namespace IntegrationTests
         [Fact, TestPriority(12)]
         public async Task GetClientIdNegative()
         {
-            var requestUri = "/api/v2/clients/-1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/-1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -188,7 +176,6 @@ namespace IntegrationTests
         [Fact, TestPriority(13)]
         public async Task AddClientNull()
         {
-            var requestUri = "/api/v2/clients";
             var response = await _client.PostAsJsonAsync<Client?>(requestUri, null);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
@@ -198,8 +185,7 @@ namespace IntegrationTests
         [Fact, TestPriority(14)]
         public async Task UpdateClientIdNegative()
         {
-            var requestUri = "/api/v2/clients/-1";
-            var response = await _client.PutAsJsonAsync(requestUri, _clientToAddNegative);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/-1", _clientToAddNegative);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -208,8 +194,7 @@ namespace IntegrationTests
         [Fact, TestPriority(15)]
         public async Task UpdateClientNull()
         {
-            var requestUri = "/api/v2/clients/1";
-            var response = await _client.PutAsJsonAsync<Client?>(requestUri, null);
+            var response = await _client.PutAsJsonAsync<Client?>($"{requestUri}/1", null);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -218,8 +203,7 @@ namespace IntegrationTests
         [Fact, TestPriority(16)]
         public async Task DeleteClientIdNegative()
         {
-            var requestUri = "/api/v2/clients/-1";
-            var response = await _client.DeleteAsync(requestUri);
+            var response = await _client.DeleteAsync($"{requestUri}/-1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -228,8 +212,7 @@ namespace IntegrationTests
         [Fact, TestPriority(17)]
         public async Task GetOrdersByClientNegative()
         {
-            var requestUri = "/api/v2/clients/-1/orders";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/-1/orders");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
