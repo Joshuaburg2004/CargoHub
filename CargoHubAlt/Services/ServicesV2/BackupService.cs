@@ -38,15 +38,14 @@ namespace CargoHubAlt.Services.ServicesV2
                     // Create the ZIP file from the source directory
                     ZipFile.CreateFromDirectory(backupFolderPath, zipFilePath);
 
-                    Console.WriteLine($"ZIP file created successfully at: {zipFilePath}");
                 }
                 catch (Exception ex)
                 {
-                    return (false, $"An error occurred: {ex.Message}");
+                    return await Task.FromResult((false, $"An error occurred: {ex.Message}"));
                 }
 
                 string successstring = $"backup created successfully at {backupFolderPath}, Zipfile created successfully at {zipFilePath}";
-                return (true, successstring);
+                return await Task.FromResult((true, successstring));
             }
             catch (Exception ex)
             {
@@ -82,7 +81,7 @@ namespace CargoHubAlt.Services.ServicesV2
             {
                 if (!Directory.Exists(source))
                 {
-                    return (false, "No logs found to backup");
+                    return await Task.FromResult((false, "No logs found to backup"));
                 }
                 string destinationFilePath = Path.Combine(backupFolderPath, "LogsBackup");
                 Directory.CreateDirectory(destinationFilePath);
