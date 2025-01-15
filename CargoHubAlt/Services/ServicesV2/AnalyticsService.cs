@@ -9,14 +9,22 @@ namespace CargoHubAlt.Services.ServicesV2{
         public AnalyticsService(CargoHubContext context){
             _context = context;
         }
-        public async Task<Dictionary<string, Dictionary<int, Item>>> GetAnalytics(DateOnly? FromDate = null, DateOnly? ToDate = null){
+        public async Task<Analytic> GetAnalytics(DateOnly? FromDate = null, DateOnly? ToDate = null){
             if (FromDate == null){
                 FromDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(-1));
             }
             if (ToDate == null){
                 ToDate = DateOnly.FromDateTime(DateTime.Now);
             }
-            List<Order> orders = await _context.Orders.Where(o => DateOnly.Parse(o.OrderDate!.Remove(9)) <= ToDate && DateOnly.Parse(o.OrderDate!.Remove(9)) >= FromDate).ToListAsync();
+            List<Order> orders = await _context.Orders.ToListAsync();
+            List<Order> filteredOrders = new List<Order>();
+            orders.ForEach(o => {
+                if(DateOnly.TryParse(o.OrderDate, out var date)){
+                    if(date >= FromDate && date <= ToDate){
+                        filteredOrders.Add(o);
+                    }
+                }
+            });
             List<List<OrderedItem>> orderedItemsLists = orders.Select(o => o.Items).ToList();
             List<OrderedItem> orderedItemsTotals = new List<OrderedItem>();
             foreach(List<OrderedItem> orderedItems in orderedItemsLists){
@@ -48,9 +56,11 @@ namespace CargoHubAlt.Services.ServicesV2{
                 WorstPerformers.Add(m, _context.Items.Where(p => p.Uid == i.ItemId).First());
                 m++;
             });
-            return new Dictionary<string, Dictionary<int, Item>>{
-                {"Best performers", BestPerformers},
-                {"Worst performers", WorstPerformers}
+            return new Analytic(){
+                FromDate = (DateOnly)FromDate,
+                ToDate = (DateOnly)ToDate,
+                BestPerformers = BestPerformers,
+                WorstPerformers = WorstPerformers
             };
         }
     }
