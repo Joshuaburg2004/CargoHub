@@ -10,14 +10,18 @@ namespace CargoHubAlt.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public int OrderId { get; set; }
+        public int WarehouseId { get; set; }
         public List<Location> Route { get; set; }
+        public bool IsCompleted { get; set; } = false;
         public string CreatedAt { get; set; } = GetTimeStamp();
         public string UpdatedAt { get; set; } = GetTimeStamp();
 
         public PickingOrder() { }
-        public PickingOrder(int id, List<Location> route)
+        public PickingOrder(int orderId, int warehouseId, List<Location> route)
         {
-            Id = id;
+            OrderId = orderId;
+            WarehouseId = warehouseId;
             Route = route;
         }
     }

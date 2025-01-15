@@ -46,6 +46,12 @@ namespace CargoHubAlt.Database
                 a.Property<int>("WarehouseId");
                 a.HasKey("WarehouseId");
             });
+            modelBuilder.Entity<PickingOrder>().OwnsMany(p => p.Route, a =>
+            {
+                a.WithOwner().HasForeignKey("PickingOrderId");
+                a.Property<int>("Id");
+                a.HasKey("Id");
+            });
         }
     }
 }

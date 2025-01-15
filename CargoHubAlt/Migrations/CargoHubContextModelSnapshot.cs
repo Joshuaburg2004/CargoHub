@@ -395,9 +395,18 @@ namespace CargoHubAlt.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("UpdatedAt")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

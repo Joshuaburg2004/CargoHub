@@ -4,6 +4,9 @@ namespace CargoHubAlt.Interfaces.InterfacesV2
 {
     public interface IOrderPickingServiceV2
     {
-        public Task<PickingOrder> CreatePickingOrder(List<OrderedItem> order);
+        public Task<List<PickingOrder>> GetPickingOrdersForWarehouse(int warehouseId);
+        public Task<List<PickingOrder>> GetPickingOrdersForOrder(int orderId);
+        public Task<bool> CreatePickingOrders(List<OrderedItem> order, int orderId);
+        public Task<bool> CompletePickingOrder(int pickingOrderId);
     }
 }

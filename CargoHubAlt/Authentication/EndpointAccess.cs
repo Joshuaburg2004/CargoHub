@@ -13,6 +13,7 @@ public class EndpointAccesses
     public AccessLevel Transfers;
     public AccessLevel Warehouses;
     public AccessLevel Backup;
+    public AccessLevel PickingOrder = new AccessLevel(Access.False, false, false, false, false);
 
     public EndpointAccesses(AccessLevel Clients, AccessLevel Inventories, AccessLevel Items, AccessLevel ItemTypes, AccessLevel ItemGroups, AccessLevel ItemLines, AccessLevel Locations, AccessLevel Orders, AccessLevel Shipments, AccessLevel Suppliers, AccessLevel Transfers, AccessLevel Warehouses, AccessLevel Backup)
     {
