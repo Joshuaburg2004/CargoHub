@@ -78,7 +78,8 @@ namespace CargoHubAlt.Services.ServicesV2
                 }
                 _context.Locations.UpdateRange(locations);
             }
-        }        
+        }   
+             
         public async Task LoadFromJson(string path)
         {
             path = "data/" + path;
