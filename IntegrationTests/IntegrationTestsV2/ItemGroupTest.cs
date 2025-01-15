@@ -14,8 +14,8 @@ namespace IntegrationTests;
 
 public class ItemGroupTest : BaseTest
 {
-    public string requestUri = "/api/v1/item_groups";
-    public string requestUriItem = "/api/v1/items";
+    public string requestUri = "/api/v2/item_groups";
+    public string requestUriItem = "/api/v2/items";
     private ItemGroup _itemGroupCreate = new ItemGroup(1, "Laptop", "Never gonna give you up");
     private ItemGroup _itemGroupPut = new ItemGroup(1, "Laptop", "Never gonna let you down");
     private Item _item = new Item("P000005", "Laptop", "Never gonna give you up", "Never gonna", "123456789", "123456789", "123456789", 1, 1, 1, 1, 1, 1, 1, "123456789", "123456789");

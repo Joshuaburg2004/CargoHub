@@ -12,14 +12,12 @@ namespace IntegrationTests;
 
 public class ItemIntegratieTest : BaseTest
 {
-
+    public string requestUri = "/api/v2/items";
     public static Item TestItem = new("P000001", "sjQ23408K", "Face-to-face clear-thinking complexity",
      "must", "6523540947122", "63-OFFTq0T", "oTo304", 0, 0, 0, 0, 0, 0, 0, "SUP423", "E-86805-uTM");
 
     public static Item TestPutItem = new("P000001", "item", "item for testing put",
      "must", "6523540947122", "63-OFFTq0T", "oTo304", 0, 0, 0, 0, 0, 0, 0, "SUP423", "E-86805-uTM");
-
-    public string requestUri = "/api/v1/items";
 
     public Inventory TestInventory = new(5, "P000001", "test", "63-OFFTq0T", new List<int>() { 3211, 24700, 14123, 19538, 31071, 24701, 11606, 11817 }, 40, 40, 40, 40, 40, 10);
 

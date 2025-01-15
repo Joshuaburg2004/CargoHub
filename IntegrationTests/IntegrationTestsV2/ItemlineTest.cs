@@ -14,8 +14,8 @@ namespace IntegrationTests;
 
 public class ItemLineTest : BaseTest
 {
-    public string requestUri = "/api/v1/item_lines";
-    public string requestUriItem = "/api/v1/items";
+    public string requestUri = "/api/v2/item_lines";
+    public string requestUriItem = "/api/v2/items";
     private ItemLine _itemLineCreate = new ItemLine(1, "Laptop", "Never gonna give you up");
     private ItemLine _itemLinePut = new ItemLine(1, "Laptop", "Never gonna let you down");
     private Item _item = new Item("P000005", "Laptop", "Never gonna give you up", "Never gonna", "123456789", "123456789", "123456789", 1, 1, 1, 1, 1, 1, 1, "123456789", "123456789");
