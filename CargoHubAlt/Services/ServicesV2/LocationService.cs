@@ -4,6 +4,7 @@ using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV2;
 using System.Text.Json;
 using CargoHubAlt.JsonModels;
+using CargoHubAlt.Migrations;
 
 namespace CargoHubAlt.Services.ServicesV2
 {
@@ -61,6 +62,28 @@ namespace CargoHubAlt.Services.ServicesV2
             await _context.SaveChangesAsync();
             return location;
         }
+
+        public async Task DisperseAllInventoriesOverLocations(){
+            List<Inventory> inventories = await _context.Inventories.ToListAsync();
+            foreach(Inventory inventory in inventories) {
+                List<Location> locations = inventory.Locations.Select(x => 
+                    _context.Locations.Where(l => l.Id == x).First()
+                ).ToList();
+                if(locations.Count == 0){
+                    continue;
+                }
+                int amount = inventory.TotalAvailable / locations.Count;
+                foreach (Location location in locations) {
+                    if(location.localInventories == null){
+                        location.localInventories = new List<LocalInventory>();
+                    }
+                    location.localInventories.Add(new LocalInventory { InventoryId = inventory.Id, Amount = amount });
+                }
+                _context.Locations.UpdateRange(locations);
+                await _context.SaveChangesAsync();
+            }
+        }   
+             
         public async Task LoadFromJson(string path)
         {
             path = "data/" + path;

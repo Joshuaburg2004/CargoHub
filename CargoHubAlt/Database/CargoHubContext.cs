@@ -20,6 +20,12 @@ namespace CargoHubAlt.Database
         public virtual DbSet<ItemType> ItemTypes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Location>().OwnsMany(o => o.localInventories, a =>
+            {
+                a.WithOwner().HasForeignKey("LocationId");
+                a.Property<int>("Id");
+                a.HasKey("Id");
+            });
             modelBuilder.Entity<Order>().OwnsMany(o => o.Items, a =>
             {
                 a.WithOwner().HasForeignKey("OrderId");
