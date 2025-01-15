@@ -77,7 +77,8 @@ namespace IntegrationTests
         [Fact, TestPriority(6)]
         public async Task GetOrderByClient()
         {
-            var response = await _client.PostAsJsonAsync($"{requestUri}/orders", _orderToAdd);
+            string requestUriOrder = "/api/v2/orders";
+            var response = await _client.PostAsJsonAsync(requestUriOrder, _orderToAdd);
             var result = await response.Content.ReadAsStringAsync();
 
             Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);

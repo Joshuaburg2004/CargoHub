@@ -148,22 +148,22 @@ namespace IntegrationTests
         [Fact, TestPriority(9)]
         public async Task PutShipmentItems()
         {
-            var requesterUri = "/api/v2/inventories";
-            var responses = await _client.PostAsJsonAsync(requesterUri, new Inventory(10689, "P010689", "Seamless national success", "vzC00315i", new List<int>() { 10054, 18554, 16916, 4855, 23812, 23319, 23080, 317410054, 18554, 16916, 4855, 23812, 23319, 23080, 3174 }, 191, 0, 26, 0, 165, 10));
+            var responses = await _client.PostAsJsonAsync("/api/v2/inventories", new Inventory(10689, "P010689", "Seamless national success", "vzC00315i", new List<int>() { 10054, 18554, 16916, 4855, 23812, 23319, 23080, 317410054, 18554, 16916, 4855, 23812, 23319, 23080, 3174 }, 191, 0, 26, 0, 165, 10));
             var resulter = await responses.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.Created, responses.StatusCode);
-            var response = await _client.PutAsJsonAsync($"{requesterUri}/1/items", _itemPutted);
+
+            var response = await _client.PutAsJsonAsync($"{requestUri}/1/items", _itemPutted);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            var requestedUri = "/api/v2/inventories/10689";
-            var responsed = await _client.DeleteAsync(requestedUri);
+
+            var responsed = await _client.DeleteAsync("/api/v2/inventories/10689");
             Xunit.Assert.Equal(HttpStatusCode.OK, responsed.StatusCode);
         }
 
         [Fact, TestPriority(10)]
         public async Task GetItemsFromShipmentAfterPutting()
         {
-            var response = await _client.GetAsync("/api/v1/shipments/1/items");
+            var response = await _client.GetAsync($"{requestUri}/1/items");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -197,7 +197,7 @@ namespace IntegrationTests
             Xunit.Assert.NotNull(order);
             Xunit.Assert.Single(order);
             Xunit.Assert.Equal(3, order.FirstOrDefault());
-            var responseOrder = await _client.GetAsync($"{requestUri}/{order.FirstOrDefault()}");
+            var responseOrder = await _client.GetAsync($"api/v2/orders/{order.FirstOrDefault()}");
             var resultOrder = await responseOrder.Content.ReadFromJsonAsync<Order>();
             Xunit.Assert.NotNull(resultOrder);
             Xunit.Assert.Equal(_orderAdded.Id, resultOrder.Id);

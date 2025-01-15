@@ -12,62 +12,61 @@ namespace IntegrationTests;
 
 [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
 
-public class ItemGroupTest : BaseTest
+public class ItemTypeTest : BaseTest
 {
-    public string requestUri = "/api/v2/item_groups";
-    public string requestUriItem = "/api/v2/items";
-    private ItemGroup _itemGroupCreate = new ItemGroup(1, "Laptop", "Never gonna give you up");
-    private ItemGroup _itemGroupPut = new ItemGroup(1, "Laptop", "Never gonna let you down");
+    public string requestUri = "/api/v2/item_types";
+    private ItemType _itemTypeCreate = new ItemType(1, "Laptop", "Never gonna give you up");
+    private ItemType _itemTypePut = new ItemType(1, "Laptop", "Never gonna let you down");
     private Item _item = new Item("P000005", "Laptop", "Never gonna give you up", "Never gonna", "123456789", "123456789", "123456789", 1, 1, 1, 1, 1, 1, 1, "123456789", "123456789");
 
-    public ItemGroupTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
+    public ItemTypeTest(CustomWebApplicationFactory<Program> factory) : base(factory) { }
 
     [Fact, TestPriority(0)]
-    public async Task CreateItemGroup()
+    public async Task CreateItemType()
     {
-        var response = await _client.PostAsJsonAsync(requestUri, _itemGroupCreate);
+        var response = await _client.PostAsJsonAsync(requestUri, _itemTypeCreate);
         Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
 
     [Fact, TestPriority(1)]
     public async Task CreateItem()
     {
-        var response = await _client.PostAsJsonAsync(requestUriItem, _item);
+        var response = await _client.PostAsJsonAsync("/api/v2/items", _item);
         Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
 
     [Fact, TestPriority(2)]
-    public async Task GetAllItemGroupsOne()
+    public async Task GetAllItemTypesOne()
     {
         var response = await _client.GetAsync(requestUri);
         var result = await response.Content.ReadAsStringAsync();
         Xunit.Assert.NotNull(response);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        ItemGroup[]? itemGroups = await response.Content.ReadFromJsonAsync<ItemGroup[]>();
-        Xunit.Assert.NotNull(itemGroups);
-        Xunit.Assert.Equal(_itemGroupCreate.Id, itemGroups[0].Id);
-        Xunit.Assert.Equal(_itemGroupCreate.Name, itemGroups[0].Name);
-        Xunit.Assert.Equal(_itemGroupCreate.Description, itemGroups[0].Description);
+        ItemType[]? itemTypes = await response.Content.ReadFromJsonAsync<ItemType[]>();
+        Xunit.Assert.NotNull(itemTypes);
+        Xunit.Assert.Equal(_itemTypeCreate.Id, itemTypes[0].Id);
+        Xunit.Assert.Equal(_itemTypeCreate.Name, itemTypes[0].Name);
+        Xunit.Assert.Equal(_itemTypeCreate.Description, itemTypes[0].Description);
     }
 
     [Fact, TestPriority(3)]
-    public async Task GetItemGroup()
+    public async Task GetItemType()
     {
         var response = await _client.GetAsync($"{requestUri}/1");
         var result = await response.Content.ReadAsStringAsync();
         Xunit.Assert.NotNull(response);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        ItemGroup? itemGroup = await response.Content.ReadFromJsonAsync<ItemGroup>();
-        Xunit.Assert.NotNull(itemGroup);
-        Xunit.Assert.Equal(_itemGroupCreate.Id, itemGroup.Id);
-        Xunit.Assert.Equal(_itemGroupCreate.Name, itemGroup.Name);
-        Xunit.Assert.Equal(_itemGroupCreate.Description, itemGroup.Description);
+        ItemType? itemType = await response.Content.ReadFromJsonAsync<ItemType>();
+        Xunit.Assert.NotNull(itemType);
+        Xunit.Assert.Equal(_itemTypeCreate.Id, itemType.Id);
+        Xunit.Assert.Equal(_itemTypeCreate.Name, itemType.Name);
+        Xunit.Assert.Equal(_itemTypeCreate.Description, itemType.Description);
     }
 
     [Fact, TestPriority(4)]
-    public async Task GetItemGroupNotFound()
+    public async Task GetItemTypeNotFound()
     {
         var response = await _client.GetAsync($"{requestUri}/3");
         var result = await response.Content.ReadAsStringAsync();
@@ -76,30 +75,30 @@ public class ItemGroupTest : BaseTest
     }
 
     [Fact, TestPriority(5)]
-    public async Task UpdateItemGroup()
+    public async Task UpdateItemType()
     {
         // Description is updated from "Never gonna give you up" to "Never gonna let you down"
-        var response = await _client.PutAsJsonAsync($"{requestUri}/1", _itemGroupPut);
+        var response = await _client.PutAsJsonAsync($"{requestUri}/1", _itemTypePut);
         var result = await response.Content.ReadAsStringAsync();
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact, TestPriority(6)]
-    public async Task GetUpdatedItemGroup()
+    public async Task GetUpdatedItemType()
     {
         var response = await _client.GetAsync($"{requestUri}/1");
         var result = await response.Content.ReadAsStringAsync();
         Xunit.Assert.NotNull(response);
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        ItemGroup? itemGroup = await response.Content.ReadFromJsonAsync<ItemGroup>();
-        Xunit.Assert.NotNull(itemGroup);
-        Xunit.Assert.Equal(_itemGroupPut.Id, itemGroup.Id);
-        Xunit.Assert.Equal(_itemGroupPut.Name, itemGroup.Name);
-        Xunit.Assert.Equal(_itemGroupPut.Description, itemGroup.Description);
+        ItemType? itemType = await response.Content.ReadFromJsonAsync<ItemType>();
+        Xunit.Assert.NotNull(itemType);
+        Xunit.Assert.Equal(_itemTypePut.Id, itemType.Id);
+        Xunit.Assert.Equal(_itemTypePut.Name, itemType.Name);
+        Xunit.Assert.Equal(_itemTypePut.Description, itemType.Description);
     }
     [Fact, TestPriority(7)]
-    public async Task GetItemGroupItemsNotFound()
+    public async Task GetItemTypeItemsNotFound()
     {
         var response = await _client.GetAsync($"{requestUri}/3/items");
         var result = await response.Content.ReadAsStringAsync();
@@ -107,7 +106,7 @@ public class ItemGroupTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
     [Fact, TestPriority(8)]
-    public async Task GetItemGroupItems()
+    public async Task GetItemTypeItems()
     {
         var response = await _client.GetAsync($"{requestUri}/1/items");
         var result = await response.Content.ReadAsStringAsync();
@@ -123,9 +122,9 @@ public class ItemGroupTest : BaseTest
         Xunit.Assert.Equal(_item.UpcCode, items[0].UpcCode);
         Xunit.Assert.Equal(_item.ModelNumber, items[0].ModelNumber);
         Xunit.Assert.Equal(_item.CommodityCode, items[0].CommodityCode);
+        Xunit.Assert.Equal(_item.ItemType, items[0].ItemType);
         Xunit.Assert.Equal(_item.ItemGroup, items[0].ItemGroup);
-        Xunit.Assert.Equal(_item.ItemGroup, items[0].ItemGroup);
-        Xunit.Assert.Equal(_item.ItemGroup, items[0].ItemGroup);
+        Xunit.Assert.Equal(_item.ItemType, items[0].ItemType);
         Xunit.Assert.Equal(_item.UnitPurchaseQuantity, items[0].UnitPurchaseQuantity);
         Xunit.Assert.Equal(_item.UnitOrderQuantity, items[0].UnitOrderQuantity);
         Xunit.Assert.Equal(_item.PackOrderQuantity, items[0].PackOrderQuantity);
@@ -135,7 +134,7 @@ public class ItemGroupTest : BaseTest
     }
 
     [Fact, TestPriority(9)]
-    public async Task GetItemGroupNotFoundAgain()
+    public async Task GetItemTypeNotFoundAgain()
     {
         var response = await _client.GetAsync($"{requestUri}/2");
         var result = await response.Content.ReadAsStringAsync();
@@ -143,14 +142,16 @@ public class ItemGroupTest : BaseTest
     }
 
     [Fact, TestPriority(10)]
-    public async Task DeleteItemGroup()
+    public async Task DeleteItemType()
     {
         var response = await _client.DeleteAsync($"{requestUri}/1");
+        var result = await response.Content.ReadAsStringAsync();
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Xunit.Assert.Equal("", result);
     }
 
     [Fact, TestPriority(11)]
-    public async Task GetItemGroupEmpty()
+    public async Task GetItemTypeEmpty()
     {
         var response = await _client.GetAsync(requestUri);
         var result = await response.Content.ReadAsStringAsync();
@@ -160,8 +161,7 @@ public class ItemGroupTest : BaseTest
     [Fact, TestPriority(12)]
     public async Task DeleteItem()
     {
-        string requestUriItem = "/api/v2/items/P000005";
-        var response = await _client.DeleteAsync(requestUriItem);
+        var response = await _client.DeleteAsync("/api/v2/items/P000005");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }
