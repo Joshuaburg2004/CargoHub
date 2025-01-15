@@ -12,6 +12,7 @@ namespace IntegrationTests
     [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
     public class SupplierTest : BaseTest
     {
+        public string requestUri = "/api/v2/suppliers";
         private Supplier _newsupplier = new Supplier(1, "SUP0001", "Lee, Parks and Johnson", "5989 Sullivan Drives", "Apt. 996", "Port Anitaburgh", "91688", "Illinois", "Czech Republic", "Toni Barnett", "363.541.7282x36825", "LPaJ-SUP0001");
         private Supplier _supplierToPut = new Supplier(1, "SUP0001", "Bob, Parks and Johnson", "5989 Sullivan Drives", "Apt. 996", "Port Anitaburgh", "91688", "Illinois", "Czech Republic", "Toni Barnett", "363.541.7282x36825", "LPaJ-SUP0001");
         private Item _item = new Item("P000001", "ITM0001", "Item 1", "Item 1", "UPC0001", "Model 1", "Commodity 1", 1, 1, 1, 1, 1, 1, 1, "SUP0001", "SUP0001-ITM0001");
@@ -19,7 +20,6 @@ namespace IntegrationTests
         [Fact, TestPriority(1)]
         public async Task GetAllSuppliers()
         {
-            var requestUri = "/api/v1/suppliers";
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
@@ -29,8 +29,7 @@ namespace IntegrationTests
         [Fact, TestPriority(2)]
         public async Task GetOneSupplierBeforeAdding()
         {
-            var requestUri = "/api/v1/suppliers/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
@@ -40,7 +39,6 @@ namespace IntegrationTests
         [Fact, TestPriority(3)]
         public async Task CreateSupplier()
         {
-            var requestUri = "/api/v1/suppliers";
             var response = await _client.PostAsJsonAsync(requestUri, _newsupplier);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -48,8 +46,7 @@ namespace IntegrationTests
         [Fact, TestPriority(4)]
         public async Task GetOneSupplierAfterAdding()
         {
-            var requestUri = "/api/v1/suppliers/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -73,12 +70,11 @@ namespace IntegrationTests
         [Fact, TestPriority(5)]
         public async Task GetItemsSupplier()
         {
-            var itemrequestUri = "/api/v1/items";
+            var itemrequestUri = "/api/v2/items";
             var itemresponse = await _client.PostAsJsonAsync(itemrequestUri, _item);
             var itemresult = await itemresponse.Content.ReadAsStringAsync();
 
-            var requestUri = "/api/v1/suppliers/1/items";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1/items");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -106,16 +102,14 @@ namespace IntegrationTests
         [Fact, TestPriority(5)]
         public async Task PutSupplier()
         {
-            var requestUri = "/api/v1/suppliers/1";
-            var response = await _client.PutAsJsonAsync(requestUri, _supplierToPut);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/1", _supplierToPut);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact, TestPriority(6)]
         public async Task GetOneSupplierAfterPutting()
         {
-            var requestUri = "/api/v1/suppliers/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -139,26 +133,21 @@ namespace IntegrationTests
         [Fact, TestPriority(7)]
         public async Task DeleteSupplier()
         {
-            var requestUri = "/api/v1/suppliers/1";
-            var response = await _client.DeleteAsync(requestUri);
+            var response = await _client.DeleteAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact, TestPriority(8)]
         public async Task GetOneSupplierAfterDelete()
         {
-            var requestUri = "/api/v1/suppliers/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
-            // It should absolutely be either 400 bad request or 404 not found, but it is 200 OK.
-            // This is not intended behavior.
         }
         [Fact, TestPriority(9)]
         public async Task GetAllShipmentsAfterDelete()
         {
-            var requestUri = "/api/v1/suppliers";
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
@@ -172,8 +161,7 @@ namespace IntegrationTests
             var itemrequestUri = "/api/v1/items/P000001";
             var itemresponse = await _client.DeleteAsync(itemrequestUri);
 
-            var requestUri = "/api/v1/suppliers/1/items";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1/items");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -182,8 +170,7 @@ namespace IntegrationTests
         [Fact, TestPriority(11)]
         public async Task DeleteSupplierIdNegative()
         {
-            var requestUri = "/api/v1/suppliers/-1";
-            var response = await _client.DeleteAsync(requestUri);
+            var response = await _client.DeleteAsync("/api/v1/suppliers/-1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -191,8 +178,7 @@ namespace IntegrationTests
         [Fact, TestPriority(12)]
         public async Task DeleteSupplierNotFound()
         {
-            var requestUri = "/api/v1/suppliers/1";
-            var response = await _client.DeleteAsync(requestUri);
+            var response = await _client.DeleteAsync("/api/v1/suppliers/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -200,8 +186,7 @@ namespace IntegrationTests
         [Fact, TestPriority(13)]
         public async Task UpdateSupplierIdNegative()
         {
-            var requestUri = "/api/v1/suppliers/-1";
-            var response = await _client.PutAsJsonAsync(requestUri, _supplierToPut);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/-1", _supplierToPut);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -209,8 +194,7 @@ namespace IntegrationTests
         [Fact, TestPriority(14)]
         public async Task UpdateSupplierNotFound()
         {
-            var requestUri = "/api/v1/suppliers/1";
-            var response = await _client.PutAsJsonAsync(requestUri, _supplierToPut);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/1", _supplierToPut);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
