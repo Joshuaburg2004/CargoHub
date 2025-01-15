@@ -13,6 +13,7 @@ namespace IntegrationTests
     [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
     public class WarehouseTest : BaseTest
     {
+        public string requestUri = "/api/v2/warehouses";
         private Warehouse _warehouseCreate = new Warehouse
         {
             Id = 1,
@@ -43,7 +44,6 @@ namespace IntegrationTests
         [Fact, TestPriority(1)]
         public async Task GetAllWarehouses()
         {
-            var requestUri = "/api/v1/warehouses";
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
@@ -53,8 +53,7 @@ namespace IntegrationTests
         [Fact, TestPriority(2)]
         public async Task GetOneWarehouse()
         {
-            var requestUri = "/api/v1/warehouses/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -63,8 +62,7 @@ namespace IntegrationTests
         [Fact, TestPriority(3)]
         public async Task GetWarehouseLocations()
         {
-            var requestUri = "/api/v1/warehouses/1/locations";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1/locations");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -73,7 +71,6 @@ namespace IntegrationTests
         [Fact, TestPriority(4)]
         public async Task CreateWarehouse()
         {
-            var requestUri = "/api/v1/warehouses";
             var response = await _client.PostAsJsonAsync(requestUri, _warehouseCreate);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
@@ -83,8 +80,7 @@ namespace IntegrationTests
         [Fact, TestPriority(5)]
         public async Task GetOneWarehouseAfterAdding()
         {
-            var requestUri = "/api/v1/warehouses/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -108,8 +104,7 @@ namespace IntegrationTests
         public async Task PutWarehouse()
         {
             // code is changed from "YQZZNL56" to "YQZZNL57"
-            var requestUri = "/api/v1/warehouses/1";
-            var response = await _client.PutAsJsonAsync(requestUri, _warehouseUpdate);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/1", _warehouseUpdate);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -117,8 +112,7 @@ namespace IntegrationTests
         [Fact, TestPriority(7)]
         public async Task GetOneWarehouseAfterUpdating()
         {
-            var requestUri = "/api/v1/warehouses/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -141,8 +135,7 @@ namespace IntegrationTests
         [Fact, TestPriority(8)]
         public async Task DeleteWarehouse()
         {
-            var requestUri = "/api/v1/warehouses/1";
-            var response = await _client.DeleteAsync(requestUri);
+            var response = await _client.DeleteAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -150,8 +143,7 @@ namespace IntegrationTests
         [Fact, TestPriority(9)]
         public async Task GetOneWarehouseAfterDelete()
         {
-            var requestUri = "/api/v1/warehouses/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
 
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -161,8 +153,7 @@ namespace IntegrationTests
         [Fact, TestPriority(10)]
         public async Task GetWarehouseLocationsAfterDelete()
         {
-            var requestUri = "/api/v1/warehouses/1/locations";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1/locations");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Xunit.Assert.Equal("[]", result);
@@ -172,8 +163,7 @@ namespace IntegrationTests
         [Fact, TestPriority(11)]
         public async Task GetWarehouseIdNegative()
         {
-            var requestUri = "/api/v1/warehouses/-1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/-1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -182,8 +172,7 @@ namespace IntegrationTests
         [Fact, TestPriority(12)]
         public async Task UpdateWarehouseIdNegative()
         {
-            var requestUri = "/api/v1/warehouses/-1";
-            var response = await _client.PutAsJsonAsync(requestUri, _warehouseUpdate);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/-1", _warehouseUpdate);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -191,8 +180,7 @@ namespace IntegrationTests
         [Fact, TestPriority(13)]
         public async Task DeleteWarehouseIdNegative()
         {
-            var requestUri = "/api/v1/warehouses/-1";
-            var response = await _client.DeleteAsync(requestUri);
+            var response = await _client.DeleteAsync($"{requestUri}/-1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
