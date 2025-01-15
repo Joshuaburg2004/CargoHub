@@ -93,7 +93,7 @@ jobs:
 
     env:
       Solution_Name: ${{ github.workspace }}/CargoHubAspNet.sln
-      Test_Project_Path: ${{ github.workspace }}/IntegrationTests/IntegrationTests.csproj
+      Test_Project_Path: ${{ github.workspace }}/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj
       Wap_Project_Directory: ${{ github.workspace }}/CargoHubAlt
       Wap_Project_Path: ${{ github.workspace }}/CargoHubAlt/CargoHubAlt.csproj
       Test_Project_dll: ${{ github.workspace }}/IntegrationTests/bin/Debug/net8.0/CargoHubAlt.dll
