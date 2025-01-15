@@ -14,6 +14,7 @@ namespace IntegrationTests
     [TestCaseOrderer("IntegrationTests.PriorityOrderer", "IntegrationTests")]
     public class TransferTest : BaseTest
     {
+        public string requestUri = "/api/v2/transfers";
         public static Transfer testtransfer = new Transfer
         {
             Id = 1,
@@ -45,7 +46,6 @@ namespace IntegrationTests
         [Fact, TestPriority(1)]
         public async Task GetAllTransfersEmpty()
         {
-            var requestUri = "/api/v1/transfers";
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
@@ -55,8 +55,7 @@ namespace IntegrationTests
         [Fact, TestPriority(2)]
         public async Task GetOneTransfer()
         {
-            var requestUri = "/api/v1/transfers/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
@@ -65,8 +64,7 @@ namespace IntegrationTests
         [Fact, TestPriority(3)]
         public async Task GetTransferItems()
         {
-            var requestUri = "/api/v1/transfers/1/items";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1/items");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
@@ -75,7 +73,6 @@ namespace IntegrationTests
         [Fact, TestPriority(4)]
         public async Task CreateTransfer()
         {
-            var requestUri = "/api/v1/transfers";
             var response = await _client.PostAsJsonAsync(requestUri, testtransfer);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -84,8 +81,7 @@ namespace IntegrationTests
         [Fact, TestPriority(5)]
         public async Task GetTransferAfterAdding()
         {
-            var requestUri = "/api/v1/transfers/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
 
             Transfer? res = await response.Content.ReadFromJsonAsync<Transfer>();
@@ -106,8 +102,7 @@ namespace IntegrationTests
         [Fact, TestPriority(6)]
         public async Task GetItemsInTranfser()
         {
-            var requestUri = "/api/v1/transfers/1/items";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1/items");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -122,7 +117,6 @@ namespace IntegrationTests
         [Fact, TestPriority(7)]
         public async Task GetAllTransfers()
         {
-            var requestUri = "/api/v1/transfers";
             var response = await _client.GetAsync(requestUri);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.NotNull(result);
@@ -142,8 +136,7 @@ namespace IntegrationTests
         [Fact, TestPriority(8)]
         public async Task PutTransfer()
         {
-            var requestUri = "/api/v1/transfers/1";
-            var response = await _client.PutAsJsonAsync(requestUri, testtransfer2);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/1", testtransfer2);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -151,8 +144,7 @@ namespace IntegrationTests
         [Fact, TestPriority(9)]
         public async Task CommitTransfer()
         {
-            var requestUri = "/api/v1/transfers/1/commit";
-            var response = await _client.PutAsJsonAsync(requestUri, testtransfer2);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/1/commit", testtransfer2);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -160,8 +152,7 @@ namespace IntegrationTests
         [Fact, TestPriority(10)]
         public async Task GetTransferAfterUpdating()
         {
-            var requestUri = "/api/v1/transfers/1";
-            var response = await _client.DeleteAsync(requestUri);
+            var response = await _client.DeleteAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
 
             Transfer? res = await response.Content.ReadFromJsonAsync<Transfer>();
@@ -172,8 +163,7 @@ namespace IntegrationTests
         [Fact, TestPriority(11)]
         public async Task GetTransferAfterDelete()
         {
-            var requestUri = "/api/v1/transfers/1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
         }
@@ -181,8 +171,7 @@ namespace IntegrationTests
         [Fact, TestPriority(12)]
         public async Task GetTranserItemsAfterDelete()
         {
-            var requestUri = "/api/v1/transfers/1/items";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/1/items");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.True(response.StatusCode.Equals(HttpStatusCode.BadRequest) || response.StatusCode.Equals(HttpStatusCode.NotFound));
         }
@@ -190,8 +179,7 @@ namespace IntegrationTests
         [Fact, TestPriority(13)]
         public async Task GetTransferNegative()
         {
-            var requestUri = "/api/v1/transfers/-1";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/-1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -199,8 +187,7 @@ namespace IntegrationTests
         [Fact, TestPriority(14)]
         public async Task GetItemsTransferNegative()
         {
-            var requestUri = "/api/v1/transfers/-1/items";
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync($"{requestUri}/-1/items");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -208,8 +195,7 @@ namespace IntegrationTests
         [Fact, TestPriority(15)]
         public async Task PutTransferNegative()
         {
-            var requestUri = "/api/v1/transfers/-1";
-            var response = await _client.PutAsJsonAsync(requestUri, testtransfer2);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/-1", testtransfer2);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -217,8 +203,7 @@ namespace IntegrationTests
         [Fact, TestPriority(16)]
         public async Task DeleteTransferNegative()
         {
-            var requestUri = "/api/v1/transfers/-1";
-            var response = await _client.DeleteAsync(requestUri);
+            var response = await _client.DeleteAsync($"{requestUri}/-1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -226,8 +211,7 @@ namespace IntegrationTests
         [Fact, TestPriority(17)]
         public async Task DeleteTransferNotFound()
         {
-            var requestUri = "/api/v1/transfers/1";
-            var response = await _client.DeleteAsync(requestUri);
+            var response = await _client.DeleteAsync($"{requestUri}/1");
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -235,8 +219,7 @@ namespace IntegrationTests
         [Fact, TestPriority(18)]
         public async Task UpdateTransferNotFound()
         {
-            var requestUri = "/api/v1/transfers/1";
-            var response = await _client.PutAsJsonAsync(requestUri, testtransfer2);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/1", testtransfer2);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -244,8 +227,7 @@ namespace IntegrationTests
         [Fact, TestPriority(19)]
         public async Task CommitTransferIdNegative()
         {
-            var requestUri = "/api/v1/transfers/-1/commit";
-            var response = await _client.PutAsJsonAsync(requestUri, testtransfer2);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/-1/commit", testtransfer2);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -253,8 +235,7 @@ namespace IntegrationTests
         [Fact, TestPriority(20)]
         public async Task CommitTransferNotFound()
         {
-            var requestUri = "/api/v1/transfers/1/commit";
-            var response = await _client.PutAsJsonAsync(requestUri, testtransfer2);
+            var response = await _client.PutAsJsonAsync($"{requestUri}/1/commit", testtransfer2);
             var result = await response.Content.ReadAsStringAsync();
             Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
