@@ -54,7 +54,7 @@ namespace CargoHubAlt.Services.ServicesV2
         }
 
 
-//this copies the database into a given folder into the directory of the string
+//this copies the database declared in source into the directory of the string input
         private async Task<(bool, string)> CreateBackupDatabase(string backupFolderPath)
         {
             string source = "./CargoHubDatabase.db";
@@ -75,30 +75,30 @@ namespace CargoHubAlt.Services.ServicesV2
             }
         }
 
-// this copies the logs we currently have into the directory of the string
-        private async Task<(bool, string)> CreateBackupLogs(string backupFolderPath)
-        {
-            string source = "./Logs";
+// this copies the logs declared in source we currently have into the directory of the string
+        // private async Task<(bool, string)> CreateBackupLogs(string backupFolderPath)
+        // {
+        //     string source = "./Logs";
 
-            try
-            {
-                if (!Directory.Exists(source))
-                {
-                    return await Task.FromResult((false, "No logs found to backup"));
-                }
-                string destinationFilePath = Path.Combine(backupFolderPath, "LogsBackup");
-                Directory.CreateDirectory(destinationFilePath);
-                foreach (string file in Directory.GetFiles(source))
-                {
-                    File.Copy(file, Path.Combine(destinationFilePath, Path.GetFileName(file)));
-                }
-                return await Task.FromResult((true, $"Logs backup saved at: {destinationFilePath}"));
-            }
-            catch (Exception ex)
-            {
-                return await Task.FromResult((false, $"Error during logs backup: {ex}"));
-            }
-        }
+        //     try
+        //     {
+        //         if (!Directory.Exists(source))
+        //         {
+        //             return await Task.FromResult((false, "No logs found to backup"));
+        //         }
+        //         string destinationFilePath = Path.Combine(backupFolderPath, "LogsBackup");
+        //         Directory.CreateDirectory(destinationFilePath);
+        //         foreach (string file in Directory.GetFiles(source))
+        //         {
+        //             File.Copy(file, Path.Combine(destinationFilePath, Path.GetFileName(file)));
+        //         }
+        //         return await Task.FromResult((true, $"Logs backup saved at: {destinationFilePath}"));
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return await Task.FromResult((false, $"Error during logs backup: {ex}"));
+        //     }
+        // }
         public async Task<(bool,string)> UploadBackupFull(string backupFolderPath)
         {
             try
