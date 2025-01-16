@@ -78,6 +78,9 @@ namespace CargoHubAlt.Services.ServicesV1
                         {
                             if (ider == transfer.TransferFrom)
                             {
+                                Location? location = await _context.Locations.FirstOrDefaultAsync(x => x.Id == transfer.TransferFrom);
+                                if (location == null) return false;
+                                location.localInventories.Where(x => x.InventoryId == ider).ToList().ForEach(x => x.Amount -= transferItem.Amount);
                                 inventory.TotalOnHand -= transferItem.Amount;
                                 inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
                                 inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
@@ -85,6 +88,9 @@ namespace CargoHubAlt.Services.ServicesV1
                             }
                             else if (ider == transfer.TransferTo)
                             {
+                                Location? location = await _context.Locations.FirstOrDefaultAsync(x => x.Id == transfer.TransferTo);
+                                if (location == null) return false;
+                                location.localInventories.Where(x => x.InventoryId == ider).ToList().ForEach(x => x.Amount += transferItem.Amount);
                                 inventory.TotalOnHand += transferItem.Amount;
                                 inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
                                 inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
@@ -108,6 +114,7 @@ namespace CargoHubAlt.Services.ServicesV1
             await _context.SaveChangesAsync();
             return true;
         }
+
         public async Task LoadFromJson(string path)
         {
             path = "data/" + path;
