@@ -53,6 +53,13 @@ namespace CargoHub.Controllers.ControllersV2
             await _locationservice.DeleteLocation(id);
             return Ok();
         }
+
+        [HttpPut("disperse")]
+        public async Task<IActionResult> DisperseInventories()
+        {
+            await _locationservice.DisperseAllInventoriesOverLocations();
+            return Ok();
+        }
         [HttpPost("load/{path}")]
         public async Task<IActionResult> LoadClient([FromRoute] string path)
         {
