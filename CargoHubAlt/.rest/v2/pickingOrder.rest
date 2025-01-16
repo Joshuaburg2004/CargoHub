@@ -1,12 +1,20 @@
-POST http://localhost:3000/api/v2/pickingorder/2
+POST http://localhost:3000/api/v2/pickingorder/6861
 API_KEY: a1b2c3d4e5
 ###
 
-GET http://localhost:3000/api/v2/pickingorder/warehouse/1
+GET http://localhost:3000/api/v2/pickingorder/warehouse/51
 API_KEY: a1b2c3d4e5
 ###
 
 GET http://localhost:3000/api/v2/pickingorder/order/1
+API_KEY: a1b2c3d4e5
+###
+
+DELETE http://localhost:3000/api/v2/pickingorder/10
+API_KEY: a1b2c3d4e5
+###
+
+DELETE http://localhost:3000/api/v2/pickingorder/order/6867
 API_KEY: a1b2c3d4e5
 ###
 
@@ -17,3 +25,4 @@ API_KEY: a1b2c3d4e5
 POST http://localhost:3000/api/v2/pickingorder/clear
 API_KEY: a1b2c3d4e5
 ###
+

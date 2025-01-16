@@ -134,6 +134,30 @@ namespace CargoHubAlt.Services.ServicesV2
             return true;
         }
 
+        public async Task<bool> DeletePickingOrder(int pickingOrderId)
+        {
+            PickingOrder? pickingOrder = await _context.PickingOrders.FirstOrDefaultAsync(x => x.Id == pickingOrderId);
+            if (pickingOrder != null)
+            {
+                _context.PickingOrders.Remove(pickingOrder);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> DeletePickingOrdersForOrder(int orderId)
+        {
+            List<PickingOrder> pickingOrders = await GetPickingOrdersForOrder(orderId);
+            if (pickingOrders.Count > 0)
+            {
+                _context.PickingOrders.RemoveRange(pickingOrders);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
         public async Task<bool> CompletePickingOrder(int pickingOrderId)
         {
             PickingOrder? pickingOrder = await _context.PickingOrders.FirstOrDefaultAsync(x => x.Id == pickingOrderId);

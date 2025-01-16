@@ -69,10 +69,45 @@ namespace CargoHub.Controllers.ControllersV2
             }
 
             // Create a pickingorder => see PickingOrderService.cs
-            // PickingOrder pickingorder = await _orderPickingService.CreatePickingOrder(order);
             bool pickingorder = await _orderPickingService.CreatePickingOrders(order, orderid);
 
             return Ok(pickingorder);
+        }
+
+        [HttpDelete("{pickingorderid}")]
+        public async Task<IActionResult> DeletePickingOrder([FromRoute] int pickingorderid)
+        {
+            if (pickingorderid < 1)
+            {
+                return BadRequest("Picking order id should be a positive number.");
+            }
+
+            bool pickingorder = await _orderPickingService.DeletePickingOrder(pickingorderid);
+
+            if (!pickingorder)
+            {
+                return BadRequest("Picking order could not be deleted.");
+            }
+
+            return Ok(pickingorder);
+        }
+
+        [HttpDelete("order/{orderid}")]
+        public async Task<IActionResult> DeletePickingOrdersForOrder([FromRoute] int orderid)
+        {
+            if (orderid < 1)
+            {
+                return BadRequest("Order id should be a positive number.");
+            }
+
+            bool pickingorders = await _orderPickingService.DeletePickingOrdersForOrder(orderid);
+
+            if (!pickingorders)
+            {
+                return BadRequest("Picking orders could not be deleted.");
+            }
+
+            return Ok(pickingorders);
         }
 
         [HttpPut("{pickingorderid}")]
