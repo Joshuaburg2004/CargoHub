@@ -352,6 +352,38 @@ namespace CargoHubAlt.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("CargoHubAlt.Models.PickingOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedAt")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Route")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedAt")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PickingOrders");
+                });
+
             modelBuilder.Entity("CargoHubAlt.Models.Shipment", b =>
                 {
                     b.Property<int>("Id")

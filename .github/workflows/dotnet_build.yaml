@@ -44,7 +44,7 @@ jobs:
         run: |
           dotnet build ${{ env.Solution_Name }} --no-restore --configuration ${{ matrix.configuration }}
 
-  run-unit-tests:
+  run-unit-tests-v1:
     needs: build
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development'))
     runs-on: ubuntu-latest
@@ -86,7 +86,7 @@ jobs:
           dotnet tool install -g dotnet-reportgenerator-globaltool
           reportgenerator -reports:${{ env.Coverage_Report_Folder }}/coverage.cobertura.xml -targetdir:${{ env.Coverage_Report_Folder }} -reporttypes:TextSummary
 
-  run-integration-tests:
+  run-integration-tests-v1:
     needs: build
     if: github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'development') || github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -102,26 +102,26 @@ jobs:
       Minimum_Code_Coverage: ${{ vars.MINIMUMCODECOVERAGE }}
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Setup Docker
-      uses: docker/setup-buildx-action@v2
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v2
 
-    - name: Build Docker image
-      run: |
-        docker build -t integrationtest .
+      - name: Build Docker image
+        run: |
+          docker build -t integrationtest .
 
-    - name: Run Docker container
-      run: |
-        docker run --rm \
-          -v ${{ github.workspace }}/TestResults:/testresults \
-          -v ${{ github.workspace }}/Data:/app/Data \
-          -e Solution_Name=/app/CargoHubAspNet.sln \
-          -e Test_Project_Path=/app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj \
-          integrationtest \
-          dotnet test /app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj \
-          --results-directory /testresults --verbosity detailed
+      - name: Run Docker container
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}/TestResults:/testresults \
+            -v ${{ github.workspace }}/Data:/app/Data \
+            -e Solution_Name=/app/CargoHubAspNet.sln \
+            -e Test_Project_Path=/app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj \
+            integrationtest \
+            dotnet test /app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj \
+            --results-directory /testresults --verbosity detailed
 
   # deploy:
   #   if: github.ref == 'refs/head/main'

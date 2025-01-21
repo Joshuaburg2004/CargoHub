@@ -120,7 +120,8 @@ namespace CargoHub.UnitTesting
         public async void GetOneOrder()
         {
             using var context = new CargoHubContext(options);
-            var orderService = new OrderServiceV2(context);
+            var orderPickingService = new OrderPickingServiceV2(context);
+            var orderService = new OrderServiceV2(context, orderPickingService);
             var orders = await orderService.GetOrders();
 
             Assert.NotNull(orders);
@@ -148,7 +149,8 @@ namespace CargoHub.UnitTesting
         public async void AddOrder()
         {
             using var context = new CargoHubContext(options);
-            var orderService = new OrderServiceV2(context);
+            var orderPickingService = new OrderPickingServiceV2(context);
+            var orderService = new OrderServiceV2(context, orderPickingService);
             var result = await orderService.AddOrder(orderToAdd);
             Assert.True(result);
             var orders = context.Orders.ToList();
@@ -176,7 +178,8 @@ namespace CargoHub.UnitTesting
         public async void GetOrderedItems()
         {
             using var context = new CargoHubContext(options);
-            var orderService = new OrderServiceV2(context);
+            var orderPickingService = new OrderPickingServiceV2(context);
+            var orderService = new OrderServiceV2(context, orderPickingService);
             var orderedItems = await orderService.GetOrderedItems(1);
             Assert.NotNull(orderedItems);
             Assert.Single(orderedItems);
@@ -188,7 +191,8 @@ namespace CargoHub.UnitTesting
         public async void GetPendingOrdersEmpty()
         {
             using var context = new CargoHubContext(options);
-            var orderService = new OrderServiceV2(context);
+            var orderPickingService = new OrderPickingServiceV2(context);
+            var orderService = new OrderServiceV2(context, orderPickingService);
             var Pendingitems = await orderService.GetPendingOrders();
             Assert.NotNull(Pendingitems);
             Assert.Empty(Pendingitems);
@@ -199,7 +203,8 @@ namespace CargoHub.UnitTesting
         public async void UpdateOrder()
         {
             using var context = new CargoHubContext(options);
-            var orderService = new OrderServiceV2(context);
+            var orderPickingService = new OrderPickingServiceV2(context);
+            var orderService = new OrderServiceV2(context, orderPickingService);
             var result = await orderService.UpdateOrder(orderToPut);
             Assert.NotNull(result);
             var orders = context.Orders.ToList();
@@ -212,7 +217,8 @@ namespace CargoHub.UnitTesting
         public async void UpdateOrderedItems()
         {
             using var context = new CargoHubContext(options);
-            var orderService = new OrderServiceV2(context);
+            var orderPickingService = new OrderPickingServiceV2(context);
+            var orderService = new OrderServiceV2(context, orderPickingService);
             var orderedItems = new List<OrderedItem>
             {
                 new OrderedItem
@@ -234,7 +240,8 @@ namespace CargoHub.UnitTesting
         public async void GetPendingOrdersOne()
         {
             using var context = new CargoHubContext(options);
-            var orderService = new OrderServiceV2(context);
+            var orderPickingService = new OrderPickingServiceV2(context);
+            var orderService = new OrderServiceV2(context, orderPickingService);
             var Pendingitems = await orderService.GetPendingOrders();
             Assert.NotNull(Pendingitems);
             // Assert.Single(Pendingitems);
@@ -247,7 +254,8 @@ namespace CargoHub.UnitTesting
         {
             using (var context = new CargoHubContext(options))
             {
-                var orderService = new OrderServiceV2(context);
+                var orderPickingService = new OrderPickingServiceV2(context);
+                var orderService = new OrderServiceV2(context, orderPickingService);
                 var order = context.Orders.First();
                 await orderService.RemoveOrder(order.Id);
             }
