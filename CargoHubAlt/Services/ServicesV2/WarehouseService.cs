@@ -51,7 +51,6 @@ namespace CargoHubAlt.Services.ServicesV2
             if (existingWarehouse == null)
                 return null;
 
-            existingWarehouse.Id = warehouse.Id;
             existingWarehouse.Code = warehouse.Code;
             existingWarehouse.Name = warehouse.Name;
             existingWarehouse.Address = warehouse.Address;
