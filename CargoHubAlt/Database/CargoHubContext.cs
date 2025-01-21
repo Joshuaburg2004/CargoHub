@@ -18,6 +18,7 @@ namespace CargoHubAlt.Database
         public virtual DbSet<Inventory> Inventories { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<ItemType> ItemTypes { get; set; }
+        public virtual DbSet<PickingOrder> PickingOrders { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Location>().OwnsMany(o => o.localInventories, a =>
@@ -46,7 +47,8 @@ namespace CargoHubAlt.Database
                 a.Property<int>("Id");
                 a.HasKey("Id");
             });
-            modelBuilder.Entity<Warehouse>().OwnsOne(w => w.Contact, a => {
+            modelBuilder.Entity<Warehouse>().OwnsOne(w => w.Contact, a =>
+            {
                 a.Property<int>("WarehouseId");
                 a.HasKey("WarehouseId");
             });
