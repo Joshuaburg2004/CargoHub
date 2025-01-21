@@ -189,7 +189,8 @@ namespace CargoHub.UnitTesting
         public async void GetPendingOrdersEmpty()
         {
             using var context = new CargoHubContext(options);
-            var orderService = new OrderServiceV2(context);
+            var orderPickingService = new OrderPickingServiceV2(context);
+            var orderService = new OrderServiceV2(context, orderPickingService);
             var Pendingitems = await orderService.GetPendingOrders();
             Assert.NotNull(Pendingitems);
             Assert.Empty(Pendingitems);
@@ -235,7 +236,8 @@ namespace CargoHub.UnitTesting
         public async void GetPendingOrdersOne()
         {
             using var context = new CargoHubContext(options);
-            var orderService = new OrderServiceV2(context);
+            var orderPickingService = new OrderPickingServiceV2(context);
+            var orderService = new OrderServiceV2(context, orderPickingService);
             var Pendingitems = await orderService.GetPendingOrders();
             Assert.NotNull(Pendingitems);
             // Assert.Single(Pendingitems);
