@@ -1,0 +1,82 @@
+
+Get http://localhost:3000/api/v2/analytics
+API_KEY: a1b2c3d4e5
+###
+
+POST http://localhost:3000/api/v2/warehouses
+API_KEY: a1b2c3d4e5
+Content-Type: application/json
+
+{
+    "code": "YQZZNL56",
+    "name": "Heemskerk cargo hub",
+    "address": "Karlijndreef 281",
+    "zip": "4002 AS",
+    "city": "Heemskerk",
+    "province": "Friesland",
+    "country": "NL",
+    "contact": {
+      "name": "Fem Keijzer",
+      "phone": "(078) 0013363",
+      "email": "blamore@example.net"
+    }
+  }
+###
+
+GET  http://localhost:3000/api/v2/warehouses/
+API_KEY: a1b2c3d4e5
+
+###
+
+POST http://localhost:3000/api/v1/locations
+API_KEY: a1b2c3d4e5
+Content-Type: application/json
+
+{
+  "WarehouseId": 59,
+  "Code": "A.1.0",
+  "Name": "Row: A, Rack: 1, Shelf: 0"
+}
+###
+
+POST http://localhost:3000/api/v1/locations
+API_KEY: a1b2c3d4e5
+Content-Type: application/json
+
+{
+  "WarehouseId": 59,
+  "Code": "A.2.0",
+  "Name": "Row: A, Rack: 2, Shelf: 0"
+}
+###
+POST http://localhost:3000/api/v1/locations
+API_KEY: a1b2c3d4e5
+Content-Type: application/json
+
+{
+  "WarehouseId": 59,
+  "Code": "A.3.0",
+  "Name": "Row: A, Rack: 3, Shelf: 0"
+}
+###
+POST http://localhost:3000/api/v1/locations
+API_KEY: a1b2c3d4e5
+Content-Type: application/json
+
+{
+  "WarehouseId": 59,
+  "Code": "A.4.0",
+  "Name": "Row: A, Rack: 4, Shelf: 0"
+}
+###
+POST http://localhost:3000/api/v1/locations
+API_KEY: a1b2c3d4e5
+Content-Type: application/json
+
+{
+  "WarehouseId": 59,
+  "Code": "A.5.0",
+  "Name": "Row: A, Rack: 5, Shelf: 0"
+}
+###
+
