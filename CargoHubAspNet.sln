@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyUnitTestProject", "UnitTe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unittesting", "Unittesting", "{FD23D400-6BA9-4D9E-A4EF-542B480337CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myunittestprojectv2", "Unittesting\unittestsv2\myunittestprojectv2.csproj", "{2B10CF02-CC97-42A6-A64F-EA49EDB794B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyUnitTestProjectV2", "UnitTesting\UnitTestsV2\MyUnitTestProjectV2.csproj", "{2B10CF02-CC97-42A6-A64F-EA49EDB794B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
