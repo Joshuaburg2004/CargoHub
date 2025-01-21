@@ -19,12 +19,12 @@ namespace CargoHubAlt.Services.ServicesV2
             return await this._cargoHubContext.Inventories.FirstOrDefaultAsync(inventory => inventory.Id == id);
         }
 
-        public async Task<IEnumerable<Inventory>> GetAllInventories()
+        public async Task<List<Inventory>> GetAllInventories()
         {
             return await this._cargoHubContext.Inventories.ToListAsync();
         }
 
-        public async Task<IEnumerable<Inventory>> GetAllInventories(int? pageIndex)
+        public async Task<List<Inventory>> GetAllInventories(int? pageIndex)
         {
             if (pageIndex == null)
             {
@@ -82,7 +82,7 @@ namespace CargoHubAlt.Services.ServicesV2
         }
 
         // Returns products with TotalOnHand ≤ customThreshold, or all low-stock products if no threshold is given.
-        public async Task<IEnumerable<Inventory>> GetLowStock(int? customThreshold = null)
+        public async Task<List<Inventory>> GetLowStock(int? customThreshold = null)
         {
             if (!customThreshold.HasValue)
             {
@@ -98,7 +98,7 @@ namespace CargoHubAlt.Services.ServicesV2
             }
         }
 
-public async Task LoadFromJson(string path)
+        public async Task LoadFromJson(string path)
         {
             path = "data/" + path;
             if (File.Exists(path))
