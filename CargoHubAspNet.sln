@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "Integra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyUnitTestProject", "UnitTesting\UnitTestsV1\MyUnitTestProjectV1.csproj", "{C68781D4-1D40-43F1-AFD3-2B2F27EE7433}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unittesting", "Unittesting", "{FD23D400-6BA9-4D9E-A4EF-542B480337CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myunittestprojectv2", "Unittesting\unittestsv2\myunittestprojectv2.csproj", "{2B10CF02-CC97-42A6-A64F-EA49EDB794B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,11 +31,18 @@ Global
 		{C68781D4-1D40-43F1-AFD3-2B2F27EE7433}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C68781D4-1D40-43F1-AFD3-2B2F27EE7433}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C68781D4-1D40-43F1-AFD3-2B2F27EE7433}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B10CF02-CC97-42A6-A64F-EA49EDB794B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B10CF02-CC97-42A6-A64F-EA49EDB794B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B10CF02-CC97-42A6-A64F-EA49EDB794B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B10CF02-CC97-42A6-A64F-EA49EDB794B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE652DD0-1B40-4481-886F-B1B73D5CA31B}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2B10CF02-CC97-42A6-A64F-EA49EDB794B7} = {FD23D400-6BA9-4D9E-A4EF-542B480337CE}
 	EndGlobalSection
 EndGlobal
