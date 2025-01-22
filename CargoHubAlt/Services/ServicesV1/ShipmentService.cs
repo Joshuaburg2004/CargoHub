@@ -4,6 +4,7 @@ using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV1;
 using System.Text.Json;
 using System.Transactions;
+using CargoHubAlt.JsonModels;
 
 namespace CargoHubAlt.Services.ServicesV1
 {
@@ -308,15 +309,20 @@ namespace CargoHubAlt.Services.ServicesV1
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<Shipment>? shipments = JsonSerializer.Deserialize<List<Shipment>>(json);
+                List<JsonShipment>? shipments = JsonSerializer.Deserialize<List<JsonShipment>>(json);
                 if (shipments == null)
                 {
                     return;
                 }
-                foreach (Shipment shipment in shipments)
+                var transaction = _context.Database.BeginTransaction();
+                foreach (JsonShipment jsonShipment in shipments)
                 {
+                    Shipment shipment = jsonShipment.ToShipment();
+                    shipment.Items = jsonShipment.Items.Select(x => x.ToShipmentItem()).ToList();
                     await SaveToDatabase(shipment);
                 }
+                await _context.SaveChangesAsync();
+                transaction.Commit();
             }
         }
         public async Task<int> SaveToDatabase(Shipment shipment)
@@ -337,7 +343,6 @@ namespace CargoHubAlt.Services.ServicesV1
             if (shipment.PaymentType == null) { shipment.PaymentType = "N/A"; }
             if (shipment.TransferMode == null) { shipment.TransferMode = "N/A"; }
             await _context.Shipments.AddAsync(shipment);
-            await _context.SaveChangesAsync();
             return shipment.Id;
         }
         public async Task<bool> CommitShipmentById(int id)
@@ -364,12 +369,15 @@ namespace CargoHubAlt.Services.ServicesV1
                     var inventories = _context.Inventories.Where(x => x.ItemId == shipmentItem.ItemId);
                     foreach (var inventory in inventories)
                     {
-                        // assume the python code means to iterate over the locations, because as is the inventories dont end up being stored in one location but in several (with a list of locations per inventory)
-                        // needs to be checked with PO
                         foreach (int ider in inventory.Locations)
                         {
                             if (ider == order.SourceId)
                             {
+                                Location? location = await _context.Locations.FirstOrDefaultAsync(x => x.Id == ider);
+                                if (location == null)
+                                    continue;
+                                location.localInventories.Where(x => x.InventoryId == ider).ToList().ForEach(x => x.Amount -= shipmentItem.Amount);
+                                _context.Locations.Update(location);
                                 inventory.TotalOnHand -= shipmentItem.Amount;
                                 inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
                                 inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
@@ -400,6 +408,11 @@ namespace CargoHubAlt.Services.ServicesV1
                         {
                             if (ider == order.ShipTo)
                             {
+                                Location? location = await _context.Locations.FirstOrDefaultAsync(x => x.Id == ider);
+                                if (location == null)
+                                    continue;
+                                location.localInventories.Where(x => x.InventoryId == ider).ToList().ForEach(x => x.Amount += shipmentItem.Amount);
+                                _context.Locations.Update(location);
                                 inventory.TotalOnHand -= shipmentItem.Amount;
                                 inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
                                 inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;

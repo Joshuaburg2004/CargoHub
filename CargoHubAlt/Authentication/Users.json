@@ -93,6 +93,20 @@
         "Post": true,
         "Put": true,
         "Delete": true
+      },
+      "PickingOrder": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
+      },
+      "Analytics": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
       }
     }
   },
@@ -185,6 +199,13 @@
         "Delete": false
       },
       "Backup": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "PickingOrder": {
         "GetAll": 0,
         "Get": true,
         "Post": false,
@@ -287,6 +308,13 @@
         "Post": false,
         "Put": false,
         "Delete": false
+      },
+      "PickingOrder": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
       }
     }
   },
@@ -379,6 +407,13 @@
         "Delete": false
       },
       "Backup": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "PickingOrder": {
         "GetAll": 1,
         "Get": false,
         "Post": false,
@@ -481,6 +516,13 @@
         "Post": false,
         "Put": false,
         "Delete": false
+      },
+      "PickingOrder": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
       }
     }
   },
@@ -573,6 +615,13 @@
         "Delete": false
       },
       "Backup": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "PickingOrder": {
         "GetAll": 1,
         "Get": false,
         "Post": false,
@@ -675,6 +724,13 @@
         "Post": false,
         "Put": false,
         "Delete": false
+      },
+      "PickingOrder": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
       }
     }
   },
@@ -772,6 +828,13 @@
         "Post": false,
         "Put": false,
         "Delete": false
+      },
+      "PickingOrder": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
       }
     }
   },
@@ -864,6 +927,13 @@
         "Delete": false
       },
       "Backup": {
+        "GetAll": 1,
+        "Get": false,
+        "Post": false,
+        "Put": false,
+        "Delete": false
+      },
+      "PickingOrder": {
         "GetAll": 1,
         "Get": false,
         "Post": false,

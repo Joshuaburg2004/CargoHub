@@ -3,6 +3,7 @@ using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV1;
 using System.Text.Json;
+using CargoHubAlt.JsonModels;
 
 namespace CargoHubAlt.Services.ServicesV1
 {
@@ -77,6 +78,9 @@ namespace CargoHubAlt.Services.ServicesV1
                         {
                             if (ider == transfer.TransferFrom)
                             {
+                                Location? location = await _context.Locations.FirstOrDefaultAsync(x => x.Id == transfer.TransferFrom);
+                                if (location == null) return false;
+                                location.localInventories.Where(x => x.InventoryId == ider).ToList().ForEach(x => x.Amount -= transferItem.Amount);
                                 inventory.TotalOnHand -= transferItem.Amount;
                                 inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
                                 inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
@@ -84,6 +88,9 @@ namespace CargoHubAlt.Services.ServicesV1
                             }
                             else if (ider == transfer.TransferTo)
                             {
+                                Location? location = await _context.Locations.FirstOrDefaultAsync(x => x.Id == transfer.TransferTo);
+                                if (location == null) return false;
+                                location.localInventories.Where(x => x.InventoryId == ider).ToList().ForEach(x => x.Amount += transferItem.Amount);
                                 inventory.TotalOnHand += transferItem.Amount;
                                 inventory.TotalExpected = inventory.TotalOnHand + inventory.TotalOrdered;
                                 inventory.TotalAvailable = inventory.TotalOnHand - inventory.TotalAllocated;
@@ -107,22 +114,26 @@ namespace CargoHubAlt.Services.ServicesV1
             await _context.SaveChangesAsync();
             return true;
         }
+
         public async Task LoadFromJson(string path)
         {
             path = "data/" + path;
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<Transfer>? transfers = JsonSerializer.Deserialize<List<Transfer>>(json);
+                List<JsonTransfer>? transfers = JsonSerializer.Deserialize<List<JsonTransfer>>(json);
                 if (transfers == null)
                 {
                     return;
                 }
                 var transaction = _context.Database.BeginTransaction();
-                foreach (Transfer transfer in transfers)
+                foreach (JsonTransfer jsonTransfer in transfers)
                 {
+                    Transfer transfer = jsonTransfer.ToTransfer();
+                    transfer.Items = jsonTransfer.items.Select(item => item.ToTransferItem()).ToList();
                     await SaveToDatabase(transfer);
                 }
+                await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
         }
@@ -135,7 +146,6 @@ namespace CargoHubAlt.Services.ServicesV1
             if (transfer.Reference == null) { transfer.Reference = "N/A"; }
             if (transfer.TransferStatus == null) { transfer.TransferStatus = "N/A"; }
             await _context.Transfers.AddAsync(transfer);
-            await _context.SaveChangesAsync();
             return transfer.Id;
         }
     }

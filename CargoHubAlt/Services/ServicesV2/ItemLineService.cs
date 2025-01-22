@@ -3,6 +3,7 @@ using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV2;
 using System.Text.Json;
+using CargoHubAlt.JsonModels;
 
 namespace CargoHubAlt.Services.ServicesV2
 {
@@ -96,29 +97,31 @@ namespace CargoHubAlt.Services.ServicesV2
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<ItemLine>? itemLines = JsonSerializer.Deserialize<List<ItemLine>>(json);
+                List<JsonItemLine>? itemLines = JsonSerializer.Deserialize<List<JsonItemLine>>(json);
                 if (itemLines == null)
                 {
                     return;
                 }
-                foreach (ItemLine inventory in itemLines)
+                var transaction = _cargoHubContext.Database.BeginTransaction();
+                foreach (JsonItemLine jsonItemLine in itemLines)
                 {
-                    await SaveToDatabase(inventory);
+                    ItemLine itemLine = jsonItemLine.ToItemLine();
+                    await SaveToDatabase(itemLine);
                 }
+                await _cargoHubContext.SaveChangesAsync();
+                await transaction.CommitAsync();
             }
         }
-
-        public async Task<int> SaveToDatabase(ItemLine itemGroup)
+        public async Task<int> SaveToDatabase(ItemLine itemLine)
         {
-            if (itemGroup is null)
+            if (itemLine is null)
             {
                 return -1;
             }
-            if (itemGroup.Name == null) { itemGroup.Name = "N/A"; }
-            if (itemGroup.Description == null) { itemGroup.Description = "N/A"; }
-            await _cargoHubContext.ItemLines.AddAsync(itemGroup);
-            await _cargoHubContext.SaveChangesAsync();
-            return itemGroup.Id;
+            if (itemLine.Name == null) { itemLine.Name = "N/A"; }
+            if (itemLine.Description == null) { itemLine.Description = "N/A"; }
+            await _cargoHubContext.ItemLines.AddAsync(itemLine);
+            return itemLine.Id;
         }
     }
 }

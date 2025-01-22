@@ -3,15 +3,18 @@ using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV2;
 using System.Text.Json;
+using CargoHubAlt.JsonModels;
 
 namespace CargoHubAlt.Services.ServicesV2
 {
     public class OrderServiceV2 : IOrderServiceV2
     {
         readonly CargoHubContext _context;
-        public OrderServiceV2(CargoHubContext context)
+        readonly IOrderPickingServiceV2 _orderPickingService;
+        public OrderServiceV2(CargoHubContext context, IOrderPickingServiceV2 orderPickingService)
         {
             _context = context;
+            _orderPickingService = orderPickingService;
         }
 
         public async Task<List<Order>?> GetOrders()
@@ -80,8 +83,15 @@ namespace CargoHubAlt.Services.ServicesV2
 
             // add Order
             await _context.Orders.AddAsync(order);
+
             if (await _context.SaveChangesAsync() >= 0)
+            {
+                // Create picking orders
+                int orderId = order.Id;
+                await _orderPickingService.CreatePickingOrders(order.Items, orderId);
+
                 return true;
+            }
             return false;
         }
 
@@ -139,7 +149,13 @@ namespace CargoHubAlt.Services.ServicesV2
             oldOrder.UpdatedAt = Base.GetTimeStamp();
             oldOrder.Items = order.Items;
 
+            // update Order
             _context.Orders.Update(oldOrder);
+
+            // update PickingOrders
+            await _orderPickingService.DeletePickingOrder(oldOrder.Id);
+            await _orderPickingService.CreatePickingOrders(order.Items, order.Id);
+
             if (await _context.SaveChangesAsync() >= 0)
                 return ChangedFields;
             return null;
@@ -179,6 +195,10 @@ namespace CargoHubAlt.Services.ServicesV2
 
             // remove Order
             _context.Orders.Remove(order);
+
+            // remove PickingOrders
+            await _orderPickingService.DeletePickingOrdersForOrder(id);
+
             if (await _context.SaveChangesAsync() >= 0)
                 return true;
             return false;
@@ -189,15 +209,19 @@ namespace CargoHubAlt.Services.ServicesV2
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<Order>? orders = JsonSerializer.Deserialize<List<Order>>(json);
+                List<JsonOrder>? orders = JsonSerializer.Deserialize<List<JsonOrder>>(json);
                 if (orders == null)
                 {
                     return;
                 }
-                foreach (Order order in orders)
+                var transaction = _context.Database.BeginTransaction();
+                foreach (JsonOrder jsonOrder in orders)
                 {
+                    Order order = jsonOrder.ToOrder();
                     await SaveToDatabase(order);
                 }
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
             }
         }
         public async Task<int> SaveToDatabase(Order order)
@@ -216,10 +240,7 @@ namespace CargoHubAlt.Services.ServicesV2
             if (order.PickingNotes == null) { order.PickingNotes = "N/A"; }
 
             await _context.Orders.AddAsync(order);
-            await _context.SaveChangesAsync();
             return order.Id;
         }
-
-
     }
 }

@@ -69,6 +69,8 @@ public class ApiKeyActionFilter : Attribute, IAsyncActionFilter
             "transfers" => user.EndpointAccess.Transfers,
             "warehouses" => user.EndpointAccess.Warehouses,
             "backup" => user.EndpointAccess.Backup,
+            "pickingorder" => user.EndpointAccess.PickingOrder,
+            "analytics" => user.EndpointAccess.Analytics,
             _ => null
         };
         if (access is null)
@@ -78,10 +80,10 @@ public class ApiKeyActionFilter : Attribute, IAsyncActionFilter
         }
         return method switch
         {
-            "GET" => access.Get ? 200:401,
-            "POST" => access.Post ? 200:401,
-            "PUT" => access.Put ? 200:401,
-            "DELETE" => access.Delete ? 200:401,
+            "GET" => access.Get ? 200 : 401,
+            "POST" => access.Post ? 200 : 401,
+            "PUT" => access.Put ? 200 : 401,
+            "DELETE" => access.Delete ? 200 : 401,
             _ => 401
         };
     }

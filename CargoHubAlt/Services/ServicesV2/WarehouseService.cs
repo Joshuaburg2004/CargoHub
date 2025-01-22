@@ -3,6 +3,7 @@ using CargoHubAlt.Models;
 using CargoHubAlt.Database;
 using CargoHubAlt.Interfaces.InterfacesV2;
 using System.Text.Json;
+using CargoHubAlt.JsonModels;
 
 namespace CargoHubAlt.Services.ServicesV2
 {
@@ -50,7 +51,6 @@ namespace CargoHubAlt.Services.ServicesV2
             if (existingWarehouse == null)
                 return null;
 
-            existingWarehouse.Id = warehouse.Id;
             existingWarehouse.Code = warehouse.Code;
             existingWarehouse.Name = warehouse.Name;
             existingWarehouse.Address = warehouse.Address;
@@ -70,6 +70,8 @@ namespace CargoHubAlt.Services.ServicesV2
             var warehouse = await _context.Warehouses.FindAsync(id);
             if (warehouse == null) return null;
             _context.Warehouses.Remove(warehouse);
+            var locationsToRemove = _context.Locations.Where(_ => _.WarehouseId == id);
+            _context.Locations.RemoveRange(locationsToRemove);
             await _context.SaveChangesAsync();
             return warehouse;
         }
@@ -81,15 +83,19 @@ namespace CargoHubAlt.Services.ServicesV2
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                List<Warehouse>? warehouses = JsonSerializer.Deserialize<List<Warehouse>>(json);
+                List<JsonWarehouse>? warehouses = JsonSerializer.Deserialize<List<JsonWarehouse>>(json);
                 if (warehouses == null)
                 {
                     return;
                 }
-                foreach (Warehouse warehouse in warehouses)
+                var transaction = _context.Database.BeginTransaction();
+                foreach (JsonWarehouse jsonWarehouse in warehouses)
                 {
+                    Warehouse warehouse = jsonWarehouse.ToWarehouse();
                     await SaveToDatabase(warehouse);
                 }
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
             }
         }
         public async Task<int> SaveToDatabase(Warehouse warehouse)
@@ -105,7 +111,6 @@ namespace CargoHubAlt.Services.ServicesV2
             if (warehouse.Province == null) { warehouse.Province = "N/A"; }
             if (warehouse.Country == null) { warehouse.Country = "N/A"; }
             await _context.Warehouses.AddAsync(warehouse);
-            await _context.SaveChangesAsync();
             return warehouse.Id;
         }
     }
