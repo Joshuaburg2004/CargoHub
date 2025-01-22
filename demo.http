@@ -1,5 +1,5 @@
 
-GET http://localhost:3000/api/v2/analytics
+GET http://localhost:3000/api/v2/analytics?fromdate=2008-05-12
 API_KEY: j6k7l8m9n0
 ###
 
@@ -127,7 +127,7 @@ Content-Type: application/json
 
 
 
-DELETE  http://localhost:3000/api/v2/warehouses/59
+DELETE  http://localhost:3000/api/v1/warehouses/59
 API_KEY: a1b2c3d4e5
 
 ###
@@ -139,7 +139,12 @@ API_KEY: a1b2c3d4e5
 
 
 
-GET  http://localhost:3000/api/v1/warehouses/59/locations
+GET  http://localhost:3000/api/v2/warehouses/59/locations
+API_KEY: j6k7l8m9n0
+
+###
+
+GET  http://localhost:3000/api/v2/warehouses/1/locations
 API_KEY: j6k7l8m9n0
 
 ###
