@@ -70,6 +70,7 @@ public class ApiKeyActionFilter : Attribute, IAsyncActionFilter
             "warehouses" => user.EndpointAccess.Warehouses,
             "backup" => user.EndpointAccess.Backup,
             "pickingorder" => user.EndpointAccess.PickingOrder,
+            "analytics" => user.EndpointAccess.Analytics,
             _ => null
         };
         if (access is null)
