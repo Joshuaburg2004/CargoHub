@@ -53,7 +53,12 @@ namespace CargoHubAlt.Services.ServicesV2{
             Dictionary<int, Item> WorstPerformers = new Dictionary<int, Item>();
             int m = 1;
             worstItems.ForEach(i => {
-                WorstPerformers.Add(m, _context.Items.Where(p => p.Uid == i.ItemId).First());
+                Item? item = _context.Items.Where(p => p.Uid == i.ItemId).FirstOrDefault();
+                if(item == null)
+                    WorstPerformers.Add(m, new Item(i.ItemId!, "NotFound", "NotFound", "NotFound", "NotFound", "NotFound", "NotFound", 0, 0, 0, 0, 0, 0, 0, "NotFound", "NotFound"));
+                
+                else
+                    WorstPerformers.Add(m, item);
                 m++;
             });
             return new Analytic(){
