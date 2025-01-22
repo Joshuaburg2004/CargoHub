@@ -1,0 +1,45 @@
+# .github/release.yml
+name-template: "v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+
+template: |
+  # What's Changed
+
+  $CHANGES
+
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+
+categories:
+  - title: "💥 Breaking Changes"
+    labels:
+      - breaking-change
+  - title: "🚀 New Features"
+    labels:
+      - enhancement
+  - title: "🚧 Testing"
+    labels:
+      - tests
+  - title: "🐛 Bug Fixes"
+    labels:
+      - bug
+  - title: "✅ Other Changes"
+    labels:
+      - "*"
+
+version-resolver:
+  major:
+    labels:
+      - "type: breaking"
+  minor:
+    labels:
+      - "type: feature"
+  patch:
+    labels:
+      - "type: bug"
+      - "type: maintenance"
+      - "type: docs"
+      - "type: dependencies"
+      - "type: security"
+
+exclude-labels:
+  - "skip-changelog"

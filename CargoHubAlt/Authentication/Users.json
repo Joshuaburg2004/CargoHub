@@ -100,6 +100,13 @@
         "Post": true,
         "Put": true,
         "Delete": true
+      },
+      "Analytics": {
+        "GetAll": 0,
+        "Get": true,
+        "Post": true,
+        "Put": true,
+        "Delete": true
       }
     }
   },

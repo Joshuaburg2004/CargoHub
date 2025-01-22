@@ -51,7 +51,6 @@ namespace CargoHubAlt.Services.ServicesV2
             if (existingWarehouse == null)
                 return null;
 
-            existingWarehouse.Id = warehouse.Id;
             existingWarehouse.Code = warehouse.Code;
             existingWarehouse.Name = warehouse.Name;
             existingWarehouse.Address = warehouse.Address;
@@ -71,6 +70,8 @@ namespace CargoHubAlt.Services.ServicesV2
             var warehouse = await _context.Warehouses.FindAsync(id);
             if (warehouse == null) return null;
             _context.Warehouses.Remove(warehouse);
+            var locationsToRemove = _context.Locations.Where(_ => _.WarehouseId == id);
+            _context.Locations.RemoveRange(locationsToRemove);
             await _context.SaveChangesAsync();
             return warehouse;
         }

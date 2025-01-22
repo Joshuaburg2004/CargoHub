@@ -38,7 +38,7 @@ namespace CargoHubAlt.Controllers.ControllersV2
             if (newwarehouse == null) return BadRequest();
             var warehouse = await _warehouseservice.AddWarehouse(newwarehouse);
             if (warehouse == null) return BadRequest();
-            return Created("", "");
+            return Created("", $"{warehouse}");
         }
 
         [HttpPut("{id}")]
