@@ -80,7 +80,7 @@ jobs:
           mkdir -p ${{ env.Coverage_Report_Folder }}
           dotnet tool install --global coverlet.console
           coverlet ${{ env.Test_Project_dll }} --target "dotnet" --targetargs "test ${{ env.Test_Project_Path }} --no-build --nologo" --output "${{ env.Coverage_Report_Folder }}/coverage" --format cobertura --exclude="${{env.Wap_Project_Directory}}/Authentication" > temp_output.txt
-          tail -n +6 temp_output.txt >> $GITHUB_STEP_SUMMARY
+          tail -n +7 temp_output.txt >> $GITHUB_STEP_SUMMARY
 
       - name: Generate coverage report
         run: |
