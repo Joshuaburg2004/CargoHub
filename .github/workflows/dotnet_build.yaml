@@ -120,9 +120,9 @@ jobs:
             -v ${{ github.workspace }}/TestResults:/testresults \
             -v ${{ github.workspace }}/Data:/app/Data \
             -e Solution_Name=/app/CargoHubAspNet.sln \
-            -e Test_Project_Path=/app/IntegrationTests/IntegrationTestsV1/IntegrationTestsV1.csproj \
+            -e Test_Project_Path=/app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj \
             integrationtest \
-            sh -c "dotnet test /app/IntegrationTests/IntegrationTestsV1/IntegrationTestsV1.csproj --collect:\"XPlat Code Coverage\" --results-directory /testresults --verbosity detailed && \
+            sh -c "dotnet test /app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj --collect:\"XPlat Code Coverage\" --results-directory /testresults --verbosity detailed && \
                    reportgenerator -reports:/testresults/**/coverage.cobertura.xml -targetdir:/testresults/coverage-report -reporttypes:TextSummary"
 
       - name: Upload coverage report
