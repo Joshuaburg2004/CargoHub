@@ -17,6 +17,9 @@ RUN dotnet restore
 RUN dotnet tool install --global coverlet.console
 RUN dotnet tool install --global dotnet-reportgenerator-globaltool
 
+# Set the path to the tools
+ENV PATH="$PATH:/root/.dotnet/tools"
+
 # Build the test project
 RUN dotnet build --no-restore --configuration Debug
 
