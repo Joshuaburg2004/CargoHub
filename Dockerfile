@@ -13,6 +13,10 @@ COPY ./CargoHubAlt/Authentication/ /app/Authentication/
 # Restore dependencies
 RUN dotnet restore
 
+# Install the coverlet and reportgenerator tools
+RUN dotnet tool install --global coverlet.console
+RUN dotnet tool install --global dotnet-reportgenerator-globaltool
+
 # Build the test project
 RUN dotnet build --no-restore --configuration Debug
 

@@ -86,7 +86,7 @@ jobs:
         run: |
           dotnet tool install -g dotnet-reportgenerator-globaltool
           reportgenerator -reports:${{ env.Coverage_Report_Folder }}/coverage.cobertura.xml -targetdir:${{ env.Coverage_Report_Folder }} -reporttypes:TextSummary
-          cat ${{ env.Coverage_Report_Folder }}/TextSummary.txt >> $GITHUB_STEP_SUMMARY
+          cat ${{ env.Coverage_Report_Folder }}/Summary.txt >> $GITHUB_STEP_SUMMARY
 
   run-integration-tests-v1:
     needs: build
