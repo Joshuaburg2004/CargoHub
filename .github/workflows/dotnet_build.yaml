@@ -120,7 +120,7 @@ jobs:
             -e Solution_Name=/app/CargoHubAspNet.sln \
             -e Test_Project_Path=/app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj \
             integrationtest \
-            sh -c "dotnet test /app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj --collect:\"XPlat Code Coverage\" --results-directory /testresults --verbosity detailed" \
+            dotnet test /app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj --collect:"XPlat Code Coverage" --results-directory /testresults --verbosity detailed \
                    reportgenerator -reports:/testresults/coverage.cobertura.xml -targetdir:/testresults/coverage-report -reporttypes:TextSummary
 
       - name: Upload coverage report
