@@ -79,13 +79,12 @@ jobs:
         run: |
           mkdir -p ${{ env.Coverage_Report_Folder }}
           dotnet tool install --global coverlet.console
-          coverlet ${{ env.Test_Project_dll }} --target "dotnet" --targetargs "test ${{ env.Test_Project_Path }} --no-build --nologo" --output "${{ env.Coverage_Report_Folder }}/coverage" --format cobertura --exclude="${{env.Wap_Project_Directory}}/Authentication" > temp_output.txt
-          tail -n +7 temp_output.txt >> $GITHUB_STEP_SUMMARY
+          coverlet ${{ env.Test_Project_dll }} --target "dotnet" --targetargs "test ${{ env.Test_Project_Path }} --no-build --nologo" --output "${{ env.Coverage_Report_Folder }}/coverage" --format cobertura --exclude="${{env.Wap_Project_Directory}}/Authentication"
 
       - name: Generate coverage report
         run: |
           dotnet tool install -g dotnet-reportgenerator-globaltool
-          reportgenerator -reports:${{ env.Coverage_Report_Folder }}/coverage.cobertura.xml -targetdir:${{ env.Coverage_Report_Folder }} -reporttypes:TextSummary
+          reportgenerator -reports:${{ env.Coverage_Report_Folder }}/coverage.cobertura.xml -targetdir:${{ env.Coverage_Report_Folder }} -reporttypes:TextSummary >> $GITHUB_STEP_SUMMARY
 
   run-integration-tests-v1:
     needs: build
@@ -121,12 +120,19 @@ jobs:
             -e Solution_Name=/app/CargoHubAspNet.sln \
             -e Test_Project_Path=/app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj \
             integrationtest \
-            dotnet test /app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj \
-            --results-directory /testresults --verbosity detailed
-            mkdir -p ${{ env.Coverage_Report_Folder }}
-            dotnet tool install --global coverlet.console
-            coverlet ${{ env.Test_Project_dll }} --target "dotnet" --targetargs "test ${{ env.Test_Project_Path }} --no-build --nologo" --output "${{ env.Coverage_Report_Folder }}/coverage" --format cobertura --exclude="${{env.Wap_Project_Directory}}/Authentication" > temp_output.txt
-            tail -n +7 temp_output.txt >> $GITHUB_STEP_SUMMARY
+            sh -c "dotnet test /app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj --collect:\"XPlat Code Coverage\" --results-directory /testresults --verbosity detailed && \
+                   reportgenerator -reports:/testresults/coverage.cobertura.xml -targetdir:/testresults/coverage-report"
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: ${{ github.workspace }}/TestResults/coverage-report
+
+      - name: Post coverage summary
+        run: |
+          echo "## Code Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          cat ${{ github.workspace }}/TestResults/coverage-report/Summary.txt >> $GITHUB_STEP_SUMMARY
+      
 
   # deploy:
   #   if: github.ref == 'refs/head/main'
