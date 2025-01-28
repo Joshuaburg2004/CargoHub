@@ -87,7 +87,7 @@ jobs:
               "embeds": [
                 {
                   "title": "Unit tests are running for ${{ github.event_name }} by ${{ github.actor }}",
-                  "description": "See details at ${{ URL }}.",
+                  "description": "See details at $URL.",
                   "color": 5814783
                 }
               ]
@@ -115,7 +115,7 @@ jobs:
               "embeds": [
                 {
                   "title": "Unit tests passed for ${{ github.event_name }} by ${{ github.actor }}",
-                  "description": "See details at ${{ URL }}.",
+                  "description": "See details at $URL.",
                   "color": 5814783
                 }
               ]
@@ -138,7 +138,7 @@ jobs:
               "embeds": [
                 {
                   "title": "Unit tests failed for ${{ github.event_name }} by ${{ github.actor }}.",
-                  "description": "See details at ${{ URL }}. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)",
+                  "description": "See details at $URL. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)",
                   "color": 5814783
                 }
               ]
@@ -197,7 +197,7 @@ jobs:
               "embeds": [
                 {
                   "title": "Integration tests are running for ${{ github.event_name }} by ${{ github.actor }}",
-                  "description": "See details at ${{ URL }}.",
+                  "description": "See details at $URL.",
                   "color": 5814783
                 }
               ]
@@ -231,7 +231,7 @@ jobs:
               "embeds": [
                 {
                   "title": "Integration tests succeeded for ${{ github.event_name }} by ${{ github.actor }}",
-                  "description": "See details at ${{ URL }}.",
+                  "description": "See details at $URL.",
                   "color": 5814783
                 }
               ]
@@ -254,7 +254,7 @@ jobs:
               "embeds": [
                 {
                   "title": "Integration tests failed for ${{ github.event_name }} by ${{ github.actor }}",
-                  "description": "See details at ${{ URL }}. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)",
+                  "description": "See details at $URL. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)",
                   "color": 5814783
                 }
               ]
