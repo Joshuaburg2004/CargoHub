@@ -91,7 +91,7 @@ jobs:
                   "color": 5814783
                 }
               ]
-            }' ${{ secrets.DISCORD_WEBHOOK_URL }}
+            }' ${{ secrets.WEBHOOK_URL }}
 
       - name: Execute tests
         id: run_tests
@@ -119,7 +119,7 @@ jobs:
                   "color": 5814783
                 }
               ]
-            }' ${{ secrets.DISCORD_WEBHOOK_URL }}
+            }' ${{ secrets.WEBHOOK_URL }}
 
       - name: Call webhook on failure
         if: failure()
@@ -142,7 +142,7 @@ jobs:
                   "color": 5814783
                 }
               ]
-            }' ${{ secrets.DISCORD_WEBHOOK_URL }}
+            }' ${{ secrets.WEBHOOK_URL }}
 
       - name: Run tests with coverage
         run: |
@@ -201,7 +201,7 @@ jobs:
                   "color": 5814783
                 }
               ]
-            }' ${{ secrets.DISCORD_WEBHOOK_URL }}
+            }' ${{ secrets.WEBHOOK_URL }}
 
       - name: Run Docker container
         run: |
@@ -235,7 +235,7 @@ jobs:
                   "color": 5814783
                 }
               ]
-            }' ${{ secrets.DISCORD_WEBHOOK_URL }}
+            }' ${{ secrets.WEBHOOK_URL }}
 
       - name: Call webhook on failure
         if: failure()
@@ -258,4 +258,4 @@ jobs:
                   "color": 5814783
                 }
               ]
-            }' ${{ secrets.DISCORD_WEBHOOK_URL }}
+            }' ${{ secrets.WEBHOOK_URL }}
