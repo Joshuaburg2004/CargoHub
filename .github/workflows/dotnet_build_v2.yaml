@@ -193,12 +193,12 @@ jobs:
           curl -X POST \
             -H "Content-Type: application/json" \
             -d "{
-              "\content\": "\Starting integration tests.\",
-              "\embeds\": [
+              \"content\": \"Starting integration tests.\",
+              \"embeds\": [
                 {
-                  "\title\": "\Integration tests are running for ${{ github.event_name }} by ${{ github.actor }}\",
-                  "\description\": "\See details at $URL.\",
-                  "\color\": 5814783
+                  \"title\": \"Integration tests are running for ${{ github.event_name }} by ${{ github.actor }}\",
+                  \"description\": \"See details at $URL.\",
+                  \"color\": 5814783
                 }
               ]
             }" ${{ secrets.WEBHOOK_URL }}
