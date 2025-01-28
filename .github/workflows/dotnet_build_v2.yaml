@@ -80,7 +80,19 @@ jobs:
           else
             URL=$COMMIT_URL
           fi
-          curl -X POST -H "Content-Type: application/json" -d '{"text":"Unit tests are running for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}. See details at $URL"}' ${{ secrets.WEBHOOK_URL }}
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{
+              "content": "Starting unit tests.",
+              "embeds": [
+                {
+                  "title": "Unit tests are running for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}",
+                  "description": "See details at $URL.",
+                  "color": 5814783
+                }
+              ]
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Execute tests
         id: run_tests
@@ -97,7 +109,19 @@ jobs:
           else
             URL=$COMMIT_URL
           fi
-          curl -X POST -H "Content-Type: application/json" -d '{"text":"Unit tests passed for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}. See details at $URL"}' ${{ secrets.WEBHOOK_URL }}
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{
+              "content": "SUCCESS unit tests.",
+              "embeds": [
+                {
+                  "title": "Unit tests passed for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}",
+                  "description": "See details at $URL.",
+                  "color": 5814783
+                }
+              ]
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Call webhook on failure
         if: failure()
@@ -109,6 +133,19 @@ jobs:
           else
             URL=$COMMIT_URL
           fi
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{
+              "content": "FAILURE unit tests.",
+              "embeds": [
+                {
+                  "title": "Unit tests failed for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}.",
+                  "description": "See details at $URL. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)",
+                  "color": 5814783
+                }
+              ]
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
           curl -X POST -H "Content-Type: application/json" -d '{"text":"Unit tests failed for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}. See details at $URL. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)"}' ${{ secrets.WEBHOOK_URL }}
 
       - name: Run tests with coverage
@@ -157,7 +194,19 @@ jobs:
           else
             URL=$COMMIT_URL
           fi
-          curl -X POST -H "Content-Type: application/json" -d '{"embeds":{"title": "Integration tests are running for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}", "description": "See details at $URL."}}' ${{ secrets.WEBHOOK_URL }}
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{
+              "content": "Starting integration tests.",
+              "embeds": [
+                {
+                  "title": "Integration tests are running for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}",
+                  "description": "See details at $URL.",
+                  "color": 5814783
+                }
+              ]
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Run Docker container
         run: |
@@ -180,7 +229,19 @@ jobs:
           else
             URL=$COMMIT_URL
           fi
-          curl -X POST -H "Content-Type: application/json" -d '{"embeds":{"title": "Integration tests failed for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}", "description": "See details at $URL. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)"}}' ${{ secrets.WEBHOOK_URL }}
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{
+              "content": "SUCCESS integration tests.",
+              "embeds": [
+                {
+                  "title": "Integration tests succeeded for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}",
+                  "description": "See details at $URL.",
+                  "color": 5814783
+                }
+              ]
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Call webhook on failure
         if: failure()
@@ -192,4 +253,16 @@ jobs:
           else
             URL=$COMMIT_URL
           fi
-          curl -X POST -H "Content-Type: application/json" -d '{"embeds":{"title": "Integration tests failed for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}", "description": "See details at $URL. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)"}}' ${{ secrets.WEBHOOK_URL }}
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{
+              "content": "FAILURE integration tests.",
+              "embeds": [
+                {
+                  "title": "Integration tests failed for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}",
+                  "description": "See details at $URL. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)",
+                  "color": 5814783
+                }
+              ]
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
