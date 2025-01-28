@@ -70,10 +70,46 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore ${{ env.Solution_Name }}
+      
+      - name: Call webhook on startup
+        run: |
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+          PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            URL=$PR_URL
+          else
+            URL=$COMMIT_URL
+          fi
+          curl -X POST -H "Content-Type: application/json" -d "{\"text\":\"Unit tests are running for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}. See details at $URL\"}" ${{ secrets.WEBHOOK_URL }}
 
       - name: Execute tests
+        id: run_tests
         run: |
           dotnet test ${{ env.Test_Project_Path }} --configuration Debug --logger "trx;LogFileName=testresults.trx" --results-directory ${{ env.Results_Directory }}
+
+      - name: Call webhook on success
+        if: success()
+        run: |
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+          PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            URL=$PR_URL
+          else
+            URL=$COMMIT_URL
+          fi
+          curl -X POST -H "Content-Type: application/json" -d "{\"text\":\"Unit tests passed for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}. See details at $URL\"}" ${{ secrets.WEBHOOK_URL }}
+
+      - name: Call webhook on failure
+        if: failure()
+        run: |
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+          PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            URL=$PR_URL
+          else
+            URL=$COMMIT_URL
+          fi
+          curl -X POST -H "Content-Type: application/json" -d "{\"text\":\"Unit tests failed for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}. See details at $URL. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)\"}" ${{ secrets.WEBHOOK_URL }}
 
       - name: Run tests with coverage
         run: |
@@ -111,6 +147,17 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t integrationtest .
+      
+      - name: Call webhook on startup
+        run: |
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+          PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            URL=$PR_URL
+          else
+            URL=$COMMIT_URL
+          fi
+          curl -X POST -H "Content-Type: application/json" -d "{\"text\":\"Integration tests are running for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}. See details at $URL\"}" ${{ secrets.WEBHOOK_URL }}
 
       - name: Run Docker container
         run: |
@@ -122,6 +169,30 @@ jobs:
             integrationtest \
             dotnet test /app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj \
             --results-directory /testresults --verbosity detailed
+
+      - name: Call webhook on success
+        if: success()
+        run: |
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+          PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            URL=$PR_URL
+          else
+            URL=$COMMIT_URL
+          fi
+          curl -X POST -H "Content-Type: application/json" -d "{\"text\":\"Integration tests passed for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}. See details at $URL\"}" ${{ secrets.WEBHOOK_URL }}
+
+      - name: Call webhook on failure
+        if: failure()
+        run: |
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+          PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            URL=$PR_URL
+          else
+            URL=$COMMIT_URL
+          fi
+          curl -X POST -H "Content-Type: application/json" -d "{\"text\":\"Integration tests failed for ${GITHUB_EVENT_NAME} by ${GITHUB_ACTOR}. See details at $URL. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)\"}" ${{ secrets.WEBHOOK_URL }}
 
   # deploy:
   #   if: github.ref == 'refs/head/main'
