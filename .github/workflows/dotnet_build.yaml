@@ -86,8 +86,8 @@ jobs:
               "content": "Starting unit tests.",
               "embeds": [
                 {
-                  "title": "Unit tests are running for ${ github.event_name } by ${ github.actor }",
-                  "description": "See details at ${ URL }.",
+                  "title": "Unit tests are running for ${{ github.event_name }} by ${{ github.actor }}",
+                  "description": "See details at ${{ URL }}.",
                   "color": 5814783
                 }
               ]
@@ -114,8 +114,8 @@ jobs:
               "content": "SUCCESS unit tests.",
               "embeds": [
                 {
-                  "title": "Unit tests passed for ${ github.event_name } by ${ github.actor }",
-                  "description": "See details at ${ URL }.",
+                  "title": "Unit tests passed for ${{ github.event_name }} by ${{ github.actor }}",
+                  "description": "See details at ${{ URL }}.",
                   "color": 5814783
                 }
               ]
@@ -137,8 +137,8 @@ jobs:
               "content": "FAILURE unit tests.",
               "embeds": [
                 {
-                  "title": "Unit tests failed for ${ github.event_name } by ${ github.actor }.",
-                  "description": "See details at ${ URL }. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)",
+                  "title": "Unit tests failed for ${{ github.event_name }} by ${{ github.actor }}.",
+                  "description": "See details at ${{ URL }}. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)",
                   "color": 5814783
                 }
               ]
@@ -196,8 +196,8 @@ jobs:
               "content": "Starting integration tests.",
               "embeds": [
                 {
-                  "title": "Integration tests are running for ${ github.event_name } by ${ github.actor }",
-                  "description": "See details at ${ URL }.",
+                  "title": "Integration tests are running for ${{ github.event_name }} by ${{ github.actor }}",
+                  "description": "See details at ${{ URL }}.",
                   "color": 5814783
                 }
               ]
@@ -230,8 +230,8 @@ jobs:
               "content": "SUCCESS integration tests.",
               "embeds": [
                 {
-                  "title": "Integration tests succeeded for ${ github.event_name } by ${ github.actor }",
-                  "description": "See details at ${ URL }.",
+                  "title": "Integration tests succeeded for ${{ github.event_name }} by ${{ github.actor }}",
+                  "description": "See details at ${{ URL }}.",
                   "color": 5814783
                 }
               ]
@@ -253,8 +253,8 @@ jobs:
               "content": "FAILURE integration tests.",
               "embeds": [
                 {
-                  "title": "Integration tests failed for ${ github.event_name } by ${ github.actor }",
-                  "description": "See details at ${ URL }. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)",
+                  "title": "Integration tests failed for ${{ github.event_name }} by ${{ github.actor }}",
+                  "description": "See details at ${{ URL }}. Failure details: $(cat ${{ env.Results_Directory }}/testresults.trx)",
                   "color": 5814783
                 }
               ]
