@@ -76,9 +76,9 @@ jobs:
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            URL:$PR_URL
+            URL=$PR_URL
           else
-            URL:$COMMIT_URL
+            URL=$COMMIT_URL
           fi
           curl -X POST \
             -H "Content-Type: application/json" \
@@ -104,9 +104,9 @@ jobs:
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            URL:$PR_URL
+            URL=$PR_URL
           else
-            URL:$COMMIT_URL
+            URL=$COMMIT_URL
           fi
           curl -X POST \
             -H "Content-Type: application/json" \
@@ -127,9 +127,9 @@ jobs:
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            URL:$PR_URL
+            URL=$PR_URL
           else
-            URL:$COMMIT_URL
+            URL=$COMMIT_URL
           fi
           curl -X POST \
             -H "Content-Type: application/json" \
@@ -186,9 +186,9 @@ jobs:
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            URL:$PR_URL
+            URL=$PR_URL
           else
-            URL:$COMMIT_URL
+            URL=$COMMIT_URL
           fi
           curl -X POST \
             -H "Content-Type: application/json" \
@@ -197,7 +197,7 @@ jobs:
               \"embeds\": [
                 {
                   \"title\": \"Integration tests are running for ${{ github.event_name }} by ${{ github.actor }}\",
-                  \"description\": \"See details at ${{ URL }}.\",
+                  \"description\": \"See details at $URL.\",
                   \"color\": 5814783
                 }
               ]
@@ -220,9 +220,9 @@ jobs:
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            URL:$PR_URL
+            URL=$PR_URL
           else
-            URL:$COMMIT_URL
+            URL=$COMMIT_URL
           fi
           curl -X POST \
             -H "Content-Type: application/json" \
@@ -243,9 +243,9 @@ jobs:
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            URL:$PR_URL
+            URL=$PR_URL
           else
-            URL:$COMMIT_URL
+            URL=$COMMIT_URL
           fi
           curl -X POST \
             -H "Content-Type: application/json" \
