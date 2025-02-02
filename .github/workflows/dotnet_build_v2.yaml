@@ -117,8 +117,6 @@ jobs:
 
       - name: Run Docker container
         run: |
-          mkdir -p ${{ env.Coverage_Report_Folder }}
-          
           docker run --rm \
             -v ${{ github.workspace }}/TestResults:/testresults \
             -v ${{ github.workspace }}/Data:/app/Data \
@@ -126,8 +124,7 @@ jobs:
             -e Test_Project_Path=/app/IntegrationTests/IntegrationTestsV2/IntegrationTests.csproj \
             integrationtest \
             sh -c "dotnet test /app/IntegrationTests/IntegrationTestsV2/IntegrationTests.csproj --collect:\"XPlat Code Coverage\" --results-directory /testresults --verbosity detailed && \
-                   coverlet ${{ env.Test_Project_dll }} --target "dotnet" --targetargs "test ${{ env.Test_Project_Path }} --no-build --nologo" --output "${{ env.Coverage_Report_Folder }}/coverage" --format cobertura --exclude="${{env.Wap_Project_Directory}}/Authentication" > temp_output.txt && \
-                   tail -n +7 temp_output.txt >> $GITHUB_STEP_SUMMARY"
+                   reportgenerator -reports:/testresults/**/coverage.cobertura.xml -targetdir:/testresults/coverage-report -reporttypes:TextSummary"
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
