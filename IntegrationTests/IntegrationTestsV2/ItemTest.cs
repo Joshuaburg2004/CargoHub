@@ -251,7 +251,7 @@ public class ItemIntegratieTest : BaseTest
         Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-    [Fact, TestPriority(13)]
+    [Fact, TestPriority(12)]
     public async Task DeleteItem()
     {
         HttpResponseMessage response = await _client.DeleteAsync($"{requestUri}/P000001");
@@ -277,7 +277,7 @@ public class ItemIntegratieTest : BaseTest
         Xunit.Assert.Equal(TestItem.SupplierPartNumber, responseContent.SupplierPartNumber);
     }
 
-    [Fact, TestPriority(14)]
+    [Fact, TestPriority(13)]
     public async Task DeleteItemNotFound()
     {
         HttpResponseMessage response = await _client.DeleteAsync($"{requestUri}/P000001");
@@ -286,7 +286,7 @@ public class ItemIntegratieTest : BaseTest
         Xunit.Assert.Equal("Item with UID P000001 not found", responseContent);
     }
 
-    [Fact, TestPriority(15)]
+    [Fact, TestPriority(14)]
     public async Task GetItemEmpty()
     {
         HttpResponseMessage response = await _client.GetAsync($"{requestUri}");
@@ -294,7 +294,7 @@ public class ItemIntegratieTest : BaseTest
         var responseContent = await response.Content.ReadAsStringAsync();
     }
 
-    [Fact, TestPriority(16)]
+    [Fact, TestPriority(15)]
     public async Task GetAllItemsEmptyAfterDelete()
     {
         HttpResponseMessage response = await _client.GetAsync(requestUri);
