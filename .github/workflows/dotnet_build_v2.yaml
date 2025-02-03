@@ -148,12 +148,15 @@ jobs:
         run: |
           mkdir -p ${{ env.Coverage_Report_Folder }}
           dotnet tool install --global coverlet.console
-          coverlet ${{ env.Test_Project_dll }} --target "dotnet" --targetargs "test ${{ env.Test_Project_Path }} --no-build --nologo" --output "${{ env.Coverage_Report_Folder }}/coverage" --format cobertura --exclude=\"${{env.Wap_Project_Directory}}/Authentication\"
+          coverlet ${{ env.Test_Project_dll }} --target "dotnet" --targetargs "test ${{ env.Test_Project_Path }} --no-build --nologo" --output "${{ env.Coverage_Report_Folder }}/coverage" --format cobertura --exclude="${{env.Wap_Project_Directory}}/Authentication" > temp_output.txt
+          tail -n +7 temp_output.txt >> $GITHUB_STEP_SUMMARY
+
 
       - name: Generate coverage report
         run: |
           dotnet tool install -g dotnet-reportgenerator-globaltool
           reportgenerator -reports:${{ env.Coverage_Report_Folder }}/coverage.cobertura.xml -targetdir:${{ env.Coverage_Report_Folder }} -reporttypes:TextSummary
+          cat ${{ env.Coverage_Report_Folder }}/Summary.txt
 
   run-integration-tests-v2:
     needs: build
@@ -209,10 +212,21 @@ jobs:
             -v ${{ github.workspace }}/TestResults:/testresults \
             -v ${{ github.workspace }}/Data:/app/Data \
             -e Solution_Name=/app/CargoHubAspNet.sln \
-            -e Test_Project_Path=/app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj \
+            -e Test_Project_Path=/app/IntegrationTests/IntegrationTestsV2/IntegrationTests.csproj \
             integrationtest \
-            dotnet test /app/IntegrationTests/IntegrationTestsV1/IntegrationTests.csproj \
-            --results-directory /testresults --verbosity detailed
+            sh -c "dotnet test /app/IntegrationTests/IntegrationTestsV2/IntegrationTests.csproj --collect:\"XPlat Code Coverage\" --results-directory /testresults --verbosity detailed && \
+                   reportgenerator -reports:/testresults/**/coverage.cobertura.xml -targetdir:/testresults/coverage-report -reporttypes:TextSummary"
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: ${{ github.workspace }}/TestResults/coverage-report
+
+      - name: Post coverage summary
+        run: |
+          echo "## Code Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          cat ${{ github.workspace }}/TestResults/coverage-report/Summary.txt >> $GITHUB_STEP_SUMMARY
 
       - name: Call webhook on success
         if: success()
